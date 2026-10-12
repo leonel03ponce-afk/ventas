@@ -237,7 +237,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   <div class="wrap">
     <p class="k">Planes</p>
     <h2>Menos que una clase suelta.</h2>
-    <p class="sub">Un plan online con entrenador cuesta entre $20.000 y $40.000 por mes. Acá tenés la app completa y a <span data-c="marca">Brian Ponce</span> por WhatsApp por mucho menos.</p>
+    <p class="sub">Un plan online con entrenador cuesta entre $20.000 y $40.000 por mes. Acá tenés tu rutina personalizada, la app completa y a <span data-c="marca">Brian Ponce</span> por WhatsApp por una fracción.</p>
     <div class="planes" id="lista-planes"></div>
     <p class="nota">Pagás con Mercado Pago o transferencia. Apenas se acredita te llega tu código de acceso por WhatsApp.</p>
   </div>
@@ -246,8 +246,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 <section class="bloque vender" id="vender">
   <div class="wrap">
     <p class="k">Ganá plata recomendando</p>
-    <h2>Vendé SISTEMA y quedate con el <span data-c="comision">50</span>%.</h2>
-    <p class="sub">Si entrenás, tenés grupo de amigos en el gym o una cuenta con seguidores, recomendala con tu link. Por cada persona que se suma te llevás el <span data-c="comision">50</span>% de su primer pago.</p>
+    <h2>Vendé SISTEMA y cobrá el <span data-c="comision">20</span>% <span data-c="siempre">para siempre</span>.</h2>
+    <p class="sub">Si entrenás, tenés grupo de amigos en el gym o una cuenta con seguidores, recomendala con tu link. Por cada persona que se suma te llevás el <span data-c="comision">20</span>% <span data-c="cadapago">de cada pago que haga, mientras siga renovando</span>. Diez clientes que traés son una entrada fija todos los meses.</p>
     <div class="gana" id="gana"></div>
     <div class="ctas">
       <a class="btn jade" data-wa="Hola! Quiero vender SISTEMA y ganar la comisión. ¿Cómo arranco?" href="#">Quiero vender SISTEMA</a>
@@ -276,7 +276,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       <details><summary>¿Funciona sin internet?</summary><p>Sí. Una vez abierta, anotás tus series y hábitos aunque estés sin señal en el gimnasio.</p></details>
       <details><summary>¿Dónde quedan mis datos?</summary><p>En tu celular. No hay cuentas ni servidores. Desde Ajustes podés hacer un respaldo y pasarlo a otro teléfono.</p></details>
       <details><summary>¿Qué pasa cuando termina la prueba?</summary><p>Elegís un plan y seguís donde estabas. Todo lo que anotaste durante la prueba queda guardado.</p></details>
-      <details><summary>¿Puedo cancelar el plan mensual?</summary><p>Sí, cuando quieras, desde Mercado Pago. No hay permanencia.</p></details>
+      <details><summary>¿Puedo cancelar el plan?</summary><p>Sí. Los planes de 3 meses y anual se renuevan solos por Mercado Pago, y los cancelás cuando quieras desde ahí. No hay permanencia.</p></details>
+      <details><summary>¿La rutina es personalizada de verdad?</summary><p>Sí. Al sumarte completás un formulario corto (objetivo, días, lesiones, con qué equipo contás) y <span data-c="marca">Brian Ponce</span> te arma la rutina. Te llega directo a la app.</p></details>
       <details><summary>¿Sirve si recién arranco?</summary><p>Sí. El armador te pregunta tu nivel y tus días disponibles, y te arma una rutina acorde. Si querés una hecha a medida, la pedís por WhatsApp.</p></details>
     </div>
   </div>
@@ -328,7 +329,9 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     marca: C.marca || "",
     marcaMay: String(C.marca || "").toUpperCase(),
     prueba: (C.acceso || {}).prueba || 7,
-    comision: rec.comision || 50
+    comision: rec.comision || 20,
+    siempre: rec.recurrente ? "para siempre" : "",
+    cadapago: rec.recurrente ? "de cada pago que haga, mientras siga renovando" : "de su primer pago"
   };
   document.querySelectorAll("[data-c]").forEach(function (el) { var v = vals[el.getAttribute("data-c")]; if (v != null) el.textContent = v; });
   if (C.acento) document.documentElement.style.setProperty("--gold", C.acento);
@@ -338,12 +341,13 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   if (!(C.acceso || {}).prueba) document.querySelectorAll("[data-app]").forEach(function (a) { a.textContent = "Abrir la app"; });
 
   var incluye = ["Rutina serie por serie", "Hábitos, niveles y rachas", "Análisis de fugas", "Contacto directo con " + esc(corto)];
+  var recurrente = !!rec.recurrente;
   var lista = document.getElementById("lista-planes");
   lista.innerHTML = planes.map(function (p) {
     var link = p.pago || waLink("Hola " + corto + "! Quiero el plan " + p.nombre + " (" + plata(p.precio) + ").");
     return '<div class="plan rev' + (p.destacado ? " top" : "") + '">' + (p.destacado ? '<span class="tag">' + esc(p.destacado) + "</span>" : "") +
       "<h3>" + esc(p.nombre) + '</h3><p class="precio">' + plata(p.precio) + '</p><p class="det">' + esc(p.detalle || "") + "</p>" +
-      "<ul>" + incluye.map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ul>" +
+      "<ul>" + (p.incluye || incluye).map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" +
       '<a class="btn" href="' + esc(link) + '" target="_blank" rel="noopener">Quiero este plan</a></div>';
   }).join("");
 
@@ -352,7 +356,9 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   if (!rec.activo || !planes.length) { document.getElementById("vender").hidden = true; }
   else {
     gana.innerHTML = planes.map(function (p) {
-      return "<div><b>" + plata(p.precio * pct) + "</b><span>por cada " + esc(p.nombre.toLowerCase()) + " que vendés</span></div>";
+      var cada = p.meses === 3 ? "cada 3 meses" : p.meses === 12 ? "cada año" : p.meses ? "cada " + p.meses + " meses" : "";
+      return "<div><b>" + plata(p.precio * pct) + "</b><span>por cada plan " + esc(p.nombre.toLowerCase()) + " que vendés" +
+        (recurrente && cada ? ", y otra vez " + cada + " mientras renueve" : "") + "</span></div>";
     }).join("");
   }
 

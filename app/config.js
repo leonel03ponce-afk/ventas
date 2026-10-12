@@ -19,18 +19,23 @@ window.CONFIG = {
     prueba: 7                                       /* días de prueba gratis sin código (0 = sin prueba) */
   },
 
-  /* Precios en pesos. "pago" es el link de cobro de Mercado Pago
-     (Suscripciones para mensual y anual, Link de pago para el pago único).
-     Si lo dejás vacío, el botón abre WhatsApp para coordinar el pago. */
+  /* Precios en pesos. Tienen que coincidir con lo que cobra cada link de
+     Mercado Pago. "incluye" es la lista que se ve en la tarjeta del plan. */
   planes: [
-    { id: "mensual", nombre: "Mensual",      precio: 8900,   meses: 1,  detalle: "por mes · cancelás cuando quieras", pago: "" },
-    { id: "anual",   nombre: "Anual",        precio: 69900,  meses: 12, detalle: "un año · sale $5.825 por mes",       pago: "", destacado: "Más elegido" },
-    { id: "vida",    nombre: "Para siempre", precio: 119900, meses: 0,  detalle: "un solo pago · acceso de por vida",   pago: "" }
+    { id: "trimestral", nombre: "3 meses",      precio: 24900,  meses: 3,  detalle: "sale $8.300 por mes · se renueva cada 3 meses", pago: "https://mpago.la/2SDK5Ty",
+      incluye: ["Rutina personalizada armada por Brian", "Registro serie por serie y cronómetro", "Hábitos, niveles y rachas", "Plan de calorías y proteína", "Consultas por WhatsApp"] },
+    { id: "anual",      nombre: "Anual",        precio: 69900,  meses: 12, detalle: "sale $5.825 por mes · ahorrás 30%",              pago: "https://mpago.la/2cdoPet", destacado: "Más elegido",
+      incluye: ["Todo lo del plan de 3 meses", "Rutina nueva cada 3 meses", "Revisión de tu progreso cada mes", "Prioridad en WhatsApp"] },
+    { id: "vida",       nombre: "Para siempre", precio: 119900, meses: 0,  detalle: "un solo pago · acceso de por vida",              pago: "https://mpago.la/28ED6Ht",
+      incluye: ["Todo lo del plan anual", "Sin cuotas, nunca más", "Todas las funciones nuevas que salgan"] }
   ],
 
-  /* Recomendados: quien trae un cliente se lleva este % del primer pago */
+  /* Recomendados: quien trae un cliente se lleva este % de cada pago
+     que haga ese cliente mientras siga renovando (recurrente: true),
+     o solo del primero (recurrente: false). */
   recomendados: {
     activo: true,
-    comision: 50
+    comision: 20,
+    recurrente: true
   }
 };

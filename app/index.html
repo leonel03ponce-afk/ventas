@@ -71,6 +71,28 @@ button.g-link.boton { display: block; width: 100%; margin-top: 20px; padding: 6p
 .rt .acc-link { margin: 12px 0 0; padding: 10px 12px; background: rgba(255,255,255,.04); font: 600 13px/1.3 "Chakra Petch", system-ui, sans-serif; letter-spacing: .02em; color: var(--acento, #E9B75B); word-break: break-all; }
 .rt .acc-av { --c: var(--acento, #E9B75B); }
 .rt .acc-ref { --c: #4BD489; }
+.rt .nu-q { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.rt .nu-g { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 14px; }
+.rt .nu-g div { padding: 10px 6px; background: rgba(255,255,255,.04); text-align: center; }
+.rt .nu-g b { display: block; font: 700 17px/1.1 "Chakra Petch", sans-serif; color: #F3EDE4; }
+.rt .nu-g span { display: block; margin-top: 4px; font-size: 10.5px; color: #9C8AB8; }
+.rt .nu-n { font-size: 12px; }
+.rt select.in { -webkit-appearance: none; appearance: none; }
+.rt .med { margin: 12px 0 0; padding: 0; list-style: none; }
+.rt .med li { display: grid; grid-template-columns: 1fr auto 56px; gap: 10px; align-items: baseline; padding: 8px 0; border-top: 1px solid rgba(255,255,255,.06); font-size: 14px; color: #9C8AB8; }
+.rt .med b { font: 700 16px/1 "Chakra Petch", sans-serif; color: #F3EDE4; }
+.rt .med em { font-style: normal; font-size: 12px; text-align: right; color: #9C8AB8; }
+.rt .med em.ok { color: #4BD489; }
+.rt .med-f { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; }
+.rt .lg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 14px 0 4px; padding: 0; list-style: none; }
+.rt .lg li { text-align: center; }
+.rt .lg span { display: flex; align-items: center; justify-content: center; width: 46px; height: 46px; margin: 0 auto; font-size: 22px; color: #0B0715; background: rgba(255,255,255,.05); border: 1px dashed rgba(255,255,255,.14); clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
+.rt .lg li.si span { background: linear-gradient(135deg, #F5D08A, #E9B75B); border: 0; box-shadow: 0 0 18px rgba(233,183,91,.35); }
+.rt .lg p { margin: 6px 0 0; font-size: 10px; line-height: 1.2; color: #645279; }
+.rt .lg li.si p { color: #F3EDE4; }
+.rt .lg-bar { height: 6px; margin-top: 8px; background: rgba(255,255,255,.06); }
+.rt .lg-bar i { display: block; height: 100%; background: #E9B75B; }
+.rt .av-l { margin: 10px 0 14px; padding: 0 0 0 18px; font-size: 14px; line-height: 1.8; color: #9C8AB8; }
 </style>
 <style id="entreno">.rt {
     --bg: #0B0715;
@@ -2000,7 +2022,10 @@ react-dom/cjs/react-dom.production.min.js:
     const panel = document.body.classList.contains("soy-admin")
       ? '<div class="pan-adm"><p class="pan-t">Panel privado</p>' +
         '<p class="pan-s">Generá el código de acceso para un cliente nuevo.</p>' +
-        '<button type="button" class="btn pri" data-act="panel">Generar código de cliente</button></div>'
+        '<button type="button" class="btn pri" data-act="panel">Generar código de cliente</button>' +
+        '<p class="pan-s" style="margin-top:16px">Rutina personalizada: armá o editá la rutina en esta app y mandásela al cliente como link. La carga con un toque.</p>' +
+        '<label class="fld"><span class="fl">Para quién</span><input class="in" id="rt-para" placeholder="Nombre del cliente"></label>' +
+        '<div class="pan-b"><button type="button" class="btn pri" data-act="rut-link">Mandar esta rutina por WhatsApp</button> <button type="button" class="btn alt" data-act="rut-copiar">Copiar link</button></div></div>'
       : "";
     return '<div class="pan" id="rt-pan">' + panel + '<p class="pan-t">Respaldo</p>' +
       '<p class="pan-s">Tu rutina y tus series se guardan en este celular. Copiá el respaldo y guardalo donde quieras: te sirve para pasarlo a otro teléfono.</p>' +
@@ -2173,6 +2198,17 @@ react-dom/cjs/react-dom.production.min.js:
       } catch (err) {
         note("Acá no se puede descargar. Copiá el respaldo del cuadro.");
       }
+      return;
+    }
+    if (act === "rut-link" || act === "rut-copiar") {
+      const para = ((document.getElementById("rt-para") || {}).value || "").trim().slice(0, 30);
+      const win = act === "rut-link" ? window.open("about:blank", "_blank") : null;
+      linkRutina(para).then((url) => {
+        const txt = (para ? "Hola " + para + "! " : "") + "Te armé tu rutina personalizada. Abrí este link y tocá \"Cargar mi rutina\":\n" + url;
+        if (win) { win.location.href = "https://wa.me/?text=" + encodeURIComponent(txt); return; }
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(() => note("Link copiado. Pegalo en el chat del cliente."), () => note(url));
+        else note(url);
+      }).catch(() => { if (win) win.close(); note("No se pudo armar el link."); });
       return;
     }
     if (act === "copy-bk") {
@@ -2673,6 +2709,24 @@ react-dom/cjs/react-dom.production.min.js:
     }, Math.max(1000, secs * 1000));
   }
 
+  /* El descanso queda guardado: si el sistema cierra la app mientras
+     estás en WhatsApp, al volver sigue donde iba (o te dice hace cuánto
+     terminó). Y mientras corre, la pantalla no se apaga sola. */
+  const KEY_TM = "rutina-cliente-descanso";
+  let wake = null;
+  function guardarTm() {
+    try {
+      if (tm && !tm.done) localStorage.setItem(KEY_TM, JSON.stringify({ total: tm.total, endAt: tm.endAt, label: tm.label, paused: tm.paused, left: tm.left }));
+      else localStorage.removeItem(KEY_TM);
+    } catch (err) { /* sin almacenamiento */ }
+  }
+  function pantallaPrendida(si) {
+    try {
+      if (si && !wake && navigator.wakeLock) {
+        navigator.wakeLock.request("screen").then((w) => { wake = w; w.addEventListener("release", () => { wake = null; }); }).catch(() => {});
+      } else if (!si && wake) { wake.release().catch(() => {}); wake = null; }
+    } catch (err) { /* sin wake lock */ }
+  }
   function tmStart(secs, label) {
     audioOn();
     programarAviso(secs, label);
@@ -2681,8 +2735,12 @@ react-dom/cjs/react-dom.production.min.js:
     tmRender();
     clearInterval(tmTick);
     tmTick = setInterval(tmLoop, 250);
+    guardarTm();
+    pantallaPrendida(true);
   }
   function tmStop() {
+    try { localStorage.removeItem(KEY_TM); } catch (err) { /* sin almacenamiento */ }
+    pantallaPrendida(false);
     tm = null;
     clearTimeout(avisoTm);
     clearInterval(tmTick);
@@ -2705,6 +2763,9 @@ react-dom/cjs/react-dom.production.min.js:
         tm.avisado = true;
         avisar("Se terminó el descanso", tm.label ? "Volvé a " + tm.label : "Dale, otra serie.", "descanso");
       }
+      if (navigator.vibrate) { try { navigator.vibrate([220, 120, 220, 120, 420]); } catch (err) { /* sin vibración */ } }
+      guardarTm();
+      pantallaPrendida(false);
     }
     if (tm.done && Date.now() - tm.endAt > (tm.tarde ? 20000 + tm.tarde * 1000 : 15000)) return tmStop();
     tmRender();
@@ -2746,18 +2807,42 @@ react-dom/cjs/react-dom.production.min.js:
     const act = b.dataset.act;
     if (act === "tm-close") return tmStop();
     if (act === "tm-plus") {
-      tm.total += 15; tm.endAt += 15000; tm.left += 15; tm.done = false; tm.tarde = 0; tm.avisado = false;
+      /* si ya había terminado, los 15 segundos cuentan desde ahora */
+      if (tm.done) { tm.endAt = Date.now() + 15000; tm.left = 15; tm.total = 15; }
+      else { tm.total += 15; tm.endAt += 15000; tm.left += 15; }
+      tm.done = false; tm.tarde = 0; tm.avisado = false;
+      guardarTm();
+      pantallaPrendida(true);
       programarAviso(Math.max(1, Math.round((tm.endAt - Date.now()) / 1000)), tm.label);
       return tmRender();
     }
     if (act === "tm-pause") {
       if (tm.done) return tmStop();
       tm.paused = !tm.paused;
-      if (!tm.paused) tm.endAt = Date.now() + tm.left * 1000;
+      if (!tm.paused) { tm.endAt = Date.now() + tm.left * 1000; programarAviso(tm.left, tm.label); }
+      else clearTimeout(avisoTm);
+      guardarTm();
       tmRender();
     }
   });
-  document.addEventListener("visibilitychange", () => { if (!document.hidden) tmLoop(); });
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) return;
+    tmLoop();
+    if (tm && !tm.done && !tm.paused) pantallaPrendida(true);
+  });
+  /* Retomar un descanso que quedó corriendo */
+  (function () {
+    let o = null;
+    try { o = JSON.parse(localStorage.getItem(KEY_TM) || "null"); } catch (err) { o = null; }
+    if (!o || !o.total) return;
+    if (!o.paused && Date.now() - o.endAt > 60000) { try { localStorage.removeItem(KEY_TM); } catch (err) {} return; }
+    tm = { total: o.total, left: o.paused ? o.left : Math.max(0, Math.round((o.endAt - Date.now()) / 1000)), endAt: o.paused ? Date.now() + o.left * 1000 : o.endAt, paused: !!o.paused, label: o.label || "", done: false, avisado: Date.now() > o.endAt };
+    PANE.classList.add("with-timer");
+    clearInterval(tmTick);
+    tmTick = setInterval(tmLoop, 250);
+    tmLoop();
+    setTimeout(() => { if (window.__irA) window.__irA("entreno"); }, 0);
+  })();
 
   /* ---------- Mandarle la sesión al profe ---------- */
   function shareDay(id) {
@@ -3250,6 +3335,248 @@ react-dom/cjs/react-dom.production.min.js:
   }
   let verMas = false;
 
+  /* ═══════════ Más valor: nutrición, medidas, logros, avisos y rutina por link ═══════════ */
+
+  /* ───── Nutrición: calorías, proteína y agua según tu cuerpo y tu objetivo ───── */
+  const KEY_NUT = "rutina-cliente-nutri";
+  const KEY_PROT = "rutina-cliente-proteina";
+  let nutriEdit = false;
+  function nutriCfg() { try { return JSON.parse(localStorage.getItem(KEY_NUT) || "null"); } catch (e) { return null; } }
+  function protLog() { try { return JSON.parse(localStorage.getItem(KEY_PROT) || "{}") || {}; } catch (e) { return {}; } }
+  function metas(c) {
+    const l = pesos();
+    const kg = l.length ? l[l.length - 1].kg : c.peso || 75;
+    const bmr = 10 * kg + 6.25 * c.altura - 5 * c.edad + (c.sexo === "f" ? -161 : 5);
+    const factor = { obj: { grasa: 0.8, musculo: 1.1, mantener: 1 }[c.obj] || 1 };
+    const kcal = Math.round((bmr * (c.act || 1.55) * factor.obj) / 50) * 50;
+    const prot = Math.round(kg * (c.obj === "grasa" ? 2.2 : 2.0));
+    const gras = Math.round(kg * 0.8);
+    const carb = Math.max(0, Math.round((kcal - prot * 4 - gras * 9) / 4));
+    const agua = Math.round(kg * 0.035 * 10) / 10;
+    return { kg: kg, kcal: kcal, prot: prot, gras: gras, carb: carb, agua: agua };
+  }
+  function opt(v, t, cur) { return '<option value="' + v + '"' + (String(cur) === String(v) ? " selected" : "") + ">" + t + "</option>"; }
+  function cardNutri() {
+    const c = nutriCfg();
+    if (!c || nutriEdit) {
+      const x = c || {};
+      return '<section class="card rise" style="--c:#4BD489"><p class="card-k">Nutrición</p><p class="card-t">' + (c ? "Ajustá tus datos" : "¿Cuánto tenés que comer?") + "</p>" +
+        '<p class="card-s">Con 5 datos te calculo calorías, proteína y agua para tu objetivo. Se recalcula solo cada vez que anotás tu peso.</p>' +
+        '<div class="two"><label class="fld"><span class="fl">Objetivo</span><select class="in" id="nu-obj">' +
+          opt("musculo", "Ganar músculo", x.obj) + opt("grasa", "Bajar grasa", x.obj) + opt("mantener", "Mantener", x.obj) + "</select></label>" +
+        '<label class="fld"><span class="fl">Sexo</span><select class="in" id="nu-sexo">' + opt("m", "Hombre", x.sexo) + opt("f", "Mujer", x.sexo) + "</select></label></div>" +
+        '<div class="two"><label class="fld"><span class="fl">Edad</span><input class="in" id="nu-edad" inputmode="numeric" placeholder="30" value="' + (x.edad || "") + '"></label>' +
+        '<label class="fld"><span class="fl">Altura (cm)</span><input class="in" id="nu-alt" inputmode="numeric" placeholder="175" value="' + (x.altura || "") + '"></label></div>' +
+        (pesos().length ? "" : '<label class="fld"><span class="fl">Peso (kg)</span><input class="in" id="nu-peso" inputmode="decimal" placeholder="78" value="' + (x.peso || "") + '"></label>') +
+        '<label class="fld"><span class="fl">Movimiento en el día</span><select class="in" id="nu-act">' +
+          opt(1.375, "Poco: oficina y entreno 3 veces", x.act) + opt(1.55, "Medio: entreno 4-5 veces", x.act || 1.55) + opt(1.725, "Mucho: trabajo físico o entreno diario", x.act) + "</select></label>" +
+        '<div class="pan-b"><button type="button" class="btn pri" data-act="nu-ok">Calcular mi plan</button>' + (c ? ' <button type="button" class="btn alt" data-act="nu-cancel">Cancelar</button>' : "") + "</div></section>";
+    }
+    const m = metas(c);
+    const hoyP = protLog()[todayKey()] || 0;
+    const pct = Math.min(100, Math.round((hoyP / m.prot) * 100));
+    return '<section class="card rise" style="--c:#4BD489"><p class="card-k">Nutrición · ' + ({ grasa: "bajar grasa", musculo: "ganar músculo", mantener: "mantener" }[c.obj]) + "</p>" +
+      '<div class="hero-g">' + anillo(pct, '<i data-n="' + hoyP + '" data-fin="' + hoyP + '">' + hoyP + "</i><u>g</u>", "de " + m.prot + " g", 104) +
+      '<div class="hero-x"><p class="card-t">Proteína</p><p class="hero-s">' + (hoyP >= m.prot ? "Cumplida hoy. Bien ahí." : "Te faltan " + (m.prot - hoyP) + " g hoy") + "</p>" +
+      '<div class="nu-q"><button type="button" class="btn sm alt" data-act="nu-p" data-g="10">+10 g</button><button type="button" class="btn sm alt" data-act="nu-p" data-g="25">+25 g</button><button type="button" class="btn sm alt" data-act="nu-p" data-g="40">+40 g</button></div></div></div>' +
+      '<div class="nu-g"><div><b>' + m.kcal.toLocaleString("es-AR") + "</b><span>kcal por día</span></div><div><b>" + m.carb + " g</b><span>carbohidratos</span></div><div><b>" + m.gras + " g</b><span>grasas</span></div><div><b>" + fmtNum(m.agua) + " L</b><span>de agua</span></div></div>" +
+      '<p class="card-s nu-n">Referencia: un huevo tiene 6 g de proteína, 100 g de pollo 31 g, un scoop de whey 24 g, un yogur proteico 15 g.</p>' +
+      '<div class="pan-b"><button type="button" class="btn alt" data-act="nu-edit">Cambiar mis datos</button>' + (hoyP ? ' <button type="button" class="btn lnk" data-act="nu-cero">Poner en cero</button>' : "") + "</div></section>";
+  }
+  function diasProteina() {
+    const c = nutriCfg(); if (!c) return 0;
+    const m = metas(c), l = protLog();
+    return Object.keys(l).filter((k) => l[k] >= m.prot).length;
+  }
+
+  /* ───── Medidas: el espejo miente, el centímetro no ───── */
+  const KEY_MED = "rutina-cliente-medidas";
+  const ZONAS = [["cintura", "Cintura"], ["pecho", "Pecho"], ["brazo", "Brazo"], ["cadera", "Cadera"], ["muslo", "Muslo"]];
+  let medAbierto = false;
+  function medidas() { try { return JSON.parse(localStorage.getItem(KEY_MED) || "[]") || []; } catch (e) { return []; } }
+  function cardMedidas() {
+    const l = medidas();
+    const ult = l[l.length - 1], pri = l[0];
+    const dias = ult ? Math.round((Date.now() - new Date(ult.d + "T12:00").getTime()) / 86400000) : 99;
+    let h = '<section class="card rise" style="--c:#A98BFF"><p class="card-k">Medidas</p>';
+    if (!ult) h += '<p class="card-t">Medite una vez por semana</p><p class="card-s">La balanza no distingue grasa de músculo. El centímetro sí: si la cintura baja y el brazo sube, vas bien aunque el peso no se mueva.</p>';
+    else {
+      h += '<p class="card-t">' + (dias < 7 ? "Al día" : "Toca medirte") + '</p><p class="hero-s">Último control: ' + esc(fmtDay(ult.d)) + "</p>" +
+        '<ul class="med">' + ZONAS.filter((z) => ult[z[0]]).map((z) => {
+          const dif = pri && pri !== ult && pri[z[0]] ? ult[z[0]] - pri[z[0]] : 0;
+          const bien = z[0] === "cintura" || z[0] === "cadera" ? dif < 0 : dif > 0;
+          return "<li><span>" + z[1] + "</span><b>" + fmtNum(ult[z[0]]) + " cm</b>" +
+            (dif ? '<em class="' + (bien ? "ok" : "") + '">' + (dif > 0 ? "+" : "−") + fmtNum(Math.abs(dif)) + "</em>" : "<em></em>") + "</li>";
+        }).join("") + "</ul>";
+    }
+    if (medAbierto) {
+      h += '<div class="med-f">' + ZONAS.map((z) => '<label class="fld"><span class="fl">' + z[1] + ' (cm)</span><input class="in" id="md-' + z[0] + '" inputmode="decimal" placeholder="' + (ult && ult[z[0]] ? fmtNum(ult[z[0]]) : "") + '"></label>').join("") + "</div>" +
+        '<div class="pan-b"><button type="button" class="btn pri" data-act="md-ok">Guardar medidas</button> <button type="button" class="btn alt" data-act="md-x">Cancelar</button></div>';
+    } else h += '<div class="pan-b"><button type="button" class="btn ' + (dias >= 7 ? "pri" : "alt") + '" data-act="md-abrir">' + (ult ? "Anotar el control de hoy" : "Anotar mis medidas") + "</button></div>";
+    return h + "</section>";
+  }
+
+  /* ───── Logros ───── */
+  const KEY_LOG = "rutina-cliente-logros";
+  function ctxLogros() {
+    const ss = sesiones();
+    const s = sistemaData();
+    return {
+      ses: ss.length,
+      kg: ss.reduce((n, x) => n + x.kg, 0),
+      sem: rachaEntreno().semanas,
+      hab: s ? rachaHabitos(s) : 0,
+      ctrl: pesos().length + medidas().length,
+      prot: diasProteina()
+    };
+  }
+  const LOGROS = [
+    ["Primer paso", "Tu primera sesión", (c) => c.ses >= 1, (c) => [c.ses, 1]],
+    ["En marcha", "10 sesiones", (c) => c.ses >= 10, (c) => [c.ses, 10]],
+    ["Constante", "50 sesiones", (c) => c.ses >= 50, (c) => [c.ses, 50]],
+    ["Centenario", "100 sesiones", (c) => c.ses >= 100, (c) => [c.ses, 100]],
+    ["10 toneladas", "Movés 10.000 kg en total", (c) => c.kg >= 10000, (c) => [c.kg, 10000]],
+    ["100 toneladas", "Movés 100.000 kg en total", (c) => c.kg >= 100000, (c) => [c.kg, 100000]],
+    ["Un mes firme", "4 semanas seguidas entrenando", (c) => c.sem >= 4, (c) => [c.sem, 4]],
+    ["Trimestre de hierro", "12 semanas seguidas", (c) => c.sem >= 12, (c) => [c.sem, 12]],
+    ["Una semana perfecta", "7 días de hábitos al 80%", (c) => c.hab >= 7, (c) => [c.hab, 7]],
+    ["Disciplina", "30 días de hábitos al 80%", (c) => c.hab >= 30, (c) => [c.hab, 30]],
+    ["Me mido", "Primer control de peso o medidas", (c) => c.ctrl >= 1, (c) => [c.ctrl, 1]],
+    ["Bien comido", "7 días cumpliendo la proteína", (c) => c.prot >= 7, (c) => [c.prot, 7]]
+  ];
+  function logrosNuevos() {
+    const c = ctxLogros();
+    let vistos = [];
+    try { vistos = JSON.parse(localStorage.getItem(KEY_LOG) || "[]") || []; } catch (e) { vistos = []; }
+    const ok = LOGROS.filter((l) => l[2](c)).map((l) => l[0]);
+    const nuevos = ok.filter((n) => vistos.indexOf(n) < 0);
+    if (nuevos.length) try { localStorage.setItem(KEY_LOG, JSON.stringify(ok)); } catch (e) { /* sin almacenamiento */ }
+    return { c: c, ok: ok, nuevos: vistos.length || ok.length < 3 ? nuevos : [] };
+  }
+  function cardLogros(r) {
+    const prox = LOGROS.filter((l) => r.ok.indexOf(l[0]) < 0)[0];
+    let barra = "";
+    if (prox) {
+      const p = prox[3](r.c), pct = Math.min(100, Math.round((p[0] / p[1]) * 100));
+      barra = '<p class="card-s">Próximo: <b>' + esc(prox[0]) + "</b> · " + esc(prox[1]) + '</p><div class="lg-bar"><i style="width:' + pct + '%"></i></div>';
+    }
+    return '<section class="card rise" style="--c:#E9B75B"><p class="card-k">Logros</p><p class="card-t">' + r.ok.length + " de " + LOGROS.length + "</p>" +
+      '<ul class="lg">' + LOGROS.map((l) => '<li class="' + (r.ok.indexOf(l[0]) > -1 ? "si" : "") + '" title="' + esc(l[1]) + '"><span>' + (r.ok.indexOf(l[0]) > -1 ? "★" : "") + "</span><p>" + esc(l[0]) + "</p></li>").join("") + "</ul>" +
+      barra + "</section>";
+  }
+
+  /* ───── Avisos: racha en peligro y control del domingo ───── */
+  const KEY_AVX = "rutina-cliente-avisos-extra";
+  function yaAvisado(k) { try { return (JSON.parse(localStorage.getItem(KEY_AVX) || "{}") || {})[k]; } catch (e) { return false; } }
+  function marcarAvisado(k) { try { const o = JSON.parse(localStorage.getItem(KEY_AVX) || "{}") || {}; o[k] = 1; localStorage.setItem(KEY_AVX, JSON.stringify(o)); } catch (e) { /* sin almacenamiento */ } }
+  function chequearAvisos() {
+    if (!aviso || permiso() !== "granted") return;
+    const t = new Date(), k = todayKey(), hhmm = t.getHours() * 60 + t.getMinutes();
+    const s = sistemaData();
+    if (s && hhmm >= 21 * 60 && !yaAvisado("racha:" + k)) {
+      const m = misionesHoy(s), r = rachaHabitos(s);
+      if (m.total && m.done / m.total < 0.8) {
+        marcarAvisado("racha:" + k);
+        avisar(r > 1 ? "Tu racha de " + r + " días está en peligro" : "Todavía estás a tiempo", "Te faltan " + (m.total - m.done) + " misiones para cerrar el día.", "racha");
+      }
+    }
+    if (t.getDay() === 0 && hhmm >= 10 * 60 && !yaAvisado("ctrl:" + k)) {
+      const ult = medidas().concat(pesos()).map((x) => x.d).sort().pop();
+      if (!ult || (Date.now() - new Date(ult + "T12:00").getTime()) / 86400000 >= 6) {
+        marcarAvisado("ctrl:" + k);
+        avisar("Control del domingo", "Anotá tu peso y tus medidas: dos minutos y ves cómo vas.", "control");
+      }
+    }
+  }
+  setInterval(chequearAvisos, 60000);
+  setTimeout(chequearAvisos, 4000);
+  function cardAvisos() {
+    if (!hayAvisos() || (aviso && permiso() === "granted") || permiso() === "denied") return "";
+    return '<section class="card rise" style="--c:#7C9CFF"><p class="card-k">Avisos</p><p class="card-t">Que la app te busque a vos</p>' +
+      '<ul class="av-l"><li>Cuando termina el descanso</li><li>A tu hora de entrenar, si no arrancaste</li><li>A la noche, si tu racha está en peligro</li><li>El domingo, para tu control semanal</li></ul>' +
+      '<button type="button" class="btn pri" data-act="av-on">Activar avisos</button></section>';
+  }
+
+  /* ───── Rutina personalizada por link ─────
+     El entrenador arma la rutina en su teléfono y la manda como link.
+     El cliente lo abre y la carga con un toque, sin perder lo que ya anotó. */
+  const KEY_PEND = "rutina-cliente-pendiente";
+  const b64u = (bytes) => { let s = ""; bytes.forEach((b) => { s += String.fromCharCode(b); }); return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); };
+  const deb64u = (s) => { const t = atob(s.replace(/-/g, "+").replace(/_/g, "/")); const a = new Uint8Array(t.length); for (let i = 0; i < t.length; i++) a[i] = t.charCodeAt(i); return a; };
+  async function codificarRutina(dias) {
+    const json = new TextEncoder().encode(JSON.stringify(dias));
+    if (window.CompressionStream) {
+      const buf = await new Response(new Blob([json]).stream().pipeThrough(new CompressionStream("deflate-raw"))).arrayBuffer();
+      return "z" + b64u(new Uint8Array(buf));
+    }
+    return "j" + b64u(json);
+  }
+  async function decodificarRutina(cod) {
+    const bytes = deb64u(cod.slice(1));
+    if (cod.charAt(0) === "z") {
+      const buf = await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer();
+      return JSON.parse(new TextDecoder().decode(buf));
+    }
+    return JSON.parse(new TextDecoder().decode(bytes));
+  }
+  function rutinaSinHistorial() {
+    return clone(state.days).map((d) => {
+      const limpiar = (it) => { delete it.hist; return it; };
+      (d.blocks || []).forEach((b) => { if (b.items) b.items.forEach(limpiar); else limpiar(b); });
+      (d.activation || []).forEach(limpiar);
+      return d;
+    });
+  }
+  async function linkRutina(paraQuien) {
+    const cod = await codificarRutina({ de: MARCA, para: paraQuien || "", dias: rutinaSinHistorial() });
+    const base = String(CFG.sitio || location.origin + location.pathname).split("#")[0].split("?")[0];
+    return base + "#rutina=" + cod;
+  }
+  (async function rutinaQueLlega() {
+    const m = /[#&]rutina=([\w-]+)/.exec(location.hash || "");
+    if (!m) return;
+    try {
+      const o = await decodificarRutina(m[1]);
+      if (o && Array.isArray(o.dias) && o.dias.length) {
+        localStorage.setItem(KEY_PEND, JSON.stringify(o));
+        history.replaceState(null, "", location.pathname + location.search);
+        renderHoy();
+        if (window.__irA) window.__irA("hoy");
+      }
+    } catch (err) { /* link roto */ }
+  })();
+  function pendiente() { try { return JSON.parse(localStorage.getItem(KEY_PEND) || "null"); } catch (e) { return null; } }
+  function cardPendiente() {
+    const p = pendiente();
+    if (!p) return "";
+    const ej = p.dias.reduce((n, d) => n + flat(d).length, 0);
+    return '<section class="card rise hero acc-av" style="--c:#E9B75B"><p class="card-k">Te llegó</p><p class="card-t">Tu rutina personalizada</p>' +
+      '<p class="card-s">' + esc(p.de || MARCA) + " te armó " + p.dias.length + " días y " + ej + " ejercicios: " + esc(p.dias.map((d) => d.title).join(" · ")) + ". Lo que ya anotaste de ejercicios que se repiten se mantiene.</p>" +
+      '<div class="pan-b"><button type="button" class="btn pri" data-act="rut-si">Cargar mi rutina</button> <button type="button" class="btn alt" data-act="rut-no">Ahora no</button></div></section>';
+  }
+  function cargarPendiente() {
+    const p = pendiente();
+    if (!p) return;
+    const norm = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]/g, "");
+    const viejos = {};
+    state.days.forEach((d) => {
+      flat(d).concat(d.activation || []).forEach((it) => { if (it.hist && it.hist.length) viejos[norm(it.n)] = (viejos[norm(it.n)] || []).concat(it.hist); });
+    });
+    const dias = clone(p.dias);
+    dias.forEach((d) => flat(d).concat(d.activation || []).forEach((it) => { it.hist = viejos[norm(it.n)] || []; }));
+    state = { v: 1, days: dias };
+    try { saveState(state); localStorage.removeItem(KEY_PEND); } catch (err) { /* sin almacenamiento */ }
+    edit = null;
+    mount();
+    select(state.days[0].id);
+    refreshTabs();
+    renderFoot();
+    renderHoy();
+    festejo(true);
+    sfx("listo");
+    showStatus("Rutina cargada", 2600);
+  }
+
   function renderHoy() {
     if (!HOY) return;
     try { nombre = localStorage.getItem(KEY_NAME) || nombre; } catch (err) { /* sin almacenamiento */ }
@@ -3270,12 +3597,16 @@ react-dom/cjs/react-dom.production.min.js:
         '<input class="in" id="rt-nom" placeholder="Tu nombre" autocomplete="given-name"></label>' +
         '<div class="pan-b"><button type="button" class="btn pri" data-act="nom">Guardar</button></div></section>';
     }
-    h += cardEntreno() + cardSistema() + cardSemana() + cardPeso() + cardHistorial();
+    const lg = logrosNuevos();
+    h += cardPendiente() + cardEntreno() + cardSistema() + cardNutri() + cardAvisos() + cardSemana() + cardPeso() + cardMedidas() + cardLogros(lg) + cardHistorial();
     h += '<section class="card rise"><p class="card-k">Tu entrenador</p><p class="card-t">' + esc(MARCA) + "</p>" +
       '<p class="card-s">Dudas, cambios o una rutina hecha a tu medida: escribime al ' + esc(TEL) + ".</p>" +
       '<a class="btn alt" href="' + esc(waUrl("Hola " + MARCA + "! " + (nombre ? "Soy " + nombre + ". " : "") + "Te escribo por la rutina.")) + '" target="_blank" rel="noopener">Abrir WhatsApp</a></section>';
     HOY.innerHTML = h;
     animar(HOY);
+    if (lg.nuevos.length) {
+      setTimeout(() => { festejo(true); sfx("listo"); showStatus("Logro desbloqueado: " + lg.nuevos[0], 3200); }, 500);
+    }
   }
 
   if (HOY) {
@@ -3322,6 +3653,47 @@ react-dom/cjs/react-dom.production.min.js:
         return;
       }
       if (b.dataset.act === "vermas") { verMas = !verMas; renderHoy(); return; }
+      if (b.dataset.act === "nu-edit") { nutriEdit = true; renderHoy(); return; }
+      if (b.dataset.act === "nu-cancel") { nutriEdit = false; renderHoy(); return; }
+      if (b.dataset.act === "nu-ok") {
+        const v = (id) => (document.getElementById(id) || {}).value || "";
+        const c = { obj: v("nu-obj"), sexo: v("nu-sexo"), edad: num(v("nu-edad")), altura: num(v("nu-alt")), act: num(v("nu-act")) || 1.55, peso: num(v("nu-peso")) || (nutriCfg() || {}).peso };
+        if (!c.edad || c.edad < 12 || c.edad > 99 || !c.altura || c.altura < 120 || c.altura > 230 || (!pesos().length && !c.peso)) { showStatus("Completá edad, altura" + (pesos().length ? "" : " y peso"), 2600); return; }
+        try { localStorage.setItem(KEY_NUT, JSON.stringify(c)); } catch (err) { /* sin almacenamiento */ }
+        nutriEdit = false; sfx("guardar"); renderHoy(); return;
+      }
+      if (b.dataset.act === "nu-p") {
+        const l = protLog(); const k = todayKey(); const antes = l[k] || 0;
+        l[k] = antes + Number(b.dataset.g || 0);
+        try { localStorage.setItem(KEY_PROT, JSON.stringify(l)); } catch (err) { /* sin almacenamiento */ }
+        const m = metas(nutriCfg());
+        sfx(antes < m.prot && l[k] >= m.prot ? "listo" : "toque");
+        if (antes < m.prot && l[k] >= m.prot) festejo(false);
+        renderHoy(); return;
+      }
+      if (b.dataset.act === "nu-cero") { const l = protLog(); delete l[todayKey()]; try { localStorage.setItem(KEY_PROT, JSON.stringify(l)); } catch (err) { /* sin almacenamiento */ } renderHoy(); return; }
+      if (b.dataset.act === "md-abrir") { medAbierto = true; renderHoy(); const f = document.getElementById("md-cintura"); if (f) f.focus(); return; }
+      if (b.dataset.act === "md-x") { medAbierto = false; renderHoy(); return; }
+      if (b.dataset.act === "md-ok") {
+        const reg = { d: todayKey() }; let alguno = false;
+        ZONAS.forEach((z) => { const n = num((document.getElementById("md-" + z[0]) || {}).value || ""); if (n && n > 10 && n < 250) { reg[z[0]] = n; alguno = true; } });
+        if (!alguno) { showStatus("Anotá al menos una medida", 2200); return; }
+        const l = medidas().filter((x) => x.d !== reg.d); l.push(reg); l.sort((a, c) => (a.d > c.d ? 1 : -1));
+        try { localStorage.setItem(KEY_MED, JSON.stringify(l.slice(-200))); } catch (err) { /* sin almacenamiento */ }
+        medAbierto = false; sfx("guardar"); showStatus("Medidas guardadas"); renderHoy(); return;
+      }
+      if (b.dataset.act === "av-on") {
+        pedirAviso().then((ok) => {
+          aviso = ok;
+          try { localStorage.setItem(KEY_NOTI, ok ? "1" : "0"); } catch (err) { /* sin almacenamiento */ }
+          if (ok) { sfx("listo"); avisar("Avisos activados", "Te vamos a avisar cuando haga falta. Nada de spam.", "prueba"); programarRecordatorio(); }
+          else showStatus("El navegador no dio permiso", 2600);
+          renderHoy();
+        });
+        return;
+      }
+      if (b.dataset.act === "rut-si") return cargarPendiente();
+      if (b.dataset.act === "rut-no") { try { localStorage.removeItem(KEY_PEND); } catch (err) { /* sin almacenamiento */ } renderHoy(); return; }
       if (b.dataset.act === "go") {
         const to = b.dataset.to;
         if (to === "entreno" && b.dataset.day && dayById(b.dataset.day)) select(b.dataset.day, {});
@@ -3731,6 +4103,7 @@ react-dom/cjs/react-dom.production.min.js:
   var KEY_PRUEBA = "acceso:prueba";
   var KEY_REF = "acceso:ref";
   var KEY_MIREF = "acceso:miref";
+  var KEY_CLIENTES = "acceso:clientes";
   var DIA = 86400000;
   var desdeApp = false;
 
@@ -3850,6 +4223,7 @@ react-dom/cjs/react-dom.production.min.js:
             '<span class="g-pn">' + p.nombre + '</span><span class="g-pp">' + plata(p.precio) + '</span>' +
             '<span class="g-pd">' + (p.detalle || "") + "</span></a>";
         }).join("") + "</div>" +
+        '<p class="g-s chica">Todos incluyen tu rutina personalizada armada por ' + MARCA + '.</p>' +
         (PLANES.some(function (p) { return p.pago; }) ? '<p class="g-s chica">Pagás con Mercado Pago. Después tocá abajo y te mando tu código al toque.</p>' +
           '<a class="g-btn chico" href="' + waLink(msgCompra(null).replace("Quiero mi acceso a la app.", "Ya pagué, ¿me pasás mi código?")) + '" target="_blank" rel="noopener">Ya pagué · pedir mi código</a>' :
           '<p class="g-s chica">Tocá un plan y coordinamos el pago por WhatsApp. Apenas se acredita te paso tu código.</p>') +
@@ -3860,8 +4234,9 @@ react-dom/cjs/react-dom.production.min.js:
       h += '<p class="g-k">Panel privado</p><h1 class="g-t">Códigos</h1>' +
         '<p class="g-s">Generá uno por cliente. El código entra solo en el teléfono donde lo pongan, pero si se reenvía, funciona: por eso conviene uno distinto por persona y con vencimiento.</p>' +
         '<label class="g-l">Cliente<input id="g-nom" placeholder="Nombre y apellido" autocomplete="off"></label>' +
-        '<label class="g-l">Acceso<select id="g-mes"><option value="1">1 mes</option><option value="3">3 meses</option><option value="6">6 meses</option><option value="12">1 año</option><option value="0">Para siempre</option></select></label>' +
+        '<label class="g-l">Acceso<select id="g-mes"><option value="3">3 meses</option><option value="12">1 año</option><option value="0">Para siempre</option><option value="1">1 mes</option><option value="6">6 meses</option></select></label>' +
         '<label class="g-l">Lo trajo (opcional)<input id="g-vend" placeholder="Quién lo recomendó" autocomplete="off"></label>' +
+        (REC.recurrente ? '<p class="g-s chica" style="text-align:left">Si es una renovación, poné el mismo nombre de cliente: se acuerda quién lo trajo y le suma la comisión otra vez.</p>' : "") +
         '<button type="button" class="g-btn" id="g-gen">Generar código</button>';
       if (generado) {
         h += '<div class="g-out"><p class="g-code">' + linda(generado.code) + "</p>" +
@@ -3880,7 +4255,7 @@ react-dom/cjs/react-dom.production.min.js:
         lista.forEach(function (x) { if (x.vend && x.com) deuda[x.vend] = (deuda[x.vend] || 0) + x.com; });
         var vends = Object.keys(deuda);
         if (vends.length) {
-          h += '<p class="g-k" style="margin-top:22px">Comisiones a pagar (' + (REC.comision || 0) + '% del primer pago)</p><ul class="g-list">' +
+          h += '<p class="g-k" style="margin-top:22px">Comisiones a pagar (' + (REC.comision || 0) + '% ' + (REC.recurrente ? "de cada pago" : "del primer pago") + ')</p><ul class="g-list">' +
             vends.map(function (v) { return "<li><b>" + v + "</b> · " + plata(deuda[v]) + "</li>"; }).join("") + "</ul>" +
             '<button type="button" class="g-btn chico" id="g-pague">Ya las pagué · poner en cero</button>';
         }
@@ -3975,7 +4350,16 @@ react-dom/cjs/react-dom.production.min.js:
         var code = arma(serie, idx);
         var nom = (document.getElementById("g-nom") || {}).value || "";
         var vend = ((document.getElementById("g-vend") || {}).value || "").trim().slice(0, 30);
-        var com = vend ? Math.round(precioMeses(meses) * (REC.comision || 0) / 100) : 0;
+        /* Comisión recurrente: cada cliente queda atado a quien lo trajo,
+           y en cada renovación se le vuelve a sumar */
+        var clave = nom.trim().toLowerCase();
+        var clientes = {};
+        try { clientes = JSON.parse(localStorage.getItem(KEY_CLIENTES) || "{}") || {}; } catch (e) {}
+        var yaVino = clave && clientes[clave];
+        if (!vend && yaVino) vend = clientes[clave];
+        if (vend && clave && !yaVino) { clientes[clave] = vend; try { localStorage.setItem(KEY_CLIENTES, JSON.stringify(clientes)); } catch (e) {} }
+        var cobra = vend && (REC.recurrente || !yaVino);
+        var com = cobra ? Math.round(precioMeses(meses) * (REC.comision || 0) / 100) : 0;
         generado = { code: code, nombre: nom.trim(), vence: meses === 0 ? null : vencimiento(idx) };
         try {
           localStorage.setItem(KEY_SERIE, String(serie + 1));
@@ -4089,10 +4473,11 @@ react-dom/cjs/react-dom.production.min.js:
   function textoRef() { return "Estoy entrenando con " + (window.CONFIG || {}).producto + " de " + MARCA + ": rutina, hábitos y niveles en el celu. Probala gratis: " + linkRef(); }
   function cardRef() {
     if (!REC.activo || !PLANES.length || !linkRef()) return "";
-    var men = PLANES.filter(function (x) { return x.meses === 1; })[0] || PLANES[0];
-    var gana = Math.round(men.precio * (REC.comision || 0) / 100);
-    return '<section class="card acc-ref"><p class="card-k">Recomendá y ganá</p><p class="card-t">' + (REC.comision || 0) + '% para vos</p>' +
-      '<p class="card-s">Compartí tu link. Por cada persona que se suma te llevás el ' + (REC.comision || 0) + '% de su primer pago: desde ' + plata(gana) + ' por amigo.</p>' +
+    var base = PLANES.filter(function (x) { return x.meses > 0; })[0] || PLANES[0];
+    var gana = Math.round(base.precio * (REC.comision || 0) / 100);
+    return '<section class="card acc-ref"><p class="card-k">Recomendá y ganá</p><p class="card-t">' + (REC.comision || 0) + '% para vos' + (REC.recurrente ? ", siempre" : "") + '</p>' +
+      '<p class="card-s">Compartí tu link. Por cada persona que se suma te llevás el ' + (REC.comision || 0) + '% ' +
+      (REC.recurrente ? "de cada pago que haga, mientras siga: " + plata(gana) + " cada " + base.nombre.toLowerCase() + " por amigo." : "de su primer pago: desde " + plata(gana) + " por amigo.") + '</p>' +
       '<p class="acc-link">' + linkRef().replace(/^https?:\/\//, "") + '</p>' +
       '<div class="pan-b"><button type="button" class="btn pri" data-acc="compartir">Compartir mi link</button> <button type="button" class="btn alt" data-acc="copiar">Copiar</button></div></section>';
   }
