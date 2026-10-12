@@ -1,20 +1,25 @@
-# Guion de la voz en off · video SISTEMA (40 s, vertical)
+# Guion de la voz en off · video SISTEMA (46 s, vertical)
 
-Tono épico y motivacional, como una publicidad deportiva: voz grave, segura, con pausas cortas.
+Archivo: `video/sistema-v2-sin-voz.mp4`. Tono épico y motivacional, como una publicidad deportiva: voz grave, segura, con pausas cortas.
 Cada línea **arranca** en el segundo indicado y tiene que terminar antes de la siguiente.
 
 | Arranca | Texto | En pantalla |
 |---|---|---|
-| 0,3 s | Todos empiezan el lunes. | TODOS EMPIEZAN EL LUNES. |
-| 2,6 s | Casi nadie llega al viernes. | CASI NADIE LLEGA AL VIERNES. |
-| 5,2 s | No te falta motivación… te falta un sistema. | Logo SISTEMA (golpe a los 7 s) |
-| 8,8 s | Tu día entero, en una pantalla. | App: pantalla Hoy |
-| 12,8 s | Cada serie, anotada. Cada kilo, contado. | App: cargando series |
-| 18,8 s | Tus hábitos se vuelven misiones. Y tu racha multiplica todo. | App: tildando hábitos |
-| 24,8 s | Cuando algo se cae, te dice qué te está frenando. | App: Fugas |
-| 29,6 s | De Recluta… a Leyenda. | App: Rango |
-| 33,3 s | Sistema. Probalo gratis siete días. | Logo + botón |
-| 36,6 s | El link está en el perfil. | LINK EN EL PERFIL |
+| 0,2 s | Todos empiezan el lunes. | TODOS EMPIEZAN EL LUNES. |
+| 2,3 s | Casi nadie llega al viernes. | Calendario tachando los días |
+| 4,6 s | No te falta motivación… | NO TE FALTA MOTIVACIÓN. |
+| 6,4 s | te falta un… sistema. | Logo (golpe a los 7 s) |
+| 8,6 s | Una app que te busca a vos. | Pantalla bloqueada con avisos |
+| 12,0 s | Tu día entero, en una pantalla. | App: Hoy |
+| 15,0 s | Cada serie cuenta. Cada descanso, cronometrado. | Cargando series + cronómetro |
+| 19,6 s | Tus hábitos suben de nivel. | Tildando hábitos, +XP |
+| 23,6 s | Comé con un plan. | Nutrición y proteína |
+| 26,6 s | Desbloqueá logros. | Logro desbloqueado |
+| 29,6 s | Y tu rutina, hecha a medida por mí. | Chat de WhatsApp + rutina que llega |
+| 33,6 s | Sabé qué te frena. De Recluta… a Leyenda. | Fugas y Rango |
+| 36,0 s | Once rangos. Doble experiencia. Cero excusas. | 11 · x2 · 0 |
+| 38,6 s | Sistema. Probalo gratis siete días. | Logo + botón + planes |
+| 41,8 s | El link está en el perfil. | LINK EN EL PERFIL |
 
 ## Opción A: grabarla vos (recomendado)
 
