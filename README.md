@@ -27,7 +27,7 @@ Los links de Mercado Pago ya están cargados en `config.js`:
 | Anual | $69.900 | https://mpago.la/2cdoPet |
 | Para siempre | $119.900 | https://mpago.la/28ED6Ht |
 
-**Revisá que el precio de cada plan en `config.js` sea el mismo que cobra su link.**
+Los precios coinciden con lo que cobra cada link. Si cambiás un precio en Mercado Pago, cambialo también en `config.js`.
 
 Cuando alguien paga, te escribe por WhatsApp. Generás el código en el panel y se lo mandás.
 
