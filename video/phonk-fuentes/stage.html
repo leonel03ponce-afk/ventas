@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="http://localhost:8766/fuentes.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+#st { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #050308; font-family: Archivo, sans-serif; color: #F6F1E8; }
+#world { position: absolute; inset: 0; transform-origin: 540px 900px; }
+.abs { position: absolute; }
+canvas { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+.capa { position: absolute; inset: 0; opacity: 0; }
+.w { position: absolute; left: 40px; right: 40px; text-align: center; font: 700 150px/.92 "Chakra Petch", sans-serif; text-transform: uppercase; letter-spacing: -.015em; white-space: nowrap; }
+.oro { color: #FFC63D; text-shadow: 0 0 40px rgba(255,180,40,.55); }
+.rojo { color: #FF3D3D; text-shadow: 0 0 40px rgba(255,40,40,.5); }
+.dim { color: rgba(246,241,232,.55); }
+.chip { display: inline-block; padding: 14px 28px; border: 3px solid #FFC63D; color: #FFC63D; font: 700 38px/1 "Chakra Petch", sans-serif; letter-spacing: .14em; text-transform: uppercase; }
+.sub { position: absolute; left: 70px; right: 70px; text-align: center; font: 500 48px/1.25 Archivo, sans-serif; color: rgba(246,241,232,.8); }
+
+/* logo */
+.logo { position: absolute; left: 0; right: 0; display: flex; align-items: center; justify-content: center; gap: 28px; font: 700 150px/1 "Chakra Petch", sans-serif; letter-spacing: .1em; }
+.logo i { position: relative; width: 120px; height: 120px; background: linear-gradient(160deg, #FFE27A, #FF9A1F); clip-path: polygon(22px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 22px); }
+.logo i::after { content: "★"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 66px; color: #120a05; font-style: normal; }
+
+/* teléfono */
+#phone { left: 245px; top: 640px; width: 590px; height: 1278px; border-radius: 72px; background: #15101f; padding: 16px; box-shadow: 0 0 0 2px #3a2a55, 0 0 120px rgba(255,180,40,.25), 0 70px 160px rgba(0,0,0,.9); transform-origin: 50% 40%; }
+#screen { position: relative; width: 100%; height: 100%; border-radius: 57px; overflow: hidden; background: #0B0715; }
+#screen img { position: absolute; left: 0; top: 0; width: 100%; height: auto; }
+#notch { left: 50%; top: 12px; width: 140px; height: 38px; margin-left: -70px; border-radius: 20px; background: #000; z-index: 3; }
+#cap { left: 30px; right: 30px; top: 250px; text-align: center; font: 700 104px/.95 "Chakra Petch", sans-serif; text-transform: uppercase; }
+#num { left: 0; right: 0; top: 180px; text-align: center; font: 700 34px/1 "Chakra Petch", sans-serif; letter-spacing: .3em; color: #FFC63D; }
+
+/* aviso tipo notificación */
+#notif { left: 90px; right: 90px; top: 520px; z-index: 5; display: flex; gap: 20px; align-items: center; padding: 22px 26px; border-radius: 30px; background: rgba(28,20,44,.92); backdrop-filter: blur(10px); box-shadow: 0 20px 60px rgba(0,0,0,.6), 0 0 0 2px rgba(255,198,61,.35); opacity: 0; }
+#notif .ic { flex: none; width: 70px; height: 70px; border-radius: 18px; background: #FFC63D; display: flex; align-items: center; justify-content: center; font-size: 40px; }
+#notif b { display: block; font: 700 32px/1.15 Archivo, sans-serif; }
+#notif span { font: 400 26px/1.2 Archivo, sans-serif; color: rgba(246,241,232,.75); }
+
+/* oferta */
+#precio { left: 0; right: 0; top: 760px; text-align: center; font: 700 230px/1 "Chakra Petch", sans-serif; color: #FFC63D; text-shadow: 0 0 60px rgba(255,180,40,.5); letter-spacing: -.02em; }
+#precio small { font-size: 80px; color: #F6F1E8; letter-spacing: 0; }
+#lista { left: 150px; right: 120px; top: 1080px; }
+#lista p { margin-bottom: 26px; font: 700 54px/1.1 Archivo, sans-serif; opacity: 0; }
+#lista p::before { content: "✓"; display: inline-block; width: 70px; color: #4BD489; }
+
+/* tachado del lunes */
+#tacha { left: 150px; top: 708px; height: 18px; width: 780px; background: #FF3D3D; transform-origin: 0 50%; box-shadow: 0 0 30px rgba(255,61,61,.8); }
+
+/* final */
+#btn { left: 130px; right: 130px; top: 1260px; padding: 40px 0; text-align: center; background: #FFC63D; color: #120a05; font: 700 60px/1 "Chakra Petch", sans-serif; letter-spacing: .06em; clip-path: polygon(26px 0, 100% 0, 100% calc(100% - 26px), calc(100% - 26px) 100%, 0 100%, 0 26px); box-shadow: 0 0 80px rgba(255,190,60,.5); }
+#coment { left: 0; right: 0; top: 1450px; text-align: center; font: 600 46px/1.2 Archivo, sans-serif; color: rgba(246,241,232,.85); }
+#coment b { color: #FFC63D; }
+
+#flash { inset: 0; background: #fff; opacity: 0; z-index: 30; }
+#vig { inset: 0; z-index: 25; background: radial-gradient(ellipse at 50% 45%, transparent 45%, rgba(0,0,0,.8) 100%); }
+#grain { z-index: 26; opacity: .1; mix-blend-mode: overlay; }
+</style>
+</head>
+<body>
+<div id="st">
+  <div id="world">
+    <canvas id="bg" width="1080" height="1920"></canvas>
+
+    <!-- 1 · gancho -->
+    <div class="capa" id="c1">
+      <p class="w" id="h1" style="top:600px">¿Dejaste</p>
+      <p class="w" id="h2" style="top:750px">el gym</p>
+      <p class="w rojo" id="h3" style="top:900px;font-size:180px">otra vez?</p>
+    </div>
+    <div class="capa" id="c1b">
+      <p class="w dim" id="h4" style="top:560px;font-size:110px">No es falta</p>
+      <p class="w" id="h5" style="top:680px;font-size:130px">de ganas.</p>
+      <p class="w dim" id="h6" style="top:900px;font-size:110px">Es falta de</p>
+      <p class="w oro" id="h7" style="top:1020px;font-size:170px">un sistema.</p>
+    </div>
+    <!-- 2 · logo -->
+    <div class="capa" id="c2">
+      <div class="logo" id="lg" style="top:760px"><i></i><span>SISTEMA</span></div>
+      <p class="sub" id="lgs" style="top:960px">Tu rutina armada por un entrenador<br>+ una app que te sigue todos los días</p>
+    </div>
+    <!-- 3 · la app -->
+    <div class="capa" id="c3">
+      <p class="abs" id="num"></p>
+      <p class="abs" id="cap"></p>
+      <div class="abs" id="phone"><div id="screen"><div class="abs" id="notch"></div><img id="clip" alt=""></div></div>
+      <div class="abs" id="notif"><div class="ic" id="n-ic"></div><div><b id="n-t"></b><span id="n-s"></span></div></div>
+    </div>
+    <!-- 4 · cuerpo mente espíritu -->
+    <div class="capa" id="c4">
+      <p class="w" id="p1" style="top:560px;color:#FFC63D">Cuerpo.</p>
+      <p class="w" id="p2" style="top:740px;color:#6BB7FF">Mente.</p>
+      <p class="w" id="p3" style="top:920px;color:#C98BFF">Espíritu.</p>
+      <p class="sub" id="p4" style="top:1170px">No es una app más.<br><b style="color:#F6F1E8">Es tu sistema.</b></p>
+    </div>
+    <!-- 5 · oferta -->
+    <div class="capa" id="c5">
+      <p class="w" id="o1" style="top:470px;font-size:120px">Todo esto</p>
+      <p class="w dim" id="o2" style="top:620px;font-size:80px">desde</p>
+      <p class="abs" id="precio"><span id="pr">$0</span><small>/mes</small></p>
+      <div class="abs" id="lista"><p>Rutina personalizada</p><p>App todos los días</p><p>Consultas por WhatsApp</p><p>Sin descargar nada</p></div>
+    </div>
+    <!-- 6 · el lunes no existe -->
+    <div class="capa" id="c6">
+      <p class="w" id="l1" style="top:640px;font-size:170px">El lunes</p>
+      <div class="abs" id="tacha"></div>
+      <p class="w rojo" id="l2" style="top:830px;font-size:150px">no existe.</p>
+      <p class="w" id="l3" style="top:1100px;font-size:120px">Empezá</p>
+      <p class="w oro" id="l4" style="top:1230px;font-size:230px">hoy.</p>
+    </div>
+    <!-- 7 · llamada a la acción -->
+    <div class="capa" id="c7">
+      <div class="logo" id="lg2" style="top:470px;font-size:120px"><i style="width:96px;height:96px"></i><span>SISTEMA</span></div>
+      <p class="w oro" id="f1" style="top:700px;font-size:190px">Empezá</p>
+      <p class="w oro" id="f2" style="top:880px;font-size:190px">hoy</p>
+      <p class="sub" id="f3" style="top:1100px">Desde $5.825 por mes · Sin descargar nada</p>
+      <div class="abs" id="btn">LINK EN EL PERFIL</div>
+      <p class="abs" id="coment">o comentá <b>RUTINA</b> y te escribo 👇</p>
+    </div>
+
+    <canvas id="fx" width="1080" height="1920"></canvas>
+  </div>
+  <div class="abs" id="flash"></div>
+  <div class="abs" id="vig"></div>
+  <canvas id="grain" width="270" height="480" style="width:1080px;height:1920px"></canvas>
+</div>
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+const W = 1080, H = 1920;
+const bg = $("bg").getContext("2d"), fx = $("fx").getContext("2d"), gr = $("grain").getContext("2d");
+const rnd = (i) => { const x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const ease = (x) => { x = clamp(x); return 1 - Math.pow(1 - x, 3); };
+const back = (x) => { x = clamp(x); const c = 1.9; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+const B = 60 / 130, b = (n) => n * B;           /* tiempo del pulso n */
+const DROPS = [b(8), b(56)], CORTES = [b(16), b(32), b(40), b(48)];
+
+/* golpe de palabra: aparece de grande a su tamaño, con desenfoque */
+function slam(el, t, t0, from = 1.6) {
+  const d = t - t0;
+  if (d < 0) { el.style.opacity = 0; return; }
+  const k = ease(d / .16);
+  el.style.opacity = clamp(d / .05);
+  el.style.transform = `scale(${from - (from - 1) * k})`;
+  el.style.filter = k < 1 ? `blur(${(1 - k) * 10}px)` : "none";
+}
+function onda(ctx, t, t0, cx, cy, color = "255,200,80", dur = .7) {
+  const d = t - t0; if (d < 0 || d > dur) return;
+  const a = 1 - d / dur, r = 60 + d * 2800;
+  ctx.save(); ctx.globalCompositeOperation = "lighter";
+  ctx.strokeStyle = `rgba(${color},${a * .7})`; ctx.lineWidth = 30 * a + 3;
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
+}
+function lineas(ctx, t, k, cx = 540, cy = 900) {
+  if (k <= 0) return;
+  ctx.save(); ctx.globalCompositeOperation = "lighter";
+  for (let i = 0; i < 70; i++) {
+    const ang = rnd(i) * Math.PI * 2, sp = .6 + rnd(i + 1) * 1.4;
+    const ph = (t * sp * 1.6 + rnd(i + 2)) % 1;
+    const r0 = 300 + ph * 1300, r1 = r0 + 80 + rnd(i + 3) * 260;
+    ctx.strokeStyle = `rgba(255,${190 + Math.round(rnd(i + 4) * 60)},120,${k * (1 - ph) * .5})`;
+    ctx.lineWidth = 2 + rnd(i + 5) * 4;
+    ctx.beginPath(); ctx.moveTo(cx + Math.cos(ang) * r0, cy + Math.sin(ang) * r0); ctx.lineTo(cx + Math.cos(ang) * r1, cy + Math.sin(ang) * r1); ctx.stroke();
+  }
+  ctx.restore();
+}
+function polvo(ctx, t, k, n = 60) {
+  ctx.save(); ctx.globalCompositeOperation = "lighter";
+  for (let i = 0; i < n; i++) {
+    const ph = (t * (.03 + rnd(i + 50) * .06) + rnd(i + 51)) % 1;
+    const x = rnd(i + 52) * W + Math.sin(t + i) * 20, y = H - ph * H;
+    ctx.fillStyle = `rgba(255,${170 + Math.round(rnd(i + 53) * 70)},80,${Math.sin(ph * Math.PI) * k * (.2 + rnd(i + 54) * .5)})`;
+    ctx.beginPath(); ctx.arc(x, y, 1.5 + rnd(i + 55) * 3.5, 0, Math.PI * 2); ctx.fill();
+  }
+  ctx.restore();
+}
+
+/* funciones de la app: [clip, desde qué cuadro, título, aviso] */
+const FEAT = [
+  ["hoy", 20, "Te dice qué<br>entrenar hoy", null],
+  ["entreno", 60, "Anotás cada<br>serie", ["📈", "¡Nuevo récord!", "Press inclinado · 62,5 kg"]],
+  ["timer", 30, "Descanso<br>cronometrado", ["⏱", "Fin del descanso", "Vamos con la siguiente serie 💪"]],
+  ["nutri", 20, "Calorías y<br>proteína", null],
+  ["sistema", 40, "Entrenar, leer,<br>orar, dormir", null],
+  ["fugas", 20, "Te muestra<br>dónde aflojás", null],
+  ["logro", 30, "Logros que<br>desbloqueás", ["🏆", "Logro desbloqueado", "Una semana perfecta"]],
+  ["rango", 40, "De recluta<br>a leyenda", ["🔥", "Racha de 21 días", "No la cortes hoy"]]
+];
+const NF = { hoy: 195, hoy2: 165, fugas: 165, sistema: 285, logro: 150, rango: 165, nutri: 150, timer: 195, entreno: 240, rutina: 168 };
+async function clip(nombre, desde, d) {
+  const img = $("clip");
+  const f = Math.min(NF[nombre] - 1, desde + Math.floor(d * 30));
+  const src = `http://localhost:8767/clips/${nombre}/f${String(f).padStart(4, "0")}.jpg`;
+  if (img.getAttribute("src") !== src) {
+    img.src = src;
+    for (let i = 0; i < 20; i++) { try { await img.decode(); break; } catch (e) { await new Promise((r) => setTimeout(r, 50)); } }
+  }
+}
+
+window.render = async function (t) {
+  const fr = Math.round(t * 30);
+  bg.clearRect(0, 0, W, H); fx.clearRect(0, 0, W, H);
+
+  /* fondo con brillo que late con el pulso */
+  const pulso = Math.exp(-((t % B) / B) * 5);
+  const enDrop = (t >= b(8) && t < b(32)) || (t >= b(40) && t < b(48)) || (t >= b(56) && t < b(64));
+  const rojo = t < b(8) || (t >= b(48) && t < b(52));
+  const g = bg.createRadialGradient(540, 900, 0, 540, 900, 1250);
+  const col = rojo ? "150,20,30" : t >= b(32) && t < b(40) ? "70,40,120" : "130,80,20";
+  g.addColorStop(0, `rgba(${col},${.25 + (enDrop ? .25 * pulso : .08 * pulso)})`); g.addColorStop(1, "rgba(0,0,0,0)");
+  bg.fillStyle = "#050308"; bg.fillRect(0, 0, W, H); bg.fillStyle = g; bg.fillRect(0, 0, W, H);
+
+  /* golpe de zoom con cada pulso en las partes fuertes */
+  let z = 1 + (enDrop ? .022 * pulso : .006 * pulso);
+  let sh = 0;
+  DROPS.forEach((d0) => { if (t >= d0) { z += .08 * Math.exp(-(t - d0) * 9); sh += 26 * Math.exp(-(t - d0) * 6); } });
+  if (t >= b(52) && t < b(56)) sh += 3 + 12 * ((t - b(52)) / b(4));
+  $("world").style.transform = `scale(${z}) translate(${(rnd(fr * 3) - .5) * 2 * sh}px,${(rnd(fr * 3 + 1) - .5) * 2 * sh}px)`;
+
+  let fl = 0;
+  DROPS.forEach((d0) => { if (t >= d0) fl = Math.max(fl, 1 - (t - d0) / .2); });
+  CORTES.forEach((d0) => { if (t >= d0) fl = Math.max(fl, .45 * (1 - (t - d0) / .12)); });
+  if (t >= b(60) && t < b(64)) fl = Math.max(fl, 0);
+  $("flash").style.opacity = clamp(fl);
+
+  /* 1 · gancho (pulsos 0–8) */
+  $("c1").style.opacity = t < b(4) ? 1 : 0;
+  slam($("h1"), t, -.2); slam($("h2"), t, b(1)); slam($("h3"), t, b(2), 1.9);
+  $("c1b").style.opacity = t >= b(4) && t < b(8) ? 1 : 0;
+  slam($("h4"), t, b(4)); slam($("h5"), t, b(5)); slam($("h6"), t, b(6)); slam($("h7"), t, b(7), 1.9);
+  if (t >= b(2) && t < b(4)) { const gl = rnd(fr) > .55 ? (rnd(fr + 7) - .5) * 26 : 0; $("h3").style.textShadow = gl ? `${gl}px 0 rgba(255,0,60,.9), ${-gl}px 0 rgba(0,220,255,.9)` : "0 0 40px rgba(255,40,40,.5)"; }
+
+  /* 2 · logo (pulsos 8–16; el teléfono entra en el 12) */
+  $("c2").style.opacity = t >= b(8) && t < b(12) ? 1 : 0;
+  slam($("lg"), t, b(8), 2.2);
+  $("lgs").style.opacity = clamp((t - b(9.5)) / .25);
+  if (t >= b(8) && t < b(12)) { onda(fx, t, b(8), 540, 820); lineas(fx, t, 1 - (t - b(8)) / b(4), 540, 820); }
+
+  /* 3 · la app (pulsos 12–32) */
+  const enApp = t >= b(12) && t < b(32);
+  $("c3").style.opacity = enApp ? 1 : 0;
+  if (enApp) {
+    let nombre, desde, titulo, aviso, t0, idx = -1;
+    if (t < b(16)) { nombre = "rutina"; desde = 20; titulo = "Tu rutina,<br>hecha para vos"; aviso = null; t0 = b(12); }
+    else { idx = Math.floor((t - b(16)) / b(2)); [nombre, desde, titulo, aviso] = FEAT[idx]; t0 = b(16) + idx * b(2); }
+    const d = t - t0;
+    await clip(nombre, desde, d);
+    $("cap").innerHTML = titulo;
+    $("cap").className = "abs " + (idx % 2 ? "" : "oro");
+    slam($("cap"), t, t0, 1.35);
+    $("num").textContent = idx >= 0 ? String(idx + 1).padStart(2, "0") + " / 08" : "";
+    const entra = ease((t - b(12)) / .45);
+    const punch = 1 + .03 * Math.exp(-((t - b(12)) % B) / B * 6);
+    $("phone").style.transform = `translateY(${(1 - entra) * 900}px) rotate(${(1 - entra) * 8 + Math.sin(t * 1.4) * .6}deg) scale(${punch})`;
+    const n = $("notif");
+    if (aviso && d > .25) {
+      const k = back((d - .25) / .3);
+      $("n-ic").textContent = aviso[0]; $("n-t").textContent = aviso[1]; $("n-s").textContent = aviso[2];
+      n.style.opacity = clamp((d - .25) / .1); n.style.transform = `translateY(${(1 - k) * -60}px) scale(${.9 + .1 * k})`;
+    } else n.style.opacity = 0;
+    lineas(fx, t, .25);
+    polvo(fx, t, .8);
+  }
+
+  /* 4 · cuerpo, mente, espíritu (pulsos 32–40) */
+  $("c4").style.opacity = t >= b(32) && t < b(40) ? 1 : 0;
+  if (t >= b(32) && t < b(40)) {
+    slam($("p1"), t, b(32), 1.3); slam($("p2"), t, b(34), 1.3); slam($("p3"), t, b(36), 1.3);
+    $("p4").style.opacity = clamp((t - b(38)) / .3);
+    polvo(fx, t, 1.2, 90);
+  }
+
+  /* 5 · oferta (pulsos 40–48) */
+  $("c5").style.opacity = t >= b(40) && t < b(48) ? 1 : 0;
+  if (t >= b(40) && t < b(48)) {
+    slam($("o1"), t, b(40)); slam($("o2"), t, b(41), 1.2);
+    const p = ease((t - b(42)) / .5);
+    $("pr").textContent = "$" + Math.round(5825 * p).toLocaleString("es-AR");
+    slam($("precio"), t, b(42), 1.5);
+    [...$("lista").children].forEach((el, i) => { const d = t - b(44 + i); el.style.opacity = clamp(d / .08); el.style.transform = `translateX(${(1 - ease(d / .2)) * -80}px)`; });
+    onda(fx, t, b(42), 540, 880);
+    polvo(fx, t, .8);
+  }
+
+  /* 6 · el lunes no existe (pulsos 48–56) */
+  $("c6").style.opacity = t >= b(48) && t < b(56) ? 1 : 0;
+  if (t >= b(48) && t < b(56)) {
+    slam($("l1"), t, b(48)); $("tacha").style.transform = `scaleX(${ease((t - b(49.5)) / .25)})`;
+    slam($("l2"), t, b(50), 1.4); slam($("l3"), t, b(52)); slam($("l4"), t, b(53), 2);
+    $("l4").style.transform += ` scale(${1 + clamp((t - b(54)) / b(2)) * .15})`;
+    lineas(fx, t, clamp((t - b(52)) / b(4)) * 1.2, 540, 1300);
+  }
+
+  /* 7 · cierre (pulsos 56 en adelante) */
+  $("c7").style.opacity = t >= b(56) ? 1 : 0;
+  if (t >= b(56)) {
+    slam($("lg2"), t, b(56), 1.8); slam($("f1"), t, b(57)); slam($("f2"), t, b(58), 1.8);
+    $("f3").style.opacity = clamp((t - b(59)) / .3);
+    const kb = t - b(60);
+    $("btn").style.opacity = clamp(kb / .1);
+    $("btn").style.transform = `scale(${kb < 0 ? .8 : back(kb / .35) * (1 + .03 * Math.exp(-((t % B) / B) * 5))})`;
+    $("coment").style.opacity = clamp((t - b(62)) / .3);
+    onda(fx, t, b(56), 540, 700);
+    lineas(fx, t, t < b(64) ? .8 : .3, 540, 800);
+    polvo(fx, t, 1);
+  }
+
+  /* grano */
+  const im = gr.createImageData(270, 480);
+  for (let i = 0; i < im.data.length; i += 4) { const v = rnd(i * .37 + fr * 13.1) * 255; im.data[i] = im.data[i + 1] = im.data[i + 2] = v; im.data[i + 3] = 255; }
+  gr.putImageData(im, 0, 0);
+};
+</script>
+</body>
+</html>
