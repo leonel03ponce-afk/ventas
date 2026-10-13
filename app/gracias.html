@@ -18,6 +18,7 @@ if (!window.CONFIG || !window.CONFIG.planes) window.CONFIG = /*CFG*/{
   acento: "#E9B75B",                                /* color de la marca */
   sitio: "https://brian-ponce.netlify.app/",        /* dirección de la app, para los links de recomendación */
   sistema: "#sistema",
+  lanzamiento: true,                                /* muestra "Precio de lanzamiento" en la venta. Cuando subas los precios, ponelo en false */
 
   acceso: {
     libre: false,                                   /* true = sin código, entra cualquiera */
@@ -124,13 +125,13 @@ input:focus { outline: none; border-color: var(--gold); }
       <button type="button" class="btn alt" id="ok-copiar">Copiar código</button>
     </div>
     <div class="card">
-      <p class="k">Ahora, tu rutina</p>
+      <p class="k">Ahora, tu rutina (1 minuto)</p>
       <ol>
-        <li>Tocá <b>Activar mi acceso</b> y completá tus datos en la app.</li>
-        <li>Mandame un WhatsApp con el botón de abajo: <b>te armo la rutina a tu medida</b> y te la mando a la app.</li>
+        <li>Tocá <b>Activar mi acceso</b> y entrá a la app.</li>
+        <li>Respondé <b>8 preguntas</b> (objetivo, días, dónde entrenás…) y <b>tu rutina se arma sola</b>, a tu medida.</li>
         <li>Guardá este código: si cambiás de celular, lo volvés a usar.</li>
       </ol>
-      <a class="btn wa" id="ok-wa" target="_blank" rel="noopener">Escribirme para mi rutina</a>
+      <a class="btn alt" id="ok-wa" target="_blank" rel="noopener">Consultas</a>
     </div>
   </section>
 
@@ -180,7 +181,7 @@ input:focus { outline: none; border-color: var(--gold); }
   var waLink = function (t) { return wa ? wa + "?text=" + encodeURIComponent(t + (ref ? "\nMe recomendó: " + ref : "")) : "#"; };
 
   document.querySelectorAll("[data-c=producto]").forEach(function (e) { e.textContent = C.producto || "SISTEMA"; });
-  $("ok-wa").textContent = "Escribirle a " + corto + " para mi rutina";
+  $("ok-wa").textContent = "¿Dudas o algo especial? Escribile a " + corto;
   document.querySelectorAll("[data-comp]").forEach(function (a) { a.href = waLink("Hola " + corto + "! Ya pagué " + (C.producto || "SISTEMA") + (q.get("payment_id") ? " (operación " + q.get("payment_id") + ")" : "") + ". Te mando el comprobante para recibir mi acceso."); });
   if (C.acento) document.documentElement.style.setProperty("--gold", C.acento);
 
@@ -194,7 +195,7 @@ input:focus { outline: none; border-color: var(--gold); }
     $("ok-cod").textContent = r.codigo;
     $("ok-dato").textContent = "Plan " + r.plan + " · " + (r.vence ? "válido hasta el " + fechaLinda(r.vence) : "acceso para siempre");
     $("ok-abrir").href = "./?codigo=" + encodeURIComponent(r.codigo);
-    $("ok-wa").href = waLink("Hola " + corto + "! " + (r.nombre ? "Soy " + r.nombre + ". " : "") + "Ya tengo mi acceso (plan " + r.plan + ", código " + r.codigo + "). ¿Me armás la rutina?");
+    $("ok-wa").href = waLink("Hola " + corto + "! " + (r.nombre ? "Soy " + r.nombre + ". " : "") + "Ya tengo mi acceso (plan " + r.plan + ", código " + r.codigo + "). Tengo una consulta:");
     $("ok-copiar").onclick = function () {
       var b = this;
       (navigator.clipboard ? navigator.clipboard.writeText(r.codigo) : Promise.reject()).then(function () { b.textContent = "¡Copiado!"; }, function () { b.textContent = r.codigo; });

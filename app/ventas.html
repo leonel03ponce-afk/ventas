@@ -19,6 +19,7 @@ if (!window.CONFIG || !window.CONFIG.planes) window.CONFIG = /*CFG*/{
   acento: "#E9B75B",                                /* color de la marca */
   sitio: "https://brian-ponce.netlify.app/",        /* dirección de la app, para los links de recomendación */
   sistema: "#sistema",
+  lanzamiento: true,                                /* muestra "Precio de lanzamiento" en la venta. Cuando subas los precios, ponelo en false */
 
   acceso: {
     libre: false,                                   /* true = sin código, entra cualquiera */
@@ -511,7 +512,7 @@ td.n { text-align: right; font-variant-numeric: tabular-nums; }
       $("n-nom").textContent = v.nombre;
       $("n-cod").textContent = lindo(v.codigo);
       $("n-vence").textContent = "Plan " + v.plan + " · " + (v.vence ? "válido hasta el " + venceLindo(v.vence) : "para siempre") + (v.ref ? " · " + v.pct + "% para " + v.ref + " (" + plata(v.comision, v.moneda) + ")" : "") + (v.tipo === "renovacion" ? " · renovación" : "");
-      var msg = "¡Hola " + String(v.nombre).split(" ")[0] + "! Ya tenés tu acceso a " + (C.producto || "SISTEMA") + " 💪\nTu código: " + lindo(v.codigo) + "\nEntrá desde acá y se activa solo: " + sitio + "?codigo=" + v.codigo + "\nDespués mandame tus datos y te armo la rutina.";
+      var msg = "¡Hola " + String(v.nombre).split(" ")[0] + "! Ya tenés tu acceso a " + (C.producto || "SISTEMA") + " 💪\nTu código: " + lindo(v.codigo) + "\nEntrá desde acá y se activa solo: " + sitio + "?codigo=" + v.codigo + "\nAl entrar respondés 8 preguntas y la app te arma la rutina. Cualquier duda, escribime.";
       var wl = waLink(v.tel, msg);
       $("n-wa").hidden = !wl; if (wl) $("n-wa").href = wl;
       $("n-copiar").onclick = function () { if (navigator.clipboard) navigator.clipboard.writeText(msg).then(function () { $("n-copiar").textContent = "Copiado ✓"; }); };

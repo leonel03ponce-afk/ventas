@@ -10,6 +10,7 @@ window.CONFIG = {
   acento: "#E9B75B",                                /* color de la marca */
   sitio: "https://brian-ponce.netlify.app/",        /* dirección de la app, para los links de recomendación */
   sistema: "#sistema",
+  lanzamiento: true,                                /* muestra "Precio de lanzamiento" en la venta. Cuando subas los precios, ponelo en false */
 
   acceso: {
     libre: false,                                   /* true = sin código, entra cualquiera */

@@ -26,6 +26,6 @@ export default async () => {
     mes,
     esteMes: cuenta(validas.filter((v) => String(v.fecha).slice(0, 7) === mes)),
     historico: cuenta(validas).slice(0, 20)
-  }, 200, { "cache-control": "public, max-age=300" });
+  }, 200, { "cache-control": "public, max-age=300", "netlify-cdn-cache-control": "public, s-maxage=600" });
 };
 export const config = { path: "/api/ranking" };

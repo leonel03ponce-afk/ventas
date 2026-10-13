@@ -27,6 +27,7 @@ if (!window.CONFIG || !window.CONFIG.planes) window.CONFIG = /*CFG*/{
   acento: "#E9B75B",                                /* color de la marca */
   sitio: "https://brian-ponce.netlify.app/",        /* dirección de la app, para los links de recomendación */
   sistema: "#sistema",
+  lanzamiento: true,                                /* muestra "Precio de lanzamiento" en la venta. Cuando subas los precios, ponelo en false */
 
   acceso: {
     libre: false,                                   /* true = sin código, entra cualquiera */
@@ -144,6 +145,7 @@ h2 { margin-top: 8px; font-size: clamp(32px, 7vw, 48px); }
 .pasos div { padding: 14px 10px; text-align: center; background: rgba(255,255,255,.03); font-size: 13px; color: var(--dim); }
 .pasos div::before { counter-increment: p; content: counter(p); display: block; font: 700 26px/1 "Chakra Petch", sans-serif; color: var(--gold); margin-bottom: 6px; }
 .pagado { margin-top: 14px; text-align: center; }
+.lanz { display: inline-block; margin-top: 12px; padding: 6px 12px; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--void); background: var(--gold); }
 .pais { margin-top: 14px; text-align: center; }
 .pais button { background: none; border: 0; color: var(--dim); font: inherit; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; padding: 8px; }
 
@@ -216,6 +218,7 @@ footer a { color: var(--jade); font-weight: 600; text-decoration: none; }
   <div class="wrap">
     <p class="k">Planes</p>
     <h2>Elegí y arrancá hoy.</h2>
+    <p class="lanz" id="lanz" hidden>🔥 Precio de lanzamiento</p>
     <div class="lista" id="lista"></div>
     <div class="pasos" id="pasos"><div>Pagás con Mercado Pago</div><div>Me mandás el comprobante</div><div>Te llega tu acceso por WhatsApp</div></div>
     <p class="pagado"><a class="btn wa" id="comprobante" href="#">Ya pagué · mandar comprobante</a></p>
@@ -299,6 +302,7 @@ footer a { color: var(--jade); font-weight: 600; text-decoration: none; }
   var vals = { producto: C.producto || "SISTEMA", marca: C.marca || "", prueba: A.prueba || 7, desde: desde ? plata(desde) : "" };
   document.querySelectorAll("[data-c]").forEach(function (el) { var v = vals[el.getAttribute("data-c")]; if (v) el.textContent = v; });
   if (C.acento) document.documentElement.style.setProperty("--gold", C.acento);
+  if (C.lanzamiento) document.getElementById("lanz").hidden = false;
 
   /* prueba: por WhatsApp (deja el contacto) o directo a la app */
   document.querySelectorAll("[data-prueba]").forEach(function (a) {
@@ -348,7 +352,7 @@ footer a { color: var(--jade); font-weight: 600; text-decoration: none; }
     fetch("/api/pagar", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
       if (!d || !d.ok) return;
       auto = true;
-      document.getElementById("pasos").innerHTML = "<div>Pagás con Mercado Pago</div><div>Te llega tu código al instante</div><div>Te armo tu rutina</div>";
+      document.getElementById("pasos").innerHTML = "<div>Pagás con Mercado Pago</div><div>Te llega tu código al instante</div><div>La app te arma tu rutina</div>";
       document.getElementById("faq-cancelar").textContent = "Sí. El plan no se renueva solo: cuando vence, decidís si seguís.";
       comp.textContent = "¿Pagaste y no te llegó el código? Escribime";
     }).catch(function () {});
@@ -373,7 +377,7 @@ footer a { color: var(--jade); font-weight: 600; text-decoration: none; }
     (function mirar() {
       fetch("/api/codigo?k=" + encodeURIComponent(p.k), { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
         if (d && d.estado === "aprobado") { location.href = av.href; return; }
-        if (d && (d.estado === "pendiente" || d.estado === "no-existe") && ++vueltas < 24 && !document.hidden) { setTimeout(mirar, 5000); return; }
+        if (d && (d.estado === "pendiente" || d.estado === "no-existe") && ++vueltas < 20 && !document.hidden) { setTimeout(mirar, 6000); return; }
         buscando = false;
       }).catch(function () { buscando = false; });
     })();

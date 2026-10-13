@@ -22,6 +22,7 @@ if (!window.CONFIG || !window.CONFIG.planes) window.CONFIG = /*CFG*/{
   acento: "#E9B75B",                                /* color de la marca */
   sitio: "https://brian-ponce.netlify.app/",        /* dirección de la app, para los links de recomendación */
   sistema: "#sistema",
+  lanzamiento: true,                                /* muestra "Precio de lanzamiento" en la venta. Cuando subas los precios, ponelo en false */
 
   acceso: {
     libre: false,                                   /* true = sin código, entra cualquiera */
@@ -117,111 +118,154 @@ ol b { color: var(--bone); }
 .regla { margin-top: 16px; padding: 14px 16px; background: rgba(233,183,91,.1); border-left: 4px solid var(--gold); color: var(--bone); font-size: 15px; }
 footer { padding: 26px 0 40px; border-top: 1px solid #241A3A; font-size: 13px; color: var(--dimmer); }
 footer a { color: var(--gold); }
+
+/* paso a paso */
+.ruta { display: grid; gap: 6px; margin-top: 18px; counter-reset: r; }
+.ruta a { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: var(--panel); clip-path: var(--bevel-s); color: var(--bone); text-decoration: none; font-weight: 600; }
+.ruta a::before { counter-increment: r; content: counter(r); flex: none; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; background: var(--jade); color: var(--void); font: 700 18px/1 "Chakra Petch", sans-serif; clip-path: var(--bevel-s); }
+.ruta a small { display: block; font-weight: 400; color: var(--dim); font-size: 13px; }
+.paso-n { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; margin-right: 10px; background: var(--jade); color: var(--void); font: 700 22px/1 "Chakra Petch", sans-serif; clip-path: var(--bevel-s); vertical-align: middle; }
+.videos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+.videos a { display: block; text-decoration: none; color: var(--bone); font-size: 13px; text-align: center; }
+.videos img { display: block; width: 100%; aspect-ratio: 9 / 16; object-fit: cover; background: #000; border: 2px solid var(--line); }
+.videos span { display: block; margin-top: 6px; font-weight: 600; }
+.titulos { display: grid; gap: 6px; margin-top: 10px; }
+.titulos button { text-align: left; padding: 12px 14px; font: 600 15px/1.3 Archivo, sans-serif; color: var(--bone); background: var(--panel2); border: 1px solid var(--line); cursor: pointer; }
+.titulos button::after { content: "Copiar"; float: right; font-size: 12px; font-weight: 600; color: var(--jade); }
+.comp { width: 100%; margin-top: 12px; border-collapse: collapse; font-size: 14px; }
+.comp td { padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.comp td:last-child { text-align: right; white-space: nowrap; font-weight: 700; }
+.comp tr.yo td { background: rgba(75,212,137,.1); color: var(--jade); font-size: 16px; }
+.comp small { display: block; color: var(--dimmer); font-weight: 400; }
+.mini { font-size: 12px; color: var(--dimmer); margin-top: 8px; }
+.bonus { margin-top: 16px; padding: 18px; background: linear-gradient(140deg, rgba(233,183,91,.18), var(--panel) 60%); border: 1px solid var(--gold); clip-path: var(--bevel); }
+.bonus b { color: var(--gold); }
+details.calc-d summary { cursor: pointer; padding: 14px 0; font-weight: 600; color: var(--jade); list-style: none; }
+details.calc-d summary::-webkit-details-marker { display: none; }
 </style>
 </head>
 <body>
 <header>
   <div class="wrap">
     <p class="k">Programa de vendedores</p>
-    <h1>Vendé <span data-c="producto">SISTEMA</span> y cobrá el <span data-c="pct">43</span>% de cada venta.</h1>
-    <p class="sub">Subís el video a tu perfil y compartís tu link. Te llevás el <b data-c="pct">43</b>% del primer pago de cada cliente y el <b data-c="ren">15</b>% cada vez que renueva. Sin invertir nada.</p>
+    <h1>Vendé <span data-c="producto">SISTEMA</span>. Ganá el <span data-c="pct">43</span>%.</h1>
+    <p class="sub">Y el <b data-c="ren">15</b>% cada vez que tu cliente renueva. Sin invertir nada. Seguí estos 5 pasos.</p>
+    <div class="gana" id="gana"></div>
+    <nav class="ruta">
+      <a href="#p1"><span>Sacá tu link<small>30 segundos</small></span></a>
+      <a href="#p2"><span>Subí un video a tu perfil<small>con un título que enganche</small></span></a>
+      <a href="#p3"><span>Buscá gente que ya lo quiere<small>la estrategia de los comentarios</small></span></a>
+      <a href="#p4"><span>Escribiles y mandá tu link<small>mensajes listos para copiar</small></span></a>
+      <a href="#p5"><span>Cobrá a fin de mes<small>43% + 15% de renovaciones</small></span></a>
+    </nav>
   </div>
 </header>
 
-<section>
+<section id="p1">
   <div class="wrap">
-    <p class="k">Lo que ganás por cliente</p>
-    <div class="gana" id="gana"></div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <p class="k">Calculá</p>
-    <h2>¿Cuánto podés ganar?</h2>
+    <h2><span class="paso-n">1</span>Sacá tu link</h2>
+    <p class="sub" style="font-size:16px">Es tu link personal: todo el que compra desde ahí queda a tu nombre.</p>
     <div class="card">
-      <div class="calc">
-        <label>Clientes que traés<input id="cn" type="number" min="1" max="500" value="10" inputmode="numeric"></label>
-        <label>Plan que eligen<select id="cp"></select></label>
-      </div>
-      <div class="res"><b id="cr">$0</b><span id="cs"></span></div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <p class="k">Paso 1</p>
-    <h2>Sacá tu link</h2>
-    <div class="card">
-      <label>Tu nombre (así te identifico)<input id="nom" placeholder="Ej: Juan Pérez" autocomplete="name"></label>
+      <label>Tu nombre<input id="nom" placeholder="Ej: Juan Pérez" autocomplete="name"></label>
       <button type="button" class="btn" id="gen">Crear mi link</button>
       <div id="out" hidden>
         <p class="link" id="lk"></p>
-        <div class="row"><button type="button" class="btn alt" id="cp-lk">Copiar link</button><a class="btn alt" href="promo.mp4" download="sistema-video.mp4">Bajar el video</a></div>
+        <div class="row"><button type="button" class="btn alt" id="cp-lk">Copiar link</button></div>
         <p class="ok" id="ok1"></p>
       </div>
     </div>
   </div>
 </section>
 
-<section id="textos" hidden>
+<section id="p2">
   <div class="wrap">
-    <p class="k">Paso 2 · lo que más vende</p>
-    <h2>Subí el video a tu perfil</h2>
+    <h2><span class="paso-n">2</span>Subí un video a tu perfil</h2>
+    <p class="sub" style="font-size:16px">Elegí un video, ponele un título arriba y subilo a Reels, TikTok y estados. Poné tu link en la bio.</p>
+    <div class="videos">
+      <a href="videos/sistema-phonk-720.mp4" download="sistema-phonk.mp4"><img src="img/phonk-portada.jpg" alt=""><span>⬇ Phonk · vende</span></a>
+      <a href="videos/sistema-dark-720.mp4" download="sistema-dark.mp4"><img src="img/dark-portada.jpg" alt=""><span>⬇ Dark · épico</span></a>
+      <a href="promo.mp4" download="sistema-video.mp4"><img src="img/promo-mini.jpg" alt=""><span>⬇ Original</span></a>
+    </div>
     <div class="card">
-      <ol class="pasos-v">
-        <li><b>Bajá el video</b> y subilo como reel en Instagram, en TikTok y en tu estado de WhatsApp.</li>
-        <li><b>Poné tu link en la bio</b>. Instagram: Editar perfil → Enlaces. TikTok: Editar perfil → Sitio web.</li>
-        <li>Pegá este texto en la descripción:</li>
-      </ol>
+      <label>Títulos para poner arriba del video (tocá para copiar)</label>
+      <div class="titulos" id="titulos"></div>
+      <p class="mini">Cómo: abrí <b>CapCut</b> → Nuevo proyecto → elegí el video → <b>Texto</b> → escribí el título arriba → Exportar. También podés pedirle más títulos a ChatGPT: "dame 10 títulos para un video de una app de gym y hábitos".</p>
+    </div>
+    <div class="card">
+      <label>Texto para la descripción</label>
       <textarea id="t2" readonly></textarea>
-      <div class="row"><a class="btn" href="promo.mp4" download="sistema-video.mp4">Bajar el video</a><button type="button" class="btn alt" data-cp="t2">Copiar texto</button></div>
+      <div class="row"><button type="button" class="btn alt" data-cp="t2">Copiar texto</button></div>
+    </div>
+    <div class="bonus">
+      <p><b>🎬 Bonus: video destacado.</b> Si editás el video a tu manera (título, cortes, tu cara, tu entrenamiento) y queda bien, mandáselo a <span data-c="corto">Brian</span>. <b>Si lo elige, le pone publicidad paga en tu cuenta</b> para que llegue a muchas más personas, y las ventas que entren son tuyas.</p>
     </div>
   </div>
 </section>
 
-<section id="textos2" hidden>
+<section id="p3">
   <div class="wrap">
-    <p class="k">Paso 3</p>
-    <h2>Mandalo por WhatsApp</h2>
+    <h2><span class="paso-n">3</span>Buscá gente que ya lo quiere</h2>
+    <p class="sub" style="font-size:16px">La mejor estrategia: <b>los comentarios de videos de "habit tracker" y rutinas de gym</b>. El que comenta "la necesito" o "¿cómo se llama la app?" ya está diciendo <b>"yo quiero"</b>. Muchos no compraron porque las apps de afuera son caras.</p>
     <div class="card">
-      <label>A contactos o en grupos</label>
+      <ol class="pasos-v">
+        <li>En TikTok o Instagram buscá: <b>habit tracker</b>, <b>app de hábitos</b>, <b>rutina gym</b>, <b>disciplina</b>, <b>volver al gym</b>.</li>
+        <li>Abrí los videos con <b>muchos comentarios</b>.</li>
+        <li>Buscá a los que comentaron <b>"la necesito"</b>, <b>"¿cuál es la app?"</b>, <b>"quiero"</b>, <b>"¿cuánto sale?"</b>.</li>
+        <li>Escribiles por privado con el mensaje de abajo. <b>20 por día.</b></li>
+      </ol>
+      <label style="margin-top:14px">Mensaje para los que comentaron</label>
+      <textarea id="t4" readonly style="min-height:150px"></textarea>
+      <div class="row"><button type="button" class="btn alt" data-cp="t4">Copiar</button></div>
+    </div>
+    <div class="card">
+      <label>Si te dicen "es caro": mostrales esto</label>
+      <table class="comp" id="comp"></table>
+      <p class="mini">Precios de las tiendas de apps (oct. 2026); pueden variar según el país.</p>
+      <textarea id="t5" readonly style="min-height:130px"></textarea>
+      <div class="row"><button type="button" class="btn alt" data-cp="t5">Copiar</button></div>
+    </div>
+  </div>
+</section>
+
+<section id="p4">
+  <div class="wrap">
+    <h2><span class="paso-n">4</span>Escribiles y mandá tu link</h2>
+    <div class="card">
+      <label>Para contactos o grupos</label>
       <textarea id="t1" readonly></textarea>
       <div class="row"><button type="button" class="btn alt" data-cp="t1">Copiar</button><a class="btn" id="wa1" target="_blank" rel="noopener">Mandar por WhatsApp</a></div>
     </div>
     <div class="card aviso">
-      <label>Cuando alguien te dice que sí, mandale esto (es lo que hace que la venta sea tuya)</label>
+      <label>Cuando te dice que sí (así la venta queda a tu nombre)</label>
       <textarea id="t3" readonly></textarea>
       <div class="row"><button type="button" class="btn alt" data-cp="t3">Copiar</button></div>
     </div>
     <p class="ok" id="ok2"></p>
+    <p class="sub" style="font-size:15px;margin-top:14px">¿Querés más? La <a href="guia-vendedores.html" style="color:var(--jade)">guía completa</a> tiene mensajes en frío, objeciones, seguimiento y qué publicar cada día.</p>
   </div>
 </section>
 
-<section>
+<section id="p5">
   <div class="wrap">
-    <p class="k">Paso 4 · donde se gana</p>
-    <h2>Salí a buscar clientes</h2>
-    <p class="sub" style="font-size:16px">No hay contactos regalados: los clientes los conseguís vos. Para eso armé una guía con todo: cómo armar tu perfil, dónde buscar gente que quiere entrenar, qué escribirle en frío, cómo hacer el seguimiento y cómo cerrar por chat, con los mensajes listos para copiar.</p>
-    <a class="btn" href="guia-vendedores.html">Abrir la guía para vender</a>
-    <a class="btn alt" href="ranking.html">🏆 Ver el ranking del mes</a>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <p class="k">Cómo cobrás</p>
-    <h2>Simple y transparente</h2>
+    <h2><span class="paso-n">5</span>Cobrá a fin de mes</h2>
     <ol>
-      <li>Tu cliente entra por <b>tu link</b>, elige su plan y paga. La página se acuerda de que vino de tu parte.</li>
-      <li>Si la página le da el código al instante, la venta ya queda a tu nombre. Si no, me manda el comprobante con el <b>botón verde "Ya pagué · mandar comprobante"</b>: el mensaje ya dice <b>"Me recomendó: tu nombre"</b>.</li>
-      <li>Le activo el acceso y <b>anoto tu comisión</b>: <span data-c="pct">43</span>% del primer pago y <span data-c="ren">15</span>% de cada renovación.</li>
-      <li>Te pago <b data-c="cuando">a fin de cada mes</b>.</li>
+      <li>Tu cliente compra desde <b>tu link</b>: la venta queda a tu nombre sola.</li>
+      <li>Si pagó por otro medio, que mande el comprobante con el <b>botón verde</b> de la página (el mensaje dice "Me recomendó: tu nombre").</li>
+      <li>Cobrás el <span data-c="pct">43</span>% del primer pago y el <span data-c="ren">15</span>% de cada renovación, <b data-c="cuando">a fin de cada mes</b>.</li>
     </ol>
-    <p class="regla"><b>Importante:</b> si tu cliente me escribe por su cuenta, sin el botón verde, no sé que vino de tu parte. Siempre decile que mande el comprobante desde la página.</p>
     <a class="btn" id="alta" target="_blank" rel="noopener">Avisarle a <span data-c="corto">Brian</span> que arranco</a>
     <p class="sub" id="como-pago" style="font-size:14px;margin-top:10px">Mandame tu alias o CVU de Mercado Pago para pagarte.</p>
+    <a class="btn alt" href="ranking.html">🏆 Ver el ranking del mes</a>
+    <details class="calc-d">
+      <summary>¿Cuánto podés ganar? Calculalo →</summary>
+      <div class="card" style="margin-top:0">
+        <div class="calc">
+          <label>Clientes que traés<input id="cn" type="number" min="1" max="500" value="10" inputmode="numeric"></label>
+          <label>Plan que eligen<select id="cp"></select></label>
+        </div>
+        <div class="res"><b id="cr">$0</b><span id="cs"></span></div>
+      </div>
+    </details>
   </div>
 </section>
 
@@ -243,13 +287,15 @@ footer a { color: var(--gold); }
   var vals = { producto: C.producto || "SISTEMA", pct: R.comision || 43, ren: R.renovacion || 0, cuando: R.cuandoPago || "a fin de cada mes", corto: corto };
   document.querySelectorAll("[data-c]").forEach(function (el) { var v = vals[el.getAttribute("data-c")]; if (v != null) el.textContent = v; });
   if (!enAR) document.getElementById("como-pago").textContent = "Mandame por dónde te pago: " + (I.metodos || "USDT, PayPal o Zinli") + ". Vendés en cualquier país: tus clientes de afuera ven los precios en dólares.";
+  var anual = planes.filter(function (p) { return p.meses === 12; })[0] || planes[0] || { precio: 0, meses: 12 };
+  var lanz = C.lanzamiento ? " (precio de lanzamiento)" : "";
 
   var cada = function (p) { return p.meses === 3 ? "cada 3 meses" : p.meses === 12 ? "cada año" : p.meses ? "cada " + p.meses + " meses" : "una vez"; };
   document.getElementById("gana").innerHTML = planes.map(function (p) {
-    return "<div><b>" + plata(p.precio * pct) + "</b><span>plan " + p.nombre.toLowerCase() + (ren && p.meses ? "<br>y " + plata(p.precio * ren) + " " + cada(p) + " que renueva" : "") + "</span></div>";
+    return "<div><b>" + plata(p.precio * pct) + "</b><span>por plan " + p.nombre.toLowerCase() + (ren && p.meses ? "<br>+ " + plata(p.precio * ren) + " " + cada(p) : "") + "</span></div>";
   }).join("");
 
-  /* calculadora: lo que ganás en un año con N clientes */
+  /* calculadora */
   var cp = document.getElementById("cp");
   cp.innerHTML = planes.map(function (p, i) { return '<option value="' + i + '"' + (p.destacado ? " selected" : "") + ">" + p.nombre + "</option>"; }).join("");
   function calc() {
@@ -261,9 +307,60 @@ footer a { color: var(--gold); }
   }
   document.getElementById("cn").addEventListener("input", calc); cp.addEventListener("change", calc); calc();
 
-  /* link del vendedor */
+  /* competencia (precios anuales en dólares de las tiendas de apps) */
+  var COMP = [["Fitbod", "solo rutinas de gym", 95.99], ["Fabulous", "solo hábitos", 39.99], ["Habitica", "solo hábitos", 47.99]];
+  document.getElementById("comp").innerHTML = COMP.map(function (c) {
+    return "<tr><td>" + c[0] + "<small>" + c[1] + "</small></td><td>US$" + c[2].toLocaleString("es-AR") + " / año</td></tr>";
+  }).join("") + '<tr class="yo"><td>' + vals.producto + "<small>rutina + hábitos + nutrición + entrenador por WhatsApp</small></td><td>" + plata(anual.precio) + " / año</td></tr>";
+
+  var TITULOS = enAR ? [
+    "Si dejaste el gym 3 veces este año, mirá esto",
+    "La app que no te deja abandonar el gym",
+    "POV: dejaste de empezar el lunes",
+    "Esto es lo que te faltaba para ser constante",
+    "Tu rutina + tus hábitos en una sola app",
+    "Disciplina > motivación",
+    "La razón por la que siempre abandonás el gym",
+    "Cuerpo, mente y espíritu en una app"
+  ] : [
+    "Si dejaste el gym 3 veces este año, mira esto",
+    "La app que no te deja abandonar el gym",
+    "POV: dejaste de empezar el lunes",
+    "Esto es lo que te faltaba para ser constante",
+    "Tu rutina + tus hábitos en una sola app",
+    "Disciplina > motivación",
+    "La razón por la que siempre abandonas el gym",
+    "Cuerpo, mente y espíritu en una app"
+  ];
+  document.getElementById("titulos").innerHTML = TITULOS.map(function (t) { return '<button type="button" data-tt="' + t.replace(/"/g, "&quot;") + '">' + t + "</button>"; }).join("");
+
+  /* link del vendedor y textos */
   function slug(s) { return String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 30); }
   var link = "";
+  function textos() {
+    var L = link || "[tu link]";
+    var t1 = enAR
+      ? "¿Te pasa que arrancás el gym y lo dejás a las dos semanas? 🙋‍♂️\nEstoy recomendando " + vals.producto + ", de " + (C.marca || "") + ": te arma la rutina a medida y una app te sigue todos los días (entreno, hábitos, comidas).\nMirá los planes acá 👉 " + L
+      : "¿Te pasa que empiezas el gym y a las dos semanas lo dejas? 🙋‍♂️\nTe recomiendo " + vals.producto + ", de " + (C.marca || "") + ": te arma la rutina a tu medida y una app te acompaña todos los días (entreno, hábitos, comidas).\nMira los planes aquí 👉 " + L;
+    var t2 = enAR
+      ? "Dejá de empezar el lunes 🔥\nRutina a tu medida + una app que te sigue todos los días.\nCuerpo · Mente · Espíritu\nComentá RUTINA y te paso cómo funciona 👇\n(link en mi perfil)"
+      : "Deja de empezar el lunes 🔥\nRutina a tu medida + una app que te acompaña todos los días.\nCuerpo · Mente · Espíritu\nComenta RUTINA y te paso cómo funciona 👇\n(link en mi perfil)";
+    var t3 = enAR
+      ? "¡Genial! Entrá acá: " + L + "\nElegí tu plan y pagá. Al terminar te aparece tu código para entrar a la app (si no te aparece, tocá el botón verde \"Ya pagué · mandar comprobante\") 💪"
+      : "¡Genial! Entra aquí: " + L + "\nElige tu plan y toca \"Quiero este plan\": te abre WhatsApp con " + corto + " y te dice cómo pagar (" + (I.metodos || "PayPal o USDT") + "). Ese mensaje ya dice que vas de mi parte 💪";
+    var t4 = enAR
+      ? "¡Hola! Vi tu comentario en el video del habit tracker 🙌 ¿Seguís buscando una app así?\nYo uso " + vals.producto + ": además de los hábitos te arma la rutina del gym y te sigue todos los días (series, descanso, comidas, rachas y niveles).\nSi querés te paso cómo funciona, sale menos que una salida por mes."
+      : "¡Hola! Vi tu comentario en el video del habit tracker 🙌 ¿Sigues buscando una app así?\nYo uso " + vals.producto + ": además de los hábitos te arma la rutina del gym y te acompaña todos los días (series, descanso, comidas, rachas y niveles).\nSi quieres te paso cómo funciona, sale menos que una salida al mes.";
+    var t5 = enAR
+      ? "Te entiendo. Mirá: Fitbod (solo rutinas) sale casi US$96 al año y Fabulous (solo hábitos) otros US$40 o más. " + vals.producto + " trae las dos cosas, más nutrición y un entrenador real por WhatsApp, y sale " + plata(anual.precio) + " el año" + lanz + ": " + plata(anual.precio / 12) + " por mes.\nAcá lo ves 👉 " + L
+      : "Te entiendo. Mira: Fitbod (solo rutinas) cuesta casi US$96 al año y Fabulous (solo hábitos) otros US$40 o más. " + vals.producto + " trae las dos cosas, más nutrición y un entrenador real por WhatsApp, y cuesta " + plata(anual.precio) + " el año" + lanz + ": " + plata(anual.precio / 12) + " al mes.\nAquí lo ves 👉 " + L;
+    document.getElementById("t1").value = t1;
+    document.getElementById("t2").value = t2;
+    document.getElementById("t3").value = t3;
+    document.getElementById("t4").value = t4;
+    document.getElementById("t5").value = t5;
+    document.getElementById("wa1").href = "https://wa.me/?text=" + encodeURIComponent(t1);
+  }
   function armar(nombre) {
     var r = slug(nombre);
     if (!r) return;
@@ -271,34 +368,21 @@ footer a { color: var(--gold); }
     try { localStorage.setItem("vendedor:nombre", nombre); } catch (e) {}
     document.getElementById("lk").textContent = link;
     document.getElementById("out").hidden = false;
-    document.getElementById("textos").hidden = false;
-    document.getElementById("textos2").hidden = false;
-    var t1 = enAR
-      ? "¿Te pasa que arrancás el gym y lo dejás a las dos semanas? 🙋‍♂️\nEstoy recomendando " + vals.producto + ", de " + (C.marca || "") + ": te arma la rutina a medida y una app te sigue todos los días (entreno, hábitos, comidas).\nMirá los planes acá 👉 " + link
-      : "¿Te pasa que empiezas el gym y a las dos semanas lo dejas? 🙋‍♂️\nTe recomiendo " + vals.producto + ", de " + (C.marca || "") + ": un entrenador te arma la rutina a tu medida y una app te acompaña todos los días (entreno, hábitos, comidas).\nMira los planes aquí 👉 " + link;
-    var t2 = enAR
-      ? "Dejá de empezar el lunes 🔥\nRutina hecha a medida + app que te sigue todos los días.\nCuerpo · Mente · Espíritu\nEmpezá hoy 👉 link en mi perfil\n(" + link + ")"
-      : "Deja de empezar el lunes 🔥\nRutina hecha a tu medida + una app que te acompaña todos los días.\nCuerpo · Mente · Espíritu\nEmpieza hoy 👉 link en mi perfil\n(" + link + ")";
-    document.getElementById("t1").value = t1;
-    document.getElementById("t2").value = t2;
-    document.getElementById("t3").value = enAR
-      ? "¡Genial! Entrá acá: " + link + "\nElegí tu plan y pagá con Mercado Pago. Después tocá el botón verde \"Ya pagué · mandar comprobante\": así " + corto + " sabe que vas de mi parte y te activa el acceso en el día 💪"
-      : "¡Genial! Entra aquí: " + link + "\nElige tu plan y toca \"Quiero este plan\": te abre WhatsApp con " + corto + " y te dice cómo pagar (" + (I.metodos || "PayPal o USDT") + "). Ese mensaje ya dice que vas de mi parte. Cuando pagues, mándale el comprobante por ahí mismo 💪";
-    document.getElementById("wa1").href = "https://wa.me/?text=" + encodeURIComponent(t1);
+    textos();
     document.getElementById("alta").href = wa ? wa + "?text=" + encodeURIComponent("Hola " + corto + "! Quiero vender " + vals.producto + ". Soy " + nombre + " y mi link es " + link + "." + (enAR ? "\nMi alias de Mercado Pago es: " : "\nEstoy en (país): \nMe pagas por (USDT / PayPal / Zinli) a: ")) : "#";
   }
+  textos();
   document.getElementById("gen").addEventListener("click", function () { armar(document.getElementById("nom").value.trim()); });
   try { var g = localStorage.getItem("vendedor:nombre"); if (g) { document.getElementById("nom").value = g; armar(g); } } catch (e) {}
   if (!link) document.getElementById("alta").href = wa ? wa + "?text=" + encodeURIComponent("Hola " + corto + "! Quiero vender " + vals.producto + ".") : "#";
 
-  function copiar(txt, okId) {
-    var ok = document.getElementById(okId);
-    var listo = function () { ok.textContent = "Copiado ✓"; setTimeout(function () { ok.textContent = ""; }, 2000); };
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(listo, function () { ok.textContent = "Copialo a mano"; });
-    else ok.textContent = "Copialo a mano";
+  function copiar(txt, el) {
+    var ok = function () { var o = el.textContent; el.textContent = "Copiado ✓"; setTimeout(function () { el.textContent = o; }, 1500); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(ok, function () {});
   }
-  document.getElementById("cp-lk").addEventListener("click", function () { copiar(link, "ok1"); });
-  document.querySelectorAll("[data-cp]").forEach(function (b) { b.addEventListener("click", function () { copiar(document.getElementById(b.dataset.cp).value, "ok2"); }); });
+  document.getElementById("cp-lk").addEventListener("click", function () { copiar(link, this); });
+  document.querySelectorAll("[data-cp]").forEach(function (b) { b.addEventListener("click", function () { copiar(document.getElementById(b.dataset.cp).value, b); }); });
+  document.getElementById("titulos").addEventListener("click", function (ev) { var b = ev.target.closest("[data-tt]"); if (b) copiar(b.getAttribute("data-tt"), b); });
 })();
 </script>
 </body>

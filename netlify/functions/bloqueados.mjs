@@ -4,6 +4,6 @@ import { tienda, json } from "../lib/sistema.mjs";
 
 export default async () => {
   const { blobs } = await tienda().list({ prefix: "bloq:" });
-  return json({ codigos: blobs.map((b) => b.key.slice(5)) }, 200, { "cache-control": "public, max-age=60" });
+  return json({ codigos: blobs.map((b) => b.key.slice(5)) }, 200, { "cache-control": "public, max-age=60", "netlify-cdn-cache-control": "public, s-maxage=600" });
 };
 export const config = { path: "/api/bloqueados" };

@@ -622,6 +622,7 @@ if (!window.CONFIG) window.CONFIG = /*CFG*/{
   acento: "#E9B75B",                                /* color de la marca */
   sitio: "https://brian-ponce.netlify.app/",        /* dirección de la app, para los links de recomendación */
   sistema: "#sistema",
+  lanzamiento: true,                                /* muestra "Precio de lanzamiento" en la venta. Cuando subas los precios, ponelo en false */
 
   acceso: {
     libre: false,                                   /* true = sin código, entra cualquiera */
@@ -4507,7 +4508,10 @@ react-dom/cjs/react-dom.production.min.js:
   /* Lista de códigos dados de baja (reembolsos). Solo existe si el sitio
      tiene el cobro automático; si no, la respuesta es 404 y no pasa nada.
      Se aplica la próxima vez que se abre la app. */
-  if (/^https?:$/.test(location.protocol) && window.fetch) {
+  var ultBloq = 0;
+  try { ultBloq = parseInt(localStorage.getItem("acceso:bloq-t") || "0", 10) || 0; } catch (e) {}
+  if (/^https?:$/.test(location.protocol) && window.fetch && Date.now() - ultBloq > 6 * 36e5) {   /* cada 6 horas como mucho */
+    try { localStorage.setItem("acceso:bloq-t", String(Date.now())); } catch (e) {}
     fetch("/api/bloqueados", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
       if (d && d.codigos) try { localStorage.setItem("acceso:bloq", JSON.stringify(d.codigos)); } catch (e) {}
     }).catch(function () {});

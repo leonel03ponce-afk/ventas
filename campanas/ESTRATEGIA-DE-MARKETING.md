@@ -68,6 +68,15 @@ Cuando tengas más de 10, pediles que cada uno elija **un nicho**:
 
 Así cada uno es "el que sabe de eso", publica para esa gente y no compiten por los mismos clientes.
 
+### La estrategia de los comentarios (la que más rinde)
+En TikTok e Instagram hay videos de **"habit tracker"** y rutinas de gym con miles de comentarios del tipo "la necesito" o "¿cómo se llama la app?". Esa gente ya dijo "yo quiero", y muchos no compraron porque las apps de afuera son caras (Fitbod casi US$96 al año, Fabulous US$40 o más, y cada una hace solo una parte). Los vendedores les escriben con el mensaje y la comparación de precios del paso 3 de `vendedores.html`.
+
+### El video con distintos títulos
+Los vendedores bajan uno de los videos (phonk, dark u original) desde `vendedores.html`, le ponen un título arriba con CapCut (la página les da 8 ideas y les sugiere pedir más a ChatGPT) y lo suben a su perfil. **Si uno edita un video que funciona, le pagás publicidad en su cuenta**: él gana más ventas y vos probás creativos sin hacerlos.
+
+### Precio de lanzamiento
+La página de planes muestra "Precio de lanzamiento" (`lanzamiento: true` en `config.js`). Tiene que ser verdad: cuando llegues a la meta que te pongas (por ejemplo, 100 clientes), subí los precios y poné `lanzamiento: false`.
+
 ### Premios
 En `config.js` hay un campo `premio` (en `recomendados`): si ponés por ejemplo `"$30.000 extra"`, aparece en el ranking como premio del mes para el n.º 1. Un premio chico y puntual mueve más que subir la comisión.
 
