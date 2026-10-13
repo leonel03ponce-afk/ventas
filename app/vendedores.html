@@ -45,6 +45,11 @@ ol { margin: 14px 0 0; padding-left: 22px; color: var(--dim); }
 ol li { padding: 5px 0; }
 ol b { color: var(--bone); }
 .ok { color: var(--jade); font-size: 14px; margin-top: 8px; min-height: 20px; }
+.pasos-v { margin: 0 0 4px; padding-left: 20px; color: var(--dim); }
+.pasos-v li { padding: 4px 0; }
+.pasos-v b { color: var(--bone); }
+.card.aviso { box-shadow: inset 4px 0 0 var(--jade); }
+.regla { margin-top: 16px; padding: 14px 16px; background: rgba(233,183,91,.1); border-left: 4px solid var(--gold); color: var(--bone); font-size: 15px; }
 footer { padding: 26px 0 40px; border-top: 1px solid #241A3A; font-size: 13px; color: var(--dimmer); }
 footer a { color: var(--gold); }
 </style>
@@ -53,8 +58,8 @@ footer a { color: var(--gold); }
 <header>
   <div class="wrap">
     <p class="k">Programa de vendedores</p>
-    <h1>Vendé <span data-c="producto">SISTEMA</span> y cobrá el <span data-c="pct">20</span>% <span data-c="siempre">para siempre</span>.</h1>
-    <p class="sub">Compartís tu link. Cada vez que alguien paga, y cada vez que renueva, te llevás tu parte. Sin invertir nada.</p>
+    <h1>Vendé <span data-c="producto">SISTEMA</span> y cobrá el <span data-c="pct">43</span>% de cada venta.</h1>
+    <p class="sub">Subís el video a tu perfil y compartís tu link. Te llevás el <b data-c="pct">43</b>% del primer pago de cada cliente y el <b data-c="ren">15</b>% cada vez que renueva. Sin invertir nada.</p>
   </div>
 </header>
 
@@ -97,17 +102,33 @@ footer a { color: var(--gold); }
 
 <section id="textos" hidden>
   <div class="wrap">
-    <p class="k">Paso 2</p>
-    <h2>Copiá y mandá</h2>
+    <p class="k">Paso 2 · lo que más vende</p>
+    <h2>Subí el video a tu perfil</h2>
     <div class="card">
-      <label>Para WhatsApp (a contactos o en grupos)</label>
+      <ol class="pasos-v">
+        <li><b>Bajá el video</b> y subilo como reel en Instagram, en TikTok y en tu estado de WhatsApp.</li>
+        <li><b>Poné tu link en la bio</b>. Instagram: Editar perfil → Enlaces. TikTok: Editar perfil → Sitio web.</li>
+        <li>Pegá este texto en la descripción:</li>
+      </ol>
+      <textarea id="t2" readonly></textarea>
+      <div class="row"><a class="btn" href="promo.mp4" download="sistema-video.mp4">Bajar el video</a><button type="button" class="btn alt" data-cp="t2">Copiar texto</button></div>
+    </div>
+  </div>
+</section>
+
+<section id="textos2" hidden>
+  <div class="wrap">
+    <p class="k">Paso 3</p>
+    <h2>Mandalo por WhatsApp</h2>
+    <div class="card">
+      <label>A contactos o en grupos</label>
       <textarea id="t1" readonly></textarea>
       <div class="row"><button type="button" class="btn alt" data-cp="t1">Copiar</button><a class="btn" id="wa1" target="_blank" rel="noopener">Mandar por WhatsApp</a></div>
     </div>
-    <div class="card">
-      <label>Para historia o posteo de Instagram / TikTok (con el video)</label>
-      <textarea id="t2" readonly></textarea>
-      <div class="row"><button type="button" class="btn alt" data-cp="t2">Copiar</button></div>
+    <div class="card aviso">
+      <label>Cuando alguien te dice que sí, mandale esto (es lo que hace que la venta sea tuya)</label>
+      <textarea id="t3" readonly></textarea>
+      <div class="row"><button type="button" class="btn alt" data-cp="t3">Copiar</button></div>
     </div>
     <p class="ok" id="ok2"></p>
   </div>
@@ -119,10 +140,11 @@ footer a { color: var(--gold); }
     <h2>Simple y transparente</h2>
     <ol>
       <li>Tu cliente entra por <b>tu link</b>, elige su plan y paga con Mercado Pago.</li>
-      <li>Me manda el comprobante por WhatsApp desde la página: el mensaje ya dice <b>"Me recomendó: tu nombre"</b>.</li>
-      <li>Le activo el acceso y <b>anoto tu comisión</b>. Si renueva, la anoto otra vez.</li>
+      <li>Me manda el comprobante con el <b>botón verde "Ya pagué · mandar comprobante"</b> de la página: el mensaje ya dice <b>"Me recomendó: tu nombre"</b>.</li>
+      <li>Le activo el acceso y <b>anoto tu comisión</b>: <span data-c="pct">43</span>% del primer pago y <span data-c="ren">15</span>% de cada renovación.</li>
       <li>Te pago <b data-c="cuando">a fin de cada mes</b>.</li>
     </ol>
+    <p class="regla"><b>Importante:</b> si tu cliente me escribe por su cuenta, sin el botón verde, no sé que vino de tu parte. Siempre decile que mande el comprobante desde la página.</p>
     <a class="btn" id="alta" target="_blank" rel="noopener">Avisarle a <span data-c="corto">Brian</span> que arranco</a>
     <p class="sub" style="font-size:14px;margin-top:10px">Mandame tu alias o CVU de Mercado Pago para pagarte.</p>
   </div>
@@ -134,17 +156,17 @@ footer a { color: var(--gold); }
 (function () {
   "use strict";
   var C = window.CONFIG || {}, R = C.recomendados || {}, planes = (C.planes || []);
-  var pct = (R.comision || 20) / 100;
+  var pct = (R.comision || 43) / 100, ren = (R.renovacion || 0) / 100;
   var wa = String(C.whatsapp || "").split("?")[0];
   var corto = String(C.marca || "").split(" ")[0];
   var plata = function (n) { return "$" + Math.round(n).toLocaleString("es-AR"); };
   var sitio = String(C.sitio || location.origin + "/").split("?")[0].split("#")[0].replace(/[^/]*$/, "");
-  var vals = { producto: C.producto || "SISTEMA", pct: R.comision || 20, siempre: R.recurrente ? "para siempre" : "", cuando: R.cuandoPago || "a fin de cada mes", corto: corto };
+  var vals = { producto: C.producto || "SISTEMA", pct: R.comision || 43, ren: R.renovacion || 0, cuando: R.cuandoPago || "a fin de cada mes", corto: corto };
   document.querySelectorAll("[data-c]").forEach(function (el) { var v = vals[el.getAttribute("data-c")]; if (v != null) el.textContent = v; });
 
   var cada = function (p) { return p.meses === 3 ? "cada 3 meses" : p.meses === 12 ? "cada año" : p.meses ? "cada " + p.meses + " meses" : "una vez"; };
   document.getElementById("gana").innerHTML = planes.map(function (p) {
-    return "<div><b>" + plata(p.precio * pct) + "</b><span>plan " + p.nombre.toLowerCase() + (R.recurrente && p.meses ? ", " + cada(p) : "") + "</span></div>";
+    return "<div><b>" + plata(p.precio * pct) + "</b><span>plan " + p.nombre.toLowerCase() + (ren && p.meses ? "<br>y " + plata(p.precio * ren) + " " + cada(p) + " que renueva" : "") + "</span></div>";
   }).join("");
 
   /* calculadora: lo que ganás en un año con N clientes */
@@ -153,9 +175,9 @@ footer a { color: var(--gold); }
   function calc() {
     var n = Math.max(0, Math.min(500, parseInt(document.getElementById("cn").value, 10) || 0));
     var p = planes[+cp.value] || planes[0];
-    var veces = p.meses ? (R.recurrente ? 12 / p.meses : 1) : 1;
-    document.getElementById("cr").textContent = plata(n * p.precio * pct * veces);
-    document.getElementById("cs").textContent = "en un año, con " + n + " clientes en el plan " + p.nombre.toLowerCase() + (R.recurrente && p.meses ? " que renuevan" : "");
+    var renuevas = p.meses ? Math.max(0, 12 / p.meses - 1) : 0;
+    document.getElementById("cr").textContent = plata(n * p.precio * (pct + ren * renuevas));
+    document.getElementById("cs").textContent = "en el primer año, con " + n + " clientes en el plan " + p.nombre.toLowerCase() + (renuevas ? " que renuevan" : "");
   }
   document.getElementById("cn").addEventListener("input", calc); cp.addEventListener("change", calc); calc();
 
@@ -170,10 +192,12 @@ footer a { color: var(--gold); }
     document.getElementById("lk").textContent = link;
     document.getElementById("out").hidden = false;
     document.getElementById("textos").hidden = false;
+    document.getElementById("textos2").hidden = false;
     var t1 = "¿Te pasa que arrancás el gym y lo dejás a las dos semanas? 🙋‍♂️\nEstoy recomendando " + vals.producto + ", de " + (C.marca || "") + ": te arma la rutina a medida y una app te sigue todos los días (entreno, hábitos, comidas).\nMirá los planes acá 👉 " + link;
     var t2 = "Dejá de empezar el lunes 🔥\nRutina hecha a medida + app que te sigue todos los días.\nCuerpo · Mente · Espíritu\nEmpezá hoy 👉 link en mi perfil\n(" + link + ")";
     document.getElementById("t1").value = t1;
     document.getElementById("t2").value = t2;
+    document.getElementById("t3").value = "¡Genial! Entrá acá: " + link + "\nElegí tu plan y pagá con Mercado Pago. Después tocá el botón verde \"Ya pagué · mandar comprobante\": así " + corto + " sabe que vas de mi parte y te activa el acceso en el día 💪";
     document.getElementById("wa1").href = "https://wa.me/?text=" + encodeURIComponent(t1);
     document.getElementById("alta").href = wa ? wa + "?text=" + encodeURIComponent("Hola " + corto + "! Quiero vender " + vals.producto + ". Soy " + nombre + " y mi link es " + link + ".\nMi alias de Mercado Pago es: ") : "#";
   }

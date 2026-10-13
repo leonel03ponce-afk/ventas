@@ -32,13 +32,13 @@ window.CONFIG = {
       incluye: ["Todo lo del plan anual", "Sin cuotas, nunca más", "Todas las funciones nuevas que salgan"] }
   ],
 
-  /* Recomendados: quien trae un cliente se lleva este % de cada pago
-     que haga ese cliente mientras siga renovando (recurrente: true),
-     o solo del primero (recurrente: false). */
+  /* Vendedores: se llevan "comision" % del primer pago de cada cliente
+     que traen, y "renovacion" % de cada renovación de ese cliente
+     (0 = las renovaciones no pagan comisión). */
   recomendados: {
     activo: true,
-    comision: 20,
-    recurrente: true,
+    comision: 43,
+    renovacion: 15,
     cuandoPago: "a fin de cada mes, por Mercado Pago o transferencia"   /* se lo muestra a los vendedores */
   }
 };

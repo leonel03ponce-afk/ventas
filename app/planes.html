@@ -93,6 +93,16 @@ footer { padding: 24px 0 30px; border-top: 1px solid #241A3A; font-size: 13px; c
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
 footer a { color: var(--jade); font-weight: 600; text-decoration: none; }
 
+/* aviso después de pagar */
+.modal { position: fixed; inset: 0; z-index: 40; display: flex; align-items: flex-end; justify-content: center; padding: 16px 16px calc(16px + env(safe-area-inset-bottom, 0px)); background: rgba(5,3,10,.72); backdrop-filter: blur(4px); }
+.modal[hidden] { display: none; }
+@media (min-width: 640px) { .modal { align-items: center; } }
+.modal .caja { width: 100%; max-width: 440px; padding: 26px 22px 20px; background: var(--panel); border: 1px solid var(--gold); clip-path: var(--bevel); display: grid; gap: 10px; }
+.modal h3 { font-size: 26px; line-height: 1.1; }
+.modal ol { margin: 4px 0 8px; padding-left: 20px; color: var(--dim); }
+.modal li { padding: 4px 0; }
+.modal .btn { width: 100%; }
+
 /* barra fija */
 .fija { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px)); background: rgba(11,7,21,.94); backdrop-filter: blur(10px); border-top: 1px solid #241A3A; display: flex; gap: 8px; align-items: center; justify-content: center; transform: translateY(110%); transition: transform .3s ease; }
 .fija.si { transform: none; }
@@ -153,6 +163,20 @@ footer a { color: var(--jade); font-weight: 600; text-decoration: none; }
   </div>
 </footer>
 
+<div class="modal" id="modal" hidden>
+  <div class="caja" role="dialog" aria-modal="true" aria-labelledby="m-t">
+    <p class="k">Último paso</p>
+    <h3 id="m-t">Cuando termines de pagar, volvé acá</h3>
+    <ol>
+      <li>Pagá en Mercado Pago (se abrió en otra pestaña).</li>
+      <li>Sacale captura al comprobante.</li>
+      <li>Tocá el botón verde y mandámelo por WhatsApp. Te activo el acceso en el día.</li>
+    </ol>
+    <a class="btn wa" id="m-comp" href="#" target="_blank" rel="noopener">Ya pagué · mandar comprobante</a>
+    <button type="button" class="btn alt" id="m-x">Cerrar</button>
+  </div>
+</div>
+
 <div class="fija" id="fija"><small>Desde <b data-c="desde">$5.825</b>/mes</small><a class="btn" href="#planes">Elegir mi plan</a></div>
 
 <script>
@@ -193,11 +217,24 @@ footer a { color: var(--jade); font-weight: 600; text-decoration: none; }
     return '<div class="plan' + (p.destacado ? " top" : "") + '">' + (p.destacado ? '<span class="tag">' + esc(p.destacado) + "</span>" : "") +
       "<h3>" + esc(p.nombre) + '</h3><p class="precio">' + plata(p.precio) + '</p><p class="det">' + esc(p.detalle || "") + "</p>" +
       "<ul>" + (p.incluye || []).slice(0, 4).map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" +
-      '<a class="btn" href="' + esc(link) + '" target="_blank" rel="noopener">Pagar ' + esc(p.nombre.toLowerCase()) + "</a></div>";
+      '<a class="btn" data-pagar="' + esc(p.nombre) + '" href="' + esc(link) + '" target="_blank" rel="noopener">Pagar ' + esc(p.nombre.toLowerCase()) + "</a></div>";
   }).join("");
   var comp = document.getElementById("comprobante");
   comp.href = waLink("Hola " + corto + "! Ya pagué " + vals.producto + ". Te mando el comprobante para recibir mi acceso.");
   comp.target = "_blank"; comp.rel = "noopener";
+
+  /* al tocar "Pagar", Mercado Pago se abre en otra pestaña y acá queda
+     el aviso con el botón del comprobante (así llega el "Me recomendó") */
+  var modal = document.getElementById("modal");
+  document.getElementById("lista").addEventListener("click", function (ev) {
+    var a = ev.target.closest && ev.target.closest("[data-pagar]");
+    if (!a) return;
+    var plan = a.getAttribute("data-pagar");
+    document.getElementById("m-comp").href = waLink("Hola " + corto + "! Ya pagué el plan " + plan + " de " + vals.producto + ". Te mando el comprobante para recibir mi acceso.");
+    setTimeout(function () { modal.hidden = false; }, 400);
+  });
+  document.getElementById("m-x").addEventListener("click", function () { modal.hidden = true; });
+  modal.addEventListener("click", function (ev) { if (ev.target === modal) modal.hidden = true; });
 
   /* sonido del video */
   var v = document.getElementById("v"), snd = document.getElementById("snd");

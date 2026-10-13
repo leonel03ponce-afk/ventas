@@ -639,13 +639,13 @@ if (!window.CONFIG) window.CONFIG = /*CFG*/{
       incluye: ["Todo lo del plan anual", "Sin cuotas, nunca más", "Todas las funciones nuevas que salgan"] }
   ],
 
-  /* Recomendados: quien trae un cliente se lleva este % de cada pago
-     que haga ese cliente mientras siga renovando (recurrente: true),
-     o solo del primero (recurrente: false). */
+  /* Vendedores: se llevan "comision" % del primer pago de cada cliente
+     que traen, y "renovacion" % de cada renovación de ese cliente
+     (0 = las renovaciones no pagan comisión). */
   recomendados: {
     activo: true,
-    comision: 20,
-    recurrente: true,
+    comision: 43,
+    renovacion: 15,
     cuandoPago: "a fin de cada mes, por Mercado Pago o transferencia"   /* se lo muestra a los vendedores */
   }
 }/*FIN-CFG*/;
@@ -4291,7 +4291,7 @@ react-dom/cjs/react-dom.production.min.js:
         '<label class="g-l">Cliente<input id="g-nom" placeholder="Nombre y apellido" autocomplete="off"></label>' +
         '<label class="g-l">Acceso<select id="g-mes"><option value="3">3 meses</option><option value="12">1 año</option><option value="0">Para siempre</option><option value="1">1 mes</option><option value="6">6 meses</option></select></label>' +
         '<label class="g-l">Lo trajo (opcional)<input id="g-vend" placeholder="Quién lo recomendó" autocomplete="off"></label>' +
-        (REC.recurrente ? '<p class="g-s chica" style="text-align:left">Si es una renovación, poné el mismo nombre de cliente: se acuerda quién lo trajo y le suma la comisión otra vez.</p>' : "") +
+        '<p class="g-s chica" style="text-align:left">Primer pago: ' + (REC.comision || 0) + '% para quien lo trajo. Si es una renovación, poné el mismo nombre de cliente: se acuerda quién lo trajo y le suma el ' + (REC.renovacion || 0) + '%.</p>' +
         '<button type="button" class="g-btn" id="g-gen">Generar código</button>';
       if (generado) {
         h += '<div class="g-out"><p class="g-code">' + linda(generado.code) + "</p>" +
@@ -4310,7 +4310,7 @@ react-dom/cjs/react-dom.production.min.js:
         lista.forEach(function (x) { if (x.vend && x.com) deuda[x.vend] = (deuda[x.vend] || 0) + x.com; });
         var vends = Object.keys(deuda);
         if (vends.length) {
-          h += '<p class="g-k" style="margin-top:22px">Comisiones a pagar (' + (REC.comision || 0) + '% ' + (REC.recurrente ? "de cada pago" : "del primer pago") + ')</p><ul class="g-list">' +
+          h += '<p class="g-k" style="margin-top:22px">Comisiones a pagar (' + (REC.comision || 0) + '% primer pago · ' + (REC.renovacion || 0) + '% renovaciones)</p><ul class="g-list">' +
             vends.map(function (v) { return "<li><b>" + v + "</b> · " + plata(deuda[v]) + "</li>"; }).join("") + "</ul>" +
             '<button type="button" class="g-btn chico" id="g-pague">Ya las pagué · poner en cero</button>';
         }
@@ -4414,8 +4414,8 @@ react-dom/cjs/react-dom.production.min.js:
         var yaVino = clave && clientes[clave];
         if (!vend && yaVino) vend = clientes[clave];
         if (vend && clave && !yaVino) { clientes[clave] = vend; try { localStorage.setItem(KEY_CLIENTES, JSON.stringify(clientes)); } catch (e) {} }
-        var cobra = vend && (REC.recurrente || !yaVino);
-        var com = cobra ? Math.round(precioMeses(meses) * (REC.comision || 0) / 100) : 0;
+        var pctCom = yaVino ? (REC.renovacion || 0) : (REC.comision || 0);
+        var com = vend ? Math.round(precioMeses(meses) * pctCom / 100) : 0;
         generado = { code: code, nombre: nom.trim(), vence: meses === 0 ? null : vencimiento(idx) };
         try {
           localStorage.setItem(KEY_SERIE, String(serie + 1));
@@ -4531,9 +4531,9 @@ react-dom/cjs/react-dom.production.min.js:
     if (!REC.activo || !PLANES.length || !linkRef()) return "";
     var base = PLANES.filter(function (x) { return x.meses > 0; })[0] || PLANES[0];
     var gana = Math.round(base.precio * (REC.comision || 0) / 100);
-    return '<section class="card acc-ref"><p class="card-k">Recomendá y ganá</p><p class="card-t">' + (REC.comision || 0) + '% para vos' + (REC.recurrente ? ", siempre" : "") + '</p>' +
-      '<p class="card-s">Compartí tu link. Por cada persona que se suma te llevás el ' + (REC.comision || 0) + '% ' +
-      (REC.recurrente ? "de cada pago que haga, mientras siga: " + plata(gana) + " cada " + base.nombre.toLowerCase() + " por amigo." : "de su primer pago: desde " + plata(gana) + " por amigo.") + '</p>' +
+    return '<section class="card acc-ref"><p class="card-k">Recomendá y ganá</p><p class="card-t">' + (REC.comision || 0) + '% para vos</p>' +
+      '<p class="card-s">Compartí tu link. Por cada persona que se suma te llevás el ' + (REC.comision || 0) + '% de su primer pago (desde ' + plata(gana) + ')' +
+      (REC.renovacion ? " y el " + REC.renovacion + "% cada vez que renueva." : ".") + ' Que te mande el comprobante con el botón verde de la página.</p>' +
       '<p class="acc-link">' + linkRef().replace(/^https?:\/\//, "") + '</p>' +
       '<div class="pan-b"><button type="button" class="btn pri" data-acc="compartir">Compartir mi link</button> <button type="button" class="btn alt" data-acc="copiar">Copiar</button></div></section>';
   }
