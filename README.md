@@ -9,7 +9,7 @@ La app está en la carpeta `app/`. Es una página web instalable en el celular (
 | `app/vendedores.html` | Página para vendedores: sacan su link, copian textos listos, bajan el video y calculan cuánto ganan |
 | `app/guia-vendedores.html` | Guía para vendedores: perfil, dónde buscar clientes, mensajes en frío, cierre, objeciones y seguimiento, listos para copiar |
 | `app/gracias.html` | Adonde vuelve el cliente después de pagar: le muestra su código (cobro automático) |
-| `app/ventas.html` | Tus ventas automáticas, con comisiones y reembolsos (pide la clave `CLAVE_VENTAS`) |
+| `app/ventas.html` | **Mi negocio**: clientes con su vencimiento, ventas, vendedores con lo que les debés, y para cargar ventas a mano (pide la clave `CLAVE_VENTAS`) |
 | `netlify/` | Las funciones del cobro automático (Mercado Pago y Hotmart) |
 | `app/promo.mp4` | El video promocional en versión liviana (lo usan la página de venta y los vendedores) |
 | `app/config.js` | **Lo único que hace falta tocar**: marca, precios, links de pago, comisión, prueba gratis. Después de cambiarlo, corré `python3 app/sincronizar-config.py` (deja una copia de respaldo adentro de la app, por si `config.js` no se sube) |

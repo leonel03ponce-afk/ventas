@@ -62,7 +62,14 @@ Después: *Deploys* → **Trigger deploy** → *Deploy site*.
 
 **Plan B:** si algo falla (Mercado Pago no responde, el token vence), la página vuelve sola a los links fijos de siempre y al botón verde del comprobante. Nunca queda sin poder cobrar.
 
-**`ventas.html`:** ventas del mes, cuánto entró en pesos y en dólares, comisiones de cada vendedor, renovaciones y reembolsos. Bajás un Excel (CSV) y podés dar de baja o reactivar un código. Los pagos a vendedores los seguís llevando en el tablero.
+**`ventas.html` (Mi negocio):** todo en un lugar, desde el celular.
+- **Resumen:** ventas y cobros del mes, comisiones, clientes activos, quién vence en los próximos 15 días (con botón para mandarle el aviso de renovación) y a qué vendedor le debés.
+- **Clientes:** uno por persona, con su plan, vencimiento, cuánto pagó, quién lo trajo y su código. Buscador y filtro (activos, vencen pronto, vencidos).
+- **Vendedores:** cuánto vendió cada uno, cuánto le pagaste y cuánto le debés. "Registrar pago" lo descuenta y te arma el WhatsApp de aviso. En "Datos" guardás cómo cobra.
+- **Ventas:** todas, por mes, con medio de pago y comisión. Excel (CSV) y dar de baja un código.
+- **+ Cargar venta:** para las que no entran solas (transferencia, USDT, PayPal, comprobantes). Registra la venta con su vendedor, te da el código y el WhatsApp listo para mandárselo al cliente.
+
+Con esto ya no hace falta el tablero de Claude ni el panel de códigos de la app (siguen andando, pero lo que cargues ahí no aparece en Mi negocio).
 
 ---
 

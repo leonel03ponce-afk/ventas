@@ -66,11 +66,13 @@ export async function registrarVenta(origen, v) {
   /* ¿Ya compró antes con ese mail? Entonces es renovación y la comisión
      (más chica) es para quien lo trajo la primera vez. */
   const email = String(v.email || "").trim().toLowerCase();
+  const tel = String(v.tel || "").replace(/[^\d+]/g, "");
+  const idCliente = email || (tel ? "tel:" + tel : "");
   let tipo = "primera", ref = limpiarRef(v.ref);
-  if (email) {
-    const cli = await st.get("cliente:" + email, { type: "json" });
+  if (idCliente) {
+    const cli = await st.get("cliente:" + idCliente, { type: "json" });
     if (cli) { tipo = "renovacion"; ref = cli.ref || ref; }
-    else await st.setJSON("cliente:" + email, { ref, desde: new Date().toISOString() });
+    else await st.setJSON("cliente:" + idCliente, { ref, desde: new Date().toISOString() });
   }
   const pct = ref ? (tipo === "primera" ? rec.comision || 0 : rec.renovacion || 0) : 0;
 
@@ -82,7 +84,7 @@ export async function registrarVenta(origen, v) {
 
   const venta = {
     id: v.id, origen: v.origen, fecha: hoy.toISOString(), plan: v.plan, meses: v.meses,
-    monto: v.monto, moneda: v.moneda, nombre: v.nombre || "", email, ref, tipo, pct,
+    monto: v.monto, moneda: v.moneda, nombre: v.nombre || "", email, tel, medio: v.medio || "", nota: v.nota || "", ref, tipo, pct,
     comision: Math.round((v.monto || 0) * pct) / 100, codigo: c.code, vence: c.vence, estado: "aprobada", pagaHotmart: !!v.pagaHotmart
   };
   await st.setJSON(clave, venta);
@@ -135,7 +137,9 @@ export async function pagoMP(origen, id) {
     origen: "mp", id: p.id, plan: plan.nombre, meses: plan.meses,
     monto: p.transaction_amount, moneda: p.currency_id || "ARS",
     nombre: ext.n || [((p.payer || {}).first_name || ""), ((p.payer || {}).last_name || "")].join(" ").trim(),
-    email: (p.payer || {}).email || "", ref: ext.r || ""
+    email: (p.payer || {}).email || "", ref: ext.r || "",
+    tel: [((p.payer || {}).phone || {}).area_code, ((p.payer || {}).phone || {}).number].filter(Boolean).join(""),
+    medio: "Mercado Pago" + (p.payment_type_id ? " · " + ({ credit_card: "crédito", debit_card: "débito", account_money: "dinero en cuenta", ticket: "efectivo", bank_transfer: "transferencia" }[p.payment_type_id] || p.payment_type_id) : "")
   });
   return { estado: "aprobado", venta };
 }

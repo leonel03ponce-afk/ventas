@@ -48,6 +48,7 @@ export default async (req) => {
     origen: "hotmart", id: tx, plan: plan.nombre, meses: plan.meses,
     monto: precio.value || plan.precio, moneda: precio.currency_value || "USD",
     nombre: (d.buyer || {}).name || "", email: (d.buyer || {}).email || "",
+    tel: (d.buyer || {}).checkout_phone || "", medio: "Hotmart",
     ref: (p.origin || {}).sck ? limpiarRef(p.origin.sck) : slug(afil.name),
     pagaHotmart: !!afil.name /* si vino por un afiliado, Hotmart ya le paga la comisión */
   });
