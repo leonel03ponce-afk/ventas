@@ -252,6 +252,20 @@ footer a { color: var(--jade); font-weight: 600; text-decoration: none; }
   </div>
 </div>
 
+<div class="modal" id="modal-auto" hidden>
+  <div class="caja" role="dialog" aria-modal="true" aria-labelledby="ma-t">
+    <p class="k">Importante</p>
+    <h3 id="ma-t">Tu código aparece acá, después de pagar</h3>
+    <ol>
+      <li>Pagá en <b>Mercado Pago</b>.</li>
+      <li>Cuando termine, <b>volvé a esta página</b>: tocá "Volver al sitio" o la flecha de atrás.</li>
+      <li>Te aparece <b>tu código de acceso</b> al instante. Sacale captura.</li>
+    </ol>
+    <a class="btn" id="ma-ir">Preparando tu pago…</a>
+    <button type="button" class="btn alt" id="ma-x">Cancelar</button>
+  </div>
+</div>
+
 <div class="fija" id="fija"><small>Desde <b data-c="desde">$5.825</b>/mes</small><a class="btn" href="#planes">Elegir mi plan</a></div>
 
 <script>
@@ -338,30 +352,52 @@ footer a { color: var(--jade); font-weight: 600; text-decoration: none; }
       comp.textContent = "¿Pagaste y no te llegó el código? Escribime";
     }).catch(function () {});
   }
-  /* Si pagó en la app de Mercado Pago y no volvió solo, al entrar de nuevo
-     ve el aviso para buscar su código (gracias.html lo encuentra por la clave) */
+  /* Después de pagar: el cliente vuelve a esta página (atrás, "Volver al sitio" o
+     entrando de nuevo). Si hay una compra en curso, se busca el pago y, apenas
+     Mercado Pago lo aprueba, lo lleva solo a su código. */
   var PEND = "pago:pendiente";
-  try {
-    var pen = JSON.parse(localStorage.getItem(PEND) || "null");
-    if (pen && pen.k && Date.now() - pen.t < 3 * 864e5) {
-      var av = document.getElementById("pend");
-      av.href = "gracias.html?k=" + encodeURIComponent(pen.k);
-      av.hidden = false;
-    }
-  } catch (e) {}
+  var av = document.getElementById("pend");
+  function pendiente() {
+    try { var p = JSON.parse(localStorage.getItem(PEND) || "null"); return p && p.k && Date.now() - p.t < 3 * 864e5 ? p : null; } catch (e) { return null; }
+  }
+  var buscando = false;
+  function revisarPago() {
+    var p = pendiente();
+    if (!p) { av.hidden = true; return; }
+    av.href = "gracias.html?k=" + encodeURIComponent(p.k);
+    av.hidden = false;
+    if (buscando || !window.fetch) return;
+    buscando = true;
+    var vueltas = 0;
+    (function mirar() {
+      fetch("/api/codigo?k=" + encodeURIComponent(p.k), { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+        if (d && d.estado === "aprobado") { location.href = av.href; return; }
+        if (d && (d.estado === "pendiente" || d.estado === "no-existe") && ++vueltas < 24 && !document.hidden) { setTimeout(mirar, 5000); return; }
+        buscando = false;
+      }).catch(function () { buscando = false; });
+    })();
+  }
+  revisarPago();
+  /* el botón "atrás" del celu devuelve la página tal como quedó: hay que revisar de nuevo */
+  addEventListener("pageshow", function () {
+    document.getElementById("modal-auto").hidden = true;
+    revisarPago();
+  });
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) revisarPago(); });
 
+  /* Antes de ir a Mercado Pago: aviso claro de que vuelva para ver su código */
   function pagarAuto(a) {
     var k = Math.random().toString(36).slice(2, 12);
     try { localStorage.setItem(PEND, JSON.stringify({ k: k, plan: a.getAttribute("data-id"), t: Date.now() })); } catch (e) {}
-    var txt = a.textContent;
-    a.textContent = "Abriendo Mercado Pago…";
-    a.style.pointerEvents = "none";
-    var listo = function () { a.textContent = txt; a.style.pointerEvents = ""; };
+    var ma = document.getElementById("modal-auto"), ir = document.getElementById("ma-ir");
+    ir.textContent = "Preparando tu pago…"; ir.removeAttribute("href"); ir.style.opacity = ".6";
+    ma.hidden = false;
     fetch("/api/pagar", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ plan: a.getAttribute("data-id"), ref: ref, k: k }) })
       .then(function (r) { return r.json(); })
-      .then(function (d) { if (!d.url) throw new Error(); location.href = d.url; setTimeout(listo, 4000); })
-      .catch(function () { listo(); location.href = a.href; });
+      .then(function (d) { if (!d.url) throw new Error(); ir.href = d.url; ir.textContent = "Entendido, ir a pagar →"; ir.style.opacity = ""; })
+      .catch(function () { ir.href = a.href; ir.target = "_blank"; ir.textContent = "Ir a pagar →"; ir.style.opacity = ""; });
   }
+  document.getElementById("ma-x").addEventListener("click", function () { document.getElementById("modal-auto").hidden = true; });
 
   document.getElementById("lista").addEventListener("click", function (ev) {
     var a = ev.target.closest && ev.target.closest("[data-pagar]");
