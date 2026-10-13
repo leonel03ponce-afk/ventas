@@ -126,14 +126,15 @@ Si querés empujar, podés sumar un premio por meta, por ejemplo: **el que llegu
 
 ---
 
-## 6. Controlar las comisiones: tu tablero
+## 6. Controlar las comisiones: Mi negocio
 
-Todo se maneja desde el tablero **Vendedores SISTEMA** (privado, solo lo ves vos): https://claude.ai/artifact/Lq4khHvoPukjcEGxbhPzah
+Todo se maneja desde **brian-ponce.netlify.app/ventas.html** (con tu clave `CLAVE_VENTAS`):
 
-- **Resumen:** ventas del mes, lo cobrado, lo que te queda y **cuánto le debés a cada vendedor, con su alias** y la fecha de pago (fin de mes).
-- **Nueva venta:** cliente, WhatsApp, plan, quién lo trajo y la foto del comprobante. Detecta si es una renovación, calcula 43% o 15%, **genera el código de acceso** y te deja mandárselo al cliente.
-- **Ventas:** todas, filtradas por mes o por vendedor, con su comprobante y su código.
-- **Vendedores:** alta con alias y WhatsApp, cuánto vendió y ganó cada uno, y su link para copiar.
-- **Pagos:** cada transferencia que hiciste, con su comprobante y un botón para avisarle al vendedor.
+- **Resumen:** ventas del mes, lo cobrado, quién vence pronto y cuánto le debés a cada vendedor.
+- **Clientes:** plan, vencimiento, quién lo trajo, código, y botones para WhatsApp, aviso de renovación y mandar rutina.
+- **Vendedores:** cuánto vendió cada uno, cuánto le pagaste y cuánto le debés. "Registrar pago" lo descuenta y arma el WhatsApp de aviso.
+- **+ Cargar venta:** para transferencias, USDT o comprobantes. Da el código y el mensaje para el cliente.
 
-Los datos quedan guardados en tu cuenta de Claude: los ves igual desde el celu o la compu.
+Las ventas por Mercado Pago entran solas, con su vendedor. El tablero de Claude anterior ya no hace falta.
+
+Los vendedores ven su posición en **brian-ponce.netlify.app/ranking.html**.

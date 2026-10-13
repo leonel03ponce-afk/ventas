@@ -22,7 +22,7 @@ Hoy el negocio funciona, pero **todo pasa por vos**: cada venta necesita que vea
 
 | Te come tiempo | Cómo lo resolvés |
 |---|---|
-| Armar cada rutina desde cero | Armá **6 rutinas base** (ganar músculo, bajar grasa, principiante, 3 días, 4 días, en casa). A cada cliente le mandás la base que corresponde, ajustada en 5 minutos, con el link de rutina personalizada de la app. |
+| Armar cada rutina desde cero | **Ya están las 6 rutinas base** (principiante, ganar músculo, bajar grasa, en casa, glúteos, avanzado). Mi negocio → Clientes → *Mandar rutina*. Si alguien necesita algo distinto, la ajustás en 5 minutos. |
 | Generar códigos a mano | **Ya está resuelto**: con el cobro automático el código sale solo cuando Mercado Pago confirma el pago (ver `COBRO-AUTOMATICO.md`). |
 | Responder WhatsApp | Respuestas guardadas en WhatsApp Business para las 10 preguntas de siempre. Si pasás los 100 clientes, sumá a alguien que atienda por una parte de cada venta. |
 | La "revisión mensual" del plan anual | Hacela con un formulario corto: el cliente manda peso, medidas y captura de su semana, y vos respondés con un audio de 2 minutos. |

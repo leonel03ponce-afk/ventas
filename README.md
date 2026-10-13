@@ -8,6 +8,8 @@ La app está en la carpeta `app/`. Es una página web instalable en el celular (
 | `app/planes.html` | Página de venta corta, para el link de la bio y para los vendedores |
 | `app/vendedores.html` | Página para vendedores: sacan su link, copian textos listos, bajan el video y calculan cuánto ganan |
 | `app/guia-vendedores.html` | Guía para vendedores: perfil, dónde buscar clientes, mensajes en frío, cierre, objeciones y seguimiento, listos para copiar |
+| `app/ranking.html` | Ranking público de vendedores (este mes e histórico), para motivarlos |
+| `app/rutinas-base.js` | Las 6 rutinas base con sus links (las arma `rutinas/generar.py`) |
 | `app/gracias.html` | Adonde vuelve el cliente después de pagar: le muestra su código (cobro automático) |
 | `app/ventas.html` | **Mi negocio**: clientes con su vencimiento, ventas, vendedores con lo que les debés, y para cargar ventas a mano (pide la clave `CLAVE_VENTAS`) |
 | `netlify/` | Las funciones del cobro automático (Mercado Pago y Hotmart) |
@@ -66,6 +68,10 @@ También sirve escribir la clave en la pantalla "Tu acceso" de la app. Si ya est
 - **Comisiones a pagar**: cuánto le debés a cada recomendador. "Ya las pagué" las pone en cero.
 
 Los códigos y los recomendadores quedan guardados en el teléfono donde los generás. Usá siempre el mismo.
+
+## Rutinas base
+
+Hay 6 rutinas listas (principiante, ganar músculo, bajar grasa, en casa, glúteos y avanzado): **Mi negocio → Clientes → Mandar rutina**, elegís una y se abre el WhatsApp del cliente con el link. Detalle de cada una en `rutinas/RUTINAS-BASE.md`. Para cambiarlas, editá `rutinas/generar.py` y corré `python3 rutinas/generar.py`.
 
 ## Rutina personalizada por link
 
