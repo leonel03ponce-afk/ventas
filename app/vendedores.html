@@ -3,8 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Vendé SISTEMA · Ganá el 20% para siempre</title>
-<meta name="description" content="Recomendá SISTEMA con tu link y cobrá el 20% de cada pago de tus clientes, mientras sigan renovando.">
+<title>Vendé SISTEMA · Ganá el 43% de cada venta</title>
+<meta name="description" content="Recomendá SISTEMA con tu link: cobrás el 43% de cada venta y el 15% cada vez que tu cliente renueva.">
+<meta property="og:title" content="Vendé SISTEMA y ganá el 43% de cada venta">
+<meta property="og:description" content="Subí el video a tu perfil, compartí tu link y cobrá a fin de mes.">
+<meta property="og:image" content="https://brian-ponce.netlify.app/img/compartir.jpg">
+<meta property="og:type" content="website">
 <meta name="theme-color" content="#0B0715">
 <link rel="icon" href="icono-192.png">
 <link rel="stylesheet" href="fuentes.css">
@@ -32,9 +36,9 @@ input:focus, select:focus { outline: none; border-color: var(--jade); }
 .btn.alt { background: var(--panel2); color: var(--bone); box-shadow: inset 0 0 0 1px var(--line); }
 .row { display: flex; flex-wrap: wrap; gap: 8px; }
 .link { margin-top: 14px; padding: 14px; background: rgba(75,212,137,.08); border: 1px dashed rgba(75,212,137,.4); font: 600 15px/1.35 "Chakra Petch", sans-serif; color: var(--jade); word-break: break-all; }
-.gana { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 16px; }
-.gana div { padding: 16px 10px; text-align: center; background: var(--panel); clip-path: var(--bevel-s); }
-.gana b { display: block; font: 700 26px/1 "Chakra Petch", sans-serif; color: var(--jade); }
+.gana { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 16px; }
+.gana div { min-width: 0; padding: 14px 6px; text-align: center; background: var(--panel); clip-path: var(--bevel-s); }
+.gana b { display: block; font: 700 clamp(17px, 5.4vw, 26px)/1 "Chakra Petch", sans-serif; color: var(--jade); }
 .gana span { display: block; margin-top: 6px; font-size: 12px; color: var(--dim); }
 .calc { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .res { margin-top: 16px; text-align: center; }

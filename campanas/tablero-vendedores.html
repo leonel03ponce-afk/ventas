@@ -267,8 +267,9 @@ td.n, th.n { text-align: right; }
       '<label>Fecha del pago<input id="v-fecha" type="date" value="' + hoyISO() + '"></label></div>' +
       '<div class="grid2"><label>Lo trajo<select id="v-vend"><option value="">Nadie: vino directo</option>' +
         S.vendedores.slice().sort(function (x, y) { return x.nombre.localeCompare(y.nombre); }).map(function (v) { return '<option value="' + esc(v.ref) + '">' + esc(v.nombre) + "</option>"; }).join("") +
-      '</select><span class="ayuda">Lo dice el mensaje del comprobante: "Me recomendó: …".</span></label>' +
+      '<option value="__nuevo">Otro: no está en la lista</option></select><span class="ayuda">Lo dice el mensaje del comprobante: "Me recomendó: …".</span></label>' +
       '<label>Tipo<select id="v-tipo"><option value="primera">Primer pago</option><option value="renovacion">Renovación</option></select><span class="ayuda" id="v-tipo-ayuda"></span></label></div>' +
+      '<label id="v-nuevo-box" hidden>Quién lo recomendó (como dice el mensaje)<input id="v-nuevo" placeholder="juan-perez"><span class="ayuda">Se suma a tus vendedores. Después completale el alias en la pestaña Vendedores.</span></label>' +
       (assets ? '<label>Comprobante (foto o PDF)<input type="file" id="v-comp" accept="image/*,application/pdf"></label>' : "") +
       '<div class="calc" id="v-calc"></div>' +
       '<div class="acciones"><button type="submit" class="btn" id="v-ok">Guardar y generar código</button></div><p class="err-msg" id="v-err"></p></form>';
@@ -286,6 +287,7 @@ td.n, th.n { text-align: right; }
         if (prev && !$("#v-vend").value) $("#v-vend").value = prev;
         $("#v-tipo-ayuda").textContent = ren ? "Ya compró antes: se toma como renovación." : "";
       }
+      $("#v-nuevo-box").hidden = $("#v-vend").value !== "__nuevo";
       var plan = $("#v-plan").value, precio = a.precios[plan] || 0, ref = $("#v-vend").value;
       var pct = ref ? ($("#v-tipo").value === "renovacion" ? a.renovacion : a.comision) : 0;
       $("#v-calc").innerHTML = "<span>Cobraste <b>" + plata(precio) + "</b></span>" + (ref ? "<span>Comisión " + pct + "% <b>" + plata(precio * pct / 100) + "</b></span>" : "") + "<span>Te queda <b>" + plata(precio * (1 - pct / 100)) + "</b></span>";
@@ -411,6 +413,15 @@ td.n, th.n { text-align: right; }
     var cliente = $("#v-cliente").value.trim();
     if (!cliente) { err.textContent = "Poné el nombre del cliente."; return; }
     var plan = $("#v-plan").value, precio = a.precios[plan] || 0, ref = $("#v-vend").value, tipo = $("#v-tipo").value;
+    if (ref === "__nuevo") {
+      var crudo = ($("#v-nuevo").value || "").replace(/^.*recomend[oó]:\s*/i, "").trim();
+      ref = slug(crudo);
+      if (!ref) { err.textContent = "Escribí quién lo recomendó, o elegí \"Nadie: vino directo\"."; return; }
+      if (!vendedorDe(ref)) {
+        try { await db.doc("vendedores/" + ref).set({ nombre: crudo, ref: ref, alias: "", whatsapp: "", alta: hoyISO() }); }
+        catch (e) { err.textContent = "No se pudo sumar al vendedor (" + (e && e.code || "error") + ")."; return; }
+      }
+    }
     var pct = ref ? (tipo === "renovacion" ? a.renovacion : a.comision) : 0;
     btn.disabled = true; btn.textContent = "Guardando…"; err.textContent = "";
     try {
