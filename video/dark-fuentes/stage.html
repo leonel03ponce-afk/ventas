@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="http://localhost:8766/fuentes.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+#st { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #030205; font-family: Archivo, sans-serif; color: #F3EDE4; }
+#world { position: absolute; inset: 0; }
+.abs { position: absolute; }
+canvas { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+#bg { z-index: 0; } #fx { z-index: 6; mix-blend-mode: screen; } #fx2 { z-index: 9; mix-blend-mode: screen; }
+.capa { position: absolute; inset: 0; opacity: 0; }
+.t { position: absolute; left: 50px; right: 50px; text-align: center; font: 700 150px/.9 "Chakra Petch", sans-serif; text-transform: uppercase; letter-spacing: -.01em; }
+.oro { background: linear-gradient(180deg, #FFF8D6 0%, #FFD94F 38%, #FF9A1F 75%, #C2410C 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 26px rgba(255,170,40,.75)) drop-shadow(0 0 70px rgba(255,120,20,.45)); }
+.blanco { color: #F3EDE4; text-shadow: 0 0 30px rgba(255,255,255,.25); }
+.rojo { color: #FF3B3B; text-shadow: 0 0 40px rgba(255,40,40,.7); }
+.sub { position: absolute; left: 60px; right: 60px; text-align: center; font: 500 46px/1.25 Archivo, sans-serif; color: rgba(243,237,228,.82); letter-spacing: .02em; }
+.k { font: 600 34px/1 Archivo, sans-serif; letter-spacing: .4em; text-transform: uppercase; color: #FFB938; }
+
+/* barra de energía */
+#barra { left: 140px; right: 140px; top: 1180px; height: 70px; border: 4px solid rgba(255,255,255,.25); padding: 8px; display: flex; gap: 6px; }
+#barra i { flex: 1; background: #FFC93C; box-shadow: 0 0 18px currentColor; }
+#barra-k { left: 140px; top: 1120px; }
+#barra-n { right: 140px; top: 1120px; font: 700 40px/1 "Chakra Petch", sans-serif; }
+
+/* visor */
+#visor { inset: 0; }
+#visor svg { position: absolute; left: 140px; top: 560px; width: 800px; height: 800px; }
+#poder-k { left: 0; right: 0; top: 1420px; text-align: center; font: 600 40px/1 "Chakra Petch", sans-serif; letter-spacing: .3em; color: #3DFF8C; text-shadow: 0 0 20px rgba(61,255,140,.8); }
+#poder { left: 0; right: 0; top: 860px; text-align: center; font: 700 190px/1 "Chakra Petch", sans-serif; color: #3DFF8C; text-shadow: 0 0 30px rgba(61,255,140,.9), 0 0 90px rgba(61,255,140,.5); font-variant-numeric: tabular-nums; }
+#poder-a { left: 0; right: 0; top: 1520px; text-align: center; font: 700 64px/1 "Chakra Petch", sans-serif; color: #FF3B3B; text-shadow: 0 0 30px rgba(255,40,40,.9); letter-spacing: .06em; }
+#scan { inset: 0; background: repeating-linear-gradient(0deg, rgba(61,255,140,.06) 0 2px, transparent 2px 6px); }
+
+/* teléfono */
+#phone { left: 250px; top: 560px; width: 580px; height: 1255px; border-radius: 70px; background: #120c1c; padding: 16px; box-shadow: 0 0 0 2px #3a2a55, 0 0 80px rgba(255,170,40,.35), 0 60px 140px rgba(0,0,0,.9); }
+#screen { position: relative; width: 100%; height: 100%; border-radius: 56px; overflow: hidden; background: #0B0715; }
+#screen img { position: absolute; left: 0; top: 0; width: 100%; height: auto; filter: contrast(1.08) saturate(1.1); }
+#notch { left: 50%; top: 12px; width: 140px; height: 38px; margin-left: -70px; border-radius: 20px; background: #000; z-index: 3; }
+#cap { left: 40px; right: 40px; top: 210px; text-align: center; font: 700 96px/.95 "Chakra Petch", sans-serif; text-transform: uppercase; }
+#cap-n { left: 0; right: 0; top: 150px; text-align: center; }
+
+/* orbes */
+.orbe { position: absolute; top: 960px; width: 250px; height: 250px; margin-left: -125px; border-radius: 50%; }
+.orbe b { position: absolute; left: -60px; right: -60px; top: 290px; text-align: center; font: 700 52px/1 "Chakra Petch", sans-serif; letter-spacing: .06em; }
+
+/* final */
+#logo { left: 0; right: 0; top: 660px; display: flex; align-items: center; justify-content: center; gap: 30px; font: 700 150px/1 "Chakra Petch", sans-serif; letter-spacing: .1em; }
+#logo i { position: relative; width: 120px; height: 120px; background: linear-gradient(160deg, #FFE27A, #FF9A1F); clip-path: polygon(22px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 22px); box-shadow: 0 0 60px rgba(255,170,40,.8); }
+#logo i::after { content: "★"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 66px; color: #120a05; font-style: normal; }
+#pill { left: 50%; top: 1480px; transform: translateX(-50%); padding: 26px 48px; border: 3px solid #FFC93C; font: 700 44px/1 "Chakra Petch", sans-serif; letter-spacing: .14em; color: #FFC93C; white-space: nowrap; box-shadow: 0 0 40px rgba(255,190,60,.35), inset 0 0 30px rgba(255,190,60,.2); }
+
+#flash { inset: 0; background: #fff; opacity: 0; z-index: 20; }
+#vig { inset: 0; z-index: 15; background: radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,.85) 100%); }
+#grain { z-index: 16; opacity: .12; mix-blend-mode: overlay; }
+#barras { inset: 0; z-index: 17; pointer-events: none; }
+#barras::before, #barras::after { content: ""; position: absolute; left: 0; right: 0; height: 70px; background: #000; }
+#barras::before { top: 0; } #barras::after { bottom: 0; }
+</style>
+</head>
+<body>
+<div id="st">
+  <div id="world">
+    <canvas id="bg" width="1080" height="1920"></canvas>
+
+    <!-- 1 · todos los lunes -->
+    <div class="capa" id="c1">
+      <p class="t blanco" id="c1a" style="top:700px;font-size:120px">Todos<br>los lunes</p>
+      <p class="t blanco" id="c1b" style="top:980px;font-size:170px">empezás.</p>
+    </div>
+    <!-- 2 · te apagás -->
+    <div class="capa" id="c2">
+      <p class="t blanco" style="top:620px;font-size:100px">Y a las<br>2 semanas…</p>
+      <p class="abs k" id="barra-k">Energía</p><p class="abs" id="barra-n">100%</p>
+      <div class="abs" id="barra"></div>
+      <p class="t rojo" id="c2b" style="top:1360px;font-size:150px">te apagás.</p>
+    </div>
+    <!-- 3 · despertá -->
+    <div class="capa" id="c3">
+      <p class="t oro" id="c3a" style="top:820px;font-size:190px">Despertá</p>
+      <p class="sub" id="c3b" style="top:1050px">el guerrero que llevás adentro</p>
+    </div>
+    <!-- 4 · nivel de poder -->
+    <div class="capa" id="c4">
+      <div class="abs" id="scan"></div>
+      <div class="abs" id="visor"><svg viewBox="0 0 800 800"><g fill="none" stroke="#3DFF8C" stroke-width="3" opacity=".9">
+        <circle cx="400" cy="400" r="380" stroke-dasharray="6 14" id="aro1"/><circle cx="400" cy="400" r="320" opacity=".6"/>
+        <path d="M400 0v80M400 720v80M0 400h80M720 400h80"/><path id="aro2" d="M400 120a280 280 0 0 1 280 280" stroke-width="10" opacity=".8"/>
+        <path d="M140 140l60 0 0 60M660 140l-60 0 0 60M140 660l60 0 0-60M660 660l-60 0 0-60" stroke-width="5"/></g></svg></div>
+      <p class="abs" id="poder">0</p>
+      <p class="abs" id="poder-k">Nivel de poder</p>
+      <p class="abs" id="poder-a">¡Rompiendo límites!</p>
+    </div>
+    <!-- 5 · la app -->
+    <div class="capa" id="c5">
+      <p class="abs k" id="cap-n">Sistema</p>
+      <p class="abs oro" id="cap">Tu rutina</p>
+      <div class="abs" id="phone"><div id="screen"><div class="abs" id="notch"></div><img id="clip" alt=""></div></div>
+    </div>
+    <!-- 6 · tres poderes -->
+    <div class="capa" id="c6">
+      <p class="t blanco" style="top:560px;font-size:110px">Tres<br>poderes</p>
+      <div class="orbe" id="o1" style="left:200px;--c:#FFC93C"><b style="color:#FFC93C">Cuerpo</b></div>
+      <div class="orbe" id="o2" style="left:540px;--c:#5AB8FF"><b style="color:#5AB8FF">Mente</b></div>
+      <div class="orbe" id="o3" style="left:880px;--c:#C98BFF"><b style="color:#C98BFF">Espíritu</b></div>
+    </div>
+    <!-- 7 · rompé tu límite -->
+    <div class="capa" id="c7">
+      <p class="t oro" id="c7a" style="top:700px;font-size:210px">Rompé</p>
+      <p class="t oro" id="c7b" style="top:900px;font-size:150px">tu límite</p>
+      <p class="sub" id="c7c" style="top:1130px">Sin excusas. Sin lunes.</p>
+    </div>
+    <!-- 8 · final -->
+    <div class="capa" id="c8">
+      <div class="abs" id="logo"><i></i><span class="blanco">SISTEMA</span></div>
+      <p class="t oro" id="c8a" style="top:900px;font-size:160px">Empezá hoy</p>
+      <p class="sub" id="c8b" style="top:1200px">Rutina hecha a tu medida<br>+ una app que no te suelta</p>
+      <p class="abs" id="pill">LINK EN EL PERFIL</p>
+    </div>
+
+    <canvas id="fx" width="1080" height="1920"></canvas>
+  </div>
+  <canvas id="fx2" width="1080" height="1920"></canvas>
+  <div class="abs" id="flash"></div>
+  <div class="abs" id="vig"></div>
+  <canvas id="grain" width="270" height="480" style="width:1080px;height:1920px"></canvas>
+  <div id="barras"></div>
+</div>
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+const W = 1080, H = 1920;
+const bg = $("bg").getContext("2d"), fx = $("fx").getContext("2d"), fx2 = $("fx2").getContext("2d"), gr = $("grain").getContext("2d");
+const rnd = (i) => { const x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const ease = (x) => { x = clamp(x); return 1 - Math.pow(1 - x, 3); };
+const easeIO = (x) => { x = clamp(x); return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+const win = (t, a, b, fi = .25, fo = .25) => clamp((t - a) / fi) * clamp((b - t) / fo);
+
+/* segmentos de la barra de energía */
+$("barra").innerHTML = "<i></i>".repeat(20);
+const segs = [...$("barra").children];
+
+/* golpes: flash + temblor + onda */
+const IMPACTOS = [6.0, 24.0, 28.4];
+const CORTES = [9.0, 12.0, 14.0, 16.0, 18.0, 20.0];
+
+function aura(ctx, t, cx, cy, w, h, k, hue = "oro") {
+  if (k <= 0) return;
+  ctx.save();
+  ctx.globalCompositeOperation = "lighter";
+  /* resplandor base */
+  const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(w, h) * .7);
+  const col = hue === "oro" ? "255,170,40" : hue === "azul" ? "90,184,255" : "255,200,80";
+  g.addColorStop(0, `rgba(${col},${.35 * k})`); g.addColorStop(.5, `rgba(${col},${.12 * k})`); g.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(cx, cy, w * .75, h * .7, 0, 0, Math.PI * 2); ctx.fill();
+  /* llamas que suben, más densas en el borde (silueta de aura) */
+  const n = Math.round(300 * k);
+  for (let i = 0; i < n; i++) {
+    const sp = .8 + rnd(i * 3 + 1) * 1.2;
+    const ph = (t * sp + rnd(i * 3 + 2)) % 1;
+    const lado = rnd(i * 3 + 3) > .5 ? 1 : -1;
+    const borde = Math.pow(rnd(i * 3 + 4), .45);           /* 0 = centro, 1 = borde */
+    const yy = ph;                                          /* 0 abajo, 1 arriba */
+    const ancho = w * .5 * Math.sin(Math.PI * (.15 + yy * .85)) * (1 - yy * .35);
+    const x = cx + lado * borde * ancho + Math.sin(t * 5 + i) * 8;
+    const y = cy + h * .5 - yy * h;
+    const len = (30 + rnd(i + 7) * 80) * (1 - yy * .4);
+    const a = Math.sin(ph * Math.PI) * k * (.25 + rnd(i + 9) * .6) * (.4 + borde * .6);
+    const hot = rnd(i + 11) > .75;
+    ctx.strokeStyle = hot ? `rgba(255,250,220,${a})` : (hue === "azul" ? `rgba(120,200,255,${a})` : `rgba(255,${150 + Math.round(rnd(i + 5) * 80)},40,${a})`);
+    ctx.lineWidth = 2 + rnd(i + 13) * 7;
+    ctx.lineCap = "round";
+    const inc = lado * borde * 18;
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.quadraticCurveTo(x + inc, y - len * .5, x + inc * .3, y - len); ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function rayo(ctx, x1, y1, x2, y2, seed, k = 1, color = "150,190,255") {
+  const pts = [[x1, y1], [x2, y2]];
+  let off = Math.hypot(x2 - x1, y2 - y1) * .22, list = pts, s = seed;
+  for (let it = 0; it < 6; it++) {
+    const nl = [list[0]];
+    for (let i = 0; i < list.length - 1; i++) {
+      const [ax, ay] = list[i], [bx, by] = list[i + 1];
+      const mx = (ax + bx) / 2, my = (ay + by) / 2, dx = by - ay, dy = ax - bx, d = Math.hypot(dx, dy) || 1;
+      const o = (rnd(s++) - .5) * off;
+      nl.push([mx + dx / d * o, my + dy / d * o], list[i + 1]);
+    }
+    list = nl; off *= .55;
+  }
+  ctx.save(); ctx.globalCompositeOperation = "lighter"; ctx.lineJoin = "round"; ctx.lineCap = "round";
+  for (const [lw, a, c, blur] of [[26, .22 * k, color, 14], [10, .55 * k, color, 4], [3.5, k, "255,255,255", 0]]) {
+    ctx.filter = blur ? `blur(${blur}px)` : "none";
+    ctx.strokeStyle = `rgba(${c},${a})`; ctx.lineWidth = lw;
+    ctx.beginPath(); list.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function onda(ctx, t, t0, cx, cy, color = "255,200,90") {
+  const d = t - t0; if (d < 0 || d > .9) return;
+  const r = 80 + d * 2600, a = (1 - d / .9);
+  ctx.save(); ctx.globalCompositeOperation = "lighter";
+  ctx.strokeStyle = `rgba(${color},${a * .8})`; ctx.lineWidth = 40 * a + 4; ctx.filter = "blur(3px)";
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke();
+  ctx.lineWidth = 6; ctx.strokeStyle = `rgba(255,255,255,${a})`; ctx.filter = "none";
+  ctx.beginPath(); ctx.arc(cx, cy, r * .96, 0, Math.PI * 2); ctx.stroke();
+  ctx.restore();
+}
+
+function brasas(ctx, t, k, n = 90) {
+  ctx.save(); ctx.globalCompositeOperation = "lighter";
+  for (let i = 0; i < n; i++) {
+    const sp = .05 + rnd(i + 40) * .12;
+    const ph = (t * sp + rnd(i + 41)) % 1;
+    const x = rnd(i + 42) * W + Math.sin(t * 1.5 + i) * 30;
+    const y = H + 40 - ph * (H + 80);
+    const a = Math.sin(ph * Math.PI) * k * (.3 + rnd(i + 43) * .7);
+    const r = 2 + rnd(i + 44) * 4;
+    ctx.fillStyle = `rgba(255,${120 + Math.round(rnd(i + 45) * 100)},40,${a})`;
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+  }
+  ctx.restore();
+}
+
+/* clips de la app */
+const CLIPS = [["rutina", 12.0], ["entreno", 14.0], ["timer", 16.0], ["rango", 18.0]];
+const CAPS = { rutina: ["Tu rutina", "hecha para vos"], entreno: ["Cada serie", "cuenta"], timer: ["Descanso", "medido"], rango: ["De recluta", "a leyenda"] };
+const NFRAMES = { rutina: 168, entreno: 240, timer: 195, rango: 165 };
+const OFFS = { rutina: 20, entreno: 40, timer: 30, rango: 60 };
+async function ponerClip(nombre, tt) {
+  const img = $("clip");
+  const f = Math.min(NFRAMES[nombre] - 1, OFFS[nombre] + Math.floor(tt * 30));
+  const src = `http://localhost:8767/clips/${nombre}/f${String(f).padStart(4, "0")}.jpg`;
+  if (img.getAttribute("src") !== src) {
+    img.src = src;
+    for (let i = 0; i < 20; i++) { try { await img.decode(); break; } catch (e) { await new Promise((r) => setTimeout(r, 50)); } }
+  }
+}
+
+window.render = async function (t) {
+  const fr = Math.round(t * 30);
+  [bg, fx, fx2].forEach((c) => c.clearRect(0, 0, W, H));
+
+  /* fondo: negro con brasas rojas/púrpura que respiran */
+  const pulso = t < 6 ? Math.pow(Math.max(0, Math.sin(((t - .2) / (60 / 96 * 2)) * Math.PI * 2)), 8) : 0;
+  let g = bg.createRadialGradient(540, 1000, 0, 540, 1000, 1200);
+  const base = t < 6 ? .25 + pulso * .5 : t < 24 ? .55 : .8;
+  g.addColorStop(0, `rgba(${t < 6 ? "120,10,20" : "90,30,10"},${base})`); g.addColorStop(.6, "rgba(30,6,30,.5)"); g.addColorStop(1, "rgba(0,0,0,0)");
+  bg.fillStyle = "#030205"; bg.fillRect(0, 0, W, H); bg.fillStyle = g; bg.fillRect(0, 0, W, H);
+
+  /* temblor */
+  let sh = 0;
+  IMPACTOS.forEach((t0) => { if (t >= t0) sh += 34 * Math.exp(-(t - t0) * 5); });
+  if (t >= 24 && t < 28.2) sh += 5;
+  $("world").style.transform = sh > .4 ? `translate(${(rnd(fr * 2) - .5) * 2 * sh}px,${(rnd(fr * 2 + 1) - .5) * 2 * sh}px)` : "none";
+
+  /* flash */
+  let fl = 0;
+  IMPACTOS.forEach((t0) => { if (t >= t0) fl = Math.max(fl, 1 - (t - t0) / .22); });
+  CORTES.forEach((t0) => { if (t >= t0 && t < t0 + .1) fl = Math.max(fl, .35 * (1 - (t - t0) / .1)); });
+  $("flash").style.opacity = clamp(fl);
+
+  /* 1 · todos los lunes */
+  const c1 = win(t, .3, 2.95, .4, .2);
+  $("c1").style.opacity = c1;
+  $("c1a").style.opacity = clamp((t - .4) / .5);
+  $("c1b").style.opacity = clamp((t - 1.5) / .3);
+  $("c1b").style.transform = `scale(${1.25 - .25 * ease((t - 1.5) / .4)})`;
+
+  /* 2 · te apagás */
+  $("c2").style.opacity = win(t, 3.0, 5.95, .2, .1);
+  const lvl = 1 - easeIO((t - 3.4) / 2.2);
+  const parp = lvl < .3 && rnd(fr) > .55 ? .25 : 1;
+  segs.forEach((s, i) => { const on = i / 20 < lvl; s.style.opacity = on ? parp : .08; s.style.background = lvl > .5 ? "#FFC93C" : lvl > .25 ? "#FF8A1F" : "#FF3B3B"; s.style.color = s.style.background; });
+  $("barra-n").textContent = Math.max(0, Math.round(lvl * 100)) + "%";
+  $("barra-n").style.color = lvl > .25 ? "#FFC93C" : "#FF3B3B";
+  $("c2b").style.opacity = clamp((t - 4.9) / .3);
+  const gl = t > 4.9 && t < 5.9 && rnd(fr + 99) > .6 ? (rnd(fr) - .5) * 30 : 0;
+  $("c2b").style.textShadow = gl ? `${gl}px 0 rgba(255,0,60,.9), ${-gl}px 0 rgba(0,220,255,.9)` : "0 0 40px rgba(255,40,40,.7)";
+
+  /* 3 · despertá */
+  $("c3").style.opacity = win(t, 6.0, 8.95, .05, .15);
+  $("c3a").style.transform = `scale(${1.6 - .6 * ease((t - 6) / .5)})`;
+  $("c3b").style.opacity = clamp((t - 6.8) / .4);
+  if (t >= 6 && t < 9) {
+    aura(bg, t, 540, 920, 760, 900, ease((t - 6) / .3) * (t > 8.6 ? clamp((9 - t) / .4) : 1));
+    onda(fx2, t, 6.0, 540, 900);
+    if (t < 7.2 || rnd(Math.floor(t * 8)) > .6) { const s = Math.floor(t * 10); rayo(fx2, rnd(s) * W, 0, 300 + rnd(s + 1) * 480, 850 + rnd(s + 2) * 200, s * 50, .9); }
+    brasas(fx, t, 1);
+  }
+
+  /* 4 · nivel de poder */
+  $("c4").style.opacity = win(t, 9.0, 11.95, .1, .15);
+  if (t >= 9 && t < 12) {
+    const p = easeIO((t - 9.15) / 2.1);
+    const n = Math.round(Math.pow(p, 1.6) * 9999);
+    $("poder").textContent = n.toLocaleString("es-AR");
+    $("poder").style.transform = `scale(${1 + (rnd(fr) - .5) * .04 * (1 - p)})`;
+    $("aro1").setAttribute("transform", `rotate(${t * 60} 400 400)`);
+    $("aro2").setAttribute("transform", `rotate(${-t * 140} 400 400)`);
+    $("poder-a").style.opacity = t > 11.1 ? (Math.floor(t * 8) % 2 ? 1 : .35) : 0;
+    aura(bg, t, 540, 960, 520, 700, .35 + p * .6, "azul");
+    if (t > 11.1) { const s = Math.floor(t * 14); rayo(fx2, 540, 960, rnd(s) > .5 ? 0 : W, rnd(s + 3) * H, s * 31, .7, "61,255,140"); }
+  }
+
+  /* 5 · la app */
+  const c5 = win(t, 12.0, 19.95, .12, .15);
+  $("c5").style.opacity = c5;
+  if (t >= 12 && t < 20) {
+    const idx = Math.min(3, Math.floor((t - 12) / 2));
+    const [nom, t0] = CLIPS[idx];
+    await ponerClip(nom, t - t0);
+    const d = t - t0;
+    $("cap").innerHTML = CAPS[nom][0] + "<br>" + CAPS[nom][1];
+    $("cap").style.transform = `translateY(${(1 - ease(d / .35)) * -40}px)`;
+    $("cap").style.opacity = clamp(d / .2);
+    $("phone").style.transform = `scale(${1.04 - .04 * ease(d / .5)}) translateY(${Math.sin(t * 1.3) * 8}px)`;
+    aura(bg, t, 540, 1190, 640, 1150, .55);
+    brasas(fx, t, .8);
+    if (d < .25) { const s = Math.floor(t * 20); rayo(fx2, rnd(s) * W, 0, rnd(s + 1) * W, H, s * 17, (1 - d / .25) * .9); }
+  }
+
+  /* 6 · tres poderes */
+  $("c6").style.opacity = win(t, 20.0, 23.95, .15, .15);
+  if (t >= 20 && t < 24) {
+    const merge = easeIO((t - 23.2) / .75);
+    [["o1", 20.3, 200], ["o2", 21.3, 540], ["o3", 22.3, 880]].forEach(([id, t0, x], i) => {
+      const el = $(id), k = ease((t - t0) / .4);
+      const c = getComputedStyle(el).getPropertyValue("--c").trim();
+      el.style.left = (x + (540 - x) * merge) + "px";
+      el.style.transform = `scale(${k * (1 - merge * .6) * (1 + Math.sin(t * 9 + i) * .03)})`;
+      el.style.background = `radial-gradient(circle, #fff 0%, ${c} 30%, ${c}55 55%, transparent 70%)`;
+      el.style.boxShadow = `0 0 ${80 * k}px ${c}`;
+      el.querySelector("b").style.opacity = k * (1 - merge);
+      if (t >= t0 && t < t0 + .8) onda(fx2, t, t0, x, 1085, i === 0 ? "255,200,80" : i === 1 ? "90,184,255" : "201,139,255");
+    });
+    if (t > 23.2) aura(bg, t, 540, 1085, 300 + merge * 400, 300 + merge * 500, merge);
+  }
+
+  /* 7 · rompé tu límite */
+  $("c7").style.opacity = win(t, 24.0, 28.3, .05, .2);
+  if (t >= 24 && t < 28.4) {
+    $("c7a").style.transform = `scale(${1.8 - .8 * ease((t - 24) / .45)})`;
+    $("c7b").style.opacity = clamp((t - 24.5) / .3);
+    $("c7c").style.opacity = clamp((t - 25.4) / .4);
+    aura(bg, t, 540, 960, 900, 1400, 1);
+    onda(fx2, t, 24.0, 540, 900);
+    brasas(fx, t, 1, 140);
+    const s = Math.floor(t * 6);
+    if (rnd(s * 7) > .35) rayo(fx2, rnd(s) > .5 ? 0 : W, rnd(s + 1) * 700, 540 + (rnd(s + 2) - .5) * 500, 700 + rnd(s + 3) * 600, s * 13, .85);
+  }
+
+  /* 8 · final */
+  $("c8").style.opacity = clamp((t - 28.4) / .15);
+  if (t >= 28.4) {
+    const d = t - 28.4;
+    $("logo").style.transform = `scale(${1.3 - .3 * ease(d / .5)})`;
+    $("c8a").style.opacity = clamp((d - .5) / .3);
+    $("c8a").style.transform = `scale(${1.2 - .2 * ease((d - .5) / .4)})`;
+    $("c8b").style.opacity = clamp((d - 1.1) / .4);
+    $("pill").style.opacity = clamp((d - 1.7) / .3);
+    $("pill").style.transform = `translateX(-50%) scale(${1 + Math.max(0, Math.sin((d - 1.7) * 4)) * .04})`;
+    aura(bg, t, 540, 960, 800, 1100, .55);
+    onda(fx2, t, 28.4, 540, 760);
+    brasas(fx, t, .9);
+  }
+
+  /* grano */
+  const im = gr.createImageData(270, 480);
+  for (let i = 0; i < im.data.length; i += 4) { const v = rnd(i * .37 + fr * 13.1) * 255; im.data[i] = im.data[i + 1] = im.data[i + 2] = v; im.data[i + 3] = 255; }
+  gr.putImageData(im, 0, 0);
+};
+</script>
+</body>
+</html>
