@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SISTEMA · Rutina y hábitos en tu celular</title>
-<meta name="description" content="Tu rutina serie por serie, hábitos que suman experiencia y niveles, y tu entrenador a un WhatsApp. Probala gratis 7 días.">
+<title>SISTEMA · Dejá de empezar el lunes</title>
+<meta name="description" content="Tu rutina armada por un entrenador, en una app que te sigue todos los días. Cuerpo, mente y espíritu. Probala gratis 7 días.">
 <meta name="theme-color" content="#0B0715">
 <meta property="og:title" content="SISTEMA · Dejá de empezar el lunes">
-<meta property="og:description" content="Rutina, hábitos y niveles en tu celular. Probala gratis 7 días.">
-<meta property="og:image" content="img/hoy.jpg">
+<meta property="og:description" content="Tu rutina armada por un entrenador, en una app que te sigue todos los días.">
+<meta property="og:image" content="img/promo-poster.jpg">
 <link rel="icon" href="icono-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="fuentes.css">
@@ -17,358 +17,200 @@
 :root {
   --void: #0B0715; --panel: #150E24; --panel2: #1E1433; --line: #332248;
   --bone: #F3EDE4; --dim: #9C8AB8; --dimmer: #645279;
-  --gold: #E9B75B; --jade: #4BD489; --sky: #7C9CFF; --ember: #FF6F4E;
+  --gold: #E9B75B; --jade: #4BD489;
   --bevel: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
   --bevel-s: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--void); color: var(--bone); font: 400 16px/1.55 Archivo, system-ui, -apple-system, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+body { margin: 0; background: var(--void); color: var(--bone); font: 400 16px/1.5 Archivo, system-ui, -apple-system, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; padding-bottom: 86px; }
 a { color: inherit; }
-.wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
-.k { margin: 0; font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
-h1, h2, h3 { font-family: "Chakra Petch", system-ui, sans-serif; font-weight: 700; line-height: 1.02; margin: 0; letter-spacing: -.01em; }
-h1 { font-size: clamp(44px, 9vw, 86px); }
-h2 { font-size: clamp(32px, 6vw, 52px); margin-top: 10px; }
-h3 { font-size: 22px; }
+.wrap { max-width: 1040px; margin: 0 auto; padding: 0 18px; }
+h1, h2, h3 { font-family: "Chakra Petch", system-ui, sans-serif; font-weight: 700; line-height: 1; margin: 0; }
 p { margin: 0; }
-.sub { margin-top: 18px; font-size: clamp(17px, 2.4vw, 20px); color: var(--dim); max-width: 34em; }
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: .28em; min-height: 54px; padding: 0 26px; font: 700 16px/1 Archivo, system-ui, sans-serif; text-decoration: none; color: var(--void); background: var(--gold); border: 0; clip-path: var(--bevel-s); cursor: pointer; transition: transform .15s ease, filter .15s ease; }
-.btn:hover { filter: brightness(1.08); }
+.k { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: .3em; min-height: 56px; padding: 0 24px; font: 700 17px/1 Archivo, system-ui, sans-serif; text-decoration: none; color: var(--void); background: var(--gold); border: 0; clip-path: var(--bevel-s); cursor: pointer; }
 .btn:active { transform: scale(.97); }
 .btn.alt { background: transparent; color: var(--bone); box-shadow: inset 0 0 0 1px var(--line); }
-.btn.jade { background: var(--jade); }
-.ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
-.nota { margin-top: 12px; font-size: 13px; color: var(--dimmer); }
+.btn.wa { background: #25D366; color: #06210f; }
 
-/* Encabezado */
-.top { position: sticky; top: 0; z-index: 10; background: rgba(11,7,21,.88); backdrop-filter: blur(10px); border-bottom: 1px solid #241A3A; }
-.top .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
-.logo { font: 700 20px/1 "Chakra Petch", system-ui, sans-serif; letter-spacing: .12em; text-decoration: none; }
-.logo small { display: block; margin-top: 3px; font: 600 9px/1 Archivo, sans-serif; letter-spacing: .2em; color: var(--dimmer); }
-.top .btn { min-height: 40px; padding: 0 16px; font-size: 14px; }
+/* portada */
+.hero { position: relative; padding: 26px 0 34px; overflow: hidden; }
+.hero::before { content: ""; position: absolute; right: -30%; top: -20%; width: 90vw; height: 90vw; max-width: 760px; max-height: 760px; background: radial-gradient(circle, rgba(233,183,91,.15), transparent 62%); pointer-events: none; }
+.hero .wrap { position: relative; display: grid; gap: 26px; align-items: center; }
+@media (min-width: 860px) { .hero .wrap { grid-template-columns: 1.1fr .9fr; } .hero { padding: 70px 0; } }
+.logo { display: flex; align-items: center; gap: 10px; font: 700 18px/1 "Chakra Petch", sans-serif; letter-spacing: .12em; }
+.logo i { display: inline-block; width: 26px; height: 26px; background: var(--gold); clip-path: var(--bevel-s); position: relative; font-style: normal; }
+.logo i::after { content: "★"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--void); }
+h1 { margin-top: 22px; font-size: clamp(46px, 11vw, 84px); letter-spacing: -.01em; }
+h1 span { color: var(--gold); }
+.sub { margin-top: 14px; font-size: clamp(17px, 2.4vw, 20px); color: var(--dim); max-width: 30em; }
+.ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.nota { margin-top: 10px; font-size: 13px; color: var(--dimmer); }
+.vid { justify-self: center; width: min(78vw, 330px); aspect-ratio: 9 / 16; border: 6px solid #241A3A; border-radius: 30px; overflow: hidden; background: #000; box-shadow: 0 30px 80px rgba(0,0,0,.6); position: relative; }
+.vid video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.vid button { position: absolute; right: 10px; bottom: 10px; width: 44px; height: 44px; border: 0; border-radius: 50%; background: rgba(0,0,0,.6); color: #fff; font-size: 18px; cursor: pointer; }
 
-/* Portada */
-.hero { position: relative; padding: 56px 0 40px; overflow: hidden; }
-.hero::before { content: ""; position: absolute; inset: -20% -10% auto auto; width: 70vw; height: 70vw; max-width: 720px; max-height: 720px; background: radial-gradient(circle, rgba(233,183,91,.16), transparent 62%); pointer-events: none; }
-.hero .wrap { position: relative; display: grid; gap: 40px; align-items: center; }
-@media (min-width: 900px) { .hero .wrap { grid-template-columns: 1.1fr .9fr; } .hero { padding: 90px 0 70px; } }
-.hero h1 span { color: var(--gold); }
-.fones { position: relative; height: 520px; }
-.fon { position: absolute; width: 230px; border: 6px solid #241A3A; border-radius: 30px; overflow: hidden; background: var(--panel); box-shadow: 0 30px 80px rgba(0,0,0,.55); }
-.fon img { display: block; width: 100%; }
-.fon.a { left: 50%; top: 0; transform: translateX(-80%) rotate(-5deg); }
-.fon.b { left: 50%; top: 50px; transform: translateX(-12%) rotate(4deg); }
-@media (max-width: 420px) { .fones { height: 440px; } .fon { width: 190px; } }
+/* beneficios */
+.ben { display: grid; gap: 10px; padding: 8px 0 40px; }
+@media (min-width: 760px) { .ben { grid-template-columns: repeat(3, 1fr); } }
+.ben div { padding: 20px 20px 22px; background: var(--panel); border-left: 4px solid var(--c); clip-path: var(--bevel); }
+.ben b { display: block; font: 700 21px/1.15 "Chakra Petch", sans-serif; }
+.ben p { margin-top: 6px; color: var(--dim); font-size: 15px; }
 
-/* Franja */
-.franja { border-block: 1px solid #241A3A; background: var(--panel); }
-.franja .wrap { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; padding: 0; }
-@media (min-width: 760px) { .franja .wrap { grid-template-columns: repeat(4, 1fr); } }
-.franja div { padding: 22px 20px; }
-.franja b { display: block; font: 700 26px/1 "Chakra Petch", sans-serif; color: var(--gold); }
-.franja span { display: block; margin-top: 6px; font-size: 13px; color: var(--dim); }
-
-section.bloque { padding: 80px 0; }
-.grid { display: grid; gap: 14px; margin-top: 36px; }
-@media (min-width: 760px) { .grid.g3 { grid-template-columns: repeat(3, 1fr); } .grid.g2 { grid-template-columns: repeat(2, 1fr); } }
-.card { padding: 24px 22px 26px; background: var(--panel); border-left: 4px solid var(--c, var(--gold)); clip-path: var(--bevel); }
-.card p { margin-top: 10px; color: var(--dim); }
-.card .ico { font: 700 13px/1 "Chakra Petch", sans-serif; letter-spacing: .14em; color: var(--c, var(--gold)); }
-.card h3 { margin-top: 12px; }
-
-/* Funciones con captura */
-.feat { display: grid; gap: 32px; align-items: center; margin-top: 70px; }
-@media (min-width: 860px) { .feat { grid-template-columns: 1fr 1fr; gap: 60px; } .feat.inv .feat-img { order: 2; } }
-.feat-img { display: flex; justify-content: center; }
-.feat-img .fon { position: static; width: 260px; transform: rotate(-2deg); }
-.feat.inv .feat-img .fon { transform: rotate(2deg); }
-.feat ul { margin: 18px 0 0; padding: 0; list-style: none; }
-.feat li { position: relative; padding: 8px 0 8px 26px; color: var(--dim); border-top: 1px solid #241A3A; }
-.feat li::before { content: ""; position: absolute; left: 0; top: 15px; width: 10px; height: 10px; background: var(--c, var(--gold)); clip-path: polygon(3px 0, 100% 0, 100% calc(100% - 3px), calc(100% - 3px) 100%, 0 100%, 0 3px); }
-.feat li b { color: var(--bone); font-weight: 600; }
-
-/* Pasos */
-.pasos { counter-reset: p; }
-.pasos .card::before { counter-increment: p; content: "0" counter(p); display: block; font: 700 40px/1 "Chakra Petch", sans-serif; color: var(--c, var(--gold)); }
-
-/* Planes */
-.planes { display: grid; gap: 14px; margin-top: 36px; }
-@media (min-width: 860px) { .planes { grid-template-columns: repeat(3, 1fr); align-items: stretch; } }
-.plan { position: relative; display: flex; flex-direction: column; padding: 30px 24px 26px; background: var(--panel); border: 1px solid var(--line); clip-path: var(--bevel); }
+/* planes */
+#planes { padding: 40px 0; border-top: 1px solid #241A3A; }
+h2 { margin-top: 8px; font-size: clamp(32px, 7vw, 48px); }
+.lista { display: grid; gap: 12px; margin-top: 24px; }
+@media (min-width: 860px) { .lista { grid-template-columns: repeat(3, 1fr); } }
+.plan { position: relative; display: flex; flex-direction: column; padding: 26px 22px 22px; background: var(--panel); border: 1px solid var(--line); clip-path: var(--bevel); }
 .plan.top { border-color: var(--gold); background: linear-gradient(160deg, rgba(233,183,91,.14), var(--panel) 55%); }
 .plan .tag { position: absolute; top: 0; left: 0; padding: 5px 12px 5px 16px; font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--void); background: var(--gold); }
-.plan h3 { font-size: 24px; }
-.plan .precio { margin-top: 14px; font: 700 44px/1 "Chakra Petch", sans-serif; color: var(--gold); }
-.plan .det { margin-top: 8px; font-size: 14px; color: var(--dim); }
-.plan ul { flex: 1; margin: 20px 0 22px; padding: 0; list-style: none; font-size: 14px; color: var(--dim); }
-.plan li { padding: 6px 0; border-top: 1px solid #241A3A; }
+.plan h3 { font-size: 22px; }
+.plan .precio { margin-top: 10px; font: 700 42px/1 "Chakra Petch", sans-serif; color: var(--gold); }
+.plan .det { margin-top: 6px; font-size: 14px; color: var(--dim); }
+.plan ul { flex: 1; margin: 16px 0 18px; padding: 0; list-style: none; font-size: 14px; color: var(--dim); }
+.plan li { padding: 5px 0; }
 .plan li::before { content: "✓  "; color: var(--jade); font-weight: 700; }
 .plan .btn { width: 100%; }
 .plan:not(.top) .btn { background: var(--panel2); color: var(--bone); box-shadow: inset 0 0 0 1px var(--line); }
+.pasos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 18px; counter-reset: p; }
+.pasos div { padding: 14px 10px; text-align: center; background: rgba(255,255,255,.03); font-size: 13px; color: var(--dim); }
+.pasos div::before { counter-increment: p; content: counter(p); display: block; font: 700 26px/1 "Chakra Petch", sans-serif; color: var(--gold); margin-bottom: 6px; }
+.pagado { margin-top: 14px; text-align: center; }
 
-/* Vender */
-.vender { background: linear-gradient(180deg, var(--void), #0F2318 140%); border-top: 1px solid #1d3a2a; }
-.vender .k { color: var(--jade); }
-.gana { display: grid; gap: 14px; margin-top: 30px; }
-@media (min-width: 760px) { .gana { grid-template-columns: repeat(3, 1fr); } }
-.gana div { padding: 22px; background: rgba(75,212,137,.07); border: 1px solid rgba(75,212,137,.25); clip-path: var(--bevel); }
-.gana b { display: block; font: 700 34px/1 "Chakra Petch", sans-serif; color: var(--jade); }
-.gana span { display: block; margin-top: 8px; font-size: 14px; color: var(--dim); }
-
-/* Preguntas */
-details { padding: 18px 0; border-top: 1px solid #241A3A; }
+/* preguntas */
+.faq { padding: 30px 0 40px; }
+details { padding: 14px 0; border-top: 1px solid #241A3A; }
 details:last-child { border-bottom: 1px solid #241A3A; }
-summary { cursor: pointer; list-style: none; font: 600 18px/1.3 Archivo, sans-serif; display: flex; justify-content: space-between; gap: 16px; }
+summary { cursor: pointer; list-style: none; font-weight: 600; font-size: 17px; display: flex; justify-content: space-between; gap: 12px; }
 summary::-webkit-details-marker { display: none; }
-summary::after { content: "+"; color: var(--gold); font: 700 22px/1 "Chakra Petch", sans-serif; }
+summary::after { content: "+"; color: var(--gold); font: 700 20px/1 "Chakra Petch", sans-serif; }
 details[open] summary::after { content: "–"; }
-details p { margin-top: 10px; color: var(--dim); max-width: 46em; }
+details p { margin-top: 8px; color: var(--dim); }
 
-.cierre { padding: 90px 0 110px; text-align: center; }
-.cierre .ctas { justify-content: center; }
-footer { padding: 30px 0 40px; border-top: 1px solid #241A3A; color: var(--dimmer); font-size: 13px; }
+footer { padding: 24px 0 30px; border-top: 1px solid #241A3A; font-size: 13px; color: var(--dimmer); }
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+footer a { color: var(--jade); font-weight: 600; text-decoration: none; }
 
-.rev { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.3,1); }
-.rev.in { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) { .rev { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+/* barra fija */
+.fija { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px)); background: rgba(11,7,21,.94); backdrop-filter: blur(10px); border-top: 1px solid #241A3A; display: flex; gap: 8px; align-items: center; justify-content: center; transform: translateY(110%); transition: transform .3s ease; }
+.fija.si { transform: none; }
+.fija .btn { flex: 1; max-width: 340px; min-height: 52px; }
+.fija small { display: none; color: var(--dim); }
+@media (min-width: 760px) { .fija small { display: block; } }
 </style>
 </head>
 <body>
 
-<header class="top">
-  <div class="wrap">
-    <a class="logo" href="#"><span data-c="producto">SISTEMA</span><small>POR <span data-c="marcaMay">BRIAN PONCE</span></small></a>
-    <a class="btn" data-app href="./">Probar gratis</a>
-  </div>
-</header>
-
 <section class="hero">
   <div class="wrap">
     <div>
-      <p class="k">Rutina · hábitos · niveles</p>
+      <p class="logo"><i></i><span data-c="producto">SISTEMA</span></p>
       <h1>Dejá de empezar <span>el lunes.</span></h1>
-      <p class="sub">Tu rutina de gimnasio serie por serie, tus hábitos convertidos en misiones que suben de nivel, y tu entrenador a un WhatsApp. Todo en el celular, sin cuentas ni contraseñas.</p>
+      <p class="sub">Tu rutina armada por <b data-c="marca">Brian Ponce</b>, en una app que te sigue todos los días: entrenamiento, hábitos y comidas. Cuerpo, mente y espíritu.</p>
       <div class="ctas">
-        <a class="btn" data-app href="./">Probar gratis <span data-c="prueba">7</span> días</a>
-        <a class="btn alt" href="#planes">Ver planes</a>
+        <a class="btn" href="#planes">Quiero mi plan</a>
+        <a class="btn alt" data-prueba href="./">Probar <span data-c="prueba">7</span> días gratis</a>
       </div>
-      <p class="nota">Sin tarjeta. Si te sirve, después elegís un plan.</p>
+      <p class="nota">Desde <b data-c="desde">$5.825</b> por mes. Sin descargar nada.</p>
     </div>
-    <div class="fones" aria-hidden="true">
-      <div class="fon a"><img src="img/hoy.jpg" alt=""></div>
-      <div class="fon b"><img src="img/sis.jpg" alt=""></div>
+    <div class="vid">
+      <video id="v" src="promo.mp4" poster="img/promo-poster.jpg" autoplay muted loop playsinline preload="metadata"></video>
+      <button type="button" id="snd" aria-label="Activar sonido">🔇</button>
     </div>
   </div>
 </section>
 
-<div class="franja">
-  <div class="wrap">
-    <div><b>4</b><span>secciones: Hoy, Armar, Entreno y Sistema</span></div>
-    <div><b>x2</b><span>multiplicador de experiencia con la racha</span></div>
-    <div><b>11</b><span>rangos, de Recluta a Leyenda</span></div>
-    <div><b>0</b><span>cuentas, mails o contraseñas</span></div>
-  </div>
+<div class="wrap ben">
+  <div style="--c:#E9B75B"><b>Tu rutina, hecha a medida</b><p>No una plantilla: te la armo según tu objetivo, tus días y lo que tenés. Te llega directo a la app.</p></div>
+  <div style="--c:#7C9CFF"><b>Una app que no te suelta</b><p>Anotás cada serie, el descanso se cronometra solo y la app te avisa cuando aflojás.</p></div>
+  <div style="--c:#4BD489"><b>Hábitos que suben de nivel</b><p>Entrenar, leer, orar, dormir bien: cada misión suma experiencia. De Recluta a Leyenda.</p></div>
 </div>
 
-<section class="bloque">
-  <div class="wrap">
-    <p class="k">Qué tiene</p>
-    <h2>No es otra lista de tildes.</h2>
-    <p class="sub">Las apps de hábitos se abandonan a las dos semanas porque marcar casilleros aburre. SISTEMA convierte tu día en un juego que querés ganar.</p>
-
-    <div class="feat">
-      <div class="feat-img"><div class="fon"><img src="img/ent2.jpg" alt="Registro de series en la sección Entreno" loading="lazy"></div></div>
-      <div style="--c: var(--sky)">
-        <p class="k" style="color: var(--sky)">Entreno</p>
-        <h2>Cada serie, anotada.</h2>
-        <ul>
-          <li><b>Rutina armada por día</b>, con activación, superseries y cardio.</li>
-          <li><b>Te muestra lo que hiciste la vez pasada</b> para que siempre subas un poco.</li>
-          <li><b>Temporizador de descanso</b> con aviso, aunque bloquees el celular.</li>
-          <li><b>Calculadora de discos</b> y récords personales automáticos.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="feat inv">
-      <div class="feat-img"><div class="fon"><img src="img/rango.jpg" alt="Nivel y rango en la sección Sistema" loading="lazy"></div></div>
-      <div style="--c: var(--gold)">
-        <p class="k">Sistema</p>
-        <h2>Tus hábitos suben de nivel.</h2>
-        <ul>
-          <li><b>Misiones diarias</b> que suman experiencia: despertarte, entrenar, leer, tomar agua.</li>
-          <li><b>Racha con multiplicador</b>: cuanto más constante, más rápido subís.</li>
-          <li><b>11 rangos</b>, de Recluta a Leyenda. Cada uno cuesta más que el anterior.</li>
-          <li><b>Resumen de la semana</b> listo para compartir en historias.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="feat">
-      <div class="feat-img"><div class="fon"><img src="img/fugas.jpg" alt="Análisis de fugas entre hábitos" loading="lazy"></div></div>
-      <div style="--c: var(--ember)">
-        <p class="k" style="color: var(--ember)">Fugas</p>
-        <h2>Te dice qué te está frenando.</h2>
-        <ul>
-          <li><b>Cruza tus hábitos entre sí</b> y encuentra cuál arrastra a los demás.</li>
-          <li><b>"Los días que no hacés la cama, entrenás 59 puntos menos."</b> Datos tuyos, no consejos genéricos.</li>
-          <li><b>Tu eslabón maestro</b>: el único hábito que conviene blindar primero.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="bloque" style="padding-top: 20px">
-  <div class="wrap">
-    <p class="k">Cómo arrancás</p>
-    <h2>Tres minutos y estás adentro.</h2>
-    <div class="grid g3 pasos">
-      <div class="card"><h3>Abrí el link</h3><p>Funciona en cualquier celular. La instalás en la pantalla de inicio como una app, sin pasar por ninguna tienda.</p></div>
-      <div class="card" style="--c: var(--sky)"><h3>Armá tu rutina</h3><p>Contestás 8 preguntas (objetivo, días, equipo) y te arma la semana. O usás la que te pasa tu entrenador.</p></div>
-      <div class="card" style="--c: var(--jade)"><h3>Sumá experiencia</h3><p>Cada serie y cada hábito cuentan. Mirás tu racha crecer y tu rango subir.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="bloque" id="planes" style="padding-top: 20px">
+<section id="planes">
   <div class="wrap">
     <p class="k">Planes</p>
-    <h2>Menos que una clase suelta.</h2>
-    <p class="sub">Un plan online con entrenador cuesta entre $20.000 y $40.000 por mes. Acá tenés tu rutina personalizada, la app completa y a <span data-c="marca">Brian Ponce</span> por WhatsApp por una fracción.</p>
-    <div class="planes" id="lista-planes"></div>
-    <p class="nota">Pagás con Mercado Pago o transferencia. Apenas se acredita te llega tu código de acceso por WhatsApp.</p>
+    <h2>Elegí y arrancá hoy.</h2>
+    <div class="lista" id="lista"></div>
+    <div class="pasos"><div>Pagás con Mercado Pago</div><div>Me mandás el comprobante</div><div>Te llega tu acceso por WhatsApp</div></div>
+    <p class="pagado"><a class="btn wa" id="comprobante" href="#">Ya pagué · mandar comprobante</a></p>
   </div>
 </section>
 
-<section class="bloque vender" id="vender">
+<section class="faq">
   <div class="wrap">
-    <p class="k">Ganá plata recomendando</p>
-    <h2>Vendé SISTEMA y cobrá el <span data-c="comision">20</span>% <span data-c="siempre">para siempre</span>.</h2>
-    <p class="sub">Si entrenás, tenés grupo de amigos en el gym o una cuenta con seguidores, recomendala con tu link. Por cada persona que se suma te llevás el <span data-c="comision">20</span>% <span data-c="cadapago">de cada pago que haga, mientras siga renovando</span>. Diez clientes que traés son una entrada fija todos los meses.</p>
-    <div class="gana" id="gana"></div>
-    <div class="ctas">
-      <a class="btn jade" data-wa="Hola! Quiero vender SISTEMA y ganar la comisión. ¿Cómo arranco?" href="#">Quiero vender SISTEMA</a>
-    </div>
-    <p class="nota">Si ya usás la app, tu link está en la pantalla Hoy, en la tarjeta "Recomendá y ganá".</p>
-  </div>
-</section>
-
-<section class="bloque">
-  <div class="wrap">
-    <div class="card" style="--c: var(--sky); padding: 34px 28px">
-      <p class="k" style="color: var(--sky)">¿Sos entrenador?</p>
-      <h2>Tu propia app, con tu nombre.</h2>
-      <p style="font-size: 17px; max-width: 40em">Dale a tus alumnos SISTEMA con tu marca, tus colores, tu WhatsApp y tus rutinas. Vos generás los códigos de acceso y cobrás lo que quieras. Sin programar nada.</p>
-      <div class="ctas"><a class="btn alt" data-wa="Hola! Soy entrenador y quiero SISTEMA con mi marca para mis alumnos." href="#">Quiero mi app</a></div>
-    </div>
-  </div>
-</section>
-
-<section class="bloque" style="padding-top: 20px">
-  <div class="wrap">
-    <p class="k">Preguntas</p>
-    <h2>Lo que te estás preguntando.</h2>
-    <div style="margin-top: 30px">
-      <details><summary>¿Tengo que bajar algo de la tienda?</summary><p>No. Abrís el link y desde el menú del navegador elegís "Instalar app" o "Agregar a pantalla de inicio". Queda con su ícono como cualquier app.</p></details>
-      <details><summary>¿Funciona sin internet?</summary><p>Sí. Una vez abierta, anotás tus series y hábitos aunque estés sin señal en el gimnasio.</p></details>
-      <details><summary>¿Dónde quedan mis datos?</summary><p>En tu celular. No hay cuentas ni servidores. Desde Ajustes podés hacer un respaldo y pasarlo a otro teléfono.</p></details>
-      <details><summary>¿Qué pasa cuando termina la prueba?</summary><p>Elegís un plan y seguís donde estabas. Todo lo que anotaste durante la prueba queda guardado.</p></details>
-      <details><summary>¿Puedo cancelar el plan?</summary><p>Sí. Los planes de 3 meses y anual se renuevan solos por Mercado Pago, y los cancelás cuando quieras desde ahí. No hay permanencia.</p></details>
-      <details><summary>¿La rutina es personalizada de verdad?</summary><p>Sí. Al sumarte completás un formulario corto (objetivo, días, lesiones, con qué equipo contás) y <span data-c="marca">Brian Ponce</span> te arma la rutina. Te llega directo a la app.</p></details>
-      <details><summary>¿Sirve si recién arranco?</summary><p>Sí. El armador te pregunta tu nivel y tus días disponibles, y te arma una rutina acorde. Si querés una hecha a medida, la pedís por WhatsApp.</p></details>
-    </div>
-  </div>
-</section>
-
-<section class="cierre">
-  <div class="wrap">
-    <p class="k">Empezá hoy</p>
-    <h2>El lunes ya fue.<br>Arrancá ahora.</h2>
-    <div class="ctas">
-      <a class="btn" data-app href="./">Probar gratis <span data-c="prueba">7</span> días</a>
-      <a class="btn alt" href="#planes">Ver planes</a>
-    </div>
+    <details><summary>¿Tengo que bajar algo?</summary><p>No. Abrís el link y la instalás en la pantalla de inicio como una app, sin pasar por ninguna tienda. Funciona sin internet en el gimnasio.</p></details>
+    <details><summary>¿Y si nunca entrené?</summary><p>Mejor. La rutina la armo según tu nivel, y en la app tenés cada ejercicio con series, repeticiones y descanso.</p></details>
+    <details><summary>¿Puedo cancelar?</summary><p>Sí, cuando quieras, desde Mercado Pago. No hay permanencia.</p></details>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
     <span><span data-c="producto">SISTEMA</span> · <span data-c="marca">Brian Ponce</span></span>
-    <span>Guía general de entrenamiento, no indicación médica.</span>
+    <a href="vendedores.html">¿Querés ganar plata vendiendo SISTEMA? →</a>
   </div>
 </footer>
+
+<div class="fija" id="fija"><small>Desde <b data-c="desde">$5.825</b>/mes</small><a class="btn" href="#planes">Elegir mi plan</a></div>
 
 <script>
 (function () {
   "use strict";
   var C = window.CONFIG || {};
+  var A = C.acceso || {};
   var planes = C.planes || [];
-  var rec = C.recomendados || {};
   var wa = String(C.whatsapp || "").split("?")[0];
   var corto = String(C.marca || "").split(" ")[0];
   var plata = function (n) { return "$" + Math.round(n).toLocaleString("es-AR"); };
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
 
-  /* Recomendado: si llegó con ?ref=, queda guardado para la app (mismo sitio) */
+  /* El vendedor viene en el link (?ref=nombre) y viaja en cada mensaje */
   var ref = "";
-  var m = /[?&]ref=([^&#]+)/i.exec(location.search || "");
   try {
-    if (m) {
-      ref = decodeURIComponent(m[1]).replace(/[^\w\-áéíóúñÁÉÍÓÚÑ]/g, "").slice(0, 30);
-      if (ref && !localStorage.getItem("acceso:ref")) localStorage.setItem("acceso:ref", ref);
-    }
+    var m = /[?&]ref=([^&#]+)/i.exec(location.search || "");
+    if (m) { ref = decodeURIComponent(m[1]).replace(/[^\w\-áéíóúñÁÉÍÓÚÑ]/g, "").slice(0, 30); if (ref && !localStorage.getItem("acceso:ref")) localStorage.setItem("acceso:ref", ref); }
     ref = localStorage.getItem("acceso:ref") || ref;
   } catch (e) {}
   var waLink = function (txt) { return wa ? wa + "?text=" + encodeURIComponent(txt + (ref ? "\nMe recomendó: " + ref : "")) : "#"; };
 
-  var vals = {
-    producto: C.producto || "SISTEMA",
-    marca: C.marca || "",
-    marcaMay: String(C.marca || "").toUpperCase(),
-    prueba: (C.acceso || {}).prueba || 7,
-    comision: rec.comision || 20,
-    siempre: rec.recurrente ? "para siempre" : "",
-    cadapago: rec.recurrente ? "de cada pago que haga, mientras siga renovando" : "de su primer pago"
-  };
-  document.querySelectorAll("[data-c]").forEach(function (el) { var v = vals[el.getAttribute("data-c")]; if (v != null) el.textContent = v; });
+  /* precio mensual más bajo, para "desde" */
+  var desde = planes.filter(function (p) { return p.meses > 0; }).map(function (p) { return p.precio / p.meses; }).sort(function (a, b) { return a - b; })[0];
+  var vals = { producto: C.producto || "SISTEMA", marca: C.marca || "", prueba: A.prueba || 7, desde: desde ? plata(desde) : "" };
+  document.querySelectorAll("[data-c]").forEach(function (el) { var v = vals[el.getAttribute("data-c")]; if (v) el.textContent = v; });
   if (C.acento) document.documentElement.style.setProperty("--gold", C.acento);
-  document.title = vals.producto + " · Rutina y hábitos en tu celular";
-  document.querySelectorAll("[data-app]").forEach(function (a) { a.href = "./" + (ref ? "?ref=" + encodeURIComponent(ref) : ""); });
-  document.querySelectorAll("[data-wa]").forEach(function (a) { a.href = waLink(a.getAttribute("data-wa")); a.target = "_blank"; a.rel = "noopener"; });
-  if (!(C.acceso || {}).prueba) document.querySelectorAll("[data-app]").forEach(function (a) { a.textContent = "Abrir la app"; });
 
-  var incluye = ["Rutina serie por serie", "Hábitos, niveles y rachas", "Análisis de fugas", "Contacto directo con " + esc(corto)];
-  var recurrente = !!rec.recurrente;
-  var lista = document.getElementById("lista-planes");
-  lista.innerHTML = planes.map(function (p) {
+  /* prueba: por WhatsApp (deja el contacto) o directo a la app */
+  document.querySelectorAll("[data-prueba]").forEach(function (a) {
+    if (!A.prueba) { a.remove(); return; }
+    if (A.pruebaPorWhatsApp && wa) { a.href = waLink("Hola " + corto + "! Quiero probar " + vals.producto + " " + A.prueba + " días gratis."); a.target = "_blank"; a.rel = "noopener"; }
+    else a.href = "./" + (ref ? "?ref=" + encodeURIComponent(ref) : "");
+  });
+
+  document.getElementById("lista").innerHTML = planes.map(function (p) {
     var link = p.pago || waLink("Hola " + corto + "! Quiero el plan " + p.nombre + " (" + plata(p.precio) + ").");
-    return '<div class="plan rev' + (p.destacado ? " top" : "") + '">' + (p.destacado ? '<span class="tag">' + esc(p.destacado) + "</span>" : "") +
+    return '<div class="plan' + (p.destacado ? " top" : "") + '">' + (p.destacado ? '<span class="tag">' + esc(p.destacado) + "</span>" : "") +
       "<h3>" + esc(p.nombre) + '</h3><p class="precio">' + plata(p.precio) + '</p><p class="det">' + esc(p.detalle || "") + "</p>" +
-      "<ul>" + (p.incluye || incluye).map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" +
-      '<a class="btn" href="' + esc(link) + '" target="_blank" rel="noopener">Quiero este plan</a></div>';
+      "<ul>" + (p.incluye || []).slice(0, 4).map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" +
+      '<a class="btn" href="' + esc(link) + '" target="_blank" rel="noopener">Pagar ' + esc(p.nombre.toLowerCase()) + "</a></div>";
   }).join("");
+  var comp = document.getElementById("comprobante");
+  comp.href = waLink("Hola " + corto + "! Ya pagué " + vals.producto + ". Te mando el comprobante para recibir mi acceso.");
+  comp.target = "_blank"; comp.rel = "noopener";
 
-  var gana = document.getElementById("gana");
-  var pct = (rec.comision || 0) / 100;
-  if (!rec.activo || !planes.length) { document.getElementById("vender").hidden = true; }
-  else {
-    gana.innerHTML = planes.map(function (p) {
-      var cada = p.meses === 3 ? "cada 3 meses" : p.meses === 12 ? "cada año" : p.meses ? "cada " + p.meses + " meses" : "";
-      return "<div><b>" + plata(p.precio * pct) + "</b><span>por cada plan " + esc(p.nombre.toLowerCase()) + " que vendés" +
-        (recurrente && cada ? ", y otra vez " + cada + " mientras renueve" : "") + "</span></div>";
-    }).join("");
+  /* sonido del video */
+  var v = document.getElementById("v"), snd = document.getElementById("snd");
+  snd.addEventListener("click", function () { v.muted = !v.muted; if (!v.muted) { v.currentTime = 0; v.play(); } snd.textContent = v.muted ? "🔇" : "🔊"; });
+
+  /* barra fija: aparece al bajar, se esconde en los planes */
+  var fija = document.getElementById("fija"), pl = document.getElementById("planes");
+  function barra() {
+    var r = pl.getBoundingClientRect();
+    var enPlanes = r.top < innerHeight * .7 && r.bottom > 0;
+    fija.classList.toggle("si", scrollY > 280 && !enPlanes);
   }
-
-  /* Aparecen al entrar en pantalla */
-  var els = document.querySelectorAll(".card, .feat, .plan, .gana div, .franja div");
-  els.forEach(function (el) { el.classList.add("rev"); });
-  if ("IntersectionObserver" in window) {
-    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }); }, { threshold: .12 });
-    els.forEach(function (el) { io.observe(el); });
-  } else els.forEach(function (el) { el.classList.add("in"); });
+  addEventListener("scroll", barra, { passive: true }); barra();
 })();
 </script>
 </body>

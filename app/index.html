@@ -607,6 +607,48 @@ button.g-link.boton { display: block; width: 100%; margin-top: 20px; padding: 6p
 <canvas id="rt-fx" aria-hidden="true"></canvas>
 <script src="config.js"></script>
 <script>
+/* Respaldo: si config.js no se subió o no cargó, la app igual funciona
+   con estos valores (son los mismos de config.js). */
+if (!window.CONFIG) window.CONFIG = /*CFG*/{
+  producto: "SISTEMA",                              /* nombre que ve el cliente */
+  marca: "Brian Ponce",                             /* quién lo entrena */
+  tel: "11 7115-8427",                              /* teléfono visible */
+  whatsapp: "https://wa.me/5491171158427",          /* link de WhatsApp */
+  acento: "#E9B75B",                                /* color de la marca */
+  sitio: "https://brian-ponce.netlify.app/",        /* dirección de la app, para los links de recomendación */
+  sistema: "#sistema",
+
+  acceso: {
+    libre: false,                                   /* true = sin código, entra cualquiera */
+    secreto: "ponce-2026-xK7m",                     /* firma de los códigos: cambialo y los viejos dejan de servir */
+    admin: "PONCE-2026",                            /* escribilo en la pantalla de acceso para abrir el panel */
+    bloqueados: [],                                 /* seriales dados de baja, ej: ["AB", "AC"] */
+    prueba: 7,                                      /* días de prueba gratis (0 = sin prueba) */
+    pruebaPorWhatsApp: true,                        /* true = para activarla te escriben y les pasás la palabra */
+    palabraPrueba: "ARRANCO"                        /* la palabra que mandás por WhatsApp para activar la prueba */
+  },
+
+  /* Precios en pesos. Tienen que coincidir con lo que cobra cada link de
+     Mercado Pago. "incluye" es la lista que se ve en la tarjeta del plan. */
+  planes: [
+    { id: "trimestral", nombre: "3 meses",      precio: 24900,  meses: 3,  detalle: "sale $8.300 por mes · se renueva cada 3 meses", pago: "https://mpago.la/2SDK5Ty",
+      incluye: ["Rutina personalizada armada por Brian", "Registro serie por serie y cronómetro", "Hábitos, niveles y rachas", "Plan de calorías y proteína", "Consultas por WhatsApp"] },
+    { id: "anual",      nombre: "Anual",        precio: 69900,  meses: 12, detalle: "sale $5.825 por mes · ahorrás 30%",              pago: "https://mpago.la/2cdoPet", destacado: "Más elegido",
+      incluye: ["Todo lo del plan de 3 meses", "Rutina nueva cada 3 meses", "Revisión de tu progreso cada mes", "Prioridad en WhatsApp"] },
+    { id: "vida",       nombre: "Para siempre", precio: 119900, meses: 0,  detalle: "un solo pago · acceso de por vida",              pago: "https://mpago.la/28ED6Ht",
+      incluye: ["Todo lo del plan anual", "Sin cuotas, nunca más", "Todas las funciones nuevas que salgan"] }
+  ],
+
+  /* Recomendados: quien trae un cliente se lleva este % de cada pago
+     que haga ese cliente mientras siga renovando (recurrente: true),
+     o solo del primero (recurrente: false). */
+  recomendados: {
+    activo: true,
+    comision: 20,
+    recurrente: true,
+    cuandoPago: "a fin de cada mes, por Mercado Pago o transferencia"   /* se lo muestra a los vendedores */
+  }
+}/*FIN-CFG*/;
 document.documentElement.style.setProperty("--acento", window.CONFIG.acento);
 document.title = (window.CONFIG.producto_titulo || "Rutina y Sistema") + " · " + window.CONFIG.marca;
 </script>
@@ -4100,6 +4142,8 @@ react-dom/cjs/react-dom.production.min.js:
   var REC = (window.CONFIG || {}).recomendados || {};
   var SITIO = (window.CONFIG || {}).sitio || (location.origin + location.pathname);
   var DIAS_PRUEBA = parseInt(CFG.prueba, 10) || 0;
+  var PRUEBA_WA = CFG.pruebaPorWhatsApp === true && !!WA;
+  var PALABRA = String(CFG.palabraPrueba || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
   var KEY_PRUEBA = "acceso:prueba";
   var KEY_REF = "acceso:ref";
   var KEY_MIREF = "acceso:miref";
@@ -4126,6 +4170,17 @@ react-dom/cjs/react-dom.production.min.js:
     if (p) return p.precio;
     var men = PLANES.filter(function (x) { return x.meses === 1; })[0];
     return men && meses > 0 ? men.precio * meses : 0;
+  }
+  function msgPrueba() {
+    var ref = refGuardado();
+    return "Hola " + nombreCorto() + "! Quiero probar " + ((window.CONFIG || {}).producto || "la app") + " " + DIAS_PRUEBA + " días gratis." + (ref ? "\nMe recomendó: " + ref : "");
+  }
+  function empezarPrueba() {
+    try { localStorage.setItem(KEY_PRUEBA, String(Date.now())); } catch (e) {}
+    var tiene = "";
+    try { tiene = localStorage.getItem("rutina-cliente-nombre") || ""; } catch (e) {}
+    if (tiene) { abrir(true); return; }
+    vista = "nombre"; pintar();
   }
   function msgCompra(plan) {
     var ref = refGuardado();
@@ -4224,8 +4279,8 @@ react-dom/cjs/react-dom.production.min.js:
             '<span class="g-pd">' + (p.detalle || "") + "</span></a>";
         }).join("") + "</div>" +
         '<p class="g-s chica">Todos incluyen tu rutina personalizada armada por ' + MARCA + '.</p>' +
-        (PLANES.some(function (p) { return p.pago; }) ? '<p class="g-s chica">Pagás con Mercado Pago. Después tocá abajo y te mando tu código al toque.</p>' +
-          '<a class="g-btn chico" href="' + waLink(msgCompra(null).replace("Quiero mi acceso a la app.", "Ya pagué, ¿me pasás mi código?")) + '" target="_blank" rel="noopener">Ya pagué · pedir mi código</a>' :
+        (PLANES.some(function (p) { return p.pago; }) ? '<p class="g-s chica">1. Pagás con Mercado Pago · 2. Me mandás el comprobante · 3. Te llega tu código por WhatsApp.</p>' +
+          '<a class="g-btn chico" href="' + waLink(msgCompra(null).replace("Quiero mi acceso a la app.", "Ya pagué. Te mando el comprobante para recibir mi código.")) + '" target="_blank" rel="noopener">Ya pagué · mandar comprobante</a>' :
           '<p class="g-s chica">Tocá un plan y coordinamos el pago por WhatsApp. Apenas se acredita te paso tu código.</p>') +
         '<div class="g-row"><button type="button" class="g-btn chico" id="g-tengo">Ya tengo un código</button>' +
         (desdeApp ? '<button type="button" class="g-btn chico" id="g-app">Volver a la app</button>' : "") + "</div>";
@@ -4275,8 +4330,11 @@ react-dom/cjs/react-dom.production.min.js:
         '<p class="g-msg' + (tipo === "ok" ? " ok" : "") + '">' + (msg || "") + "</p>";
       if (DIAS_PRUEBA && !pruebaInicio()) {
         h += '<div class="g-o"><span>o</span></div>' +
-          '<button type="button" class="g-btn alt" id="g-prueba">Probar gratis ' + DIAS_PRUEBA + ' días</button>' +
-          '<p class="g-s chica">Sin tarjeta y sin cuenta. Si te sirve, después elegís un plan.</p>';
+          (PRUEBA_WA
+            ? '<a class="g-btn alt" id="g-pedir" href="' + waLink(msgPrueba()) + '" target="_blank" rel="noopener">Probar gratis ' + DIAS_PRUEBA + ' días</a>' +
+              '<p class="g-s chica">Escribime y te paso la palabra para activarla. Ponela arriba, donde va el código.</p>'
+            : '<button type="button" class="g-btn alt" id="g-prueba">Probar gratis ' + DIAS_PRUEBA + ' días</button>' +
+              '<p class="g-s chica">Sin tarjeta y sin cuenta. Si te sirve, después elegís un plan.</p>');
       }
       h += PLANES.length ? '<button type="button" class="g-link boton" id="g-planes">No tengo código · Ver planes</button>' :
         (WA ? '<a class="g-link" href="' + waLink(msgCompra(null)) + '" target="_blank" rel="noopener">No tengo código</a>' : "");
@@ -4291,6 +4349,10 @@ react-dom/cjs/react-dom.production.min.js:
     var inp = document.getElementById("g-code");
     var txt = limpio(inp ? inp.value : "");
     if (txt && txt === ADMIN) { vista = "admin"; pintar(); return; }
+    if (txt && DIAS_PRUEBA && PALABRA && txt === PALABRA) {
+      if (pruebaInicio()) { pintar(pruebaQuedan() > 0 ? "Tu prueba ya está activa." : "Ya usaste la prueba en este teléfono. Elegí un plan para seguir."); return; }
+      return empezarPrueba();
+    }
     var r = valida(txt);
     if (r.ok) {
       guardar({ code: r.code, at: Date.now() });
@@ -4319,13 +4381,7 @@ react-dom/cjs/react-dom.production.min.js:
       if (t.id === "g-planes") { vista = "planes"; pintar(); gate.scrollTop = 0; return; }
       if (t.id === "g-tengo") { vista = "codigo"; pintar(); return; }
       if (t.id === "g-app") { desdeApp = false; vista = "codigo"; abrir(false); return; }
-      if (t.id === "g-prueba") {
-        try { localStorage.setItem(KEY_PRUEBA, String(Date.now())); } catch (e) {}
-        var tiene = "";
-        try { tiene = localStorage.getItem("rutina-cliente-nombre") || ""; } catch (e) {}
-        if (tiene) { abrir(true); return; }
-        vista = "nombre"; pintar(); return;
-      }
+      if (t.id === "g-prueba") return empezarPrueba();
       if (t.id === "g-listo") {
         var el = document.getElementById("g-nombre");
         var v = (el && el.value || "").trim().slice(0, 24);
@@ -4469,7 +4525,7 @@ react-dom/cjs/react-dom.production.min.js:
     try { localStorage.setItem(KEY_MIREF, r); } catch (e) {}
     return r;
   }
-  function linkRef() { var r = miRef(); return r ? SITIO.split("?")[0].split("#")[0] + "?ref=" + encodeURIComponent(r) : ""; }
+  function linkRef() { var r = miRef(); return r ? SITIO.split("?")[0].split("#")[0].replace(/[^/]*$/, "") + "planes.html?ref=" + encodeURIComponent(r) : ""; }
   function textoRef() { return "Estoy entrenando con " + (window.CONFIG || {}).producto + " de " + MARCA + ": rutina, hábitos y niveles en el celu. Probala gratis: " + linkRef(); }
   function cardRef() {
     if (!REC.activo || !PLANES.length || !linkRef()) return "";

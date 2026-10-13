@@ -5,8 +5,10 @@ La app está en la carpeta `app/`. Es una página web instalable en el celular (
 | Archivo | Para qué es |
 |---|---|
 | `app/index.html` | La app: Hoy, Armar, Entreno y Sistema |
-| `app/planes.html` | Página de venta, para el link de la bio |
-| `app/config.js` | **Lo único que hace falta tocar**: marca, precios, links de pago, comisión |
+| `app/planes.html` | Página de venta corta, para el link de la bio y para los vendedores |
+| `app/vendedores.html` | Página para vendedores: sacan su link, copian textos listos, bajan el video y calculan cuánto ganan |
+| `app/promo.mp4` | El video promocional en versión liviana (lo usan la página de venta y los vendedores) |
+| `app/config.js` | **Lo único que hace falta tocar**: marca, precios, links de pago, comisión, prueba gratis. Después de cambiarlo, corré `python3 app/sincronizar-config.py` (deja una copia de respaldo adentro de la app, por si `config.js` no se sube) |
 | `app/img/` | Capturas que usa la página de venta |
 
 ## Publicar en Netlify
@@ -16,6 +18,9 @@ Si conectás este repo a Netlify, poné `app` como *Publish directory* y cada ca
 
 - App: `https://brian-ponce.netlify.app/`
 - Página de venta: `https://brian-ponce.netlify.app/planes.html`
+- Vendedores: `https://brian-ponce.netlify.app/vendedores.html`
+
+**Importante:** subí siempre la carpeta `app` completa. Si falta algún archivo (por ejemplo `config.js`), algo deja de andar.
 
 ## Cobrar
 
@@ -30,6 +35,13 @@ Los links de Mercado Pago ya están cargados en `config.js`:
 Los precios coinciden con lo que cobra cada link. Si cambiás un precio en Mercado Pago, cambialo también en `config.js`.
 
 Cuando alguien paga, te escribe por WhatsApp. Generás el código en el panel y se lo mandás.
+
+## Vender con vendedores
+
+1. El vendedor entra a `vendedores.html`, pone su nombre y saca su link (`planes.html?ref=su-nombre`), con textos listos para WhatsApp e Instagram y el video para bajar.
+2. Su cliente entra por ese link, paga con Mercado Pago y te manda el comprobante con el botón de la página. El mensaje ya dice **"Me recomendó: su-nombre"**.
+3. Vos generás el código en el panel, con ese nombre en **Lo trajo**, y se lo mandás al cliente.
+4. El panel te suma cuánto le debés a cada vendedor. Les pagás en la fecha de `recomendados.cuandoPago` y tocás "Ya las pagué".
 
 ## Panel de códigos
 
@@ -49,7 +61,8 @@ Los códigos y los recomendadores quedan guardados en el teléfono donde los gen
 
 ## Prueba gratis y recomendados
 
-- `acceso.prueba`: días de prueba sin código (0 la apaga). Cuando termina, la app muestra los planes.
+- `acceso.prueba`: días de prueba (0 la apaga). Cuando termina, la app muestra los planes.
+- `acceso.pruebaPorWhatsApp` y `acceso.palabraPrueba`: para activar la prueba, la persona te escribe por WhatsApp y vos le pasás la palabra (hoy: **ARRANCO**). La escribe donde va el código. Así cada curioso te deja su número. Cada teléfono puede usar la prueba una sola vez.
 - `recomendados.comision` y `recomendados.recurrente`: porcentaje y si se paga en cada renovación o solo la primera vez.
 - Cada cliente tiene su link en Hoy → *Recomendá y ganá* (`?ref=nombre`). Quien entra por ese link y compra te escribe con "Me recomendó: nombre" en el mensaje.
 

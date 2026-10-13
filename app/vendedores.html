@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vendé SISTEMA · Ganá el 20% para siempre</title>
+<meta name="description" content="Recomendá SISTEMA con tu link y cobrá el 20% de cada pago de tus clientes, mientras sigan renovando.">
+<meta name="theme-color" content="#0B0715">
+<link rel="icon" href="icono-192.png">
+<link rel="stylesheet" href="fuentes.css">
+<script src="config.js"></script>
+<style>
+:root { --void: #0B0715; --panel: #150E24; --panel2: #1E1433; --line: #332248; --bone: #F3EDE4; --dim: #9C8AB8; --dimmer: #645279; --gold: #E9B75B; --jade: #4BD489;
+  --bevel: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px); --bevel-s: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--void); color: var(--bone); font: 400 16px/1.5 Archivo, system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 18px; }
+h1, h2 { font-family: "Chakra Petch", system-ui, sans-serif; font-weight: 700; line-height: 1; margin: 0; }
+p { margin: 0; }
+.k { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--jade); }
+header { padding: 34px 0 26px; background: radial-gradient(80% 60% at 80% 0%, rgba(75,212,137,.14), transparent 70%); }
+h1 { margin-top: 14px; font-size: clamp(42px, 10vw, 68px); }
+h1 span { color: var(--jade); }
+.sub { margin-top: 12px; font-size: 18px; color: var(--dim); }
+section { padding: 26px 0; border-top: 1px solid #241A3A; }
+h2 { margin-top: 6px; font-size: 30px; }
+.card { margin-top: 16px; padding: 20px; background: var(--panel); clip-path: var(--bevel); }
+label { display: block; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--dimmer); }
+input, select { display: block; width: 100%; height: 50px; margin-top: 6px; padding: 0 12px; font: 400 17px/1 Archivo, sans-serif; color: var(--bone); background: var(--panel2); border: 1px solid var(--line); border-radius: 0; -webkit-appearance: none; appearance: none; }
+input:focus, select:focus { outline: none; border-color: var(--jade); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: .28em; min-height: 50px; padding: 0 20px; margin-top: 12px; font: 700 16px/1 Archivo, sans-serif; color: var(--void); background: var(--jade); border: 0; clip-path: var(--bevel-s); cursor: pointer; text-decoration: none; }
+.btn.alt { background: var(--panel2); color: var(--bone); box-shadow: inset 0 0 0 1px var(--line); }
+.row { display: flex; flex-wrap: wrap; gap: 8px; }
+.link { margin-top: 14px; padding: 14px; background: rgba(75,212,137,.08); border: 1px dashed rgba(75,212,137,.4); font: 600 15px/1.35 "Chakra Petch", sans-serif; color: var(--jade); word-break: break-all; }
+.gana { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 16px; }
+.gana div { padding: 16px 10px; text-align: center; background: var(--panel); clip-path: var(--bevel-s); }
+.gana b { display: block; font: 700 26px/1 "Chakra Petch", sans-serif; color: var(--jade); }
+.gana span { display: block; margin-top: 6px; font-size: 12px; color: var(--dim); }
+.calc { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.res { margin-top: 16px; text-align: center; }
+.res b { display: block; font: 700 54px/1 "Chakra Petch", sans-serif; color: var(--jade); }
+.res span { color: var(--dim); font-size: 14px; }
+textarea { width: 100%; min-height: 120px; margin-top: 8px; padding: 12px; font: 400 15px/1.45 Archivo, sans-serif; color: var(--bone); background: var(--panel2); border: 1px solid var(--line); resize: vertical; }
+ol { margin: 14px 0 0; padding-left: 22px; color: var(--dim); }
+ol li { padding: 5px 0; }
+ol b { color: var(--bone); }
+.ok { color: var(--jade); font-size: 14px; margin-top: 8px; min-height: 20px; }
+footer { padding: 26px 0 40px; border-top: 1px solid #241A3A; font-size: 13px; color: var(--dimmer); }
+footer a { color: var(--gold); }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <p class="k">Programa de vendedores</p>
+    <h1>Vendé <span data-c="producto">SISTEMA</span> y cobrá el <span data-c="pct">20</span>% <span data-c="siempre">para siempre</span>.</h1>
+    <p class="sub">Compartís tu link. Cada vez que alguien paga, y cada vez que renueva, te llevás tu parte. Sin invertir nada.</p>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <p class="k">Lo que ganás por cliente</p>
+    <div class="gana" id="gana"></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="k">Calculá</p>
+    <h2>¿Cuánto podés ganar?</h2>
+    <div class="card">
+      <div class="calc">
+        <label>Clientes que traés<input id="cn" type="number" min="1" max="500" value="10" inputmode="numeric"></label>
+        <label>Plan que eligen<select id="cp"></select></label>
+      </div>
+      <div class="res"><b id="cr">$0</b><span id="cs"></span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="k">Paso 1</p>
+    <h2>Sacá tu link</h2>
+    <div class="card">
+      <label>Tu nombre (así te identifico)<input id="nom" placeholder="Ej: Juan Pérez" autocomplete="name"></label>
+      <button type="button" class="btn" id="gen">Crear mi link</button>
+      <div id="out" hidden>
+        <p class="link" id="lk"></p>
+        <div class="row"><button type="button" class="btn alt" id="cp-lk">Copiar link</button><a class="btn alt" href="promo.mp4" download="sistema-video.mp4">Bajar el video</a></div>
+        <p class="ok" id="ok1"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="textos" hidden>
+  <div class="wrap">
+    <p class="k">Paso 2</p>
+    <h2>Copiá y mandá</h2>
+    <div class="card">
+      <label>Para WhatsApp (a contactos o en grupos)</label>
+      <textarea id="t1" readonly></textarea>
+      <div class="row"><button type="button" class="btn alt" data-cp="t1">Copiar</button><a class="btn" id="wa1" target="_blank" rel="noopener">Mandar por WhatsApp</a></div>
+    </div>
+    <div class="card">
+      <label>Para historia o posteo de Instagram / TikTok (con el video)</label>
+      <textarea id="t2" readonly></textarea>
+      <div class="row"><button type="button" class="btn alt" data-cp="t2">Copiar</button></div>
+    </div>
+    <p class="ok" id="ok2"></p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="k">Cómo cobrás</p>
+    <h2>Simple y transparente</h2>
+    <ol>
+      <li>Tu cliente entra por <b>tu link</b>, elige su plan y paga con Mercado Pago.</li>
+      <li>Me manda el comprobante por WhatsApp desde la página: el mensaje ya dice <b>"Me recomendó: tu nombre"</b>.</li>
+      <li>Le activo el acceso y <b>anoto tu comisión</b>. Si renueva, la anoto otra vez.</li>
+      <li>Te pago <b data-c="cuando">a fin de cada mes</b>.</li>
+    </ol>
+    <a class="btn" id="alta" target="_blank" rel="noopener">Avisarle a <span data-c="corto">Brian</span> que arranco</a>
+    <p class="sub" style="font-size:14px;margin-top:10px">Mandame tu alias o CVU de Mercado Pago para pagarte.</p>
+  </div>
+</section>
+
+<footer><div class="wrap">¿Todavía no la conocés? <a href="planes.html">Mirá la página de SISTEMA</a>.</div></footer>
+
+<script>
+(function () {
+  "use strict";
+  var C = window.CONFIG || {}, R = C.recomendados || {}, planes = (C.planes || []);
+  var pct = (R.comision || 20) / 100;
+  var wa = String(C.whatsapp || "").split("?")[0];
+  var corto = String(C.marca || "").split(" ")[0];
+  var plata = function (n) { return "$" + Math.round(n).toLocaleString("es-AR"); };
+  var sitio = String(C.sitio || location.origin + "/").split("?")[0].split("#")[0].replace(/[^/]*$/, "");
+  var vals = { producto: C.producto || "SISTEMA", pct: R.comision || 20, siempre: R.recurrente ? "para siempre" : "", cuando: R.cuandoPago || "a fin de cada mes", corto: corto };
+  document.querySelectorAll("[data-c]").forEach(function (el) { var v = vals[el.getAttribute("data-c")]; if (v != null) el.textContent = v; });
+
+  var cada = function (p) { return p.meses === 3 ? "cada 3 meses" : p.meses === 12 ? "cada año" : p.meses ? "cada " + p.meses + " meses" : "una vez"; };
+  document.getElementById("gana").innerHTML = planes.map(function (p) {
+    return "<div><b>" + plata(p.precio * pct) + "</b><span>plan " + p.nombre.toLowerCase() + (R.recurrente && p.meses ? ", " + cada(p) : "") + "</span></div>";
+  }).join("");
+
+  /* calculadora: lo que ganás en un año con N clientes */
+  var cp = document.getElementById("cp");
+  cp.innerHTML = planes.map(function (p, i) { return '<option value="' + i + '"' + (p.destacado ? " selected" : "") + ">" + p.nombre + "</option>"; }).join("");
+  function calc() {
+    var n = Math.max(0, Math.min(500, parseInt(document.getElementById("cn").value, 10) || 0));
+    var p = planes[+cp.value] || planes[0];
+    var veces = p.meses ? (R.recurrente ? 12 / p.meses : 1) : 1;
+    document.getElementById("cr").textContent = plata(n * p.precio * pct * veces);
+    document.getElementById("cs").textContent = "en un año, con " + n + " clientes en el plan " + p.nombre.toLowerCase() + (R.recurrente && p.meses ? " que renuevan" : "");
+  }
+  document.getElementById("cn").addEventListener("input", calc); cp.addEventListener("change", calc); calc();
+
+  /* link del vendedor */
+  function slug(s) { return String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 30); }
+  var link = "";
+  function armar(nombre) {
+    var r = slug(nombre);
+    if (!r) return;
+    link = sitio + "planes.html?ref=" + r;
+    try { localStorage.setItem("vendedor:nombre", nombre); } catch (e) {}
+    document.getElementById("lk").textContent = link;
+    document.getElementById("out").hidden = false;
+    document.getElementById("textos").hidden = false;
+    var t1 = "¿Te pasa que arrancás el gym y lo dejás a las dos semanas? 🙋‍♂️\nEstoy recomendando " + vals.producto + ", de " + (C.marca || "") + ": te arma la rutina a medida y una app te sigue todos los días (entreno, hábitos, comidas).\nSe puede probar 7 días gratis 👉 " + link;
+    var t2 = "Dejá de empezar el lunes 🔥\nRutina hecha a medida + app que te sigue todos los días.\nCuerpo · Mente · Espíritu\nProbala gratis 👉 link en mi perfil\n(" + link + ")";
+    document.getElementById("t1").value = t1;
+    document.getElementById("t2").value = t2;
+    document.getElementById("wa1").href = "https://wa.me/?text=" + encodeURIComponent(t1);
+    document.getElementById("alta").href = wa ? wa + "?text=" + encodeURIComponent("Hola " + corto + "! Quiero vender " + vals.producto + ". Soy " + nombre + " y mi link es " + link + ".\nMi alias de Mercado Pago es: ") : "#";
+  }
+  document.getElementById("gen").addEventListener("click", function () { armar(document.getElementById("nom").value.trim()); });
+  try { var g = localStorage.getItem("vendedor:nombre"); if (g) { document.getElementById("nom").value = g; armar(g); } } catch (e) {}
+  if (!link) document.getElementById("alta").href = wa ? wa + "?text=" + encodeURIComponent("Hola " + corto + "! Quiero vender " + vals.producto + ".") : "#";
+
+  function copiar(txt, okId) {
+    var ok = document.getElementById(okId);
+    var listo = function () { ok.textContent = "Copiado ✓"; setTimeout(function () { ok.textContent = ""; }, 2000); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(listo, function () { ok.textContent = "Copialo a mano"; });
+    else ok.textContent = "Copialo a mano";
+  }
+  document.getElementById("cp-lk").addEventListener("click", function () { copiar(link, "ok1"); });
+  document.querySelectorAll("[data-cp]").forEach(function (b) { b.addEventListener("click", function () { copiar(document.getElementById(b.dataset.cp).value, "ok2"); }); });
+})();
+</script>
+</body>
+</html>

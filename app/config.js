@@ -16,7 +16,9 @@ window.CONFIG = {
     secreto: "ponce-2026-xK7m",                     /* firma de los códigos: cambialo y los viejos dejan de servir */
     admin: "PONCE-2026",                            /* escribilo en la pantalla de acceso para abrir el panel */
     bloqueados: [],                                 /* seriales dados de baja, ej: ["AB", "AC"] */
-    prueba: 7                                       /* días de prueba gratis sin código (0 = sin prueba) */
+    prueba: 7,                                      /* días de prueba gratis (0 = sin prueba) */
+    pruebaPorWhatsApp: true,                        /* true = para activarla te escriben y les pasás la palabra */
+    palabraPrueba: "ARRANCO"                        /* la palabra que mandás por WhatsApp para activar la prueba */
   },
 
   /* Precios en pesos. Tienen que coincidir con lo que cobra cada link de
@@ -36,6 +38,7 @@ window.CONFIG = {
   recomendados: {
     activo: true,
     comision: 20,
-    recurrente: true
+    recurrente: true,
+    cuandoPago: "a fin de cada mes, por Mercado Pago o transferencia"   /* se lo muestra a los vendedores */
   }
 };
