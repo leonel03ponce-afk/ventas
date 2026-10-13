@@ -17,11 +17,15 @@ export default async (req) => {
 
   const ref = limpiarRef(body.ref);
   const nombre = String(body.nombre || "").slice(0, 40);
+  /* clave de esta compra: con ella gracias.html encuentra el pago aunque
+     Mercado Pago no devuelva al cliente a la página (pasa en el celu con la app de MP) */
+  const k = /^[a-z0-9]{8,16}$/.test(body.k || "") ? body.k : Math.random().toString(36).slice(2, 12);
+  const gracias = origen + "/gracias.html?k=" + k;
   const pref = {
-    items: [{ id: plan.id, title: (cfg.producto || "SISTEMA") + " · " + plan.nombre, quantity: 1, unit_price: plan.precio, currency_id: "ARS" }],
-    external_reference: JSON.stringify({ p: plan.id, r: ref, n: nombre }),
-    metadata: { plan: plan.id, ref, nombre },
-    back_urls: { success: origen + "/gracias.html", pending: origen + "/gracias.html", failure: origen + "/planes.html#planes" },
+    items: [{ id: plan.id, title: (cfg.producto || "SISTEMA") + " · " + plan.nombre, description: "Tu código de acceso: " + gracias, quantity: 1, unit_price: plan.precio, currency_id: "ARS" }],
+    external_reference: "sis-" + k,
+    metadata: { plan: plan.id, ref, nombre, k },
+    back_urls: { success: gracias, pending: gracias, failure: origen + "/planes.html#planes" },
     auto_return: "approved",
     notification_url: origen + "/api/mp-aviso",
     statement_descriptor: String(cfg.producto || "SISTEMA").slice(0, 13)
@@ -33,7 +37,7 @@ export default async (req) => {
   });
   const out = await res.json().catch(() => ({}));
   if (!res.ok || !out.init_point) return json({ error: "Mercado Pago no respondió", detalle: out.message || res.status }, 502);
-  return json({ url: out.init_point });
+  return json({ url: out.init_point, k });
 };
 
 export const config = { path: "/api/pagar" };

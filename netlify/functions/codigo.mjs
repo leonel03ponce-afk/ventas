@@ -1,7 +1,8 @@
 /* gracias.html pide acá el código del cliente.
    ?pago=ID                     → pago de Mercado Pago (lo verifica con MP)
+   ?k=CLAVE                     → el mismo pago, buscado por la clave de la compra
    ?hotmart=HP123&email=x@y.com → compra de Hotmart (la registró hotmart-aviso) */
-import { origenDe, pagoMP, tienda, json, lindo } from "../lib/sistema.mjs";
+import { origenDe, pagoMP, pagoPorClave, tienda, json, lindo } from "../lib/sistema.mjs";
 
 const publico = (v) => ({ codigo: lindo(v.codigo), vence: v.vence, plan: v.plan, nombre: v.nombre, ref: v.ref });
 
@@ -10,8 +11,9 @@ export default async (req) => {
   const pago = u.searchParams.get("pago");
   const hot = String(u.searchParams.get("hotmart") || "").trim().toUpperCase();
 
-  if (pago) {
-    const r = await pagoMP(origenDe(req), pago);
+  const k = u.searchParams.get("k");
+  if (pago || k) {
+    const r = pago ? await pagoMP(origenDe(req), pago) : await pagoPorClave(origenDe(req), k);
     if (r.estado === "aprobado") return json({ estado: "aprobado", ...publico(r.venta) });
     return json({ estado: r.estado });
   }

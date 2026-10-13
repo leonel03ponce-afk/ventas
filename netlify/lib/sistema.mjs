@@ -125,15 +125,32 @@ export async function pagoMP(origen, id) {
 
   let ext = {};
   try { ext = JSON.parse(p.external_reference || "{}"); } catch (e) {}
+  const meta = p.metadata || {};
+  if (!ext.p) ext = { p: meta.plan, r: meta.ref, n: meta.nombre };
   const cfg = await leerConfig(origen);
-  const plan = planPorId(cfg, ext.p || (p.metadata || {}).plan, false);
+  const plan = planPorId(cfg, ext.p, false);
   if (!plan) return { estado: "otro" }; /* un cobro que no salió de la página de planes */
 
   const venta = await registrarVenta(origen, {
     origen: "mp", id: p.id, plan: plan.nombre, meses: plan.meses,
     monto: p.transaction_amount, moneda: p.currency_id || "ARS",
     nombre: ext.n || [((p.payer || {}).first_name || ""), ((p.payer || {}).last_name || "")].join(" ").trim(),
-    email: (p.payer || {}).email || "", ref: ext.r || (p.metadata || {}).ref || ""
+    email: (p.payer || {}).email || "", ref: ext.r || ""
   });
   return { estado: "aprobado", venta };
+}
+
+/* Busca el pago por la clave de la compra (la guarda planes.html antes de ir a MP) */
+export async function pagoPorClave(origen, k) {
+  const token = process.env.MP_ACCESS_TOKEN;
+  if (!token) return { estado: "sin-config" };
+  if (!/^[a-z0-9]{8,16}$/.test(String(k))) return { estado: "invalido" };
+  const res = await fetch("https://api.mercadopago.com/v1/payments/search?sort=date_created&criteria=desc&limit=10&external_reference=sis-" + k, { headers: { authorization: "Bearer " + token } });
+  if (!res.ok) return { estado: "error" };
+  const lista = ((await res.json()).results || []);
+  if (!lista.length) return { estado: "no-existe" };
+  const orden = ["approved", "refunded", "charged_back", "in_process", "pending", "authorized"];
+  const pos = (st) => { const i = orden.indexOf(st); return i < 0 ? 99 : i; };
+  lista.sort((a, b) => pos(a.status) - pos(b.status));
+  return pagoMP(origen, lista[0].id);
 }
