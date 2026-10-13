@@ -24,7 +24,7 @@ window.CONFIG = {
   /* Precios en pesos. Tienen que coincidir con lo que cobra cada link de
      Mercado Pago. "incluye" es la lista que se ve en la tarjeta del plan. */
   planes: [
-    { id: "trimestral", nombre: "3 meses",      precio: 24900,  meses: 3,  detalle: "sale $8.300 por mes · se renueva cada 3 meses", pago: "https://mpago.la/2SDK5Ty",
+    { id: "trimestral", nombre: "3 meses",      precio: 24900,  meses: 3,  detalle: "sale $8.300 por mes · 3 meses de acceso", pago: "https://mpago.la/2SDK5Ty",
       incluye: ["Rutina personalizada armada por Brian", "Registro serie por serie y cronómetro", "Hábitos, niveles y rachas", "Plan de calorías y proteína", "Consultas por WhatsApp"] },
     { id: "anual",      nombre: "Anual",        precio: 69900,  meses: 12, detalle: "sale $5.825 por mes · ahorrás 30%",              pago: "https://mpago.la/2cdoPet", destacado: "Más elegido",
       incluye: ["Todo lo del plan de 3 meses", "Rutina nueva cada 3 meses", "Revisión de tu progreso cada mes", "Prioridad en WhatsApp"] },
