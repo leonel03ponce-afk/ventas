@@ -9,6 +9,7 @@
 <link rel="icon" href="icono-192.png">
 <link rel="stylesheet" href="fuentes.css">
 <script src="config.js"></script>
+<script src="rutinas-base.js"></script>
 <script>/* respaldo por si config.js no carga (se actualiza con sincronizar-config.py) */
 if (!window.CONFIG || !window.CONFIG.planes) window.CONFIG = /*CFG*/{
   producto: "SISTEMA",                              /* nombre que ve el cliente */
@@ -65,7 +66,8 @@ if (!window.CONFIG || !window.CONFIG.planes) window.CONFIG = /*CFG*/{
     activo: true,
     comision: 43,
     renovacion: 15,
-    cuandoPago: "a fin de cada mes",                                   /* se lo muestra a los vendedores */
+    cuandoPago: "a fin de cada mes",
+    premio: "",                                                        /* premio del mes para el n.º 1 del ranking, ej: "$50.000 extra". Vacío = no se muestra */                                   /* se lo muestra a los vendedores */
     comoPago: "En Argentina por Mercado Pago o transferencia. Afuera, por USDT (Binance), PayPal o Zinli."
   }
 }/*FIN-CFG*/;</script>
@@ -144,6 +146,7 @@ td.n { text-align: right; font-variant-numeric: tabular-nums; }
       <button type="button" data-t="clientes">Clientes</button>
       <button type="button" data-t="vendedores">Vendedores</button>
       <button type="button" data-t="ventas">Ventas</button>
+      <button type="button" data-t="rutinas">Rutinas</button>
       <button type="button" data-t="nueva">+ Cargar venta</button>
     </nav>
 
@@ -180,6 +183,13 @@ td.n { text-align: right; font-variant-numeric: tabular-nums; }
     <section data-v="ventas" hidden>
       <div class="fila"><select id="mes2"></select><button type="button" class="btn alt" id="csv">Bajar Excel (CSV)</button></div>
       <div class="tabla" style="margin-top:12px"><table><thead><tr><th>Fecha</th><th>Cliente</th><th>Plan</th><th class="n">Monto</th><th>Cómo pagó</th><th>Vendedor</th><th>Código</th><th>Estado</th><th></th></tr></thead><tbody id="s-lista"></tbody></table></div>
+    </section>
+
+    <!-- RUTINAS -->
+    <section data-v="rutinas" hidden>
+      <p class="sub" style="margin-top:14px">Rutinas base listas para mandar. El cliente abre el link y toca <b>Cargar mi rutina</b>. Para mandársela a alguien en particular, andá a <b>Clientes → Mandar rutina</b>.</p>
+      <p class="nota">Para ajustarla a una persona: abrí el link en tu celu, cargala en tu app, cambiá lo que quieras y mandala desde Entreno → Respaldo y ajustes.</p>
+      <div class="lista" id="rut-lista" style="margin-top:12px"></div>
     </section>
 
     <!-- NUEVA VENTA -->
@@ -309,6 +319,7 @@ td.n { text-align: right; font-variant-numeric: tabular-nums; }
       '<p class="dato">Pagó ' + dosMonedas(c.pagado) + " en " + c.compras.length + (c.compras.length > 1 ? " compras" : " compra") + (c.ref ? " · lo trajo <b style=\"color:var(--bone)\">" + esc(c.ref) + "</b>" : " · vino directo") + ' · código <span class="cod">' + esc(lindo(c.ultima.codigo)) + "</span></p>" +
       '<div class="acc">' + (hola ? '<a class="btn wa mini" target="_blank" rel="noopener" href="' + hola + '">WhatsApp</a>' : "") +
       (renovar && (c.estado === "pronto" || c.estado === "vencido") ? '<a class="btn mini" target="_blank" rel="noopener" href="' + renovar + '">Mandar aviso de renovación</a>' : "") +
+      '<button type="button" class="btn alt mini" data-rutina="' + esc(c.id) + '">Mandar rutina</button>' +
       '<button type="button" class="btn alt mini" data-copiar="' + esc(lindo(c.ultima.codigo)) + '">Copiar código</button></div></div>';
   }
   function itemVendedor(x) {
@@ -375,7 +386,19 @@ td.n { text-align: right; font-variant-numeric: tabular-nums; }
         '<td><button type="button" class="btn alt mini" data-cod="' + esc(v.codigo) + '" data-acc="' + (bloq ? "desbloquear" : "bloquear") + '">' + (bloq ? "Reactivar" : "Dar de baja") + "</button></td></tr>";
     }).join("") : '<tr><td colspan="9" style="color:var(--dim);text-align:center;padding:18px">No hay ventas en este mes.</td></tr>';
   }
-  function pintarTodo() { pintarResumen(); pintarClientes(); pintarVendedores(); pintarVentas(); }
+  var RUT = window.RUTINAS_BASE || [];
+  function msgRutina(nombre, r) {
+    return "¡Hola " + String(nombre || "").split(" ")[0] + "! 💪 Te armé tu rutina: " + r.nombre.split(" · ")[0].toLowerCase() + ", " + r.dias.length + " días (" + r.dias.join(" · ") + ").\n" +
+      "Abrí este link desde el celu y tocá \"Cargar mi rutina\":\n" + r.link + "\nCualquier duda me escribís.";
+  }
+  function pintarRutinas() {
+    $("rut-lista").innerHTML = RUT.length ? RUT.map(function (r, i) {
+      return '<div class="item"><div class="top"><span class="nom">' + esc(r.nombre) + "</span></div>" +
+        '<p class="dato">' + esc(r.para) + "</p><p class=\"dato\">" + esc(r.dias.join(" · ")) + "</p>" +
+        '<div class="acc"><button type="button" class="btn alt mini" data-copiar="' + esc(r.link) + '">Copiar link</button><a class="btn alt mini" target="_blank" rel="noopener" href="' + esc(r.link) + '">Abrir</a></div></div>';
+    }).join("") : '<p class="vacio">No se encontraron las rutinas (falta rutinas-base.js).</p>';
+  }
+  function pintarTodo() { pintarResumen(); pintarClientes(); pintarVendedores(); pintarVentas(); pintarRutinas(); }
 
   function armarMeses() {
     var hoy = new Date().toISOString().slice(0, 7);
@@ -405,6 +428,17 @@ td.n { text-align: right; font-variant-numeric: tabular-nums; }
   document.addEventListener("click", function (ev) {
     var b = ev.target.closest && ev.target.closest("button");
     if (!b) return;
+    if (b.hasAttribute("data-rutina")) {
+      var cl = clientes().filter(function (c) { return c.id === b.getAttribute("data-rutina"); })[0];
+      if (!cl || !RUT.length) return;
+      var op = prompt("¿Qué rutina le mandás a " + (cl.nombre || "este cliente") + "?\n" + RUT.map(function (r, i) { return (i + 1) + ". " + r.nombre; }).join("\n") + "\n\nEscribí el número:", "1");
+      var r = RUT[parseInt(op, 10) - 1];
+      if (!r) return;
+      var msg = msgRutina(cl.nombre, r), wl = waLink(cl.tel, msg);
+      if (wl) window.open(wl, "_blank");
+      else if (navigator.clipboard) navigator.clipboard.writeText(msg).then(function () { alert("No tengo su WhatsApp: copié el mensaje con la rutina para que se lo mandes."); });
+      return;
+    }
     if (b.hasAttribute("data-copiar")) {
       var txt = b.getAttribute("data-copiar");
       if (navigator.clipboard) navigator.clipboard.writeText(txt).then(function () { b.textContent = "Copiado ✓"; });

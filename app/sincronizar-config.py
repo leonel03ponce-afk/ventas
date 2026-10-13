@@ -4,7 +4,7 @@ import pathlib
 aqui = pathlib.Path(__file__).parent
 cfg = (aqui / "config.js").read_text(encoding="utf-8")
 cuerpo = cfg[cfg.index("window.CONFIG = ") + len("window.CONFIG = "):].rstrip().rstrip(";")
-for nombre in ["index.html", "planes.html", "vendedores.html", "guia-vendedores.html", "gracias.html", "ventas.html"]:
+for nombre in ["index.html", "planes.html", "vendedores.html", "guia-vendedores.html", "gracias.html", "ventas.html", "ranking.html"]:
     f = aqui / nombre
     html = f.read_text(encoding="utf-8")
     i, j = html.index("/*CFG*/") + len("/*CFG*/"), html.index("/*FIN-CFG*/")

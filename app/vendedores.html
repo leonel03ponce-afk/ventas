@@ -69,7 +69,8 @@ if (!window.CONFIG || !window.CONFIG.planes) window.CONFIG = /*CFG*/{
     activo: true,
     comision: 43,
     renovacion: 15,
-    cuandoPago: "a fin de cada mes",                                   /* se lo muestra a los vendedores */
+    cuandoPago: "a fin de cada mes",
+    premio: "",                                                        /* premio del mes para el n.º 1 del ranking, ej: "$50.000 extra". Vacío = no se muestra */                                   /* se lo muestra a los vendedores */
     comoPago: "En Argentina por Mercado Pago o transferencia. Afuera, por USDT (Binance), PayPal o Zinli."
   }
 }/*FIN-CFG*/;</script>
@@ -204,6 +205,7 @@ footer a { color: var(--gold); }
     <h2>Salí a buscar clientes</h2>
     <p class="sub" style="font-size:16px">No hay contactos regalados: los clientes los conseguís vos. Para eso armé una guía con todo: cómo armar tu perfil, dónde buscar gente que quiere entrenar, qué escribirle en frío, cómo hacer el seguimiento y cómo cerrar por chat, con los mensajes listos para copiar.</p>
     <a class="btn" href="guia-vendedores.html">Abrir la guía para vender</a>
+    <a class="btn alt" href="ranking.html">🏆 Ver el ranking del mes</a>
   </div>
 </section>
 
