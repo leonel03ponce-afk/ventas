@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Guía para vender SISTEMA</title>
+<meta name="description" content="Cómo conseguir clientes, escribir en frío, hacer seguimiento y cerrar por chat.">
+<meta name="theme-color" content="#0B0715">
+<link rel="icon" href="icono-192.png">
+<link rel="stylesheet" href="fuentes.css">
+<script src="config.js"></script>
+<style>
+:root { --void: #0B0715; --panel: #150E24; --panel2: #1E1433; --line: #332248; --bone: #F3EDE4; --dim: #9C8AB8; --dimmer: #645279; --gold: #E9B75B; --jade: #4BD489; --red: #FF6B6B;
+  --bevel: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px); --bevel-s: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--void); color: var(--bone); font: 400 16px/1.55 Archivo, system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 18px; }
+h1, h2, h3 { font-family: "Chakra Petch", system-ui, sans-serif; font-weight: 700; line-height: 1.05; margin: 0; }
+p { margin: 0; }
+.k { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--jade); }
+header { padding: 34px 0 24px; background: radial-gradient(80% 60% at 80% 0%, rgba(75,212,137,.14), transparent 70%); }
+h1 { margin-top: 14px; font-size: clamp(38px, 9vw, 60px); }
+h1 span { color: var(--jade); }
+.sub { margin-top: 12px; font-size: 18px; color: var(--dim); }
+nav { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; }
+nav a { padding: 7px 12px; font-size: 13px; font-weight: 600; color: var(--bone); text-decoration: none; background: var(--panel2); clip-path: var(--bevel-s); }
+section { padding: 28px 0; border-top: 1px solid #241A3A; }
+h2 { margin-top: 6px; font-size: 30px; }
+h3 { margin-top: 22px; font-size: 20px; }
+.txt { margin-top: 12px; color: var(--dim); }
+.txt b, li b { color: var(--bone); }
+ul, ol { margin: 12px 0 0; padding-left: 22px; color: var(--dim); }
+li { padding: 4px 0; }
+.card { margin-top: 14px; padding: 18px; background: var(--panel); clip-path: var(--bevel); }
+.guion { margin-top: 12px; }
+.guion label { display: block; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--dimmer); }
+.guion pre { margin: 6px 0 0; padding: 14px; white-space: pre-wrap; word-break: break-word; font: 400 15px/1.5 Archivo, sans-serif; color: var(--bone); background: var(--panel2); border-left: 3px solid var(--jade); }
+.guion button { margin-top: 6px; padding: 8px 14px; font: 700 13px/1 Archivo, sans-serif; color: var(--bone); background: transparent; border: 1px solid var(--line); cursor: pointer; }
+.guion .por { margin-top: 6px; font-size: 13px; color: var(--dimmer); }
+.obj { margin-top: 12px; }
+.obj summary { cursor: pointer; padding: 12px 0; font-weight: 600; list-style: none; display: flex; justify-content: space-between; border-top: 1px solid var(--line); }
+.obj summary::after { content: "+"; color: var(--jade); font: 700 20px/1 "Chakra Petch", sans-serif; }
+.obj[open] summary::after { content: "–"; }
+.obj summary::-webkit-details-marker { display: none; }
+.dias { display: grid; gap: 8px; margin-top: 14px; }
+.dias div { display: grid; grid-template-columns: 74px 1fr; gap: 12px; padding: 12px 14px; background: var(--panel); clip-path: var(--bevel-s); }
+.dias b { font: 700 15px/1.3 "Chakra Petch", sans-serif; color: var(--jade); }
+.dias span { color: var(--dim); font-size: 15px; }
+.nums { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+.nums div { min-width: 0; padding: 14px 6px; text-align: center; background: var(--panel); clip-path: var(--bevel-s); }
+.nums b { display: block; font: 700 clamp(24px, 7vw, 34px)/1 "Chakra Petch", sans-serif; color: var(--jade); }
+.nums span { display: block; margin-top: 6px; font-size: 12px; color: var(--dim); }
+.no { margin-top: 14px; padding: 14px 16px; background: rgba(255,107,107,.08); border-left: 4px solid var(--red); }
+.no li::marker { content: "✕  "; color: var(--red); }
+.si li::marker { content: "✓  "; color: var(--jade); }
+.regla { margin-top: 16px; padding: 14px 16px; background: rgba(233,183,91,.1); border-left: 4px solid var(--gold); font-size: 15px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 0 20px; margin-top: 14px; font: 700 16px/1 Archivo, sans-serif; color: var(--void); background: var(--jade); border: 0; clip-path: var(--bevel-s); text-decoration: none; cursor: pointer; }
+.btn.alt { background: var(--panel2); color: var(--bone); box-shadow: inset 0 0 0 1px var(--line); }
+.cambio { background: none; border: 0; padding: 8px 0; color: var(--dim); font: inherit; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+footer { padding: 26px 0 40px; border-top: 1px solid #241A3A; font-size: 13px; color: var(--dimmer); }
+footer a { color: var(--jade); }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <p class="k">Guía del vendedor</p>
+    <h1>Salí a buscar, <span>escribí, seguí y cerrá.</span></h1>
+    <p class="sub">Todo lo que necesitás para vender <b data-c="producto">SISTEMA</b> por chat: dónde encontrar clientes, qué escribirles y cómo cerrar.</p>
+    <nav>
+      <a href="#trato">El trato</a><a href="#perfil">Tu perfil</a><a href="#buscar">Dónde buscar</a><a href="#frio">Mensaje en frío</a><a href="#cierre">Cierre</a><a href="#objeciones">Objeciones</a><a href="#seguimiento">Seguimiento</a><a href="#rutina">Tu día</a>
+    </nav>
+    <p><button type="button" class="cambio" id="tu"></button></p>
+  </div>
+</header>
+
+<section id="trato">
+  <div class="wrap">
+    <p class="k">Antes de arrancar</p>
+    <h2>El trato, claro</h2>
+    <p class="txt">El producto ya está hecho: <b>meses de trabajo</b> en la app, la rutina personalizada, la página de venta, el video y el cobro. Vos no tenés que crear nada. <b>Tu trabajo es conseguir los clientes</b>: buscar, escribir, hacer seguimiento y cerrar.</p>
+    <ul>
+      <li><b>No te paso contactos.</b> Los buscás vos, con tu cuenta o con una cuenta nueva que armes para esto.</li>
+      <li>Cobrás el <b data-c="pct">43</b>% de cada venta y el <b data-c="ren">15</b>% cada vez que ese cliente renueva.</li>
+      <li>No invertís plata, no manejás cobros ni entregás nada: el cliente paga en la página y yo le doy el acceso y la rutina.</li>
+    </ul>
+    <p class="regla"><b>Tomalo como un gimnasio de ventas.</b> Prospectar, escribir en frío, hacer seguimiento y cerrar por chat se aprende haciéndolo. Acá practicás con un producto real, con comisión real, y lo que aprendas te sirve para vender cualquier cosa.</p>
+  </div>
+</section>
+
+<section id="perfil">
+  <div class="wrap">
+    <p class="k">Paso 1</p>
+    <h2>Armá tu perfil</h2>
+    <p class="txt">La gente compra a quien le da confianza. Antes de escribirle a nadie, tu perfil tiene que estar listo, porque es lo primero que van a mirar.</p>
+    <h3>¿Tu cuenta o una nueva?</h3>
+    <ul>
+      <li><b>Tu cuenta personal</b>: tus conocidos ya te tienen confianza. Ideal para arrancar.</li>
+      <li><b>Una cuenta nueva de fitness</b> (por ejemplo "Entrená con [tu nombre]"): para escribir a desconocidos sin mezclar tu vida personal.</li>
+    </ul>
+    <h3>Checklist del perfil</h3>
+    <ul class="si">
+      <li>Foto de cara, clara. Nada de logos.</li>
+      <li>Bio de una línea: <b>"Te ayudo a entrenar sin dejar a las 2 semanas 💪 Rutina a medida + app 👇"</b></li>
+      <li>Tu link en la bio (lo sacás en la <a href="vendedores.html" style="color:var(--jade)">página de vendedores</a>).</li>
+      <li>El video subido y <b>fijado</b> arriba de todo.</li>
+      <li>Por lo menos 3 publicaciones más: tu entrenamiento, una captura de la app, un consejo corto.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="buscar">
+  <div class="wrap">
+    <p class="k">Paso 2 · Prospección</p>
+    <h2>Dónde están tus clientes</h2>
+    <p class="txt">Buscá gente que <b>ya muestra ganas de entrenar</b>. No le vendas al que no quiere: buscá al que ya está buscando.</p>
+    <ol>
+      <li><b>Tus contactos.</b> Revisá tu WhatsApp: ¿quién dijo que quiere bajar de peso, volver al gym, ponerse en forma? Esos son tus primeros 20.</li>
+      <li><b>Comentarios en cuentas grandes de fitness</b> (Instagram y TikTok). La gente que comenta "necesito esto", "arranco el lunes", "¿y para principiantes?" está levantando la mano.</li>
+      <li><b>Grupos de Facebook</b> de entrenamiento, de bajar de peso, de running, de gimnasios de tu ciudad. Aportá primero (respondé dudas) y después ofrecé.</li>
+      <li><b>Búsquedas en TikTok e Instagram</b>: "rutina gym principiante", "volver al gym", "bajar panza". Mirá quién comenta y escribile.</li>
+      <li><b>Tus estados de WhatsApp</b>: subí el video y capturas. Cada persona que te responde un estado es una conversación.</li>
+      <li><b>Tu círculo cercano</b>: compañeros de trabajo, de la facu, de la iglesia, del club. Un "che, estoy con esto" abre muchas puertas.</li>
+    </ol>
+    <h3>A quién SÍ y a quién NO</h3>
+    <ul class="si">
+      <li>Dice que quiere empezar o volver a entrenar.</li>
+      <li>Empezó varias veces y abandonó.</li>
+      <li>Entrena pero sin plan, "hace lo que ve".</li>
+    </ul>
+    <div class="no"><ul>
+      <li>Atletas avanzados con entrenador propio.</li>
+      <li>Gente que no mostró ningún interés en entrenar.</li>
+      <li>Menores de edad.</li>
+    </ul></div>
+  </div>
+</section>
+
+<section id="frio">
+  <div class="wrap">
+    <p class="k">Paso 3 · Contacto en frío</p>
+    <h2>El primer mensaje</h2>
+    <p class="txt">La regla de oro: <b>en el primer mensaje no va el link.</b> Primero abrís una conversación con una pregunta. El link va cuando la persona muestra interés.</p>
+    <ul>
+      <li>Personalizá: nombrá algo que viste (su comentario, su publicación).</li>
+      <li>Corto: 2 o 3 líneas. Nadie lee un testamento de un desconocido.</li>
+      <li>Terminá con una pregunta fácil de contestar.</li>
+    </ul>
+    <div id="g-frio"></div>
+  </div>
+</section>
+
+<section id="calificar">
+  <div class="wrap">
+    <p class="k">Paso 4</p>
+    <h2>Preguntá antes de ofrecer</h2>
+    <p class="txt">Cuando te responde, no tires el link. Hacé estas tres preguntas: te dicen qué plan ofrecer y te dan los argumentos para el cierre (con las palabras de la persona).</p>
+    <div id="g-calif"></div>
+  </div>
+</section>
+
+<section id="cierre">
+  <div class="wrap">
+    <p class="k">Paso 5 · Cierre por chat</p>
+    <h2>Presentá y cerrá</h2>
+    <p class="txt">Usá lo que te contestó. Presentá SISTEMA como la solución a <b>su</b> problema, recomendá un plan y hacé una pregunta de cierre. <b>Recomendá el anual</b>: es el que más eligen, el que mejor resultado da y el que más comisión te deja.</p>
+    <div id="g-cierre"></div>
+    <p class="regla"><b>Cuando dice que sí:</b> mandale el mensaje del Paso 3 de la <a href="vendedores.html" style="color:var(--gold)">página de vendedores</a>, con tu link. Así la venta queda a tu nombre.</p>
+  </div>
+</section>
+
+<section id="objeciones">
+  <div class="wrap">
+    <p class="k">Paso 6</p>
+    <h2>Objeciones</h2>
+    <p class="txt">Una objeción no es un "no": es una duda. Primero <b>validá</b> ("te entiendo"), después <b>respondé</b> y terminá con una <b>pregunta</b>.</p>
+    <div id="g-obj"></div>
+  </div>
+</section>
+
+<section id="seguimiento">
+  <div class="wrap">
+    <p class="k">Paso 7</p>
+    <h2>El seguimiento (acá está la plata)</h2>
+    <p class="txt">La mayoría de las ventas no salen en la primera conversación. Salen en el segundo, tercer o cuarto mensaje. <b>El que hace seguimiento, vende.</b> Anotá a cada persona con la fecha en que le escribiste (una nota del celu o una planilla alcanza).</p>
+    <div class="dias">
+      <div><b>Día 1</b><span>Primer mensaje (en frío o después de que te respondió un estado).</span></div>
+      <div><b>Día 2</b><span>Si no contestó: un toque corto.</span></div>
+      <div><b>Día 4</b><span>Aportá valor: un tip, una captura de la app, un video corto.</span></div>
+      <div><b>Día 7</b><span>Pregunta directa: ¿sí o no?</span></div>
+      <div><b>Día 14</b><span>Cierre de la conversación. Si dice que no, se termina con buena onda.</span></div>
+    </div>
+    <div id="g-seg"></div>
+  </div>
+</section>
+
+<section id="rutina">
+  <div class="wrap">
+    <p class="k">Tu día</p>
+    <h2>La rutina del vendedor</h2>
+    <p class="txt">Esto es un juego de números. Si hacés esto todos los días, las ventas llegan.</p>
+    <div class="nums">
+      <div><b>20</b><span>mensajes nuevos por día</span></div>
+      <div><b>10</b><span>seguimientos por día</span></div>
+      <div><b>1</b><span>publicación o estado por día</span></div>
+    </div>
+    <h3>Medí tus números cada semana</h3>
+    <ul>
+      <li><b>Mensajes enviados</b> → ¿cuántos respondieron? Si responden menos de 1 de cada 5, cambiá el primer mensaje.</li>
+      <li><b>Conversaciones</b> → ¿a cuántos les mandaste el link? Si es poco, estás tirando el link muy rápido o muy tarde.</li>
+      <li><b>Links enviados</b> → ¿cuántos compraron? Si es poco, trabajá el cierre y las objeciones.</li>
+    </ul>
+    <h3>Lo que no se hace</h3>
+    <div class="no"><ul>
+      <li>Prometer resultados ("bajás 10 kilos en un mes"). Ni de salud ni de números.</li>
+      <li>Hacer descuentos por tu cuenta o cambiar los precios.</li>
+      <li>Hacerte pasar por <span data-c="corto">Brian</span> o decir que sos entrenador si no lo sos.</li>
+      <li>Inventar datos o testimonios.</li>
+      <li>Mandar el mismo mensaje a 100 personas sin personalizar, o escribir a quien te pidió que no.</li>
+    </ul></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="k">Cómo cobrás</p>
+    <h2>Tu comisión</h2>
+    <ul>
+      <li>Tu cliente compra desde <b>tu link</b>: la venta queda a tu nombre.</li>
+      <li>Si paga por otro medio, que mande el comprobante con el <b>botón verde "Ya pagué · mandar comprobante"</b> de la página.</li>
+      <li>Te pago <b data-c="cuando">a fin de cada mes</b>.</li>
+    </ul>
+    <a class="btn" href="vendedores.html">Sacar mi link y los textos</a>
+  </div>
+</section>
+
+<footer><div class="wrap"><a href="vendedores.html">← Volver a la página de vendedores</a></div></footer>
+
+<script>
+(function () {
+  "use strict";
+  var C = window.CONFIG || {}, R = C.recomendados || {}, I = C.internacional || {};
+  var zona = ""; try { zona = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) {}
+  var forzado = (/[?&]pais=(ar|int)/i.exec(location.search) || [])[1];
+  var enAR = forzado ? forzado.toLowerCase() === "ar" : (!I.activo || !zona || /Argentina|Buenos_Aires/.test(zona));
+  var corto = String(C.marca || "Brian").split(" ")[0];
+  var prod = C.producto || "SISTEMA";
+  var sitio = String(C.sitio || location.origin + "/").split("?")[0].split("#")[0].replace(/[^/]*$/, "");
+  var link = "[TU LINK]";
+  try {
+    var nom = localStorage.getItem("vendedor:nombre");
+    if (nom) link = sitio + "planes.html?ref=" + String(nom).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 30);
+  } catch (e) {}
+  var vals = { producto: prod, pct: R.comision || 43, ren: R.renovacion || 15, cuando: R.cuandoPago || "a fin de cada mes", corto: corto };
+  function armarG() {
+  var pl = enAR ? (C.planes || []) : (I.planes || []);
+  var plata = function (n) { return enAR ? "$" + Math.round(n).toLocaleString("es-AR") : (I.moneda || "US$") + (Math.round(n * 100) / 100).toLocaleString("es-AR"); };
+  var anual = pl.filter(function (p) { return p.meses === 12; })[0] || pl[0] || { precio: 0 };
+  var mesAnual = plata(anual.precio / 12);
+
+  /* Cada guion tiene versión con vos (Argentina) y con tú (resto de LatAm) */
+  return {
+    frio: [
+      { t: "A alguien que comentó en una cuenta de fitness",
+        ar: "¡Hola [nombre]! Vi tu comentario en [cuenta] sobre [lo que dijo]. ¿Estás entrenando ahora o con ganas de arrancar?",
+        int: "¡Hola [nombre]! Vi tu comentario en [cuenta] sobre [lo que dijo]. ¿Estás entrenando ahora o con ganas de empezar?" },
+      { t: "A un contacto que conocés",
+        ar: "¡Hola [nombre]! ¿Cómo andás? Me acordé que me habías dicho que querías volver a entrenar. ¿Lo pudiste retomar?",
+        int: "¡Hola [nombre]! ¿Cómo estás? Me acordé que me habías dicho que querías volver a entrenar. ¿Pudiste retomarlo?" },
+      { t: "En un grupo de Facebook, después de responder una duda",
+        ar: "¡Hola [nombre]! Vi tu pregunta en el grupo de [grupo]. ¿Ya tenés una rutina armada o estás haciendo lo que encontrás por ahí?",
+        int: "¡Hola [nombre]! Vi tu pregunta en el grupo de [grupo]. ¿Ya tienes una rutina armada o estás haciendo lo que encuentras por ahí?" },
+      { t: "A quien te respondió un estado",
+        ar: "¡Gracias por escribir! ¿Vos estás entrenando ahora? Contame, así te digo si te sirve.",
+        int: "¡Gracias por escribir! ¿Tú estás entrenando ahora? Cuéntame y te digo si te sirve." }
+    ],
+    calif: [
+      { t: "Las tres preguntas (de a una)",
+        ar: "1. ¿Qué te gustaría lograr? (bajar grasa, ganar músculo, sentirte mejor…)\n2. ¿Qué te pasó las otras veces que arrancaste? ¿Por qué lo dejaste?\n3. ¿Cuántos días por semana podrías entrenar, y dónde? (gym o casa)",
+        int: "1. ¿Qué te gustaría lograr? (bajar grasa, ganar músculo, sentirte mejor…)\n2. ¿Qué te pasó las otras veces que empezaste? ¿Por qué lo dejaste?\n3. ¿Cuántos días por semana podrías entrenar, y dónde? (gym o casa)" }
+    ],
+    cierre: [
+      { t: "Presentación (usá sus palabras)",
+        ar: "Te entiendo, le pasa a casi todos: se arranca con ganas y sin un plan se deja. Justo para eso es " + prod + ": " + corto + " (entrenador) te arma la rutina para [su objetivo], para [sus días] por semana, y una app te sigue todos los días: te marca qué hacer, anotás cada serie y te avisa si aflojás. Mirá el video de 30 segundos 👇",
+        int: "Te entiendo, le pasa a casi todos: se empieza con ganas y sin un plan se deja. Justo para eso es " + prod + ": " + corto + " (entrenador) te arma la rutina para [su objetivo], para [sus días] por semana, y una app te acompaña todos los días: te marca qué hacer, anotas cada serie y te avisa si aflojas. Mira el video de 30 segundos 👇" },
+      { t: "Recomendación y pregunta de cierre",
+        ar: "Para lo que me contaste te recomiendo el anual: sale " + mesAnual + " por mes, te cambia la rutina cada 3 meses y te revisa el progreso todos los meses. ¿Lo querés arrancar esta semana?",
+        int: "Para lo que me contaste te recomiendo el anual: sale " + mesAnual + " al mes, te cambia la rutina cada 3 meses y te revisa el progreso todos los meses. ¿Quieres empezar esta semana?" },
+      { t: "Cuando dice que sí",
+        ar: "¡Buenísimo! Entrá acá: " + link + "\nElegí el plan y pagá. Si al terminar no te aparece tu código, tocá el botón verde \"Ya pagué · mandar comprobante\": así " + corto + " sabe que vas de mi parte, te activa el acceso y te arma la rutina 💪",
+        int: "¡Genial! Entra aquí: " + link + "\nElige el plan y toca el botón: " + corto + " te dice cómo pagar y te da tu acceso 💪 Cualquier cosa me escribes." }
+    ],
+    obj: [
+      { t: "\"Es caro\"",
+        ar: "Te entiendo. Pensalo así: el anual sale " + mesAnual + " por mes, menos que una salida. Un entrenador personal te cobra eso por una clase. ¿Es el precio o es que no estás seguro de que lo vas a usar?",
+        int: "Te entiendo. Piénsalo así: el anual sale " + mesAnual + " al mes, menos que una salida. Un entrenador personal te cobra eso por una clase. ¿Es el precio o es que no estás seguro de que lo vas a usar?" },
+      { t: "\"Lo voy a pensar\"",
+        ar: "Dale, tranqui. ¿Qué es lo que te hace dudar? Así te paso la info que te falta y lo decidís bien.",
+        int: "Claro, tranquilo. ¿Qué es lo que te hace dudar? Así te paso la información que te falta y decides bien." },
+      { t: "\"No tengo tiempo\"",
+        ar: "Justamente: la rutina se arma según los días que tenés. Si son 3 días de 45 minutos, se arma para eso. ¿Cuántos días podrías?",
+        int: "Justamente: la rutina se arma según los días que tienes. Si son 3 días de 45 minutos, se arma para eso. ¿Cuántos días podrías?" },
+      { t: "\"Ya tengo una rutina\" / \"La saco de YouTube\"",
+        ar: "Está bien. La diferencia es que acá la rutina es para vos, y la app te registra cada serie para que veas si progresás. La mayoría deja porque no ve avances. ¿Vos anotás tus pesos?",
+        int: "Está bien. La diferencia es que aquí la rutina es para ti, y la app registra cada serie para que veas si progresas. La mayoría deja porque no ve avances. ¿Tú anotas tus pesos?" },
+      { t: "\"¿Es confiable? / ¿Quién es " + corto + "?\"",
+        ar: "Buena pregunta. " + corto + " es entrenador y la rutina te la arma él. Podés ver la app y el video en la página antes de pagar, y si tenés dudas le escribís directo por WhatsApp desde ahí.",
+        int: "Buena pregunta. " + corto + " es entrenador y la rutina te la arma él. Puedes ver la app y el video en la página antes de pagar, y si tienes dudas le escribes directo por WhatsApp desde ahí." },
+      { t: "\"Empiezo el mes que viene\" / \"El lunes\"",
+        ar: "Jaja, el famoso lunes 😅 Justamente el lema es \"Dejá de empezar el lunes\". Si lo arrancás hoy, el lunes ya tenés tu rutina armada. ¿Le damos?",
+        int: "Jaja, el famoso lunes 😅 Justamente el lema es \"Deja de empezar el lunes\". Si empiezas hoy, el lunes ya tienes tu rutina armada. ¿Le damos?" }
+    ],
+    seg: [
+      { t: "Día 2 · toque corto",
+        ar: "¡Hola [nombre]! ¿Pudiste ver lo que te mandé? 🙌",
+        int: "¡Hola [nombre]! ¿Pudiste ver lo que te envié? 🙌" },
+      { t: "Día 4 · aportá valor",
+        ar: "Te paso un tip: la clave para no dejar es anotar cada entrenamiento, así ves que progresás. Por eso la app te registra serie por serie 👇 [captura o video]",
+        int: "Te comparto un tip: la clave para no dejar es anotar cada entrenamiento, así ves que progresas. Por eso la app registra serie por serie 👇 [captura o video]" },
+      { t: "Día 7 · pregunta directa",
+        ar: "[nombre], ¿lo arrancamos o lo dejamos para más adelante? Cualquiera de las dos está bien, decime así no te molesto 😉",
+        int: "[nombre], ¿empezamos o lo dejamos para más adelante? Cualquiera de las dos está bien, dime y así no te molesto 😉" },
+      { t: "Día 14 · cierre con buena onda",
+        ar: "Te dejo de escribir así no te lleno el chat 😄 Si en algún momento querés arrancar, el link es este: " + link + " ¡Éxitos!",
+        int: "Te dejo de escribir para no llenarte el chat 😄 Si en algún momento quieres empezar, el link es este: " + link + " ¡Éxitos!" }
+    ]
+  };
+  }
+  document.querySelectorAll("[data-c]").forEach(function (el) { var v = vals[el.getAttribute("data-c")]; if (v != null) el.textContent = v; });
+
+  function pintar() {
+    var G = armarG();
+    Object.keys(G).forEach(function (k) {
+      document.getElementById("g-" + k).innerHTML = G[k].map(function (g, i) {
+        var txt = enAR ? g.ar : g.int;
+        var html = '<div class="guion"><label>' + g.t + "</label><pre id=\"p-" + k + i + "\"></pre><button type=\"button\" data-cp=\"p-" + k + i + "\">Copiar</button></div>";
+        return k === "obj" ? '<details class="obj"><summary>' + g.t + "</summary>" + html.replace("<label>" + g.t + "</label>", "") + "</details>" : html;
+      }).join("");
+      G[k].forEach(function (g, i) { document.getElementById("p-" + k + i).textContent = enAR ? g.ar : g.int; });
+    });
+    document.getElementById("tu").textContent = enAR ? "¿Vendés fuera de Argentina? Ver los mensajes con \"tú\"" : "¿Vendés en Argentina? Ver los mensajes con \"vos\"";
+  }
+  pintar();
+  document.getElementById("tu").addEventListener("click", function () { enAR = !enAR; pintar(); });
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest && ev.target.closest("[data-cp]");
+    if (!b) return;
+    var t = document.getElementById(b.getAttribute("data-cp")).textContent;
+    var ok = function () { b.textContent = "Copiado ✓"; setTimeout(function () { b.textContent = "Copiar"; }, 1800); };
+    if (navigator.clipboard) navigator.clipboard.writeText(t).then(ok, function () {}); 
+  });
+})();
+</script>
+</body>
+</html>

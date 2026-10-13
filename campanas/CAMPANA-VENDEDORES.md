@@ -60,6 +60,8 @@ Ejemplo para contarles: 10 clientes en el plan anual son **$300.570** de entrada
 
 ## 3. Kit del vendedor (pasáselo tal cual)
 
+> **La guía completa para vender** (perfil, dónde buscar clientes, mensajes en frío, seguimiento, cierre y objeciones, con versión "vos" y "tú") está en **brian-ponce.netlify.app/guia-vendedores.html**. Pasales ese link a todos. Los clientes los consiguen ellos: no hay leads.
+
 **Todo está en:** `brian-ponce.netlify.app/vendedores.html`. Link propio, video y textos.
 
 ### Mensajes para WhatsApp

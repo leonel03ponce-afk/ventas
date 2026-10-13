@@ -7,14 +7,18 @@ La app está en la carpeta `app/`. Es una página web instalable en el celular (
 | `app/index.html` | La app: Hoy, Armar, Entreno y Sistema |
 | `app/planes.html` | Página de venta corta, para el link de la bio y para los vendedores |
 | `app/vendedores.html` | Página para vendedores: sacan su link, copian textos listos, bajan el video y calculan cuánto ganan |
+| `app/guia-vendedores.html` | Guía para vendedores: perfil, dónde buscar clientes, mensajes en frío, cierre, objeciones y seguimiento, listos para copiar |
+| `app/gracias.html` | Adonde vuelve el cliente después de pagar: le muestra su código (cobro automático) |
+| `app/ventas.html` | Tus ventas automáticas, con comisiones y reembolsos (pide la clave `CLAVE_VENTAS`) |
+| `netlify/` | Las funciones del cobro automático (Mercado Pago y Hotmart) |
 | `app/promo.mp4` | El video promocional en versión liviana (lo usan la página de venta y los vendedores) |
 | `app/config.js` | **Lo único que hace falta tocar**: marca, precios, links de pago, comisión, prueba gratis. Después de cambiarlo, corré `python3 app/sincronizar-config.py` (deja una copia de respaldo adentro de la app, por si `config.js` no se sube) |
 | `app/img/` | Capturas que usa la página de venta |
 
 ## Publicar en Netlify
 
-Subí la carpeta `app/` entera: en app.netlify.com → tu sitio → *Deploys* → arrastrás la carpeta.
-Si conectás este repo a Netlify, poné `app` como *Publish directory* y cada cambio se publica solo.
+Lo mejor es **conectar este repositorio a Netlify** (pasos en `COBRO-AUTOMATICO.md`): cada cambio se publica solo y funcionan el cobro automático y Hotmart.
+También podés subir la carpeta `app/` a mano (*Deploys* → arrastrás la carpeta), pero así el cobro automático no anda.
 
 - App: `https://brian-ponce.netlify.app/`
 - Página de venta: `https://brian-ponce.netlify.app/planes.html`
@@ -26,7 +30,11 @@ Si conectás este repo a Netlify, poné `app` como *Publish directory* y cada ca
 
 Si la persona está fuera de Argentina (según la zona horaria de su celular), la página de venta y la de vendedores muestran los precios en dólares (`internacional` en `config.js`: US$19 / US$49 / US$89). Como todavía no hay link de cobro internacional, el botón abre WhatsApp para coordinar el pago por PayPal, USDT o Zinli. Cuando tengas un link (PayPal, Hotmart, etc.), pegalo en `pago` de cada plan internacional. Con `?pais=ar` o `?pais=int` en el link se fuerza una u otra versión.
 
-## Cobrar
+## Cobro automático
+
+Con el token de Mercado Pago cargado en Netlify, el cliente paga y **recibe su código al instante**, la venta queda con su vendedor y los reembolsos dan de baja el código solos. También funciona con Hotmart para vender afuera. Cómo activarlo: **[COBRO-AUTOMATICO.md](COBRO-AUTOMATICO.md)**. Hasta que lo actives, todo sigue funcionando como abajo.
+
+## Cobrar (sin cobro automático)
 
 Los links de Mercado Pago ya están cargados en `config.js`:
 

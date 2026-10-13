@@ -12,51 +12,72 @@ Página para vendedores: **brian-ponce.netlify.app/vendedores.html**. Ahí sacan
 
 ---
 
+## Antes de publicar: la autoridad
+
+Para atraer vendedores necesitás mostrar que esto es serio. **No pongas números inventados** ("ya tenemos 80 en curso" si no es así): en una comunidad de closers alguien te va a pedir que lo muestres, y si no podés, perdés justo lo que querías ganar, la confianza. Además, si un vendedor después le repite ese número a un cliente, el que queda expuesto sos vos.
+
+Lo que sí podés decir, porque es verdad y pesa:
+- **Meses de trabajo** puestos en el producto: app propia, rutina personalizada, página de venta, video, cobro automático.
+- **Sos entrenador** y la rutina la armás vos.
+- **El sistema ya está funcionando**: link propio para cada vendedor, código al instante para el cliente, comisiones registradas solas.
+- **Que lo prueben**: mostrales la app, el video y la página. Eso convence más que cualquier número.
+- **Cuando tengas números reales, usalos**: "ya hay [N] alumnos usando SISTEMA", "[N] vendedores activos", "el primero cobró [monto] en su primer mes". Con 5 reales alcanza para arrancar, y crecen solos.
+
+Y lo más fuerte con closers: **la escasez real**. "Abro 10 lugares para vendedores este mes" es verdad si lo cumplís, y hace que respondan rápido.
+
+---
+
 ## 1. Comunidad de Tino Mossu (closers)
 
-Los closers piensan en **ticket, comisión, volumen y leads**. Este es un producto de ticket bajo, así que el argumento es otro: **se cierra en un solo mensaje, la comisión es casi la mitad y encima paga cada vez que el cliente renueva**. No les vendas que se van a hacer ricos: decí los números como son.
+Los closers piensan en **ticket, comisión, volumen y leads**. Acá no hay leads: el que entra sale a buscar sus clientes. Por eso el argumento es otro:
+- **El producto ya está hecho**: meses de trabajo que no tienen que hacer.
+- **43% de comisión + 15% recurrente**, sin invertir nada.
+- **Es práctica paga**: prospectar, escribir en frío, hacer seguimiento y cerrar por chat. Lo que en la comunidad te enseñan, acá lo practicás con un producto real y cobrás por cada cierre.
 
 Antes de publicar, fijate en qué canal de la comunidad se pueden ofrecer oportunidades (muchas tienen uno de "ofertas" o "busco closers"). Publicar en el lugar correcto te da más respuestas.
 
 ### Publicación en la comunidad
 
-> **Busco closers para oferta de fitness · 43% de comisión + 15% recurrente**
+> **Busco closers para practicar y cobrar · 43% de comisión + 15% recurrente**
 >
-> Soy Brian Ponce, entrenador. Lancé **SISTEMA**: rutina personalizada armada por mí + una app que acompaña al cliente todos los días (entreno, hábitos, nutrición, rachas y niveles).
+> Soy Brian Ponce, entrenador. Llevo meses construyendo **SISTEMA**: rutina personalizada armada por mí + una app propia que acompaña al cliente todos los días (entreno, hábitos, nutrición, rachas y niveles). El producto está terminado y funcionando.
+>
+> **Lo que busco:** gente que quiera salir a buscar clientes. **No hay leads**: vos prospectás, escribís, hacés seguimiento y cerrás por chat. Si estás aprendiendo a vender, es el lugar ideal para practicar con un producto real y cobrar por cada cierre.
 >
 > **Lo que gana el closer:**
 > • 43% del primer pago: $10.707 / $30.057 / $51.557 según el plan (afuera: US$8 a US$38)
 > • 15% cada vez que ese cliente renueva
 > • Pago a fin de mes (Mercado Pago, transferencia, USDT o PayPal)
 >
-> **Por qué se cierra fácil:**
-> • Ticket accesible: desde $5.825 por mes. Es una decisión de un mensaje, no de una llamada.
-> • Video de venta, página y textos listos. Cada closer tiene su link con seguimiento.
-> • El cliente paga directo en la página. Vos no manejás plata ni comprobantes.
-> • Se vende en Argentina en pesos y en el resto de LatAm en dólares.
+> **Lo que te llevás armado:**
+> • Tu link personal: la venta queda a tu nombre sola
+> • Video de venta, página y una **guía completa**: dónde buscar clientes, mensajes en frío, seguimiento, cierre y objeciones, todo listo para copiar
+> • El cliente paga en la página y recibe su acceso al instante. Vos no manejás plata ni entregás nada
+> • Se vende en Argentina en pesos y en el resto de LatAm en dólares
 >
-> Si te interesa, comentá **"SISTEMA"** o escribime por privado y te paso todo.
+> Abro **10 lugares** este mes. Si te interesa, comentá **"SISTEMA"** o escribime por privado.
 
 ### Mensaje privado a quien comenta
 
 > ¡Hola [nombre]! Gracias por escribir 🙌
-> Te paso todo:
-> 1. Entrá a brian-ponce.netlify.app/vendedores.html, poné tu nombre y te genera tu link.
-> 2. Ahí mismo bajás el video y tenés los textos para WhatsApp, Instagram y TikTok.
-> 3. Cuando alguien te dice que sí, le mandás el mensaje que dice "Ya pagué · mandar comprobante". Con eso me llega que viene de tu parte.
+> Te cuento cómo es, así ves si te sirve:
+> • No hay leads: los clientes los buscás vos (con tu cuenta o una que armes para esto). Por eso tenés una guía con todo: dónde buscar, qué escribir en frío, cómo seguir y cómo cerrar.
+> • Cobrás 43% del primer pago y 15% de cada renovación, a fin de mes.
 >
-> Pagás 0, cobrás 43% del primer pago y 15% de cada renovación, a fin de mes.
-> Pasame tu nombre como lo pusiste en el link y por dónde te pago, así te doy de alta. ¿Arrancamos?
+> Para arrancar:
+> 1. Entrá a brian-ponce.netlify.app/vendedores.html, poné tu nombre y te genera tu link.
+> 2. Bajá el video, subilo a tu perfil y abrí la guía para vender.
+> 3. Pasame tu nombre como lo pusiste en el link y por dónde te pago, así te doy de alta.
+>
+> ¿Arrancamos?
 
 ### Si te dicen "el ticket es muy bajo para mí"
 
-> Lo entiendo, y no es una oferta para llamadas de una hora. Es para cerrar por chat a gente que ya tiene ganas de entrenar: un mensaje con el video y un link. Si tenés base de contactos o una cuenta con seguidores, el volumen está en ese 15% que se repite: diez clientes en el plan anual te dejan $30.057 cada uno de entrada y $10.485 cada año que renuevan.
+> Lo entiendo, y no es una oferta para llamadas de una hora. Es para cerrar por chat a gente que ya tiene ganas de entrenar. Sirve para dos cosas: practicar todo el proceso (prospección, frío, seguimiento, cierre) con algo fácil de vender, y armar un ingreso que se repite: diez clientes en el plan anual te dejan $30.057 cada uno de entrada y $10.485 cada año que renuevan.
 
 ### Si te preguntan "¿me pasás leads?"
 
-> Por ahora cada closer trabaja su propia red con el video y los textos. Estoy armando contenido para generar consultas propias, y las voy a repartir entre los closers que mejor cierren. Si cerrás bien, sos de los primeros en recibir.
-
-(Esto es una promesa: hacela solo si pensás cumplirla. El plan para escalar explica cómo.)
+> No, y te soy sincero: el trabajo del vendedor es conseguir los clientes. Lo que te doy es todo lo demás, que me llevó meses: el producto, la app, la página que cobra sola, el video y una guía paso a paso para prospectar y cerrar por chat. Si querés practicar prospección y cierre con algo real y cobrar por cada venta, esto es para vos.
 
 ---
 
@@ -73,7 +94,8 @@ En Venezuela y en buena parte de LatAm se habla de **"tú"**. Estos textos ya es
 > • Ganas el **43% de cada venta** (de US$8 a US$38 por cliente)
 > • Y el **15% cada vez que tu cliente renueva**
 > • Te pago en **USDT (Binance), Zinli o PayPal**, a fin de mes
-> • No inviertes nada. Te doy tu link, el video y los textos listos
+> • No inviertes nada. Te doy tu link, el video, los textos y una guía para conseguir clientes
+> • Los clientes los buscas tú: es la mejor forma de aprender a vender por chat
 >
 > Escríbeme **"QUIERO VENDER"** y te explico en 2 minutos.
 
@@ -81,7 +103,7 @@ En Venezuela y en buena parte de LatAm se habla de **"tú"**. Estos textos ya es
 
 > ¡Hola [nombre]! Qué bueno que te interese 🙌
 > 1. Entra a brian-ponce.netlify.app/vendedores.html, pon tu nombre y te genera tu link personal.
-> 2. Descarga el video y súbelo a tus estados, Instagram o TikTok con tu link en la bio.
+> 2. Descarga el video y súbelo a tus estados, Instagram o TikTok con tu link en la bio. Ahí mismo tienes la guía para conseguir clientes, con los mensajes listos.
 > 3. Cuando alguien quiera comprar, mándale tu link: elige su plan y le aparece el botón para escribirme. Ese mensaje me avisa que viene de tu parte.
 >
 > Tus clientes pagan en dólares (PayPal, USDT o Zinli). Ganas el 43% de cada venta y el 15% de cada renovación.
@@ -107,7 +129,7 @@ En Venezuela y en buena parte de LatAm se habla de **"tú"**. Estos textos ya es
 > ¡Bienvenido/a al equipo de SISTEMA, [nombre]! 🔥
 > Ya estás dado de alta. Tres cosas para arrancar fuerte:
 > 1. Subí el video hoy, con tu link en la bio.
-> 2. Mandalo a 10 personas que sepas que quieren entrenar.
+> 2. Leé la guía (brian-ponce.netlify.app/guia-vendedores.html) y mandá tus primeros 20 mensajes.
 > 3. Cada cliente tiene que mandar el comprobante con el botón de la página. Si no, no me entero de que es tuyo.
 > Cualquier duda, escribime acá.
 

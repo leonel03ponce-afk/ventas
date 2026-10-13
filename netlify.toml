@@ -1,0 +1,9 @@
+# Netlify: publica la carpeta app/ y arma las funciones de cobro automático.
+# Con "Deploy manually" (arrastrar la carpeta) las funciones no se arman:
+# hay que conectar este repositorio (ver COBRO-AUTOMATICO.md).
+[build]
+  publish = "app"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"

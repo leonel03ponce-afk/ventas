@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tu acceso · SISTEMA</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0B0715">
+<link rel="icon" href="icono-192.png">
+<link rel="stylesheet" href="fuentes.css">
+<script src="config.js"></script>
+<style>
+:root { --void: #0B0715; --panel: #150E24; --panel2: #1E1433; --line: #332248; --bone: #F3EDE4; --dim: #9C8AB8; --dimmer: #645279; --gold: #E9B75B; --jade: #4BD489;
+  --bevel: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px); --bevel-s: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; background: radial-gradient(90% 50% at 50% 0%, rgba(233,183,91,.13), transparent 70%), var(--void); color: var(--bone); font: 400 16px/1.5 Archivo, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 480px; margin: 0 auto; padding: 34px 18px 50px; }
+.logo { display: flex; align-items: center; gap: 10px; font: 700 17px/1 "Chakra Petch", sans-serif; letter-spacing: .12em; }
+.logo i { width: 24px; height: 24px; background: var(--gold); clip-path: var(--bevel-s); }
+h1 { margin: 26px 0 0; font: 700 clamp(36px, 10vw, 50px)/1 "Chakra Petch", sans-serif; }
+h1 span { color: var(--gold); }
+p { margin: 0; }
+.sub { margin-top: 12px; color: var(--dim); font-size: 17px; }
+.card { margin-top: 22px; padding: 22px 20px; background: var(--panel); clip-path: var(--bevel); display: grid; gap: 12px; }
+.k { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+.cod { font: 700 clamp(38px, 12vw, 50px)/1 "Chakra Petch", sans-serif; letter-spacing: .06em; color: var(--gold); text-align: center; padding: 14px 0; background: rgba(233,183,91,.08); border: 1px dashed rgba(233,183,91,.45); }
+.dato { color: var(--dim); font-size: 14px; text-align: center; }
+.btn { display: flex; align-items: center; justify-content: center; min-height: 54px; padding: 0 20px; font: 700 17px/1 Archivo, sans-serif; color: var(--void); background: var(--gold); border: 0; clip-path: var(--bevel-s); text-decoration: none; cursor: pointer; }
+.btn.alt { background: var(--panel2); color: var(--bone); box-shadow: inset 0 0 0 1px var(--line); }
+.btn.wa { background: #25D366; color: #06210f; }
+ol { margin: 0; padding-left: 20px; color: var(--dim); }
+ol li { padding: 3px 0; }
+ol b { color: var(--bone); }
+label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--dimmer); }
+input { display: block; width: 100%; height: 50px; margin-top: 6px; padding: 0 12px; font: 400 17px/1 Archivo, sans-serif; color: var(--bone); background: var(--panel2); border: 1px solid var(--line); border-radius: 0; }
+input:focus { outline: none; border-color: var(--gold); }
+.msg { min-height: 20px; font-size: 14px; color: var(--dim); }
+.spin { width: 34px; height: 34px; margin: 6px auto; border: 3px solid var(--line); border-top-color: var(--gold); border-radius: 50%; animation: g 0.9s linear infinite; }
+@keyframes g { to { transform: rotate(360deg); } }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="logo"><i></i><span data-c="producto">SISTEMA</span></p>
+
+  <!-- buscando el pago -->
+  <section id="v-carga">
+    <h1>Un segundo…</h1>
+    <p class="sub">Estoy confirmando tu pago.</p>
+    <div class="card"><div class="spin"></div></div>
+  </section>
+
+  <!-- pago aprobado: el código -->
+  <section id="v-ok" hidden>
+    <h1>¡Adentro, <span id="ok-nom">campeón</span>!</h1>
+    <p class="sub">Tu pago está confirmado. Este es tu código de acceso:</p>
+    <div class="card">
+      <p class="cod" id="ok-cod"></p>
+      <p class="dato" id="ok-dato"></p>
+      <a class="btn" id="ok-abrir" href="./">Activar mi acceso</a>
+      <button type="button" class="btn alt" id="ok-copiar">Copiar código</button>
+    </div>
+    <div class="card">
+      <p class="k">Ahora, tu rutina</p>
+      <ol>
+        <li>Tocá <b>Activar mi acceso</b> y completá tus datos en la app.</li>
+        <li>Mandame un WhatsApp con el botón de abajo: <b>te armo la rutina a tu medida</b> y te la mando a la app.</li>
+        <li>Guardá este código: si cambiás de celular, lo volvés a usar.</li>
+      </ol>
+      <a class="btn wa" id="ok-wa" target="_blank" rel="noopener">Escribirme para mi rutina</a>
+    </div>
+  </section>
+
+  <!-- pago pendiente (efectivo, transferencia) -->
+  <section id="v-pend" hidden>
+    <h1>Tu pago está <span>en camino</span></h1>
+    <p class="sub">Mercado Pago todavía no lo acreditó. Si pagaste en efectivo puede tardar unas horas.</p>
+    <div class="card">
+      <p class="dato">Guardá esta página o volvé a abrirla más tarde: cuando se acredite, acá aparece tu código.</p>
+      <button type="button" class="btn" id="pend-otra">Revisar de nuevo</button>
+      <a class="btn wa" data-comp target="_blank" rel="noopener">Ya pagué · mandar comprobante</a>
+    </div>
+  </section>
+
+  <!-- compra por Hotmart: pide el código de compra -->
+  <section id="v-hot" hidden>
+    <h1>Tu <span>acceso</span></h1>
+    <p class="sub">Escribí el mail con el que compraste y el código de compra que te mandó Hotmart (empieza con HP).</p>
+    <div class="card">
+      <label>Mail de la compra<input id="h-mail" type="email" autocomplete="email" inputmode="email"></label>
+      <label>Código de compra<input id="h-tx" placeholder="HP0000000000" autocapitalize="characters"></label>
+      <button type="button" class="btn" id="h-go">Ver mi código</button>
+      <p class="msg" id="h-msg"></p>
+    </div>
+  </section>
+
+  <!-- algo no anduvo: plan B por WhatsApp -->
+  <section id="v-error" hidden>
+    <h1>Mandame <span>el comprobante</span></h1>
+    <p class="sub" id="err-txt">No pude confirmar tu pago automáticamente. No pasa nada: mandame el comprobante por WhatsApp y te activo el acceso en el día.</p>
+    <div class="card">
+      <a class="btn wa" data-comp target="_blank" rel="noopener">Ya pagué · mandar comprobante</a>
+      <a class="btn alt" href="planes.html">Volver a los planes</a>
+    </div>
+  </section>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var C = window.CONFIG || {};
+  var corto = String(C.marca || "Brian").split(" ")[0];
+  var wa = String(C.whatsapp || "").split("?")[0];
+  var q = new URLSearchParams(location.search);
+  var ref = ""; try { ref = localStorage.getItem("acceso:ref") || ""; } catch (e) {}
+  var $ = function (id) { return document.getElementById(id); };
+  var waLink = function (t) { return wa ? wa + "?text=" + encodeURIComponent(t + (ref ? "\nMe recomendó: " + ref : "")) : "#"; };
+
+  document.querySelectorAll("[data-c=producto]").forEach(function (e) { e.textContent = C.producto || "SISTEMA"; });
+  $("ok-wa").textContent = "Escribirle a " + corto + " para mi rutina";
+  document.querySelectorAll("[data-comp]").forEach(function (a) { a.href = waLink("Hola " + corto + "! Ya pagué " + (C.producto || "SISTEMA") + (q.get("payment_id") ? " (operación " + q.get("payment_id") + ")" : "") + ". Te mando el comprobante para recibir mi acceso."); });
+  if (C.acento) document.documentElement.style.setProperty("--gold", C.acento);
+
+  function ver(id) { ["v-carga", "v-ok", "v-pend", "v-hot", "v-error"].forEach(function (v) { $(v).hidden = v !== id; }); window.scrollTo(0, 0); }
+  function fechaLinda(iso) { var p = String(iso).split("-"); return p.length === 3 ? +p[2] + "/" + +p[1] + "/" + p[0] : iso; }
+
+  function mostrar(r) {
+    if (r.ref && !ref) { ref = r.ref; try { localStorage.setItem("acceso:ref", ref); } catch (e) {} }
+    var nom = String(r.nombre || "").split(" ")[0];
+    $("ok-nom").textContent = nom || "campeón";
+    $("ok-cod").textContent = r.codigo;
+    $("ok-dato").textContent = "Plan " + r.plan + " · " + (r.vence ? "válido hasta el " + fechaLinda(r.vence) : "acceso para siempre");
+    $("ok-abrir").href = "./?codigo=" + encodeURIComponent(r.codigo);
+    $("ok-wa").href = waLink("Hola " + corto + "! " + (r.nombre ? "Soy " + r.nombre + ". " : "") + "Ya tengo mi acceso (plan " + r.plan + ", código " + r.codigo + "). ¿Me armás la rutina?");
+    $("ok-copiar").onclick = function () {
+      var b = this;
+      (navigator.clipboard ? navigator.clipboard.writeText(r.codigo) : Promise.reject()).then(function () { b.textContent = "¡Copiado!"; }, function () { b.textContent = r.codigo; });
+    };
+    try { localStorage.setItem("acceso:ultimo-codigo", r.codigo); } catch (e) {}
+    ver("v-ok");
+  }
+
+  function pedir(url, enError) {
+    ver("v-carga");
+    var ctrl = window.AbortController ? new AbortController() : null;
+    var t = setTimeout(function () { if (ctrl) ctrl.abort(); }, 15000);
+    return fetch(url, { cache: "no-store", signal: ctrl ? ctrl.signal : undefined }).then(function (res) {
+      clearTimeout(t);
+      if (!res.ok && res.status !== 400) throw new Error(res.status);
+      return res.json();
+    }).then(function (r) {
+      if (r.estado === "aprobado") return mostrar(r);
+      enError(r.estado);
+    }).catch(function () { clearTimeout(t); ver("v-error"); });
+  }
+
+  /* Mercado Pago vuelve con ?payment_id=…&status=… */
+  var pago = q.get("payment_id") || q.get("collection_id");
+  if (pago && pago !== "null") {
+    var revisar = function () {
+      pedir("/api/codigo?pago=" + encodeURIComponent(pago), function (estado) {
+        if (estado === "pendiente") return ver("v-pend");
+        if (estado === "rechazado") { $("err-txt").textContent = "Mercado Pago rechazó el pago. Probá de nuevo con otro medio, o escribime y lo vemos."; return ver("v-error"); }
+        ver("v-error");
+      });
+    };
+    $("pend-otra").onclick = revisar;
+    revisar();
+    return;
+  }
+
+  /* Hotmart: el comprador escribe su mail y su código de compra */
+  if (q.has("hotmart") || q.get("transaction")) {
+    $("h-mail").value = q.get("email") || "";
+    $("h-tx").value = q.get("transaction") || "";
+    ver("v-hot");
+    $("h-go").onclick = function () {
+      var mail = $("h-mail").value.trim(), tx = $("h-tx").value.trim().toUpperCase();
+      if (!mail || !/^HP\w{4,}$/.test(tx)) { $("h-msg").textContent = "Revisá el mail y el código (empieza con HP)."; return; }
+      fetch("/api/codigo?hotmart=" + encodeURIComponent(tx) + "&email=" + encodeURIComponent(mail), { cache: "no-store" })
+        .then(function (r) { return r.json(); })
+        .then(function (r) {
+          if (r.estado === "aprobado") return mostrar(r);
+          $("h-msg").textContent = r.estado === "anulado" ? "Esa compra fue reembolsada o cancelada." : "Todavía no encuentro esa compra. Si recién pagaste, esperá un minuto y probá de nuevo.";
+        })
+        .catch(function () { $("h-msg").textContent = "No me pude conectar. Probá de nuevo en un rato."; });
+    };
+    return;
+  }
+
+  /* Sin datos de pago: mostrar el último código que salió en este celu, o el plan B */
+  var ult = ""; try { ult = localStorage.getItem("acceso:ultimo-codigo") || ""; } catch (e) {}
+  if (ult) { $("err-txt").textContent = "Tu último código en este celular es " + ult + ". Si necesitás ayuda, escribime."; }
+  ver("v-error");
+})();
+</script>
+</body>
+</html>

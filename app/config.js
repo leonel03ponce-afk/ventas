@@ -33,12 +33,16 @@ window.CONFIG = {
   ],
 
   /* Clientes de afuera de Argentina: ven estos precios en dólares.
-     "pago" es un link de cobro internacional (PayPal, Hotmart, etc.);
+     "pago" es un link de cobro internacional (Hotmart, PayPal, etc.);
      vacío = el botón abre WhatsApp para coordinar el pago. */
   internacional: {
     activo: true,
     moneda: "US$",
     metodos: "PayPal, USDT (Binance) o Zinli",
+    /* Hotmart (cobro automático afuera): código de cada oferta → plan.
+       Ej: { "a1b2c3d4": "trimestral", "e5f6g7h8": "anual", "i9j0k1l2": "vida" }.
+       Vacío = se reconoce el plan por el precio. Los links de pago van en "pago". */
+    hotmart: { ofertas: {} },
     planes: [
       { id: "trimestral", nombre: "3 meses",      precio: 19, meses: 3,  detalle: "sale US$6,33 por mes", pago: "" },
       { id: "anual",      nombre: "Anual",        precio: 49, meses: 12, detalle: "sale US$4,08 por mes · ahorrás 35%", pago: "", destacado: "Más elegido" },

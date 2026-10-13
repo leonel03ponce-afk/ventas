@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ventas automáticas · SISTEMA</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0B0715">
+<link rel="icon" href="icono-192.png">
+<link rel="stylesheet" href="fuentes.css">
+<style>
+:root { --void: #0B0715; --panel: #150E24; --panel2: #1E1433; --line: #332248; --bone: #F3EDE4; --dim: #9C8AB8; --dimmer: #645279; --gold: #E9B75B; --jade: #4BD489; --red: #FF6B6B;
+  --bevel-s: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--void); color: var(--bone); font: 400 15px/1.45 Archivo, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1000px; margin: 0 auto; padding: 24px 16px 50px; }
+h1 { margin: 0; font: 700 32px/1 "Chakra Petch", sans-serif; }
+h2 { margin: 28px 0 10px; font: 700 20px/1 "Chakra Petch", sans-serif; }
+p { margin: 0; }
+.sub { margin-top: 8px; color: var(--dim); }
+.fila { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 16px; }
+input, select { height: 46px; padding: 0 12px; font: 400 16px/1 Archivo, sans-serif; color: var(--bone); background: var(--panel2); border: 1px solid var(--line); border-radius: 0; }
+input { flex: 1; min-width: 200px; }
+.btn { height: 46px; padding: 0 18px; font: 700 15px/1 Archivo, sans-serif; color: var(--void); background: var(--gold); border: 0; clip-path: var(--bevel-s); cursor: pointer; }
+.btn.alt { background: var(--panel2); color: var(--bone); box-shadow: inset 0 0 0 1px var(--line); }
+.msg { margin-top: 10px; min-height: 20px; color: var(--dim); }
+.tarjetas { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin-top: 16px; }
+.tarjetas div { padding: 14px; background: var(--panel); clip-path: var(--bevel-s); }
+.tarjetas b { display: block; font: 700 24px/1.1 "Chakra Petch", sans-serif; color: var(--gold); }
+.tarjetas span { font-size: 12px; color: var(--dim); }
+.tabla { overflow-x: auto; background: var(--panel); }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { padding: 10px 10px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--dimmer); font-weight: 600; }
+td.n { text-align: right; font-variant-numeric: tabular-nums; }
+.tag { display: inline-block; padding: 2px 8px; font-size: 11px; font-weight: 700; letter-spacing: .05em; }
+.tag.ok { background: rgba(75,212,137,.15); color: var(--jade); }
+.tag.mal { background: rgba(255,107,107,.15); color: var(--red); }
+.tag.ren { background: rgba(124,156,255,.15); color: #9FB5FF; }
+.cod { font-family: "Chakra Petch", monospace; letter-spacing: .04em; }
+.mini { height: 30px; padding: 0 10px; font-size: 12px; }
+.vacio { padding: 24px; text-align: center; color: var(--dim); }
+.nota { margin-top: 10px; font-size: 13px; color: var(--dimmer); }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Ventas automáticas</h1>
+  <p class="sub">Las ventas que entraron solas por Mercado Pago y Hotmart, con su código y la comisión de cada vendedor.</p>
+
+  <div id="login">
+    <div class="fila">
+      <input id="clave" type="password" placeholder="Clave de ventas (CLAVE_VENTAS de Netlify)" autocomplete="current-password">
+      <button type="button" class="btn" id="entrar">Entrar</button>
+    </div>
+    <p class="msg" id="lmsg"></p>
+  </div>
+
+  <div id="datos" hidden>
+    <div class="fila">
+      <select id="mes"></select>
+      <button type="button" class="btn alt" id="recargar">Actualizar</button>
+      <button type="button" class="btn alt" id="csv">Bajar Excel (CSV)</button>
+      <button type="button" class="btn alt" id="salir">Salir</button>
+    </div>
+    <div class="tarjetas" id="tarj"></div>
+
+    <h2>Comisiones del mes</h2>
+    <div class="tabla"><table><thead><tr><th>Vendedor</th><th>Ventas</th><th>Moneda</th><th class="n">Le corresponde</th><th>Quién le paga</th></tr></thead><tbody id="com"></tbody></table></div>
+    <p class="nota">Pasá estos montos al tablero de vendedores en la pestaña Pagos. Las ventas por afiliados de Hotmart ya las paga Hotmart.</p>
+
+    <h2>Ventas del mes</h2>
+    <div class="tabla"><table><thead><tr><th>Fecha</th><th>Cliente</th><th>Plan</th><th class="n">Monto</th><th>Vendedor</th><th>Tipo</th><th>Código</th><th>Estado</th><th></th></tr></thead><tbody id="lista"></tbody></table></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
+  var clave = ""; try { clave = localStorage.getItem("ventas:clave") || ""; } catch (e) {}
+  var datos = { ventas: [], bloqueados: [] };
+  var MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+  var plata = function (n, mon) { return (mon === "ARS" ? "$" : (mon || "US$") + " ") + (Math.round(n * 100) / 100).toLocaleString("es-AR"); };
+  var mesDe = function (iso) { return String(iso).slice(0, 7); };
+
+  function api(opt) {
+    opt = opt || {};
+    opt.headers = Object.assign({ "x-clave": clave, "content-type": "application/json" }, opt.headers || {});
+    return fetch("/api/ventas", opt).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (d) { if (!r.ok) throw new Error(d.error || (r.status === 404 ? "El cobro automático todavía no está instalado en este sitio." : "Error " + r.status)); return d; });
+    });
+  }
+  function cargar() {
+    $("lmsg").textContent = "Cargando…";
+    return api().then(function (d) {
+      datos = d;
+      try { localStorage.setItem("ventas:clave", clave); } catch (e) {}
+      $("login").hidden = true; $("datos").hidden = false;
+      armarMeses(); pintar();
+    }).catch(function (e) { $("login").hidden = false; $("datos").hidden = true; $("lmsg").textContent = e.message; });
+  }
+  function armarMeses() {
+    var hoy = new Date().toISOString().slice(0, 7);
+    var ms = [hoy].concat(datos.ventas.map(function (v) { return mesDe(v.fecha); }));
+    ms = ms.filter(function (m, i) { return ms.indexOf(m) === i; }).sort().reverse();
+    var sel = $("mes").value || hoy;
+    $("mes").innerHTML = ms.map(function (m) { return '<option value="' + m + '">' + MESES[+m.slice(5) - 1] + " " + m.slice(0, 4) + "</option>"; }).join("");
+    $("mes").value = sel;
+  }
+  function delMes() { var m = $("mes").value; return datos.ventas.filter(function (v) { return mesDe(v.fecha) === m; }); }
+
+  function pintar() {
+    var vs = delMes();
+    var ok = vs.filter(function (v) { return v.estado === "aprobada"; });
+    var tot = {}; ok.forEach(function (v) { tot[v.moneda] = (tot[v.moneda] || 0) + v.monto; });
+    var anul = vs.length - ok.length;
+    $("tarj").innerHTML =
+      "<div><b>" + ok.length + "</b><span>ventas aprobadas</span></div>" +
+      Object.keys(tot).map(function (m) { return "<div><b>" + plata(tot[m], m) + "</b><span>cobrado en " + m + "</span></div>"; }).join("") +
+      "<div><b>" + ok.filter(function (v) { return v.tipo === "renovacion"; }).length + "</b><span>renovaciones</span></div>" +
+      "<div><b>" + anul + "</b><span>reembolsos / contracargos</span></div>";
+
+    var com = {};
+    ok.filter(function (v) { return v.ref && v.comision > 0; }).forEach(function (v) {
+      var k = v.ref + "|" + v.moneda + "|" + (v.pagaHotmart ? "h" : "y");
+      com[k] = com[k] || { ref: v.ref, moneda: v.moneda, n: 0, total: 0, hot: v.pagaHotmart };
+      com[k].n++; com[k].total += v.comision;
+    });
+    var cl = Object.keys(com).map(function (k) { return com[k]; }).sort(function (a, b) { return b.total - a.total; });
+    $("com").innerHTML = cl.length ? cl.map(function (c) {
+      return "<tr><td>" + esc(c.ref) + "</td><td>" + c.n + "</td><td>" + esc(c.moneda) + '</td><td class="n">' + plata(c.total, c.moneda) + "</td><td>" + (c.hot ? "Hotmart (automático)" : "Vos, " + "a fin de mes") + "</td></tr>";
+    }).join("") : '<tr><td colspan="5" class="vacio">Sin comisiones este mes.</td></tr>';
+
+    $("lista").innerHTML = vs.length ? vs.map(function (v) {
+      var bloq = datos.bloqueados.indexOf(v.codigo) > -1;
+      var d = new Date(v.fecha);
+      return "<tr><td>" + d.getDate() + "/" + (d.getMonth() + 1) + " " + String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0") + "</td>" +
+        "<td>" + esc(v.nombre || "") + '<br><small style="color:var(--dimmer)">' + esc(v.email || "") + "</small></td>" +
+        "<td>" + esc(v.plan) + '<br><small style="color:var(--dimmer)">' + (v.origen === "mp" ? "Mercado Pago" : "Hotmart") + "</small></td>" +
+        '<td class="n">' + plata(v.monto, v.moneda) + "</td>" +
+        "<td>" + esc(v.ref || "—") + (v.comision ? '<br><small style="color:var(--jade)">' + v.pct + "% · " + plata(v.comision, v.moneda) + "</small>" : "") + "</td>" +
+        "<td>" + (v.tipo === "renovacion" ? '<span class="tag ren">Renovación</span>' : "Primera") + "</td>" +
+        '<td class="cod">' + esc(v.codigo.slice(0, 4) + "-" + v.codigo.slice(4)) + "</td>" +
+        "<td>" + (v.estado === "aprobada" && !bloq ? '<span class="tag ok">Activa</span>' : '<span class="tag mal">' + (v.estado === "aprobada" ? "Dada de baja" : esc(v.estado)) + "</span>") + "</td>" +
+        '<td><button type="button" class="btn alt mini" data-cod="' + esc(v.codigo) + '" data-acc="' + (bloq ? "desbloquear" : "bloquear") + '">' + (bloq ? "Reactivar" : "Dar de baja") + "</button></td></tr>";
+    }).join("") : '<tr><td colspan="9" class="vacio">Todavía no hay ventas automáticas este mes.</td></tr>';
+  }
+
+  $("entrar").onclick = function () { clave = $("clave").value.trim(); if (clave) cargar(); };
+  $("clave").onkeydown = function (e) { if (e.key === "Enter") $("entrar").click(); };
+  $("recargar").onclick = cargar;
+  $("mes").onchange = pintar;
+  $("salir").onclick = function () { try { localStorage.removeItem("ventas:clave"); } catch (e) {} clave = ""; $("clave").value = ""; $("lmsg").textContent = ""; $("datos").hidden = true; $("login").hidden = false; };
+  $("lista").onclick = function (ev) {
+    var b = ev.target.closest && ev.target.closest("[data-acc]");
+    if (!b) return;
+    var acc = b.getAttribute("data-acc");
+    if (acc === "bloquear" && !confirm("¿Dar de baja este código? El cliente deja de poder entrar a la app la próxima vez que la abra con internet.")) return;
+    b.disabled = true;
+    api({ method: "POST", body: JSON.stringify({ accion: acc, codigo: b.getAttribute("data-cod") }) }).then(cargar).catch(function (e) { alert(e.message); b.disabled = false; });
+  };
+  $("csv").onclick = function () {
+    var filas = [["fecha", "origen", "cliente", "email", "plan", "monto", "moneda", "vendedor", "tipo", "comision_pct", "comision", "codigo", "vence", "estado"]].concat(delMes().map(function (v) {
+      return [v.fecha, v.origen, v.nombre, v.email, v.plan, v.monto, v.moneda, v.ref, v.tipo, v.pct, v.comision, v.codigo, v.vence, v.estado];
+    }));
+    var csv = "﻿" + filas.map(function (f) { return f.map(function (x) { return '"' + String(x == null ? "" : x).replace(/"/g, '""') + '"'; }).join(";"); }).join("\n");
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+    a.download = "ventas-" + $("mes").value + ".csv"; a.click();
+  };
+  if (clave) cargar();
+})();
+</script>
+</body>
+</html>

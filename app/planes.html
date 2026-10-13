@@ -238,12 +238,18 @@ footer a { color: var(--jade); font-weight: 600; text-decoration: none; }
   });
   if (!I.activo) paisBtn.hidden = true;
 
+  /* Hotmart: el vendedor viaja en el link (sck) y llega en el aviso de la compra */
+  var esHotmart = function (u) { return /hotmart\.com/i.test(u || ""); };
+  var conRef = function (u) {
+    if (!ref || !esHotmart(u)) return u;
+    try { var x = new URL(u); x.searchParams.set("sck", ref); return x.toString(); } catch (e) { return u; }
+  };
   document.getElementById("lista").innerHTML = planes.map(function (p) {
-    var link = p.pago || waLink("Hola " + corto + "! Quiero el plan " + p.nombre + " (" + plata(p.precio) + ")." + (enAR ? "" : " Estoy fuera de Argentina, ¿cómo pago? Puedo con " + (I.metodos || "PayPal o USDT") + "."));
+    var link = conRef(p.pago) || waLink("Hola " + corto + "! Quiero el plan " + p.nombre + " (" + plata(p.precio) + ")." + (enAR ? "" : " Estoy fuera de Argentina, ¿cómo pago? Puedo con " + (I.metodos || "PayPal o USDT") + "."));
     return '<div class="plan' + (p.destacado ? " top" : "") + '">' + (p.destacado ? '<span class="tag">' + esc(p.destacado) + "</span>" : "") +
       "<h3>" + esc(p.nombre) + '</h3><p class="precio">' + plata(p.precio) + '</p><p class="det">' + esc(p.detalle || "") + "</p>" +
       "<ul>" + (p.incluye || (C.planes || []).filter(function (x) { return x.id === p.id; }).map(function (x) { return x.incluye; })[0] || []).slice(0, 4).map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" +
-      '<a class="btn" ' + (sinLink(p) && !enAR ? "" : 'data-pagar="' + esc(p.nombre) + '" ') + 'href="' + esc(link) + '" target="_blank" rel="noopener">' + (sinLink(p) && !enAR ? "Quiero este plan" : "Pagar " + esc(p.nombre.toLowerCase())) + "</a></div>";
+      '<a class="btn" ' + (sinLink(p) && !enAR ? "" : 'data-pagar="' + esc(p.nombre) + '" data-id="' + esc(p.id) + '" ') + 'href="' + esc(link) + '" target="_blank" rel="noopener">' + (sinLink(p) && !enAR ? "Quiero este plan" : "Pagar " + esc(p.nombre.toLowerCase())) + "</a></div>";
   }).join("");
   var comp = document.getElementById("comprobante");
   comp.href = waLink("Hola " + corto + "! Ya pagué " + vals.producto + ". Te mando el comprobante para recibir mi acceso.");
@@ -252,10 +258,46 @@ footer a { color: var(--jade); font-weight: 600; text-decoration: none; }
   /* al tocar "Pagar", Mercado Pago se abre en otra pestaña y acá queda
      el aviso con el botón del comprobante (así llega el "Me recomendó") */
   var modal = document.getElementById("modal");
+
+  /* Cobro automático: si el sitio tiene las funciones de Netlify con el token
+     de Mercado Pago, el pago se crea con el vendedor adentro y al terminar el
+     cliente vuelve a gracias.html con su código. Si no, quedan los links fijos. */
+  var auto = false;
+  if (enAR && window.fetch && /^https?:$/.test(location.protocol)) {
+    fetch("/api/pagar", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+      if (!d || !d.ok) return;
+      auto = true;
+      document.getElementById("pasos").innerHTML = "<div>Pagás con Mercado Pago</div><div>Te llega tu código al instante</div><div>Te armo tu rutina</div>";
+      document.getElementById("faq-cancelar").textContent = "Sí. El plan no se renueva solo: cuando vence, decidís si seguís.";
+      comp.textContent = "¿Pagaste y no te llegó el código? Escribime";
+    }).catch(function () {});
+  }
+  function pagarAuto(a) {
+    var txt = a.textContent;
+    a.textContent = "Abriendo Mercado Pago…";
+    a.style.pointerEvents = "none";
+    var listo = function () { a.textContent = txt; a.style.pointerEvents = ""; };
+    fetch("/api/pagar", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ plan: a.getAttribute("data-id"), ref: ref }) })
+      .then(function (r) { return r.json(); })
+      .then(function (d) { if (!d.url) throw new Error(); location.href = d.url; setTimeout(listo, 4000); })
+      .catch(function () { listo(); location.href = a.href; });
+  }
+
   document.getElementById("lista").addEventListener("click", function (ev) {
     var a = ev.target.closest && ev.target.closest("[data-pagar]");
     if (!a) return;
+    if (auto) { ev.preventDefault(); return pagarAuto(a); }
     var plan = a.getAttribute("data-pagar");
+    if (esHotmart(a.href)) {
+      document.getElementById("m-t").textContent = "Cuando termines de pagar, sacá tu acceso";
+      document.getElementById("m-paso1").textContent = "Pagá en Hotmart (se abrió en otra pestaña).";
+      document.getElementById("m-paso1").nextElementSibling.textContent = "Te llega un mail de Hotmart con tu código de compra (empieza con HP).";
+      document.getElementById("m-paso1").nextElementSibling.nextElementSibling.textContent = "Tocá el botón, escribí ese código y te aparece tu acceso al instante.";
+      var mc = document.getElementById("m-comp");
+      mc.href = "gracias.html?hotmart"; mc.textContent = "Sacar mi acceso"; mc.className = "btn"; mc.removeAttribute("target");
+      setTimeout(function () { modal.hidden = false; }, 400);
+      return;
+    }
     document.getElementById("m-comp").href = waLink("Hola " + corto + "! Ya pagué el plan " + plan + " de " + vals.producto + ". Te mando el comprobante para recibir mi acceso.");
     document.getElementById("m-paso1").textContent = enAR ? "Pagá en Mercado Pago (se abrió en otra pestaña)." : "Pagá en la pestaña que se abrió.";
     setTimeout(function () { modal.hidden = false; }, 400);

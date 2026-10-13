@@ -23,29 +23,22 @@ Hoy el negocio funciona, pero **todo pasa por vos**: cada venta necesita que vea
 | Te come tiempo | Cómo lo resolvés |
 |---|---|
 | Armar cada rutina desde cero | Armá **6 rutinas base** (ganar músculo, bajar grasa, principiante, 3 días, 4 días, en casa). A cada cliente le mandás la base que corresponde, ajustada en 5 minutos, con el link de rutina personalizada de la app. |
-| Generar códigos a mano | Ya lo hacés en un toque desde el tablero. El paso siguiente es que el código salga **solo** cuando Mercado Pago confirma el pago (ver Etapa 3). |
+| Generar códigos a mano | **Ya está resuelto**: con el cobro automático el código sale solo cuando Mercado Pago confirma el pago (ver `COBRO-AUTOMATICO.md`). |
 | Responder WhatsApp | Respuestas guardadas en WhatsApp Business para las 10 preguntas de siempre. Si pasás los 100 clientes, sumá a alguien que atienda por una parte de cada venta. |
 | La "revisión mensual" del plan anual | Hacela con un formulario corto: el cliente manda peso, medidas y captura de su semana, y vos respondés con un audio de 2 minutos. |
 
 **Vendedores en esta etapa:**
 - Un **grupo de WhatsApp** de vendedores: ranking los viernes, un video nuevo o un testimonio por semana para que publiquen.
 - **Niveles:** por ejemplo, desde 10 ventas en un mes, el vendedor pasa al 45% en vez del 43%. Premia a los que venden sin subirle el costo a todos.
-- **Leads para los mejores.** Los closers rinden con consultas. Publicá contenido propio (los videos de la plantilla con tus alumnos) y pasales las consultas que entren a los 2 o 3 que mejor cierran.
+- **Formación, no leads.** Cada vendedor consigue sus clientes con la guía (`guia-vendedores.html`). Una vez por semana, en el grupo: el mejor mensaje en frío de la semana, una objeción y cómo se resolvió, una captura de un cierre. Los que aprenden, venden y se quedan.
 
 ## Etapa 3 · Más de 150 clientes: automatizar y armar la escalera
 
-### Automatizar cobro y acceso
-Hoy el flujo es pago → comprobante → vos → código. Se puede automatizar con lo que ya tenés:
-- **Mercado Pago avisa cada pago** a una función de Netlify (gratis en tu plan). La función genera el código y se lo manda al cliente por mail, sin que toques nada.
-- Para hacerlo necesito un **token de acceso de tu cuenta de Mercado Pago** (lo sacás en Mercado Pago Developers). Cuando lo tengas, lo armo.
+### Cobro y acceso automáticos (ya programado)
+El cliente paga, recibe su código al instante y la venta queda registrada con su vendedor, en pesos (Mercado Pago) y en dólares (Hotmart). Los reembolsos dan de baja el código solos. Para activarlo seguí **`COBRO-AUTOMATICO.md`**: conectar Netlify con GitHub, sacar el token de Mercado Pago y cargarlo en Netlify. Conviene activarlo **ya**, antes de los primeros vendedores: les da confianza ver que la venta queda a su nombre sin depender de un comprobante.
 
-### Vender afuera con todo resuelto: Hotmart
-Si los vendedores de otros países empiezan a mover volumen, conviene subir SISTEMA a **Hotmart**:
-- Cobra en casi todos los países, con tarjeta y medios locales.
-- **Tiene sistema de afiliados:** cada vendedor tiene su link con seguimiento automático y **Hotmart le paga la comisión directo**, sin que vos transfieras nada.
-- Cobra una comisión por venta (alrededor del 10%; confirmalo en su página).
-
-Es la forma más limpia de tener vendedores en 10 países sin perseguir comprobantes.
+### Vender afuera: Hotmart
+Cobra en casi todos los países, y **Hotmart les paga la comisión directo** a los vendedores afiliados. Cobra alrededor del 10% más un fijo por venta, y obliga a dar al menos 7 días de garantía. Cómo se entrega el acceso, cómo bajar los reembolsos y los pasos para armarlo: **`COBRO-AUTOMATICO.md`**, parte 5.
 
 ### Una oferta cara para los closers
 Los closers de la comunidad de Tino Mossu viven de **tickets altos**. Con una oferta premium vas a atraer a los mejores:

@@ -645,12 +645,16 @@ if (!window.CONFIG) window.CONFIG = /*CFG*/{
   ],
 
   /* Clientes de afuera de Argentina: ven estos precios en dólares.
-     "pago" es un link de cobro internacional (PayPal, Hotmart, etc.);
+     "pago" es un link de cobro internacional (Hotmart, PayPal, etc.);
      vacío = el botón abre WhatsApp para coordinar el pago. */
   internacional: {
     activo: true,
     moneda: "US$",
     metodos: "PayPal, USDT (Binance) o Zinli",
+    /* Hotmart (cobro automático afuera): código de cada oferta → plan.
+       Ej: { "a1b2c3d4": "trimestral", "e5f6g7h8": "anual", "i9j0k1l2": "vida" }.
+       Vacío = se reconoce el plan por el precio. Los links de pago van en "pago". */
+    hotmart: { ofertas: {} },
     planes: [
       { id: "trimestral", nombre: "3 meses",      precio: 19, meses: 3,  detalle: "sale US$6,33 por mes", pago: "" },
       { id: "anual",      nombre: "Anual",        precio: 49, meses: 12, detalle: "sale US$4,08 por mes · ahorrás 35%", pago: "", destacado: "Más elegido" },
@@ -4148,6 +4152,9 @@ react-dom/cjs/react-dom.production.min.js:
   var SECRETO = CFG.secreto || "cambiame";
   var ADMIN = String(CFG.admin || "ADMIN-0000").toUpperCase().replace(/[^A-Z0-9]/g, "");
   var BLOQUEADOS = CFG.bloqueados || [];
+  /* códigos dados de baja desde el servidor (reembolsos): ver final del archivo */
+  var BLOQ_COD = [];
+  try { BLOQ_COD = JSON.parse(localStorage.getItem("acceso:bloq") || "[]") || []; } catch (e) {}
   var LIBRE = CFG.libre === true;
   var AB = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   var KEY = "acceso:v1";
@@ -4245,7 +4252,7 @@ react-dom/cjs/react-dom.production.min.js:
     var pay = c.slice(0, 4), chk = c.slice(4);
     if (firma(SECRETO + pay) !== chk) return { error: "Ese código no es válido." };
     var serial = pay.slice(0, 2);
-    if (BLOQUEADOS.indexOf(serial) > -1) return { error: "Ese código fue dado de baja." };
+    if (BLOQUEADOS.indexOf(serial) > -1 || BLOQ_COD.indexOf(c) > -1) return { error: "Ese código fue dado de baja. Si es un error, escribime." };
     var meses = leerDos(pay.slice(2));
     var vence = meses >= 1000 ? null : vencimiento(meses);
     if (vence && vence < new Date()) return { error: "Tu acceso venció el " + fecha(vence) + ". Escribime y lo renovamos.", vencido: true };
@@ -4476,6 +4483,35 @@ react-dom/cjs/react-dom.production.min.js:
     });
   }
 
+  /* Viene de gracias.html con ./?codigo=XXXX-XXXX: se activa solo.
+     Si ya tenía un código que dura más, se queda con ese. */
+  var codigoNuevo = false;
+  (function () {
+    var m = /[?&]codigo=([A-Za-z0-9\-]+)/.exec(location.search || "");
+    if (!m) return;
+    try {
+      var u = new URL(location.href); u.searchParams.delete("codigo");
+      history.replaceState(null, "", u.pathname + u.search + u.hash);
+    } catch (e) {}
+    var r = valida(m[1]);
+    if (!r.ok) return;
+    var prev = guardado();
+    if (prev && prev.admin) return;
+    var pv = prev && prev.code ? valida(prev.code) : null;
+    if (pv && pv.ok && (!pv.vence || (r.vence && r.vence <= pv.vence))) return;
+    guardar({ code: r.code, at: Date.now() });
+    codigoNuevo = true;
+  })();
+
+  /* Lista de códigos dados de baja (reembolsos). Solo existe si el sitio
+     tiene el cobro automático; si no, la respuesta es 404 y no pasa nada.
+     Se aplica la próxima vez que se abre la app. */
+  if (/^https?:$/.test(location.protocol) && window.fetch) {
+    fetch("/api/bloqueados", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+      if (d && d.codigos) try { localStorage.setItem("acceso:bloq", JSON.stringify(d.codigos)); } catch (e) {}
+    }).catch(function () {});
+  }
+
   var g = guardado();
   if (!LIBRE && pidePanel()) {
     /* el link con ?panel siempre lleva a la clave, aun con acceso guardado */
@@ -4490,7 +4526,14 @@ react-dom/cjs/react-dom.production.min.js:
   if (LIBRE) {
     abrir(false);
   } else if (g && (g.admin || valida(g.code).ok)) {
-    abrir(false);
+    var tieneNombre = "";
+    try { tieneNombre = localStorage.getItem("rutina-cliente-nombre") || ""; } catch (e) {}
+    if (codigoNuevo && !tieneNombre) {
+      document.body.classList.add("bloqueado");
+      gate.hidden = false;
+      vista = "nombre";
+      pintar();
+    } else abrir(codigoNuevo);
   } else if (pruebaQuedan() > 0) {
     abrir(false);
   } else {
