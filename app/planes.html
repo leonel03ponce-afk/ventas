@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>SISTEMA · Dejá de empezar el lunes</title>
-<meta name="description" content="Tu rutina armada por un entrenador, en una app que te sigue todos los días. Cuerpo, mente y espíritu. Probala gratis 7 días.">
+<meta name="description" content="Tu rutina armada por un entrenador, en una app que te sigue todos los días. Cuerpo, mente y espíritu.">
 <meta name="theme-color" content="#0B0715">
 <meta property="og:title" content="SISTEMA · Dejá de empezar el lunes">
 <meta property="og:description" content="Tu rutina armada por un entrenador, en una app que te sigue todos los días.">
@@ -111,7 +111,7 @@ footer a { color: var(--jade); font-weight: 600; text-decoration: none; }
       <p class="sub">Tu rutina armada por <b data-c="marca">Brian Ponce</b>, en una app que te sigue todos los días: entrenamiento, hábitos y comidas. Cuerpo, mente y espíritu.</p>
       <div class="ctas">
         <a class="btn" href="#planes">Quiero mi plan</a>
-        <a class="btn alt" data-prueba href="./">Probar <span data-c="prueba">7</span> días gratis</a>
+        <a class="btn alt" data-prueba href="./">Consultar por WhatsApp</a>
       </div>
       <p class="nota">Desde <b data-c="desde">$5.825</b> por mes. Sin descargar nada.</p>
     </div>
@@ -183,7 +183,7 @@ footer a { color: var(--jade); font-weight: 600; text-decoration: none; }
 
   /* prueba: por WhatsApp (deja el contacto) o directo a la app */
   document.querySelectorAll("[data-prueba]").forEach(function (a) {
-    if (!A.prueba) { a.remove(); return; }
+    if (!A.prueba) { a.href = waLink("Hola " + corto + "! Quiero saber más de " + vals.producto + "."); a.target = "_blank"; a.rel = "noopener"; return; }
     if (A.pruebaPorWhatsApp && wa) { a.href = waLink("Hola " + corto + "! Quiero probar " + vals.producto + " " + A.prueba + " días gratis."); a.target = "_blank"; a.rel = "noopener"; }
     else a.href = "./" + (ref ? "?ref=" + encodeURIComponent(ref) : "");
   });

@@ -45,7 +45,8 @@ Cuando alguien paga, te escribe por WhatsApp. Generás el código en el panel y 
 
 ## Panel de códigos
 
-En la pantalla de acceso escribí la clave de admin (`admin` en `config.js`), o entrá a `/?panel`.
+Entrá a **https://brian-ponce.netlify.app/panel**, escribí `PONCE-2026` donde dice XXXX-XXXX y tocá **Entrar**.
+También sirve escribir la clave en la pantalla "Tu acceso" de la app. Si ya estás adentro como admin: Entreno → Respaldo y ajustes → **Generar código de cliente**.
 
 - **Acceso**: 3 meses, 1 año o para siempre (también 1 y 6 meses).
 - **Lo trajo**: quién recomendó al cliente. La comisión es **20% de cada pago, mientras el cliente siga renovando**: cuando renueva, poné el mismo nombre de cliente y el panel ya sabe quién lo trajo.
@@ -61,8 +62,7 @@ Los códigos y los recomendadores quedan guardados en el teléfono donde los gen
 
 ## Prueba gratis y recomendados
 
-- `acceso.prueba`: días de prueba (0 la apaga). Cuando termina, la app muestra los planes.
-- `acceso.pruebaPorWhatsApp` y `acceso.palabraPrueba`: para activar la prueba, la persona te escribe por WhatsApp y vos le pasás la palabra (hoy: **ARRANCO**). La escribe donde va el código. Así cada curioso te deja su número. Cada teléfono puede usar la prueba una sola vez.
+- `acceso.prueba`: **hoy está en 0 (sin prueba gratis)**. Si algún día la querés, poné los días; con `pruebaPorWhatsApp: true` la activan con la palabra `palabraPrueba` que les pasás por WhatsApp.
 - `recomendados.comision` y `recomendados.recurrente`: porcentaje y si se paga en cada renovación o solo la primera vez.
 - Cada cliente tiene su link en Hoy → *Recomendá y ganá* (`?ref=nombre`). Quien entra por ese link y compra te escribe con "Me recomendó: nombre" en el mensaje.
 
