@@ -41,7 +41,8 @@ Cuando alguien paga, te escribe por WhatsApp. Generás el código en el panel y 
 1. El vendedor entra a `vendedores.html`, pone su nombre y saca su link (`planes.html?ref=su-nombre`), con textos listos para WhatsApp e Instagram y el video para bajar.
 2. Su cliente entra por ese link, paga con Mercado Pago y te manda el comprobante con el botón de la página. El mensaje ya dice **"Me recomendó: su-nombre"**.
 3. Vos generás el código en el panel, con ese nombre en **Lo trajo**, y se lo mandás al cliente.
-4. El panel te suma cuánto le debés a cada vendedor. Les pagás en la fecha de `recomendados.cuandoPago` y tocás "Ya las pagué".
+4. Comisión: **43% del primer pago y 15% de cada renovación** (`recomendados.comision` y `recomendados.renovacion`).
+5. Para controlar todo (ventas, comprobantes, códigos, a quién pagar y cuánto) usá el tablero privado **Vendedores SISTEMA**: https://claude.ai/artifact/Lq4khHvoPukjcEGxbhPzah. Genera los mismos códigos que el panel de la app.
 
 ## Panel de códigos
 
@@ -49,7 +50,7 @@ Entrá a **https://brian-ponce.netlify.app/panel**, escribí `PONCE-2026` donde 
 También sirve escribir la clave en la pantalla "Tu acceso" de la app. Si ya estás adentro como admin: Entreno → Respaldo y ajustes → **Generar código de cliente**.
 
 - **Acceso**: 3 meses, 1 año o para siempre (también 1 y 6 meses).
-- **Lo trajo**: quién recomendó al cliente. La comisión es **20% de cada pago, mientras el cliente siga renovando**: cuando renueva, poné el mismo nombre de cliente y el panel ya sabe quién lo trajo.
+- **Lo trajo**: quién recomendó al cliente. Primer pago: 43%. Si renueva, poné el mismo nombre de cliente: el panel ya sabe quién lo trajo y le suma el 15%.
 - **Comisiones a pagar**: cuánto le debés a cada recomendador. "Ya las pagué" las pone en cero.
 
 Los códigos y los recomendadores quedan guardados en el teléfono donde los generás. Usá siempre el mismo.
@@ -63,7 +64,7 @@ Los códigos y los recomendadores quedan guardados en el teléfono donde los gen
 ## Prueba gratis y recomendados
 
 - `acceso.prueba`: **hoy está en 0 (sin prueba gratis)**. Si algún día la querés, poné los días; con `pruebaPorWhatsApp: true` la activan con la palabra `palabraPrueba` que les pasás por WhatsApp.
-- `recomendados.comision` y `recomendados.recurrente`: porcentaje y si se paga en cada renovación o solo la primera vez.
+- `recomendados.comision` (primer pago) y `recomendados.renovacion` (cada renovación, 0 = nada).
 - Cada cliente tiene su link en Hoy → *Recomendá y ganá* (`?ref=nombre`). Quien entra por ese link y compra te escribe con "Me recomendó: nombre" en el mensaje.
 
 ## Qué tiene la app

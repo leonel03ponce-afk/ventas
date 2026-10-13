@@ -1,0 +1,485 @@
+<title>Vendedores SISTEMA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Chakra+Petch:wght@600;700&display=swap">
+<style>
+/* Layout: una columna de trabajo, pestañas arriba, lo urgente (a quién pagar) primero */
+:root {
+  --bg: #F6F3FA; --panel: #FFFFFF; --panel2: #EFEAF6; --line: #DDD4EA;
+  --fg: #1C1230; --dim: #625478; --faint: #8E80A3;
+  --gold: #A9741A; --gold-bg: #F7EBD3; --on-gold: #1C1230;
+  --ok: #1F8A55; --ok-bg: #E2F4EA; --warn: #B4531F; --warn-bg: #FBE7DC;
+  --display: "Chakra Petch", "Arial Narrow", system-ui, sans-serif;
+  --body: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --bevel: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  --bevel-s: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0B0715; --panel: #150E24; --panel2: #1E1433; --line: #332248;
+  --fg: #F3EDE4; --dim: #A796C0; --faint: #6F5E88;
+  --gold: #E9B75B; --gold-bg: #2C2130; --on-gold: #0B0715;
+  --ok: #4BD489; --ok-bg: #12291F; --warn: #FF8F5E; --warn-bg: #2E1A19; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0B0715; --panel: #150E24; --panel2: #1E1433; --line: #332248;
+  --fg: #F3EDE4; --dim: #A796C0; --faint: #6F5E88;
+  --gold: #E9B75B; --gold-bg: #2C2130; --on-gold: #0B0715;
+  --ok: #4BD489; --ok-bg: #12291F; --warn: #FF8F5E; --warn-bg: #2E1A19; color-scheme: dark }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 15px/1.5 var(--body); }
+.wrap { max-width: 760px; margin: 0 auto; padding-inline: 16px; padding-block: 0 48px; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.05; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+.num, td.n, .tab-n { font-variant-numeric: tabular-nums; }
+header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
+.top .wrap { padding-block: 14px 0; }
+.marca { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.marca h1 { font-size: 24px; letter-spacing: .06em; }
+.marca h1 span { color: var(--gold); }
+.marca small { color: var(--faint); font-size: 12px; }
+nav.tabs { display: flex; gap: 4px; margin-top: 12px; overflow-x: auto; scrollbar-width: none; }
+nav.tabs button { flex: 0 0 auto; padding: 10px 12px; border: 0; border-bottom: 3px solid transparent; background: none; color: var(--dim); font: 600 14px/1 var(--body); cursor: pointer; }
+nav.tabs button[aria-selected="true"] { color: var(--fg); border-bottom-color: var(--gold); }
+nav.tabs button:focus-visible, button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+main { display: grid; gap: 18px; padding-top: 18px; }
+.k { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); }
+.card { background: var(--panel); border: 1px solid var(--line); clip-path: var(--bevel); padding: 18px; display: grid; gap: 12px; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.stat { background: var(--panel); border: 1px solid var(--line); padding: 14px; clip-path: var(--bevel-s); }
+.stat b { display: block; font: 700 24px/1.1 var(--display); margin-top: 6px; }
+.stat.oro { background: var(--gold-bg); border-color: var(--gold); }
+.stat.oro b { color: var(--gold); }
+.fila { display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; align-items: center; padding: 14px 0; border-top: 1px solid var(--line); }
+.fila:first-of-type { border-top: 0; }
+.fila .nom { font-weight: 600; min-width: 0; }
+.fila .sub { grid-column: 1 / -1; color: var(--dim); font-size: 13px; display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; min-width: 0; }
+.monto { font: 700 20px/1 var(--display); color: var(--gold); text-align: right; }
+.alias { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; padding: 2px 6px; background: var(--panel2); word-break: break-all; }
+.pill { display: inline-block; padding: 2px 8px; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.pill.pend { background: var(--warn-bg); color: var(--warn); }
+.pill.ok { background: var(--ok-bg); color: var(--ok); }
+.pill.neu { background: var(--panel2); color: var(--dim); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 42px; padding: 0 16px; border: 0; font: 700 14px/1 var(--body); color: var(--on-gold); background: var(--gold); clip-path: var(--bevel-s); cursor: pointer; text-decoration: none; }
+.btn.alt { background: var(--panel2); color: var(--fg); box-shadow: inset 0 0 0 1px var(--line); }
+.btn.wa { background: #25D366; color: #07240f; }
+.btn.chico { min-height: 32px; padding: 0 10px; font-size: 12.5px; }
+.btn:disabled { opacity: .5; cursor: default; }
+.acciones { display: flex; flex-wrap: wrap; gap: 8px; }
+form { display: grid; gap: 12px; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+label { display: grid; gap: 6px; font-size: 13px; font-weight: 600; color: var(--dim); }
+input, select, textarea { width: 100%; min-height: 44px; padding: 8px 12px; font: 16px/1.3 var(--body); color: var(--fg); background: var(--panel2); border: 1px solid var(--line); border-radius: 0; }
+textarea { min-height: 70px; resize: vertical; }
+.ayuda { font-size: 12.5px; color: var(--faint); font-weight: 400; }
+.calc { display: flex; flex-wrap: wrap; gap: 8px 18px; padding: 12px 14px; background: var(--panel2); font-size: 14px; }
+.calc b { font-family: var(--display); font-size: 17px; }
+.codigo { font: 700 30px/1 var(--display); letter-spacing: .1em; color: var(--gold); }
+.resultado { border: 1px solid var(--gold); background: var(--gold-bg); }
+.vacio { padding: 26px 18px; text-align: center; color: var(--dim); border: 1px dashed var(--line); display: grid; gap: 10px; justify-items: center; }
+.vacio h3 { font-size: 19px; color: var(--fg); }
+.filtros { display: flex; flex-wrap: wrap; gap: 8px; }
+.filtros select { width: auto; min-height: 38px; font-size: 14px; }
+.tabla { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 560px; }
+th { text-align: left; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); padding: 8px 8px; border-bottom: 1px solid var(--line); }
+td { padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+td.n, th.n { text-align: right; }
+.thumb { width: 44px; height: 44px; object-fit: cover; display: block; border: 1px solid var(--line); }
+.aviso { padding: 12px 14px; background: var(--warn-bg); color: var(--warn); font-size: 14px; }
+.ok-msg { color: var(--ok); font-size: 14px; min-height: 20px; }
+.err-msg { color: var(--warn); font-size: 14px; min-height: 20px; }
+.regla { border-left: 4px solid var(--gold); padding: 10px 14px; background: var(--panel); font-size: 14px; color: var(--dim); }
+.regla b { color: var(--fg); }
+@media (prefers-reduced-motion: no-preference) { .card, .stat { animation: aparece .25s ease-out; } @keyframes aparece { from { opacity: .4; transform: translateY(4px); } } }
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="marca"><h1>SISTEMA <span>· Vendedores</span></h1><small id="estado">Conectando…</small></div>
+    <nav class="tabs" role="tablist" aria-label="Secciones">
+      <button type="button" role="tab" id="t-resumen" aria-selected="true" data-tab="resumen">Resumen</button>
+      <button type="button" role="tab" id="t-venta" aria-selected="false" data-tab="venta">Nueva venta</button>
+      <button type="button" role="tab" id="t-ventas" aria-selected="false" data-tab="ventas">Ventas</button>
+      <button type="button" role="tab" id="t-vendedores" aria-selected="false" data-tab="vendedores">Vendedores</button>
+      <button type="button" role="tab" id="t-pagos" aria-selected="false" data-tab="pagos">Pagos</button>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap"><main id="main"></main></div>
+
+<script>
+(function () {
+  "use strict";
+  /* ── Datos fijos de SISTEMA (los mismos de config.js de la app) ── */
+  var APP = "https://brian-ponce.netlify.app/";
+  var SECRETO = "ponce-2026-xK7m";
+  var AB = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  var DEF = { comision: 43, renovacion: 15, precios: { "3 meses": 24900, "Anual": 69900, "Para siempre": 119900 } };
+  var MESES_PLAN = { "3 meses": 3, "Anual": 12, "Para siempre": 0 };
+  var MES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+
+  var db = null, assets = null;
+  var S = { vendedores: [], ventas: [], pagos: [], ajustes: DEF, listo: false, sinDb: false };
+  var tab = "resumen";
+  try { var t0 = localStorage.getItem("tablero:tab"); if (t0) tab = t0; } catch (e) {}
+  var ui = { ultimo: null, pagando: null, filtroMes: "", filtroVend: "", editVend: null, msg: "", err: "" };
+
+  /* ── utilidades ── */
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
+  var plata = function (n) { return "$" + Math.round(n || 0).toLocaleString("es-AR"); };
+  var hoyISO = function () { var d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
+  var fechaTxt = function (iso) { if (!iso) return ""; var p = iso.split("-"); return +p[2] + "/" + +p[1] + "/" + p[0]; };
+  var mesDe = function (iso) { return (iso || "").slice(0, 7); };
+  var mesTxt = function (ym) { var p = ym.split("-"); return MES[+p[1] - 1] + " " + p[0]; };
+  var slug = function (s) { return String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 30); };
+  var norm = function (s) { return String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/\s+/g, " ").trim(); };
+  var tel = function (s) { var d = String(s || "").replace(/\D/g, ""); if (!d) return ""; if (d.indexOf("54") !== 0) d = "549" + d.replace(/^0/, "").replace(/^15/, ""); return d; };
+  var wa = function (num, txt) { return "https://wa.me/" + tel(num) + "?text=" + encodeURIComponent(txt); };
+  var finDeMes = function () { var d = new Date(); return new Date(d.getFullYear(), d.getMonth() + 1, 0); };
+  var aj = function () { var a = S.ajustes || {}; return { comision: a.comision != null ? a.comision : DEF.comision, renovacion: a.renovacion != null ? a.renovacion : DEF.renovacion, precios: Object.assign({}, DEF.precios, a.precios || {}) }; };
+
+  /* ── códigos de acceso: el mismo cálculo que la app ── */
+  function firma(txt) {
+    var h = 2166136261, i;
+    for (i = 0; i < txt.length; i++) { h ^= txt.charCodeAt(i); h = Math.imul(h, 16777619); }
+    h ^= h >>> 13; h = Math.imul(h, 1274126177); h ^= h >>> 16;
+    var n = h >>> 0, out = "", k;
+    for (k = 0; k < 4; k++) { out += AB.charAt(n % 32); n = Math.floor(n / 32); }
+    return out;
+  }
+  function dos(n) { return AB.charAt(n % 32) + AB.charAt(Math.floor(n / 32) % 32); }
+  function codigoPara(serial, meses) {
+    var hoy = new Date();
+    var idx = meses === 0 ? 1023 : (hoy.getFullYear() - 2026) * 12 + hoy.getMonth() + meses;
+    var pay = dos(serial) + dos(idx);
+    var c = pay + firma(SECRETO + pay);
+    var vence = meses === 0 ? "" : (function () { var d = new Date(2026, idx + 1, 0); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); })();
+    return { codigo: c.slice(0, 4) + "-" + c.slice(4), vence: vence };
+  }
+  function proximoSerial() {
+    /* la app del teléfono numera desde 1; el tablero desde 500 para no repetir */
+    var m = 499;
+    S.ventas.forEach(function (v) { if (v.serial > m) m = v.serial; });
+    return m >= 1023 ? 500 + (S.ventas.length % 500) : m + 1;
+  }
+
+  /* ── cuentas ── */
+  function vendedorDe(ref) { return S.vendedores.filter(function (v) { return v.ref === ref; })[0]; }
+  function pendientesDe(ref) { return S.ventas.filter(function (v) { return v.vendedorRef === ref && v.comision > 0 && v.estadoComision !== "pagada"; }); }
+  function totalPendiente(ref) { return pendientesDe(ref).reduce(function (n, v) { return n + v.comision; }, 0); }
+  function esRenovacion(cliente) { var c = norm(cliente); return !!c && S.ventas.some(function (v) { return norm(v.cliente) === c; }); }
+  function vendedorPrevio(cliente) { var c = norm(cliente); var v = S.ventas.filter(function (x) { return norm(x.cliente) === c && x.vendedorRef; })[0]; return v ? v.vendedorRef : ""; }
+  function ordenFecha(a, b) { return (b.fecha || "").localeCompare(a.fecha || "") || (b.creado || 0) - (a.creado || 0); }
+
+  /* ── pestañas ── */
+  document.querySelector("nav.tabs").addEventListener("click", function (ev) {
+    var b = ev.target.closest("[data-tab]"); if (!b) return;
+    ir(b.getAttribute("data-tab"));
+  });
+  function ir(t) {
+    tab = t; ui.msg = ""; ui.err = "";
+    try { localStorage.setItem("tablero:tab", t); } catch (e) {}
+    document.querySelectorAll("nav.tabs button").forEach(function (b) { b.setAttribute("aria-selected", b.getAttribute("data-tab") === t ? "true" : "false"); });
+    render(); window.scrollTo(0, 0);
+  }
+
+  /* ── pantallas ── */
+  function render() {
+    document.querySelectorAll("nav.tabs button").forEach(function (b) { b.setAttribute("aria-selected", b.getAttribute("data-tab") === tab ? "true" : "false"); });
+    var h = "";
+    if (S.sinDb) h += '<p class="aviso">Este tablero guarda los datos en Claude. Abrilo desde tu cuenta de Claude con sesión iniciada para cargar y ver ventas.</p>';
+    h += ({ resumen: vResumen, venta: vVenta, ventas: vVentas, vendedores: vVendedores, pagos: vPagos }[tab] || vResumen)();
+    $("#main").innerHTML = h;
+    if (tab === "venta") prepararVenta();
+  }
+
+  function vResumen() {
+    var mes = mesDe(hoyISO());
+    var delMes = S.ventas.filter(function (v) { return mesDe(v.fecha) === mes; });
+    var cobrado = delMes.reduce(function (n, v) { return n + (v.monto || 0); }, 0);
+    var comMes = delMes.reduce(function (n, v) { return n + (v.comision || 0); }, 0);
+    var adeudado = S.ventas.reduce(function (n, v) { return n + (v.comision > 0 && v.estadoComision !== "pagada" ? v.comision : 0); }, 0);
+    var h = '<div class="stats">' +
+      '<div class="stat"><span class="k">Ventas de ' + MES[new Date().getMonth()] + '</span><b class="num">' + delMes.length + "</b></div>" +
+      '<div class="stat"><span class="k">Cobrado este mes</span><b class="num">' + plata(cobrado) + "</b></div>" +
+      '<div class="stat"><span class="k">Te queda (sin comisiones)</span><b class="num">' + plata(cobrado - comMes) + "</b></div>" +
+      '<div class="stat oro"><span class="k">Debés a vendedores</span><b class="num">' + plata(adeudado) + "</b></div></div>";
+
+    var conDeuda = S.vendedores.map(function (v) { return { v: v, total: totalPendiente(v.ref), n: pendientesDe(v.ref).length }; })
+      .filter(function (x) { return x.total > 0; }).sort(function (a, b) { return b.total - a.total; });
+    h += '<section class="card"><div><p class="k">A pagar</p><h2 style="font-size:22px;margin-top:4px">Fecha de pago: ' + finDeMes().getDate() + " de " + MES[finDeMes().getMonth()] + "</h2></div>";
+    if (ui.pagando) h += formPago(ui.pagando);
+    else if (!conDeuda.length) h += '<div class="vacio"><h3>No le debés nada a nadie</h3><p>Cuando cargues una venta con vendedor, su comisión aparece acá con el alias para transferirle.</p><button type="button" class="btn" data-go="venta">Cargar una venta</button></div>';
+    else conDeuda.forEach(function (x) {
+      h += '<div class="fila"><span class="nom">' + esc(x.v.nombre) + '</span><span class="monto num">' + plata(x.total) + "</span>" +
+        '<span class="sub"><span>' + x.n + (x.n === 1 ? " venta" : " ventas") + "</span>" +
+        (x.v.alias ? '<span class="alias">' + esc(x.v.alias) + '</span><button type="button" class="btn alt chico" data-copiar="' + esc(x.v.alias) + '">Copiar alias</button>' : '<span class="pill pend">Falta el alias</span>') +
+        '<button type="button" class="btn chico" data-pagar="' + esc(x.v.ref) + '">Ya le pagué</button></span></div>';
+    });
+    h += "</section>";
+
+    var ult = S.ventas.slice().sort(ordenFecha).slice(0, 5);
+    h += '<section class="card"><p class="k">Últimas ventas</p>';
+    if (!ult.length) h += '<div class="vacio"><h3>Todavía no hay ventas</h3><p>Cada vez que alguien te mande el comprobante, cargalo en "Nueva venta". Ahí mismo se genera su código de acceso.</p><button type="button" class="btn" data-go="venta">Cargar la primera venta</button></div>';
+    else ult.forEach(function (v) { h += filaVenta(v); });
+    h += "</section>";
+    h += '<p class="regla"><b>Regla de oro para los vendedores:</b> su cliente tiene que mandarte el comprobante con el botón verde de la página. Si llega sin "Me recomendó", preguntale quién lo trajo antes de cargar la venta.</p>';
+    return h;
+  }
+
+  function filaVenta(v) {
+    var vend = v.vendedorRef ? vendedorDe(v.vendedorRef) : null;
+    return '<div class="fila"><span class="nom">' + esc(v.cliente) + ' <span class="pill neu">' + esc(v.plan) + "</span></span>" +
+      '<span class="num" style="text-align:right;font-weight:700">' + plata(v.monto) + "</span>" +
+      '<span class="sub"><span>' + fechaTxt(v.fecha) + "</span>" +
+      (v.codigo ? '<span class="alias">' + esc(v.codigo) + "</span>" : "") +
+      (vend || v.vendedorRef ? "<span>vía <b>" + esc(vend ? vend.nombre : v.vendedorRef) + "</b> · " + (v.tipo === "renovacion" ? "renovación" : "primer pago") + " · " + plata(v.comision) + "</span>" +
+        '<span class="pill ' + (v.estadoComision === "pagada" ? "ok" : "pend") + '">' + (v.estadoComision === "pagada" ? "Comisión pagada" : "Comisión pendiente") + "</span>" : "<span>Vino directo</span>") +
+      (v.comprobante ? '<a href="/_blob/' + esc(v.comprobante) + '" target="_blank" rel="noopener">Ver comprobante</a>' : "") + "</span></div>";
+  }
+
+  function formPago(ref) {
+    var v = vendedorDe(ref), pend = pendientesDe(ref), total = totalPendiente(ref);
+    return '<form id="f-pago" class="resultado card"><p class="k">Registrar pago</p><h3>' + esc(v ? v.nombre : ref) + ": " + plata(total) + "</h3>" +
+      "<p>" + pend.length + (pend.length === 1 ? " venta" : " ventas") + " pasan a pagadas." + (v && v.alias ? ' Alias: <span class="alias">' + esc(v.alias) + "</span>" : "") + "</p>" +
+      (assets ? '<label>Comprobante de la transferencia (opcional)<input type="file" id="p-comp" accept="image/*,application/pdf"></label>' : "") +
+      '<label>Nota (opcional)<input id="p-nota" placeholder="Ej: transferencia Mercado Pago"></label>' +
+      '<div class="acciones"><button type="submit" class="btn">Confirmar pago</button><button type="button" class="btn alt" data-cancelar-pago>Cancelar</button></div>' +
+      '<p class="err-msg" id="p-err"></p></form>';
+  }
+
+  function vVenta() {
+    var a = aj();
+    var h = "";
+    if (ui.ultimo) {
+      var u = ui.ultimo;
+      var msg = "Hola " + u.cliente.split(" ")[0] + "! Tu acceso a SISTEMA: " + u.codigo + "\n" + APP + "\nPonelo cuando te lo pida y ya queda activado en tu teléfono." + (u.vence ? "\nVence el " + fechaTxt(u.vence) + "." : "");
+      h += '<section class="card resultado"><p class="k">Venta guardada</p><p class="codigo">' + esc(u.codigo) + "</p>" +
+        "<p>" + esc(u.cliente) + " · " + esc(u.plan) + (u.vence ? " · vence el " + fechaTxt(u.vence) : " · para siempre") + "</p>" +
+        '<div class="acciones">' + (u.whatsapp ? '<a class="btn wa" href="' + esc(wa(u.whatsapp, msg)) + '" target="_blank" rel="noopener">Mandarle el código por WhatsApp</a>' : "") +
+        '<button type="button" class="btn alt" data-copiar="' + esc(msg) + '">Copiar mensaje</button><button type="button" class="btn alt" data-nueva>Cargar otra venta</button></div></section>';
+      return h;
+    }
+    h += '<form id="f-venta" class="card" autocomplete="off"><div><p class="k">Nueva venta</p><h2 style="font-size:22px;margin-top:4px">Llegó un comprobante</h2></div>' +
+      '<div class="grid2"><label>Cliente<input id="v-cliente" required placeholder="Nombre y apellido"></label>' +
+      '<label>WhatsApp del cliente<input id="v-wa" inputmode="tel" placeholder="11 2345-6789"><span class="ayuda">Para mandarle el código con un toque.</span></label></div>' +
+      '<div class="grid2"><label>Plan<select id="v-plan">' + Object.keys(a.precios).map(function (p) { return "<option>" + esc(p) + "</option>"; }).join("") + "</select></label>" +
+      '<label>Fecha del pago<input id="v-fecha" type="date" value="' + hoyISO() + '"></label></div>' +
+      '<div class="grid2"><label>Lo trajo<select id="v-vend"><option value="">Nadie: vino directo</option>' +
+        S.vendedores.slice().sort(function (x, y) { return x.nombre.localeCompare(y.nombre); }).map(function (v) { return '<option value="' + esc(v.ref) + '">' + esc(v.nombre) + "</option>"; }).join("") +
+      '</select><span class="ayuda">Lo dice el mensaje del comprobante: "Me recomendó: …".</span></label>' +
+      '<label>Tipo<select id="v-tipo"><option value="primera">Primer pago</option><option value="renovacion">Renovación</option></select><span class="ayuda" id="v-tipo-ayuda"></span></label></div>' +
+      (assets ? '<label>Comprobante (foto o PDF)<input type="file" id="v-comp" accept="image/*,application/pdf"></label>' : "") +
+      '<div class="calc" id="v-calc"></div>' +
+      '<div class="acciones"><button type="submit" class="btn" id="v-ok">Guardar y generar código</button></div><p class="err-msg" id="v-err"></p></form>';
+    if (!S.vendedores.length) h += '<p class="regla">Todavía no cargaste vendedores. Si la venta vino de uno, agregalo primero en la pestaña <b>Vendedores</b>.</p>';
+    return h;
+  }
+  function prepararVenta() {
+    var f = $("#f-venta"); if (!f) return;
+    var actualizar = function (desdeCliente) {
+      var a = aj(), cliente = $("#v-cliente").value;
+      if (desdeCliente) {
+        var ren = esRenovacion(cliente);
+        $("#v-tipo").value = ren ? "renovacion" : "primera";
+        var prev = vendedorPrevio(cliente);
+        if (prev && !$("#v-vend").value) $("#v-vend").value = prev;
+        $("#v-tipo-ayuda").textContent = ren ? "Ya compró antes: se toma como renovación." : "";
+      }
+      var plan = $("#v-plan").value, precio = a.precios[plan] || 0, ref = $("#v-vend").value;
+      var pct = ref ? ($("#v-tipo").value === "renovacion" ? a.renovacion : a.comision) : 0;
+      $("#v-calc").innerHTML = "<span>Cobraste <b>" + plata(precio) + "</b></span>" + (ref ? "<span>Comisión " + pct + "% <b>" + plata(precio * pct / 100) + "</b></span>" : "") + "<span>Te queda <b>" + plata(precio * (1 - pct / 100)) + "</b></span>";
+    };
+    $("#v-cliente").addEventListener("change", function () { actualizar(true); });
+    ["#v-plan", "#v-vend", "#v-tipo"].forEach(function (s) { $(s).addEventListener("change", function () { actualizar(false); }); });
+    actualizar(false);
+  }
+
+  function vVentas() {
+    var meses = {}; S.ventas.forEach(function (v) { if (v.fecha) meses[mesDe(v.fecha)] = 1; });
+    var lista = S.ventas.filter(function (v) { return (!ui.filtroMes || mesDe(v.fecha) === ui.filtroMes) && (!ui.filtroVend || v.vendedorRef === ui.filtroVend || (ui.filtroVend === "-" && !v.vendedorRef)); }).sort(ordenFecha);
+    var h = '<section class="card"><div class="filtros"><select id="f-mes" aria-label="Mes"><option value="">Todos los meses</option>' +
+      Object.keys(meses).sort().reverse().map(function (m) { return '<option value="' + m + '"' + (ui.filtroMes === m ? " selected" : "") + ">" + mesTxt(m) + "</option>"; }).join("") + "</select>" +
+      '<select id="f-vend" aria-label="Vendedor"><option value="">Todos</option><option value="-"' + (ui.filtroVend === "-" ? " selected" : "") + ">Directas</option>" +
+      S.vendedores.map(function (v) { return '<option value="' + esc(v.ref) + '"' + (ui.filtroVend === v.ref ? " selected" : "") + ">" + esc(v.nombre) + "</option>"; }).join("") + "</select></div>";
+    if (!lista.length) h += '<div class="vacio"><h3>' + (S.ventas.length ? "No hay ventas con ese filtro" : "Todavía no hay ventas") + "</h3><p>Las ventas que cargues aparecen acá con su código, su comprobante y la comisión.</p></div>";
+    else {
+      var tot = lista.reduce(function (n, v) { return n + (v.monto || 0); }, 0), com = lista.reduce(function (n, v) { return n + (v.comision || 0); }, 0);
+      h += '<p class="num" style="color:var(--dim)">' + lista.length + " ventas · cobrado " + plata(tot) + " · comisiones " + plata(com) + "</p>";
+      h += '<div class="tabla"><table><thead><tr><th>Fecha</th><th>Cliente</th><th>Plan</th><th class="n">Monto</th><th>Vendedor</th><th class="n">Comisión</th><th>Código</th><th>Comprobante</th><th></th></tr></thead><tbody>' +
+        lista.map(function (v) {
+          var vend = v.vendedorRef ? vendedorDe(v.vendedorRef) : null;
+          return "<tr><td>" + fechaTxt(v.fecha) + "</td><td>" + esc(v.cliente) + "</td><td>" + esc(v.plan) + '</td><td class="n">' + plata(v.monto) + "</td><td>" +
+            (v.vendedorRef ? esc(vend ? vend.nombre : v.vendedorRef) + "<br><small>" + (v.tipo === "renovacion" ? "renovación" : "primer pago") + "</small>" : "—") +
+            '</td><td class="n">' + (v.comision ? plata(v.comision) + '<br><span class="pill ' + (v.estadoComision === "pagada" ? "ok" : "pend") + '">' + (v.estadoComision === "pagada" ? "pagada" : "pendiente") + "</span>" : "—") +
+            '</td><td><span class="alias">' + esc(v.codigo || "") + "</span></td><td>" +
+            (v.comprobante ? '<a href="/_blob/' + esc(v.comprobante) + '" target="_blank" rel="noopener">' + (v.comprobanteTipo === "application/pdf" ? "PDF" : '<img class="thumb" src="/_blob/' + esc(v.comprobante) + '" alt="Comprobante de ' + esc(v.cliente) + '">') + "</a>" : "—") +
+            '</td><td><button type="button" class="btn alt chico" data-borrar-venta="' + esc(v.id) + '">' + (ui.borrar === v.id ? "¿Seguro? Tocá otra vez" : "Borrar") + "</button></td></tr>";
+        }).join("") + "</tbody></table></div>";
+    }
+    return h + "</section>";
+  }
+
+  function vVendedores() {
+    var h = '<section class="card"><p class="k">' + (ui.editVend ? "Editar vendedor" : "Sumar vendedor") + "</p>";
+    var e = ui.editVend ? vendedorDe(ui.editVend) || {} : {};
+    h += '<form id="f-vend" autocomplete="off"><div class="grid2"><label>Nombre<input id="d-nombre" required value="' + esc(e.nombre || "") + '" placeholder="Juan Pérez"></label>' +
+      '<label>Como figura en su link<input id="d-ref" value="' + esc(e.ref || "") + '" placeholder="juan-perez"' + (ui.editVend ? " readonly" : "") + '><span class="ayuda">Lo que va después de ?ref= en su link. Si lo dejás vacío se arma con el nombre.</span></label></div>' +
+      '<div class="grid2"><label>Alias o CVU de Mercado Pago<input id="d-alias" value="' + esc(e.alias || "") + '" placeholder="juan.perez.mp"></label>' +
+      '<label>WhatsApp<input id="d-wa" inputmode="tel" value="' + esc(e.whatsapp || "") + '" placeholder="11 2345-6789"></label></div>' +
+      '<div class="acciones"><button type="submit" class="btn">' + (ui.editVend ? "Guardar cambios" : "Sumar vendedor") + "</button>" + (ui.editVend ? '<button type="button" class="btn alt" data-cancelar-vend>Cancelar</button>' : "") + '</div><p class="err-msg" id="d-err"></p></form></section>';
+
+    h += '<section class="card"><p class="k">Equipo</p>';
+    if (!S.vendedores.length) h += '<div class="vacio"><h3>Todavía no hay vendedores</h3><p>Cuando alguien te escriba "quiero vender", sumalo acá con su alias para pagarle. Su página para arrancar es brian-ponce.netlify.app/vendedores.html</p></div>';
+    else S.vendedores.slice().sort(function (a, b) { return totalPendiente(b.ref) - totalPendiente(a.ref) || a.nombre.localeCompare(b.nombre); }).forEach(function (v) {
+      var suyas = S.ventas.filter(function (x) { return x.vendedorRef === v.ref; });
+      var gen = suyas.reduce(function (n, x) { return n + (x.monto || 0); }, 0);
+      var comT = suyas.reduce(function (n, x) { return n + (x.comision || 0); }, 0);
+      var pend = totalPendiente(v.ref);
+      var link = APP + "planes.html?ref=" + v.ref;
+      h += '<div class="fila"><span class="nom">' + esc(v.nombre) + '</span><span class="monto num">' + plata(pend) + "</span>" +
+        '<span class="sub"><span>' + suyas.length + " ventas · generó " + plata(gen) + " · ganó " + plata(comT) + "</span>" +
+        (v.alias ? '<span class="alias">' + esc(v.alias) + "</span>" : '<span class="pill pend">Falta el alias</span>') + "</span>" +
+        '<span class="sub"><button type="button" class="btn alt chico" data-copiar="' + esc(link) + '">Copiar su link</button>' +
+        (v.whatsapp ? '<a class="btn alt chico" href="' + esc(wa(v.whatsapp, "Hola " + v.nombre.split(" ")[0] + "! ")) + '" target="_blank" rel="noopener">WhatsApp</a>' : "") +
+        '<button type="button" class="btn alt chico" data-editar="' + esc(v.ref) + '">Editar</button>' +
+        (pend ? '<button type="button" class="btn chico" data-pagar="' + esc(v.ref) + '">Ya le pagué</button>' : "") + "</span></div>";
+    });
+    return h + "</section>";
+  }
+
+  function vPagos() {
+    var h = '<section class="card"><p class="k">Pagos a vendedores</p>';
+    var lista = S.pagos.slice().sort(ordenFecha);
+    if (!lista.length) return h + '<div class="vacio"><h3>Todavía no registraste pagos</h3><p>Cuando le transfieras a un vendedor, tocá "Ya le pagué" en el Resumen. Queda guardado acá con el comprobante.</p></div></section>';
+    lista.forEach(function (p) {
+      var v = vendedorDe(p.vendedorRef);
+      h += '<div class="fila"><span class="nom">' + esc(v ? v.nombre : p.vendedorRef) + '</span><span class="monto num">' + plata(p.monto) + "</span>" +
+        '<span class="sub"><span>' + fechaTxt(p.fecha) + " · " + (p.ventas || []).length + " ventas</span>" + (p.nota ? "<span>" + esc(p.nota) + "</span>" : "") +
+        (p.comprobante ? '<a href="/_blob/' + esc(p.comprobante) + '" target="_blank" rel="noopener">Ver comprobante</a>' : "") +
+        (v && v.whatsapp ? '<a class="btn wa chico" href="' + esc(wa(v.whatsapp, "Hola " + v.nombre.split(" ")[0] + "! Te transferí " + plata(p.monto) + " de comisiones (" + (p.ventas || []).length + " ventas). ¡Gracias por sumar! 💪")) + '" target="_blank" rel="noopener">Avisarle</a>' : "") + "</span></div>";
+    });
+    return h + "</section>";
+  }
+
+  /* ── acciones ── */
+  document.addEventListener("click", function (ev) {
+    var t = ev.target.closest("button, a"); if (!t) return;
+    if (t.hasAttribute("data-go")) return ir(t.getAttribute("data-go"));
+    if (t.hasAttribute("data-copiar")) {
+      var txt = t.getAttribute("data-copiar"), orig = t.textContent;
+      var listo = function () { t.textContent = "Copiado"; setTimeout(function () { t.textContent = orig; }, 1500); };
+      try { navigator.clipboard.writeText(txt).then(listo, function () { t.textContent = "No se pudo copiar"; }); } catch (e) { t.textContent = "No se pudo copiar"; }
+      return;
+    }
+    if (t.hasAttribute("data-nueva")) { ui.ultimo = null; return render(); }
+    if (t.hasAttribute("data-pagar")) { ui.pagando = t.getAttribute("data-pagar"); tab = "resumen"; return render(); }
+    if (t.hasAttribute("data-cancelar-pago")) { ui.pagando = null; return render(); }
+    if (t.hasAttribute("data-editar")) { ui.editVend = t.getAttribute("data-editar"); render(); window.scrollTo(0, 0); return; }
+    if (t.hasAttribute("data-cancelar-vend")) { ui.editVend = null; return render(); }
+    if (t.hasAttribute("data-borrar-venta")) {
+      var id = t.getAttribute("data-borrar-venta");
+      if (ui.borrar !== id) { ui.borrar = id; return render(); }
+      ui.borrar = null;
+      if (db) db.doc("ventas/" + id).delete().catch(function () {});
+      return;
+    }
+  });
+  document.addEventListener("change", function (ev) {
+    if (ev.target.id === "f-mes") { ui.filtroMes = ev.target.value; render(); }
+    if (ev.target.id === "f-vend") { ui.filtroVend = ev.target.value; render(); }
+  });
+  document.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    if (ev.target.id === "f-venta") guardarVenta();
+    if (ev.target.id === "f-vend") guardarVendedor();
+    if (ev.target.id === "f-pago") guardarPago();
+  });
+
+  async function subir(input) {
+    var f = input && input.files && input.files[0];
+    if (!f || !assets) return null;
+    var tipo = f.type || (/\.pdf$/i.test(f.name) ? "application/pdf" : "image/jpeg");
+    var r = await assets.upload(f, { type: tipo });
+    return { id: r.id, tipo: r.contentType };
+  }
+
+  async function guardarVenta() {
+    var err = $("#v-err"), btn = $("#v-ok");
+    if (!db) { err.textContent = "No hay conexión con el guardado. Abrí el tablero desde Claude con tu sesión iniciada."; return; }
+    var a = aj();
+    var cliente = $("#v-cliente").value.trim();
+    if (!cliente) { err.textContent = "Poné el nombre del cliente."; return; }
+    var plan = $("#v-plan").value, precio = a.precios[plan] || 0, ref = $("#v-vend").value, tipo = $("#v-tipo").value;
+    var pct = ref ? (tipo === "renovacion" ? a.renovacion : a.comision) : 0;
+    btn.disabled = true; btn.textContent = "Guardando…"; err.textContent = "";
+    try {
+      var comp = null;
+      try { comp = await subir($("#v-comp")); } catch (e) { err.textContent = "No se pudo subir el comprobante (" + (e && e.code || "error") + "). Guardo la venta sin él."; }
+      var serial = proximoSerial();
+      var c = codigoPara(serial, MESES_PLAN[plan] != null ? MESES_PLAN[plan] : 3);
+      var venta = { fecha: $("#v-fecha").value || hoyISO(), cliente: cliente, whatsapp: $("#v-wa").value.trim(), plan: plan, monto: precio,
+        vendedorRef: ref, tipo: ref ? tipo : (esRenovacion(cliente) ? "renovacion" : "primera"), pct: pct, comision: Math.round(precio * pct / 100),
+        estadoComision: pct ? "pendiente" : "", serial: serial, codigo: c.codigo, vence: c.vence,
+        comprobante: comp ? comp.id : "", comprobanteTipo: comp ? comp.tipo : "", creado: Date.now() };
+      await db.collection("ventas").add(venta);
+      ui.ultimo = venta;
+      render();
+    } catch (e) {
+      btn.disabled = false; btn.textContent = "Guardar y generar código";
+      err.textContent = e && e.code === "quota_exceeded" ? "Se llenó el espacio del tablero. Borrá ventas viejas de prueba." : "No se pudo guardar (" + (e && e.code || "error") + "). Probá de nuevo.";
+    }
+  }
+
+  async function guardarVendedor() {
+    var err = $("#d-err");
+    if (!db) { err.textContent = "No hay conexión con el guardado."; return; }
+    var nombre = $("#d-nombre").value.trim();
+    var ref = ui.editVend || slug($("#d-ref").value || nombre);
+    if (!nombre || !ref) { err.textContent = "Poné el nombre del vendedor."; return; }
+    if (!ui.editVend && vendedorDe(ref)) { err.textContent = "Ya hay un vendedor con el link " + ref + "."; return; }
+    try {
+      await db.doc("vendedores/" + ref).set({ nombre: nombre, ref: ref, alias: $("#d-alias").value.trim(), whatsapp: $("#d-wa").value.trim(), alta: (vendedorDe(ref) || {}).alta || hoyISO() });
+      ui.editVend = null; render();
+    } catch (e) { err.textContent = "No se pudo guardar (" + (e && e.code || "error") + ")."; }
+  }
+
+  async function guardarPago() {
+    var err = $("#p-err"), ref = ui.pagando;
+    if (!db || !ref) return;
+    var pend = pendientesDe(ref), total = totalPendiente(ref);
+    if (!pend.length) { ui.pagando = null; return render(); }
+    var b = $("#f-pago button[type=submit]"); b.disabled = true; b.textContent = "Guardando…";
+    try {
+      var comp = null;
+      try { comp = await subir($("#p-comp")); } catch (e) { /* sin comprobante */ }
+      var pago = await db.collection("pagos").add({ fecha: hoyISO(), vendedorRef: ref, monto: total, ventas: pend.map(function (v) { return v.id; }), nota: ($("#p-nota").value || "").trim(), comprobante: comp ? comp.id : "", creado: Date.now() });
+      for (var i = 0; i < pend.length; i++) await db.doc("ventas/" + pend[i].id).update({ estadoComision: "pagada", pagoId: pago.id });
+      ui.pagando = null; tab = "pagos"; render();
+    } catch (e) { b.disabled = false; b.textContent = "Confirmar pago"; err.textContent = "No se pudo guardar (" + (e && e.code || "error") + ")."; }
+  }
+
+  /* ── conexión con el guardado ── */
+  function escuchar(col, clave) {
+    db.collection(col).onSnapshot(function (snap) {
+      S[clave] = snap.docs.map(function (d) { var o = Object.assign({}, d.data()); o.id = d.id; return o; });
+      S.listo = true; $("#estado").textContent = "Guardado en la nube";
+      var activo = document.activeElement;
+      if (activo && /INPUT|SELECT|TEXTAREA/.test(activo.tagName) && activo.closest("form")) return; /* no pisar lo que estás escribiendo */
+      render();
+    }, function () { $("#estado").textContent = "Sin conexión"; });
+  }
+  async function iniciar() {
+    render();
+    if (!window.claude || !window.claude.use) { S.sinDb = true; $("#estado").textContent = "Sin guardado"; return render(); }
+    db = await window.claude.use("db");
+    if (!db) { S.sinDb = true; $("#estado").textContent = "Sin guardado"; return render(); }
+    try { assets = await window.claude.use("assets"); } catch (e) { assets = null; }
+    escuchar("vendedores", "vendedores");
+    escuchar("ventas", "ventas");
+    escuchar("pagos", "pagos");
+    db.doc("ajustes/general").onSnapshot(function (d) { if (d.exists) { S.ajustes = Object.assign({}, DEF, d.data()); render(); } }, function () {});
+  }
+  iniciar();
+})();
+</script>

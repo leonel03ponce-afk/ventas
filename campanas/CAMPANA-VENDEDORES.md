@@ -1,14 +1,18 @@
 # Campaña de vendedores · SISTEMA
 
-Cada vendedor gana el **20% de cada pago** de sus clientes, mientras sigan renovando.
+Cada vendedor gana el **43% del primer pago** de cada cliente que trae y el **15% de cada renovación**.
 
-| Plan | Precio | El vendedor gana |
-|---|---|---|
-| 3 meses | $24.900 | **$4.980** cada vez que el cliente paga (cada 3 meses) |
-| Anual | $69.900 | **$13.980** cada año que el cliente renueva |
-| Para siempre | $119.900 | **$23.980** una sola vez |
+| Plan | Precio | Primer pago (43%) | Cada renovación (15%) |
+|---|---|---|---|
+| 3 meses | $24.900 | **$10.707** | $3.735 cada 3 meses |
+| Anual | $69.900 | **$30.057** | $10.485 cada año |
+| Para siempre | $119.900 | **$51.557** | (no renueva) |
 
-Ejemplo para contarles: 10 clientes en el plan anual son **$139.800 por año**, y siguen entrando mientras renueven.
+Ejemplo para contarles: 10 clientes en el plan anual son **$300.570** de entrada, y $104.850 más cada año que renueven.
+
+**Las dos reglas que hacen que funcione:**
+1. **El vendedor sube el video a su perfil** (reel, TikTok y estado) con su link en la bio. Vende mucho más que mandar el link suelto.
+2. **El cliente manda el comprobante con el botón verde** de la página. Ese mensaje dice "Me recomendó: nombre". Sin eso no hay forma de saber de quién era la venta.
 
 ---
 
@@ -16,8 +20,8 @@ Ejemplo para contarles: 10 clientes en el plan anual son **$139.800 por año**, 
 
 1. **El vendedor se suma** desde `brian-ponce.netlify.app/vendedores.html`: pone su nombre, saca su link y te avisa por WhatsApp con su alias de Mercado Pago. Lo anotás en la pestaña **Vendedores** de la planilla.
 2. **Su cliente paga** con Mercado Pago desde la página y te manda el comprobante. El mensaje ya dice **"Me recomendó: nombre-del-vendedor"**.
-3. **Vos le das el acceso**: entrás a `brian-ponce.netlify.app/panel`, ponés `PONCE-2026`, generás el código con el nombre del vendedor en **Lo trajo** y se lo mandás al cliente. Cargás la venta en la pestaña **Ventas** de la planilla.
-4. **A fin de mes** mirás la columna **A pagar** de cada vendedor, le transferís y marcás sus ventas como pagadas.
+3. **Vos cargás la venta en el tablero** (Nueva venta): cliente, plan, quién lo trajo y la foto del comprobante. El tablero genera el código de acceso, calcula la comisión y te deja mandarle el código al cliente por WhatsApp con un toque.
+4. **A fin de mes** abrís el Resumen del tablero: ahí está a quién pagarle, cuánto y su alias. Le transferís, tocás "Ya le pagué" (podés subir el comprobante de la transferencia) y le avisás por WhatsApp desde Pagos.
 
 **Reglas que conviene dejar claras desde el día uno:**
 - Los precios son los de la página: el vendedor no hace descuentos por su cuenta.
@@ -36,20 +40,21 @@ Ejemplo para contarles: 10 clientes en el plan anual son **$139.800 por año**, 
 
 > 💸 **BUSCO VENDEDORES**
 > Si entrenás, tenés amigos que quieren arrancar o una cuenta con seguidores, podés ganar plata recomendando SISTEMA.
-> Te llevás el **20% de cada pago** de tus clientes, **mientras sigan renovando**.
+> Te llevás el **43% de cada venta** y el **15% cada vez que tu cliente renueva**.
 > Sin invertir nada. Te doy tu link, el video y los textos listos.
 > Escribime "QUIERO VENDER" por privado 👊
 
 ### Mensaje para mandarle a tus alumnos
 
 > Hola [nombre]! Te escribo porque sos de los que más constancia tienen 💪
-> Lancé SISTEMA, la app con la que entrenás, y estoy armando un equipo de vendedores. Por cada persona que se sume con tu link te llevás el 20% de lo que pague, y cada vez que renueve, otra vez.
+> Lancé SISTEMA, la app con la que entrenás, y estoy armando un equipo de vendedores. Por cada persona que se sume con tu link te llevás el 43% de lo que pague, y el 15% cada vez que renueve.
 > Si conocés gente que quiere arrancar, es plata extra todos los meses. ¿Te paso tu link?
 
 ### Respuesta cuando alguien dice "QUIERO VENDER"
 
 > Genial! Entrá acá y sacá tu link en un minuto: brian-ponce.netlify.app/vendedores.html
-> Ahí tenés el video para bajar y los textos listos para copiar. Cuando lo tengas, mandame tu alias de Mercado Pago así te pago a fin de mes. Cualquier duda, acá estoy.
+> Ahí tenés el video para bajar y los textos listos. Lo que más vende: subí el video a tu perfil y poné tu link en la bio. Y acordate: tu cliente me tiene que mandar el comprobante con el botón verde de la página, así sé que es tuyo.
+> Mandame tu alias de Mercado Pago así te pago a fin de mes. Cualquier duda, acá estoy.
 
 ---
 
@@ -91,7 +96,11 @@ Ejemplo para contarles: 10 clientes en el plan anual son **$139.800 por año**, 
 | "¿Hay que bajar algo?" | "No, abrís el link y la instalás en la pantalla del celu. Anda sin internet en el gym." |
 | "¿Y si me quiero dar de baja?" | "Lo cancelás cuando quieras desde Mercado Pago. No hay permanencia." |
 
-**Cierre:** cuando alguien muestra interés, mandale tu link y decile: *"Elegís el plan, pagás con Mercado Pago y le mandás el comprobante a Brian con el botón verde. Te activa el acceso en el día."*
+**Cierre (el mensaje más importante):** cuando alguien te dice que sí, mandale esto:
+> ¡Genial! Entrá acá: [TU LINK]
+> Elegí tu plan y pagá con Mercado Pago. Después tocá el botón verde "Ya pagué · mandar comprobante": así Brian sabe que vas de mi parte y te activa el acceso en el día 💪
+
+Si no usa el botón verde, Brian no se entera de que la venta fue tuya.
 
 ---
 
@@ -99,7 +108,7 @@ Ejemplo para contarles: 10 clientes en el plan anual son **$139.800 por año**, 
 
 | Día | Qué hacer |
 |---|---|
-| 1 | Sacar el link, mandarte el alias. Subir el video a historias. |
+| 1 | Sacar el link y mandarte el alias. **Subir el video como reel y TikTok, con el link en la bio.** |
 | 2 | Mandar el mensaje "a un amigo" a 10 personas que sabe que quieren entrenar. |
 | 3 | Mandar el mensaje "a un grupo" en 2 grupos donde tenga confianza. |
 | 4 | Historia con su racha o su nivel en la app. |
@@ -115,12 +124,14 @@ Si querés empujar, podés sumar un premio por meta, por ejemplo: **el que llegu
 
 ---
 
-## 6. Controlar las comisiones
+## 6. Controlar las comisiones: tu tablero
 
-Usá **Comisiones-vendedores-SISTEMA.xlsx** (subilo a Google Drive y se abre como Google Sheets):
+Todo se maneja desde el tablero **Vendedores SISTEMA** (privado, solo lo ves vos): https://claude.ai/artifact/Lq4khHvoPukjcEGxbhPzah
 
-- **Ventas:** una fila por cada pago (fecha, cliente, plan, vendedor). El monto y el 20% se calculan solos.
-- **Vendedores:** cuántas ventas hizo cada uno, cuánto generó y **cuánto le debés**.
-- **Ajustes:** el porcentaje de comisión y los precios.
+- **Resumen:** ventas del mes, lo cobrado, lo que te queda y **cuánto le debés a cada vendedor, con su alias** y la fecha de pago (fin de mes).
+- **Nueva venta:** cliente, WhatsApp, plan, quién lo trajo y la foto del comprobante. Detecta si es una renovación, calcula 43% o 15%, **genera el código de acceso** y te deja mandárselo al cliente.
+- **Ventas:** todas, filtradas por mes o por vendedor, con su comprobante y su código.
+- **Vendedores:** alta con alias y WhatsApp, cuánto vendió y ganó cada uno, y su link para copiar.
+- **Pagos:** cada transferencia que hiciste, con su comprobante y un botón para avisarle al vendedor.
 
-El panel de la app también te muestra lo que le debés a cada uno, pero queda guardado solo en tu teléfono. La planilla es el registro que no se pierde.
+Los datos quedan guardados en tu cuenta de Claude: los ves igual desde el celu o la compu.
