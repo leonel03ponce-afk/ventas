@@ -22,6 +22,10 @@ Si conectás este repo a Netlify, poné `app` como *Publish directory* y cada ca
 
 **Importante:** subí siempre la carpeta `app` completa. Si falta algún archivo (por ejemplo `config.js`), algo deja de andar.
 
+## Clientes y vendedores de otros países
+
+Si la persona está fuera de Argentina (según la zona horaria de su celular), la página de venta y la de vendedores muestran los precios en dólares (`internacional` en `config.js`: US$19 / US$49 / US$89). Como todavía no hay link de cobro internacional, el botón abre WhatsApp para coordinar el pago por PayPal, USDT o Zinli. Cuando tengas un link (PayPal, Hotmart, etc.), pegalo en `pago` de cada plan internacional. Con `?pais=ar` o `?pais=int` en el link se fuerza una u otra versión.
+
 ## Cobrar
 
 Los links de Mercado Pago ya están cargados en `config.js`:

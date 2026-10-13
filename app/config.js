@@ -32,6 +32,20 @@ window.CONFIG = {
       incluye: ["Todo lo del plan anual", "Sin cuotas, nunca más", "Todas las funciones nuevas que salgan"] }
   ],
 
+  /* Clientes de afuera de Argentina: ven estos precios en dólares.
+     "pago" es un link de cobro internacional (PayPal, Hotmart, etc.);
+     vacío = el botón abre WhatsApp para coordinar el pago. */
+  internacional: {
+    activo: true,
+    moneda: "US$",
+    metodos: "PayPal, USDT (Binance) o Zinli",
+    planes: [
+      { id: "trimestral", nombre: "3 meses",      precio: 19, meses: 3,  detalle: "sale US$6,33 por mes", pago: "" },
+      { id: "anual",      nombre: "Anual",        precio: 49, meses: 12, detalle: "sale US$4,08 por mes · ahorrás 35%", pago: "", destacado: "Más elegido" },
+      { id: "vida",       nombre: "Para siempre", precio: 89, meses: 0,  detalle: "un solo pago · acceso de por vida", pago: "" }
+    ]
+  },
+
   /* Vendedores: se llevan "comision" % del primer pago de cada cliente
      que traen, y "renovacion" % de cada renovación de ese cliente
      (0 = las renovaciones no pagan comisión). */
@@ -39,6 +53,7 @@ window.CONFIG = {
     activo: true,
     comision: 43,
     renovacion: 15,
-    cuandoPago: "a fin de cada mes, por Mercado Pago o transferencia"   /* se lo muestra a los vendedores */
+    cuandoPago: "a fin de cada mes",                                   /* se lo muestra a los vendedores */
+    comoPago: "En Argentina por Mercado Pago o transferencia. Afuera, por USDT (Binance), PayPal o Zinli."
   }
 };

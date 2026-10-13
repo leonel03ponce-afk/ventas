@@ -83,6 +83,8 @@ h2 { margin-top: 8px; font-size: clamp(32px, 7vw, 48px); }
 .pasos div { padding: 14px 10px; text-align: center; background: rgba(255,255,255,.03); font-size: 13px; color: var(--dim); }
 .pasos div::before { counter-increment: p; content: counter(p); display: block; font: 700 26px/1 "Chakra Petch", sans-serif; color: var(--gold); margin-bottom: 6px; }
 .pagado { margin-top: 14px; text-align: center; }
+.pais { margin-top: 14px; text-align: center; }
+.pais button { background: none; border: 0; color: var(--dim); font: inherit; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; padding: 8px; }
 
 /* preguntas */
 .faq { padding: 30px 0 40px; }
@@ -148,8 +150,9 @@ footer a { color: var(--jade); font-weight: 600; text-decoration: none; }
     <p class="k">Planes</p>
     <h2>Elegí y arrancá hoy.</h2>
     <div class="lista" id="lista"></div>
-    <div class="pasos"><div>Pagás con Mercado Pago</div><div>Me mandás el comprobante</div><div>Te llega tu acceso por WhatsApp</div></div>
+    <div class="pasos" id="pasos"><div>Pagás con Mercado Pago</div><div>Me mandás el comprobante</div><div>Te llega tu acceso por WhatsApp</div></div>
     <p class="pagado"><a class="btn wa" id="comprobante" href="#">Ya pagué · mandar comprobante</a></p>
+    <p class="pais"><button type="button" id="pais"></button></p>
   </div>
 </section>
 
@@ -157,7 +160,8 @@ footer a { color: var(--jade); font-weight: 600; text-decoration: none; }
   <div class="wrap">
     <details><summary>¿Tengo que bajar algo?</summary><p>No. Abrís el link y la instalás en la pantalla de inicio como una app, sin pasar por ninguna tienda. Funciona sin internet en el gimnasio.</p></details>
     <details><summary>¿Y si nunca entrené?</summary><p>Mejor. La rutina la armo según tu nivel, y en la app tenés cada ejercicio con series, repeticiones y descanso.</p></details>
-    <details><summary>¿Puedo cancelar?</summary><p>Sí, cuando quieras, desde Mercado Pago. No hay permanencia.</p></details>
+    <details><summary>¿Puedo cancelar?</summary><p id="faq-cancelar">Sí, cuando quieras, desde Mercado Pago. No hay permanencia.</p></details>
+    <details><summary>¿Puedo comprar desde otro país?</summary><p>Sí. Si estás fuera de Argentina ves los precios en dólares y pagás por PayPal, USDT (Binance) o Zinli. La app funciona igual en cualquier país.</p></details>
   </div>
 </section>
 
@@ -173,7 +177,7 @@ footer a { color: var(--jade); font-weight: 600; text-decoration: none; }
     <p class="k">Último paso</p>
     <h3 id="m-t">Cuando termines de pagar, volvé acá</h3>
     <ol>
-      <li>Pagá en Mercado Pago (se abrió en otra pestaña).</li>
+      <li id="m-paso1">Pagá en Mercado Pago (se abrió en otra pestaña).</li>
       <li>Sacale captura al comprobante.</li>
       <li>Tocá el botón verde y mandámelo por WhatsApp. Te activo el acceso en el día.</li>
     </ol>
@@ -189,10 +193,15 @@ footer a { color: var(--jade); font-weight: 600; text-decoration: none; }
   "use strict";
   var C = window.CONFIG || {};
   var A = C.acceso || {};
-  var planes = C.planes || [];
+  var I = C.internacional || {};
+  /* ¿Argentina o afuera? Por la zona horaria del celu; ?pais=ar o ?pais=int lo fuerza */
+  var zona = ""; try { zona = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) {}
+  var forzado = (/[?&]pais=(ar|int)/i.exec(location.search) || [])[1];
+  var enAR = forzado ? forzado.toLowerCase() === "ar" : (!I.activo || !zona || /Argentina|Buenos_Aires/.test(zona));
+  var planes = enAR ? (C.planes || []) : (I.planes || []);
   var wa = String(C.whatsapp || "").split("?")[0];
   var corto = String(C.marca || "").split(" ")[0];
-  var plata = function (n) { return "$" + Math.round(n).toLocaleString("es-AR"); };
+  var plata = function (n) { return enAR ? "$" + Math.round(n).toLocaleString("es-AR") : (I.moneda || "US$") + (Math.round(n * 100) / 100).toLocaleString("es-AR"); };
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
 
   /* El vendedor viene en el link (?ref=nombre) y viaja en cada mensaje */
@@ -217,12 +226,24 @@ footer a { color: var(--jade); font-weight: 600; text-decoration: none; }
     else a.href = "./" + (ref ? "?ref=" + encodeURIComponent(ref) : "");
   });
 
+  var sinLink = function (p) { return !p.pago; };
+  if (!enAR) {
+    document.getElementById("pasos").innerHTML = "<div>Me escribís y te paso cómo pagar</div><div>Pagás por " + esc(I.metodos || "PayPal o USDT") + "</div><div>Te llega tu acceso por WhatsApp</div>";
+    document.getElementById("faq-cancelar").textContent = "Sí. Afuera de Argentina el plan no se renueva solo: cuando vence, decidís si seguís.";
+  }
+  var paisBtn = document.getElementById("pais");
+  paisBtn.textContent = enAR ? "¿Estás en otro país? Ver precios en dólares" : "¿Estás en Argentina? Ver precios en pesos";
+  paisBtn.addEventListener("click", function () {
+    var u = new URL(location.href); u.searchParams.set("pais", enAR ? "int" : "ar"); u.hash = "planes"; location.href = u.toString();
+  });
+  if (!I.activo) paisBtn.hidden = true;
+
   document.getElementById("lista").innerHTML = planes.map(function (p) {
-    var link = p.pago || waLink("Hola " + corto + "! Quiero el plan " + p.nombre + " (" + plata(p.precio) + ").");
+    var link = p.pago || waLink("Hola " + corto + "! Quiero el plan " + p.nombre + " (" + plata(p.precio) + ")." + (enAR ? "" : " Estoy fuera de Argentina, ¿cómo pago? Puedo con " + (I.metodos || "PayPal o USDT") + "."));
     return '<div class="plan' + (p.destacado ? " top" : "") + '">' + (p.destacado ? '<span class="tag">' + esc(p.destacado) + "</span>" : "") +
       "<h3>" + esc(p.nombre) + '</h3><p class="precio">' + plata(p.precio) + '</p><p class="det">' + esc(p.detalle || "") + "</p>" +
-      "<ul>" + (p.incluye || []).slice(0, 4).map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" +
-      '<a class="btn" data-pagar="' + esc(p.nombre) + '" href="' + esc(link) + '" target="_blank" rel="noopener">Pagar ' + esc(p.nombre.toLowerCase()) + "</a></div>";
+      "<ul>" + (p.incluye || (C.planes || []).filter(function (x) { return x.id === p.id; }).map(function (x) { return x.incluye; })[0] || []).slice(0, 4).map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" +
+      '<a class="btn" ' + (sinLink(p) && !enAR ? "" : 'data-pagar="' + esc(p.nombre) + '" ') + 'href="' + esc(link) + '" target="_blank" rel="noopener">' + (sinLink(p) && !enAR ? "Quiero este plan" : "Pagar " + esc(p.nombre.toLowerCase())) + "</a></div>";
   }).join("");
   var comp = document.getElementById("comprobante");
   comp.href = waLink("Hola " + corto + "! Ya pagué " + vals.producto + ". Te mando el comprobante para recibir mi acceso.");
@@ -236,6 +257,7 @@ footer a { color: var(--jade); font-weight: 600; text-decoration: none; }
     if (!a) return;
     var plan = a.getAttribute("data-pagar");
     document.getElementById("m-comp").href = waLink("Hola " + corto + "! Ya pagué el plan " + plan + " de " + vals.producto + ". Te mando el comprobante para recibir mi acceso.");
+    document.getElementById("m-paso1").textContent = enAR ? "Pagá en Mercado Pago (se abrió en otra pestaña)." : "Pagá en la pestaña que se abrió.";
     setTimeout(function () { modal.hidden = false; }, 400);
   });
   document.getElementById("m-x").addEventListener("click", function () { modal.hidden = true; });

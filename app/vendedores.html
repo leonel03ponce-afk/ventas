@@ -150,7 +150,7 @@ footer a { color: var(--gold); }
     </ol>
     <p class="regla"><b>Importante:</b> si tu cliente me escribe por su cuenta, sin el botón verde, no sé que vino de tu parte. Siempre decile que mande el comprobante desde la página.</p>
     <a class="btn" id="alta" target="_blank" rel="noopener">Avisarle a <span data-c="corto">Brian</span> que arranco</a>
-    <p class="sub" style="font-size:14px;margin-top:10px">Mandame tu alias o CVU de Mercado Pago para pagarte.</p>
+    <p class="sub" id="como-pago" style="font-size:14px;margin-top:10px">Mandame tu alias o CVU de Mercado Pago para pagarte.</p>
   </div>
 </section>
 
@@ -159,14 +159,19 @@ footer a { color: var(--gold); }
 <script>
 (function () {
   "use strict";
-  var C = window.CONFIG || {}, R = C.recomendados || {}, planes = (C.planes || []);
+  var C = window.CONFIG || {}, R = C.recomendados || {}, I = C.internacional || {};
+  var zona = ""; try { zona = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) {}
+  var forzado = (/[?&]pais=(ar|int)/i.exec(location.search) || [])[1];
+  var enAR = forzado ? forzado.toLowerCase() === "ar" : (!I.activo || !zona || /Argentina|Buenos_Aires/.test(zona));
+  var planes = enAR ? (C.planes || []) : (I.planes || []);
   var pct = (R.comision || 43) / 100, ren = (R.renovacion || 0) / 100;
   var wa = String(C.whatsapp || "").split("?")[0];
   var corto = String(C.marca || "").split(" ")[0];
-  var plata = function (n) { return "$" + Math.round(n).toLocaleString("es-AR"); };
+  var plata = function (n) { return enAR ? "$" + Math.round(n).toLocaleString("es-AR") : (I.moneda || "US$") + (Math.round(n * 100) / 100).toLocaleString("es-AR"); };
   var sitio = String(C.sitio || location.origin + "/").split("?")[0].split("#")[0].replace(/[^/]*$/, "");
   var vals = { producto: C.producto || "SISTEMA", pct: R.comision || 43, ren: R.renovacion || 0, cuando: R.cuandoPago || "a fin de cada mes", corto: corto };
   document.querySelectorAll("[data-c]").forEach(function (el) { var v = vals[el.getAttribute("data-c")]; if (v != null) el.textContent = v; });
+  if (!enAR) document.getElementById("como-pago").textContent = "Mandame por dónde te pago: " + (I.metodos || "USDT, PayPal o Zinli") + ". Vendés en cualquier país: tus clientes de afuera ven los precios en dólares.";
 
   var cada = function (p) { return p.meses === 3 ? "cada 3 meses" : p.meses === 12 ? "cada año" : p.meses ? "cada " + p.meses + " meses" : "una vez"; };
   document.getElementById("gana").innerHTML = planes.map(function (p) {
@@ -197,13 +202,19 @@ footer a { color: var(--gold); }
     document.getElementById("out").hidden = false;
     document.getElementById("textos").hidden = false;
     document.getElementById("textos2").hidden = false;
-    var t1 = "¿Te pasa que arrancás el gym y lo dejás a las dos semanas? 🙋‍♂️\nEstoy recomendando " + vals.producto + ", de " + (C.marca || "") + ": te arma la rutina a medida y una app te sigue todos los días (entreno, hábitos, comidas).\nMirá los planes acá 👉 " + link;
-    var t2 = "Dejá de empezar el lunes 🔥\nRutina hecha a medida + app que te sigue todos los días.\nCuerpo · Mente · Espíritu\nEmpezá hoy 👉 link en mi perfil\n(" + link + ")";
+    var t1 = enAR
+      ? "¿Te pasa que arrancás el gym y lo dejás a las dos semanas? 🙋‍♂️\nEstoy recomendando " + vals.producto + ", de " + (C.marca || "") + ": te arma la rutina a medida y una app te sigue todos los días (entreno, hábitos, comidas).\nMirá los planes acá 👉 " + link
+      : "¿Te pasa que empiezas el gym y a las dos semanas lo dejas? 🙋‍♂️\nTe recomiendo " + vals.producto + ", de " + (C.marca || "") + ": un entrenador te arma la rutina a tu medida y una app te acompaña todos los días (entreno, hábitos, comidas).\nMira los planes aquí 👉 " + link;
+    var t2 = enAR
+      ? "Dejá de empezar el lunes 🔥\nRutina hecha a medida + app que te sigue todos los días.\nCuerpo · Mente · Espíritu\nEmpezá hoy 👉 link en mi perfil\n(" + link + ")"
+      : "Deja de empezar el lunes 🔥\nRutina hecha a tu medida + una app que te acompaña todos los días.\nCuerpo · Mente · Espíritu\nEmpieza hoy 👉 link en mi perfil\n(" + link + ")";
     document.getElementById("t1").value = t1;
     document.getElementById("t2").value = t2;
-    document.getElementById("t3").value = "¡Genial! Entrá acá: " + link + "\nElegí tu plan y pagá con Mercado Pago. Después tocá el botón verde \"Ya pagué · mandar comprobante\": así " + corto + " sabe que vas de mi parte y te activa el acceso en el día 💪";
+    document.getElementById("t3").value = enAR
+      ? "¡Genial! Entrá acá: " + link + "\nElegí tu plan y pagá con Mercado Pago. Después tocá el botón verde \"Ya pagué · mandar comprobante\": así " + corto + " sabe que vas de mi parte y te activa el acceso en el día 💪"
+      : "¡Genial! Entra aquí: " + link + "\nElige tu plan y toca \"Quiero este plan\": te abre WhatsApp con " + corto + " y te dice cómo pagar (" + (I.metodos || "PayPal o USDT") + "). Ese mensaje ya dice que vas de mi parte. Cuando pagues, mándale el comprobante por ahí mismo 💪";
     document.getElementById("wa1").href = "https://wa.me/?text=" + encodeURIComponent(t1);
-    document.getElementById("alta").href = wa ? wa + "?text=" + encodeURIComponent("Hola " + corto + "! Quiero vender " + vals.producto + ". Soy " + nombre + " y mi link es " + link + ".\nMi alias de Mercado Pago es: ") : "#";
+    document.getElementById("alta").href = wa ? wa + "?text=" + encodeURIComponent("Hola " + corto + "! Quiero vender " + vals.producto + ". Soy " + nombre + " y mi link es " + link + "." + (enAR ? "\nMi alias de Mercado Pago es: " : "\nEstoy en (país): \nMe pagas por (USDT / PayPal / Zinli) a: ")) : "#";
   }
   document.getElementById("gen").addEventListener("click", function () { armar(document.getElementById("nom").value.trim()); });
   try { var g = localStorage.getItem("vendedor:nombre"); if (g) { document.getElementById("nom").value = g; armar(g); } } catch (e) {}
