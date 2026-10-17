@@ -569,6 +569,7 @@ button.g-link.boton { display: block; width: 100%; margin-top: 20px; padding: 6p
 .rt .pan-adm .pan-t { margin-top: 0; color: var(--gold); }
 
 /* Nota chica dentro de un interruptor de Ajustes */
+.rt .push-ios { color: var(--gold); }
 .rt .chk .nota { display: block; margin-top: 3px; font: 400 12px/1.35 var(--sans); font-style: normal; color: var(--muted); }
 
 /* Cartel de "te toca entrenar" */
@@ -3661,13 +3662,6 @@ react-dom/cjs/react-dom.production.min.js:
   }
   setInterval(chequearAvisos, 60000);
   setTimeout(chequearAvisos, 4000);
-  function cardAvisos() {
-    if (!hayAvisos() || (aviso && permiso() === "granted") || permiso() === "denied") return "";
-    return '<section class="card rise" style="--c:#7C9CFF"><p class="card-k">Avisos</p><p class="card-t">Que la app te busque a vos</p>' +
-      '<ul class="av-l"><li>Cuando termina el descanso</li><li>A tu hora de entrenar, si no arrancaste</li><li>A la noche, si tu racha está en peligro</li><li>El domingo, para tu control semanal</li></ul>' +
-      '<button type="button" class="btn pri" data-act="av-on">Activar avisos</button></section>';
-  }
-
   /* ───── Rutina personalizada por link ─────
      El entrenador arma la rutina en su teléfono y la manda como link.
      El cliente lo abre y la carga con un toque, sin perder lo que ya anotó. */
@@ -3770,14 +3764,15 @@ react-dom/cjs/react-dom.production.min.js:
     }
     const lg = logrosNuevos();
     const nc = nutriCfg();
-    h += cardPendiente() + cardCierre() + cardTuDia() + cardRecordsHoy() + cardEntreno() + cardPilares() + (sistemaData() ? "" : cardSistema()) + (nc && !nutriEdit ? "" : cardNutri()) + cardAvisos() +
-      '<h2 class="sec-h">Tu progreso</h2>' + cardSemana() + cardPlata() + (nc && !nutriEdit ? cardNutri() : "") + cardPeso() + cardMedidas() + cardLogros(lg) + cardHistorial();
+    h += cardPendiente() + cardCierre() + cardTuDia() + cardPush(true) + cardRecordsHoy() + cardEntreno() + cardPilares() + (sistemaData() ? "" : cardSistema()) + (nc && !nutriEdit ? "" : cardNutri()) +
+      '<h2 class="sec-h">Tu progreso</h2>' + cardSemana() + cardPlata() + (nc && !nutriEdit ? cardNutri() : "") + cardPeso() + cardMedidas() + cardLogros(lg) + cardHistorial() + cardPush(false);
     h += '<section class="card rise"><p class="card-k">Tu entrenador</p><p class="card-t">' + esc(MARCA) + "</p>" +
       '<p class="card-s">Dudas, cambios o una rutina hecha a tu medida: escribime al ' + esc(TEL) + ".</p>" +
       '<a class="btn alt" href="' + esc(waUrl("Hola " + MARCA + "! " + (nombre ? "Soy " + nombre + ". " : "") + "Te escribo por la rutina.")) + '" target="_blank" rel="noopener">Abrir WhatsApp</a></section>';
     HOY.innerHTML = h;
     animar(HOY);
     chequearDia();
+    sincronizarPush();
     if (lg.nuevos.length) {
       setTimeout(() => { festejo(true); sfx("listo"); showStatus("Logro desbloqueado: " + lg.nuevos[0], 3200); }, 500);
     }
@@ -5032,6 +5027,137 @@ react-dom/cjs/react-dom.production.min.js:
     if (!SHEET.hidden) cerrarSheet();
   });
 
+  /* ═══════════ Avisos push de los hábitos diarios ═══════════
+     El servidor (netlify/functions/push-habitos.mjs) avisa a la hora de
+     cada misión si todavía no está hecha, y a la noche si falta alguna.
+     Para saber qué falta, la app le cuenta cómo va el día cada vez que
+     cambia algo. Solo hábitos: nada de rutina ni de plata. */
+  const KEY_PUSH = "push:cfg";
+  const KEY_PUSH_ULT = "push:ult";
+  const hayPush = () => "serviceWorker" in navigator && "PushManager" in window && typeof Notification !== "undefined";
+  const pushCfg = () => leer(KEY_PUSH, { on: false, cierre: "21:30", porHabito: true });
+  let pushEdit = false, pushNota = "";
+
+  function estadoHabitos() {
+    const d = sistemaData();
+    if (!d) return { habitos: [], hoy: { f: todayKey(), ok: [] } };
+    const log = (d.log || {})[todayKey()] || {};
+    return {
+      habitos: d.habits.filter((h) => !h.paused).map((h) => ({ id: String(h.id), n: h.name || "Misión", t: h.time || "", d: h.days || [0, 1, 2, 3, 4, 5, 6], dep: !!h.dependsOn })),
+      hoy: { f: todayKey(), ok: d.habits.filter((h) => hecho(h, log)).map((h) => String(h.id)) },
+    };
+  }
+  function apiPush(cuerpo) {
+    return fetch("/api/push", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(cuerpo), keepalive: true })
+      .then((r) => r.json().catch(() => ({})).then((j) => (r.ok ? j : Promise.reject(j.error || "No se pudo conectar. Probá de nuevo."))));
+  }
+  const suscripcion = () => navigator.serviceWorker.ready.then((reg) => reg.pushManager.getSubscription());
+  const zona = () => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) { return ""; } };
+
+  async function activarPush(cierre, porHabito) {
+    if (!hayPush()) throw "Este navegador no permite avisos.";
+    if (esIOS() && !instalada()) throw "En iPhone, primero agregá la app a la pantalla de inicio (Compartir → Agregar a inicio) y abrila desde ahí.";
+    if (!(await pedirAviso())) throw "No diste permiso. Activá las notificaciones para esta página en los ajustes del navegador.";
+    const r = await fetch("/api/push").catch(() => null);
+    if (!r || !r.ok) throw "No se pudo conectar. Probá de nuevo con internet.";
+    const clave = (await r.json()).clave;
+    const reg = await navigator.serviceWorker.ready;
+    let sub = await reg.pushManager.getSubscription();
+    if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: deb64u(clave) });
+    const e = estadoHabitos();
+    await apiPush({ accion: "alta", sub: sub.toJSON(), zona: zona(), cierre: cierre, porHabito: porHabito, habitos: e.habitos, hoy: e.hoy });
+    escribir(KEY_PUSH, { on: true, cierre: cierre, porHabito: porHabito });
+    try { localStorage.setItem(KEY_PUSH_ULT, JSON.stringify(e)); } catch (err) { /* sin almacenamiento */ }
+  }
+  async function apagarPush() {
+    try {
+      const sub = await suscripcion();
+      if (sub) { await apiPush({ accion: "baja", endpoint: sub.endpoint }).catch(() => {}); await sub.unsubscribe().catch(() => {}); }
+    } catch (err) { /* igual lo apagamos acá */ }
+    escribir(KEY_PUSH, Object.assign(pushCfg(), { on: false }));
+  }
+  /* Le cuenta al servidor cómo va el día, solo si cambió algo */
+  function sincronizarPush(extra) {
+    const c = pushCfg();
+    if (!c.on || !hayPush()) return Promise.resolve();
+    const e = estadoHabitos(), s = JSON.stringify(e);
+    let ult = "";
+    try { ult = localStorage.getItem(KEY_PUSH_ULT) || ""; } catch (err) { /* sin almacenamiento */ }
+    if (!extra && s === ult) return Promise.resolve();
+    return suscripcion().then((sub) => {
+      if (!sub) { escribir(KEY_PUSH, Object.assign(c, { on: false })); return; }
+      return apiPush(Object.assign({ accion: "estado", endpoint: sub.endpoint, zona: zona(), habitos: e.habitos, hoy: e.hoy }, extra || {}))
+        .then(() => { try { localStorage.setItem(KEY_PUSH_ULT, s); } catch (err) { /* sin almacenamiento */ } });
+    }).catch(() => {});
+  }
+
+  function horasCierre(cur) {
+    let o = '<option value=""' + (!cur ? " selected" : "") + ">Sin repaso</option>";
+    for (let m = 19 * 60; m <= 23 * 60 + 30; m += 30) {
+      const v = pad2(Math.floor(m / 60)) + ":" + pad2(m % 60);
+      o += '<option value="' + v + '"' + (cur === v ? " selected" : "") + ">" + v + "</option>";
+    }
+    return o;
+  }
+  function cardPush(arriba) {
+    const s = sistemaData();
+    if (!s || !hayPush()) return "";
+    const c = pushCfg();
+    if (arriba && (c.on || c.no)) return "";
+    if (!arriba && !c.on && !c.no) return "";
+    const conHora = s.habits.filter((h) => !h.paused && h.time && !h.dependsOn).length;
+    const nota = '<p class="pan-n" id="push-n">' + esc(pushNota) + "</p>";
+    if (c.on && !pushEdit) {
+      return '<section class="card rise" style="--c:#7C9CFF"><p class="card-k">Avisos de hábitos</p><p class="card-t">Activados</p>' +
+        '<p class="card-s">' + (c.porHabito ? "A la hora de cada misión (" + conHora + " con horario)" : "Sin aviso por misión") +
+        (c.cierre ? " · repaso a las " + esc(c.cierre) : "") + ". Si ya la hiciste, no te molestamos.</p>" +
+        '<div class="pan-b"><button type="button" class="btn alt" data-act="push-test">Probar</button> <button type="button" class="btn alt" data-act="push-edit">Cambiar</button> <button type="button" class="btn lnk" data-act="push-off">Apagar</button></div>' + nota + "</section>";
+    }
+    const ios = esIOS() && !instalada();
+    return '<section class="card rise hero" style="--c:#7C9CFF"><p class="card-k">Avisos de hábitos</p><p class="card-t">Que tus misiones te busquen</p>' +
+      '<p class="card-s">Te avisamos a la hora de cada misión si todavía no la hiciste, y a la noche si te falta algo. Si ya cumpliste, silencio.</p>' +
+      '<label class="chk"><input type="checkbox" id="push-ph"' + (c.porHabito !== false ? " checked" : "") + "><span>A la hora de cada misión<em class=\"nota\">" +
+        (conHora ? conHora + (conHora === 1 ? " misión tiene" : " misiones tienen") + " horario en tu Sistema" : "Poné horario a tus misiones en Sistema") + "</em></span></label>" +
+      '<label class="fld"><span class="fl">Repaso de la noche</span><select class="in" id="push-c">' + horasCierre(c.cierre) + "</select></label>" +
+      (ios ? '<p class="card-s push-ios">En iPhone: tocá Compartir → <b>Agregar a inicio</b> y abrí la app desde ahí. Los avisos solo funcionan así.</p>' : "") +
+      '<div class="pan-b"><button type="button" class="btn pri" data-act="push-on"' + (ios ? " disabled" : "") + ">" + (c.on ? "Guardar" : "Activar avisos") + "</button>" +
+      (c.on ? ' <button type="button" class="btn alt" data-act="push-x">Cancelar</button>' : arriba ? ' <button type="button" class="btn lnk" data-act="push-no">Ahora no</button>' : "") + "</div>" + nota + "</section>";
+  }
+
+  if (HOY) {
+    HOY.addEventListener("click", (ev) => {
+      const b = ev.target.closest("[data-act]");
+      if (!b || b.disabled) return;
+      const a = b.dataset.act;
+      const decir = (t) => { pushNota = t; const n = document.getElementById("push-n"); if (n) n.textContent = t; };
+      if (a === "push-on") {
+        const ph = document.getElementById("push-ph"), ci = document.getElementById("push-c");
+        const porHabito = !!(ph && ph.checked), cierre = ci ? ci.value : "";
+        if (!porHabito && !cierre) return decir("Elegí al menos uno: por misión o el repaso de la noche.");
+        b.disabled = true; decir("Activando…");
+        const yaOn = pushCfg().on;
+        (yaOn ? sincronizarPush({ cierre: cierre, porHabito: porHabito }).then(() => escribir(KEY_PUSH, { on: true, cierre: cierre, porHabito: porHabito })) : activarPush(cierre, porHabito))
+          .then(() => { pushEdit = false; pushNota = yaOn ? "Guardado." : "¡Listo! Tocá Probar para ver cómo llegan."; sfx("listo"); renderHoy(); })
+          .catch((err) => { b.disabled = false; decir(typeof err === "string" ? err : "No se pudo activar. Probá de nuevo."); });
+        return;
+      }
+      if (a === "push-no") { escribir(KEY_PUSH, Object.assign(pushCfg(), { no: true })); return renderHoy(); }
+      if (a === "push-edit") { pushEdit = true; pushNota = ""; return renderHoy(); }
+      if (a === "push-x") { pushEdit = false; pushNota = ""; return renderHoy(); }
+      if (a === "push-off") { apagarPush().then(() => { pushNota = ""; renderHoy(); }); return; }
+      if (a === "push-test") {
+        decir("Mandando…");
+        suscripcion().then((sub) => {
+          if (!sub) throw "La suscripción se perdió. Apagá y activá de nuevo.";
+          return apiPush({ accion: "prueba", endpoint: sub.endpoint });
+        }).then(() => decir("Enviado. Si no llega en unos segundos, revisá que el celular no tenga las notificaciones silenciadas."))
+          .catch((err) => decir(typeof err === "string" ? err : "No se pudo mandar."));
+      }
+    });
+  }
+  document.addEventListener("visibilitychange", () => { if (document.hidden) sincronizarPush(); });
+  setInterval(() => { if (!document.hidden) sincronizarPush(); }, 60000);
+
   if (HOY) {
     HOY.addEventListener("click", (ev) => {
       const b = ev.target.closest("[data-act]");
@@ -5103,16 +5229,6 @@ react-dom/cjs/react-dom.production.min.js:
         const l = medidas().filter((x) => x.d !== reg.d); l.push(reg); l.sort((a, c) => (a.d > c.d ? 1 : -1));
         try { localStorage.setItem(KEY_MED, JSON.stringify(l.slice(-200))); } catch (err) { /* sin almacenamiento */ }
         medAbierto = false; sfx("guardar"); showStatus("Medidas guardadas"); renderHoy(); return;
-      }
-      if (b.dataset.act === "av-on") {
-        pedirAviso().then((ok) => {
-          aviso = ok;
-          try { localStorage.setItem(KEY_NOTI, ok ? "1" : "0"); } catch (err) { /* sin almacenamiento */ }
-          if (ok) { sfx("listo"); avisar("Avisos activados", "Te vamos a avisar cuando haga falta. Nada de spam.", "prueba"); programarRecordatorio(); }
-          else showStatus("El navegador no dio permiso", 2600);
-          renderHoy();
-        });
-        return;
       }
       if (b.dataset.act === "rut-si") return cargarPendiente();
       if (b.dataset.act === "rut-no") { try { localStorage.removeItem(KEY_PEND); } catch (err) { /* sin almacenamiento */ } renderHoy(); return; }
@@ -5497,7 +5613,9 @@ react-dom/cjs/react-dom.production.min.js:
     show("sistema");
   }, true);
   window.addEventListener("hashchange", function () { if (location.hash === "#sistema") show("sistema"); });
-  show("hoy");
+  /* tocar un aviso de hábitos abre directo el Sistema */
+  if (navigator.serviceWorker) navigator.serviceWorker.addEventListener("message", function (ev) { if (ev.data && ev.data.ir && panes[ev.data.ir]) show(ev.data.ir); });
+  show(location.hash === "#sistema" ? "sistema" : "hoy");
 })();
 </script>
 <script>

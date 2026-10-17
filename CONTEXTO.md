@@ -20,7 +20,7 @@
 - Nunca poner tokens ni claves privadas en el repo: van como variables de entorno en Netlify (`MP_ACCESS_TOKEN`, `CLAVE_VENTAS`, `HOTMART_HOTTOK`).
 
 ## Pendiente
-0. Notificaciones push (quedaron para después).
+0. Avisos push de hábitos: hechos (`netlify/functions/push*.mjs`). Probar en un celular real: activar desde Hoy y tocar Probar.
 1. Ya hecho: Netlify conectado a GitHub (rama claude/upbeat-archimedes-pab9s2), MP_ACCESS_TOKEN y CLAVE_VENTAS cargados. Falta confirmar una compra real de punta a punta.
 2. Armar SISTEMA en Hotmart (producto + 3 ofertas + webhook + afiliados al 43%).
 3. Salir a reclutar vendedores con `campanas/TEXTOS-CLOSERS-Y-LATAM.md`.

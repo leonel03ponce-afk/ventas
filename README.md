@@ -117,3 +117,14 @@ La app trabaja cuatro pilares: **Entreno**, **Hábitos** (pestaña Sistema), **N
 - **Cierre de semana**: domingos y lunes aparece arriba una tarjeta para cerrar la semana y mandársela a Brian.
 
 Todo queda guardado en el teléfono del cliente, como el resto.
+
+## Avisos de hábitos (notificaciones push)
+
+Solo para los hábitos diarios del Sistema: nada de rutina ni de plata. El cliente los activa desde Hoy (tarjeta **Avisos de hábitos**).
+
+- **A la hora de cada misión**: usa el horario que cada hábito tiene en Sistema. Si a esa hora todavía no está hecho, llega "⚡ Hora de: Leer".
+- **Repaso de la noche** (por defecto 21:30, se puede cambiar o apagar): si falta alguna misión, llega "Te faltan 2 de 5 misiones · Falta: Leer y Meditar".
+- Si ya cumplió, no llega nada. Tocar el aviso abre la app en Sistema.
+- En iPhone funciona solo con la app agregada a la pantalla de inicio (iOS 16.4 o más nuevo). En Android anda siempre.
+
+Cómo funciona: la app le cuenta al servidor qué misiones tiene hoy y cuáles hizo (`netlify/functions/push.mjs`, en `/api/push`), y cada 15 minutos `netlify/functions/push-habitos.mjs` revisa a quién le toca un aviso. No hace falta configurar nada: las claves de los avisos se crean solas la primera vez y quedan en Netlify Blobs. Si alguien deja de abrir la app 60 días, se da de baja solo.
