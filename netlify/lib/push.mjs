@@ -55,3 +55,34 @@ export const minutos = (hhmm) => {
   const m = /^(\d{1,2}):(\d{2})$/.exec(String(hhmm || ""));
   return m ? Number(m[1]) * 60 + Number(m[2]) : -1;
 };
+
+/* ───── Índice por horario ─────
+   Para que cada corrida lea solo a quienes tienen un aviso en ese cuarto
+   de hora (y no a todos), cada horario se guarda también como una clave
+   "t:<minuto UTC>:<suscripción>". Así el costo crece con los avisos que
+   salen, no con la cantidad de clientes. */
+export const PASO = 15;
+export function desfase(zona, d = new Date()) {
+  const t = ahoraEn(zona, d);
+  const utc = d.getUTCHours() * 60 + d.getUTCMinutes();
+  let dif = t.min - utc;                      /* minutos que la zona va adelante de UTC */
+  if (dif > 720) dif -= 1440;
+  if (dif < -720) dif += 1440;
+  return dif;
+}
+export const ranura = (minUtc) => { const m = ((minUtc % 1440) + 1440) % 1440; return String(m - (m % PASO)).padStart(4, "0"); };
+export function ranurasDe(doc) {
+  const dif = desfase(doc.zona);
+  const horas = [];
+  if (doc.porHabito !== false) (doc.habitos || []).forEach((h) => { if (!h.dep && minutos(h.t) >= 0) horas.push(minutos(h.t)); });
+  if (minutos(doc.cierre) >= 0) horas.push(minutos(doc.cierre));
+  return [...new Set(horas.map((m) => ranura(m - dif)))];
+}
+export async function reindexar(st, clave, doc) {
+  const id = clave.slice(4);
+  const nuevas = doc.sub ? ranurasDe(doc) : [];
+  const viejas = doc.idx || [];
+  await Promise.all(viejas.filter((r) => nuevas.indexOf(r) < 0).map((r) => st.delete("t:" + r + ":" + id)));
+  await Promise.all(nuevas.filter((r) => viejas.indexOf(r) < 0).map((r) => st.set("t:" + r + ":" + id, "1")));
+  doc.idx = nuevas;
+}

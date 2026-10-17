@@ -1,21 +1,33 @@
 /* Cada 15 minutos: a quién le toca un hábito ahora (y todavía no lo hizo)
-   y a quién hay que avisarle a la noche que le faltan misiones.
+   y a quién hay que avisarle a la noche que le faltan misiones. Lee solo
+   a los que tienen algo en este horario (ver el índice en lib/push.mjs).
    Solo hábitos diarios: nada de rutina ni de plata. */
-import { pushTienda, enviar, ahoraEn, minutos } from "../lib/push.mjs";
+import { pushTienda, enviar, ahoraEn, minutos, ranura, PASO } from "../lib/push.mjs";
 
-const PASO = 15;
 const lista = (l) => (l.length === 1 ? l[0] : l.slice(0, -1).join(", ") + " y " + l[l.length - 1]);
 
 export default async () => {
   const st = pushTienda();
-  const { blobs } = await st.list({ prefix: "sub:" });
   const ahora = new Date();
+  /* solo quienes tienen algo en este cuarto de hora o en el anterior
+     (por si una corrida se atrasó) */
+  const utc = ahora.getUTCHours() * 60 + ahora.getUTCMinutes();
+  const ids = new Set();
+  for (const r of [ranura(utc), ranura(utc - PASO)]) {
+    const { blobs } = await st.list({ prefix: "t:" + r + ":" });
+    blobs.forEach((x) => ids.add(x.key.split(":")[2]));
+  }
   let enviados = 0;
-  for (const b of blobs) {
+  for (const id of ids) {
+    const b = { key: "sub:" + id };
     const s = await st.get(b.key, { type: "json" });
     if (!s || !s.sub) continue;
     /* 60 días sin abrir la app: se da de baja sola */
-    if (s.visto && ahora - new Date(s.visto) > 60 * 86400000) { await st.delete(b.key); continue; }
+    if (s.visto && ahora - new Date(s.visto) > 60 * 86400000) {
+      await Promise.all((s.idx || []).map((r) => st.delete("t:" + r + ":" + id)));
+      await st.delete(b.key);
+      continue;
+    }
     const t = ahoraEn(s.zona, ahora);
     const desde = t.min - (t.min % PASO), hasta = desde + PASO;
     const hechos = s.hoy && s.hoy.f === t.fecha ? s.hoy.ok || [] : [];
@@ -46,12 +58,16 @@ export default async () => {
     if (aviso && avisos.length > 1) aviso.marcas = aviso.marcas.concat(avisos[0].marcas);
     if (!aviso) continue;
     const r = await enviar(s.sub, { title: aviso.title, body: aviso.body, tag: aviso.tag, url: "./#sistema" });
-    if (r === "baja") { await st.delete(b.key); continue; }
+    if (r === "baja") {
+      await Promise.all((s.idx || []).map((x) => st.delete("t:" + x + ":" + id)));
+      await st.delete(b.key);
+      continue;
+    }
     if (r !== "ok") continue;
     s.env.k = s.env.k.concat(aviso.marcas);
     await st.setJSON(b.key, s);
     enviados++;
   }
-  console.log("avisos de hábitos enviados:", enviados, "de", blobs.length);
+  console.log("avisos de hábitos enviados:", enviados, "de", ids.size, "revisados");
 };
 export const config = { schedule: "*/15 * * * *" };

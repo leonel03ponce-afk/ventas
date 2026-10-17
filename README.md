@@ -4,7 +4,7 @@ La app está en la carpeta `app/`. Es una página web instalable en el celular (
 
 | Archivo | Para qué es |
 |---|---|
-| `app/index.html` | La app: Hoy, Armar, Entreno, Sistema y Plata, más el Resumen (semana, mes y año) |
+| `app/index.html` | La app: Hoy, Armar (se oculta cuando ya hay rutina propia), Entreno, Hábitos (el Sistema) y Plata, más el Resumen (semana, mes y año) |
 | `app/planes.html` | Página de venta corta, para el link de la bio y para los vendedores |
 | `app/vendedores.html` | Página para vendedores: sacan su link, copian textos listos, bajan el video y calculan cuánto ganan |
 | `app/guia-vendedores.html` | Guía para vendedores: perfil, dónde buscar clientes, mensajes en frío, cierre, objeciones y seguimiento, listos para copiar |
@@ -127,4 +127,10 @@ Solo para los hábitos diarios del Sistema: nada de rutina ni de plata. El clien
 - Si ya cumplió, no llega nada. Tocar el aviso abre la app en Sistema.
 - En iPhone funciona solo con la app agregada a la pantalla de inicio (iOS 16.4 o más nuevo). En Android anda siempre.
 
+Costo en Netlify: la función corre cada 15 minutos (96 veces por día, siempre igual), y en cada corrida lee solo a quienes tienen un aviso en ese cuarto de hora (cada horario queda indexado como `t:<minuto UTC>:<cliente>`). O sea, el gasto crece con los avisos que salen, no con la cantidad de clientes. La app solo le escribe al servidor cuando cambia algo de sus hábitos.
+
 Cómo funciona: la app le cuenta al servidor qué misiones tiene hoy y cuáles hizo (`netlify/functions/push.mjs`, en `/api/push`), y cada 15 minutos `netlify/functions/push-habitos.mjs` revisa a quién le toca un aviso. No hace falta configurar nada: las claves de los avisos se crean solas la primera vez y quedan en Netlify Blobs. Si alguien deja de abrir la app 60 días, se da de baja solo.
+
+## Primera vez: el arranque
+
+Alguien nuevo no ve la app llena de tarjetas: entra a un arranque de pantalla completa, una pregunta por pantalla (nombre → cómo se usa en 3 líneas → objetivo, sexo, edad, altura y peso → elegir hábitos con su horario → instalar la app y activar los avisos). Al terminar, Tu día ya tiene proteína y agua calculadas y la pestaña Hábitos ya tiene sus hábitos. En Hoy, las tarjetas de progreso (semana, peso, medidas, logros, historial, plata) aparecen recién cuando tienen algo para mostrar.

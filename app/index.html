@@ -799,6 +799,55 @@ body.bloqueado .fab, body.bloqueado .sheet { display: none !important; }
 .rt .vasos { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
 .rt .vasos i { width: 28px; height: 36px; border: 2px solid rgba(95,214,224,.4); border-top: 0; clip-path: polygon(0 0, 100% 0, 88% 100%, 12% 100%); background: rgba(95,214,224,.06); }
 .rt .vasos i.si { background: linear-gradient(180deg, #8EE8F0, #5FD6E0); border-color: #5FD6E0; }
+/* ════ Arranque de la primera vez ════ */
+html.arr-abierto, html.arr-abierto body { overflow: hidden; }
+body.bloqueado .arr { display: none !important; }
+.rt.arr { position: fixed; inset: 0; z-index: 10001; overflow: auto; background: #0B0715; opacity: 0; transition: opacity .25s ease; }
+.rt.arr[hidden] { display: none; }
+.rt.arr.on { opacity: 1; }
+.rt.arr::before { content: ""; position: fixed; inset: 0; pointer-events: none; background: radial-gradient(80% 50% at 0% 0%, rgba(233,183,91,.2), transparent 70%), radial-gradient(70% 45% at 100% 100%, rgba(169,139,255,.16), transparent 70%); }
+.rt .arr-in { position: relative; max-width: 480px; min-height: 100%; margin: 0 auto; padding: calc(18px + env(safe-area-inset-top, 0px)) 20px calc(28px + env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; }
+.rt .arr-top { display: flex; align-items: center; justify-content: space-between; min-height: 40px; flex-direction: row-reverse; }
+.rt .arr-top .btn { min-height: 36px; padding: 0 4px; color: var(--muted); font-size: 14px; }
+.rt .arr-pr { display: flex; gap: 6px; }
+.rt .arr-pr i { width: 22px; height: 5px; background: rgba(156,138,184,.25); transition: background-color .25s ease, width .25s ease; }
+.rt .arr-pr i.ya { background: rgba(233,183,91,.55); }
+.rt .arr-pr i.on { width: 34px; background: var(--gold); }
+.rt .arr-c { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 18px 0 8px; animation: rt-rise .35s cubic-bezier(.2,.7,.3,1); }
+.rt .arr-k { font: 600 11px/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
+.rt .arr-t { margin-top: 14px; font: 700 42px/1.02 var(--display); background: linear-gradient(100deg, #F3EDE4 35%, #F5D08A 70%, #FF8F5E); -webkit-background-clip: text; background-clip: text; color: transparent; padding-bottom: 4px; }
+.rt .arr-s { margin-top: 10px; font: 400 17px/1.45 var(--sans); color: var(--muted); }
+.rt .arr-c .fld { margin-top: 26px; }
+.rt .arr-big { height: 60px; font: 700 26px/1 var(--display); }
+.rt .arr-go { width: 100%; min-height: 56px; margin-top: 28px; font-size: 17px; }
+.rt .arr-skip { display: block; margin: 10px auto 0; color: var(--muted); font-size: 14px; }
+.rt .arr-como { margin-top: 26px; }
+.rt .arr-como li { display: grid; grid-template-columns: 52px minmax(0, 1fr); column-gap: 14px; align-items: center; padding: 14px 0; border-top: 1px solid var(--line); }
+.rt .arr-como li:first-child { border-top: 0; }
+.rt .arr-como span { grid-row: span 2; display: grid; place-items: center; width: 52px; height: 52px; font-size: 26px; background: rgba(255,255,255,.05); clip-path: var(--bevel-sm); }
+.rt .arr-como b { font: 700 19px/1.2 var(--display); }
+.rt .arr-como small { margin-top: 3px; font-size: 14px; color: var(--muted); }
+.rt .arr-ops { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 22px; }
+.rt .arr-ops button { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 18px 4px 14px; border: 1px solid var(--edge2); background: rgba(255,255,255,.03); color: var(--ink); font: 600 14px/1.2 var(--sans); cursor: pointer; clip-path: var(--bevel-sm); transition: transform .15s ease; }
+.rt .arr-ops span { font-size: 30px; }
+.rt .arr-ops button[aria-pressed="true"] { border-color: var(--gold); background: rgba(233,183,91,.16); transform: scale(1.03); }
+.rt .arr-sexo { --c: #E9B75B; margin-top: 18px; }
+.rt .arr-g { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.rt .arr-g .fld { margin-top: 12px; }
+.rt .arr-habs { margin-top: 18px; }
+.rt .arr-habs li { display: grid; grid-template-columns: minmax(0, 1fr) 120px; gap: 8px; align-items: center; margin-top: 6px; }
+.rt .arr-habs button { display: flex; align-items: center; gap: 12px; min-height: 50px; padding: 0 12px; border: 1px solid var(--edge2); background: rgba(255,255,255,.03); color: var(--muted); font: 500 15px/1.2 var(--sans); text-align: left; cursor: pointer; clip-path: var(--bevel-sm); }
+.rt .arr-habs li.on button { color: var(--ink); border-color: #A98BFF; background: rgba(169,139,255,.14); }
+.rt .arr-habs li.on .pl-ck { background: #A98BFF; border-color: #A98BFF; color: #0B0715; }
+.rt .arr-habs .in { height: 50px; padding: 0 8px; font-size: 16px; }
+.rt .arr-habs li:not(.on) .in { opacity: .4; }
+.rt .arr-box { margin-top: 18px; padding: 16px; background: rgba(255,255,255,.04); border-left: 3px solid var(--gold); }
+.rt .arr-box b { font: 700 18px/1.2 var(--display); }
+.rt .arr-box p { margin-top: 6px; font-size: 14.5px; line-height: 1.45; color: var(--muted); }
+.rt .arr-box p b { font: 600 14.5px/1 var(--sans); color: var(--ink); }
+.rt .arr-box .btn { margin-top: 12px; }
+.rt .arr-ok { color: #4BD489 !important; font-weight: 600; }
+.rt .arr-n { margin-top: 12px; min-height: 18px; font-size: 14px; color: var(--coral); }
 @media (max-width: 350px) { #shellnav { gap: 3px; padding-left: 6px; padding-right: 6px; } #shellnav button { font-size: 9.5px; letter-spacing: 0; } }
 @media (max-width: 360px) { .rt .pil .ring { transform: scale(.88); } .rt .res-acc { grid-template-columns: 1fr; } }
 </style>
@@ -809,7 +858,7 @@ body.bloqueado .fab, body.bloqueado .sheet { display: none !important; }
   <button type="button" data-go="hoy" aria-pressed="true">Hoy</button>
   <button type="button" data-go="armar" aria-pressed="false">Armar</button>
   <button type="button" data-go="entreno" aria-pressed="false">Entreno</button>
-  <button type="button" data-go="sistema" aria-pressed="false">Sistema</button>
+  <button type="button" data-go="sistema" aria-pressed="false">Hábitos</button>
   <button type="button" data-go="plata" aria-pressed="false">Plata</button>
 </nav>
 <div id="pane-hoy" class="rt"><div class="board" id="hoy-body"></div></div>
@@ -3269,13 +3318,10 @@ react-dom/cjs/react-dom.production.min.js:
     setTimeout(() => sp.remove(), 650);
   }, true);
 
-  /* ───── Bienvenida de tres pasos ─────
-     Instalar, avisos y hora estaban escondidos en Ajustes: funciones buenas
-     que nadie encontraba. Acá se las mostramos una sola vez, al principio. */
+  /* ¿Ya pasó por el arranque de la primera vez? (ver "Arranque" más abajo) */
   const KEY_BIENV = "rutina-cliente-bienvenida";
   let bienvHecha = true;
   try { bienvHecha = localStorage.getItem(KEY_BIENV) === "1"; } catch (err) { /* sin almacenamiento */ }
-  let bienvPaso = 0, bienvNota = "";
 
   const esIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent) ||
     (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
@@ -3285,62 +3331,6 @@ react-dom/cjs/react-dom.production.min.js:
              navigator.standalone === true;
     } catch (err) { return false; }
   };
-
-  function bienvPasos() {
-    const pasos = [];
-    if (!instalada()) {
-      pasos.push({
-        k: "Paso 1", t: "Tenela a mano",
-        s: esIOS()
-          ? "Tocá el botón de compartir de Safari (el cuadradito con la flecha) y elegí «Agregar a inicio». Te queda como una app, sin bajar nada."
-          : "Abrí el menú del navegador (los tres puntos) y elegí «Instalar app» o «Agregar a pantalla de inicio». Te queda como una app, sin bajar nada.",
-        b: "Ya está",
-      });
-    }
-    if (hayAvisos() && permiso() !== "denied") {
-      pasos.push({
-        k: "Paso " + (pasos.length + 1), t: "Que te avise",
-        s: "Te avisamos cuando termina el descanso y si llega tu hora y no entrenaste. Nada más que eso.",
-        b: "Activar avisos", act: "bv-noti",
-      });
-    }
-    pasos.push({
-      k: "Paso " + (pasos.length + 1), t: "¿A qué hora entrenás?",
-      s: "Si a esa hora no registraste nada, te lo recordamos. Lo podés cambiar cuando quieras.",
-      campo: true, b: "Listo",
-    });
-    return pasos;
-  }
-
-  function bienvHtml() {
-    const pasos = bienvPasos();
-    if (bienvPaso >= pasos.length) return "";
-    const p = pasos[bienvPaso];
-    const puntos = pasos.map((_, i) =>
-      '<i class="bv-p' + (i === bienvPaso ? " on" : i < bienvPaso ? " ya" : "") + '"></i>').join("");
-    return '<section class="card bienv rise"><div class="bv-top"><p class="card-k">' + esc(p.k) +
-      ' de ' + pasos.length + '</p><div class="bv-ps">' + puntos + "</div></div>" +
-      '<p class="card-t">' + esc(p.t) + "</p>" +
-      '<p class="card-s">' + esc(p.s) + "</p>" +
-      (p.campo ? '<input class="in" id="bv-hora" type="time" value="' + esc(horaEntreno || "19:00") + '">' : "") +
-      (bienvNota ? '<p class="bv-n">' + esc(bienvNota) + "</p>" : "") +
-      '<div class="pan-b"><button type="button" class="btn pri" data-act="' + (p.act || "bv-sigue") + '">' +
-      esc(p.b) + '</button>' +
-      '<button type="button" class="btn alt" data-act="bv-salir">Después</button></div></section>';
-  }
-
-  function bienvAvanzar() {
-    bienvNota = "";
-    bienvPaso++;
-    if (bienvPaso >= bienvPasos().length) bienvCerrar();
-    else renderHoy();
-  }
-  function bienvCerrar() {
-    bienvHecha = true;
-    try { localStorage.setItem(KEY_BIENV, "1"); } catch (err) { /* sin almacenamiento */ }
-    renderHoy();
-    sfx("listo");
-  }
 
   /* ---------- Tablero: Hoy ---------- */
   const KEY_NAME = "rutina-cliente-nombre";
@@ -3750,7 +3740,6 @@ react-dom/cjs/react-dom.production.min.js:
     let h = '<header class="hoy-h"><p class="hoy-k">' + esc(String(CFG.producto || MARCA)) + "</p>" +
       '<h1 class="hoy-t">' + esc(saludo) + "</h1>" +
       '<div class="hoy-chips"><p class="hoy-d">' + DIAS_L[t.getDay()] + " " + t.getDate() + " de " + MESES[t.getMonth()] + "</p>" + chipsHoy() + "</div></header>";
-    if (nombre && !bienvHecha) h += bienvHtml();
     if (tocaRecordar()) {
       h += '<section class="card aviso-h"><p class="card-k">Te toca</p>' +
         '<p class="card-t">Eran las ' + esc(horaEntreno) + "</p>" +
@@ -3765,7 +3754,7 @@ react-dom/cjs/react-dom.production.min.js:
     const lg = logrosNuevos();
     const nc = nutriCfg();
     h += cardPendiente() + cardCierre() + cardTuDia() + cardPush(true) + cardRecordsHoy() + cardEntreno() + cardPilares() + (sistemaData() ? "" : cardSistema()) + (nc && !nutriEdit ? "" : cardNutri()) +
-      '<h2 class="sec-h">Tu progreso</h2>' + cardSemana() + cardPlata() + (nc && !nutriEdit ? cardNutri() : "") + cardPeso() + cardMedidas() + cardLogros(lg) + cardHistorial() + cardPush(false);
+      progresoHoy(lg, nc);
     h += '<section class="card rise"><p class="card-k">Tu entrenador</p><p class="card-t">' + esc(MARCA) + "</p>" +
       '<p class="card-s">Dudas, cambios o una rutina hecha a tu medida: escribime al ' + esc(TEL) + ".</p>" +
       '<a class="btn alt" href="' + esc(waUrl("Hola " + MARCA + "! " + (nombre ? "Soy " + nombre + ". " : "") + "Te escribo por la rutina.")) + '" target="_blank" rel="noopener">Abrir WhatsApp</a></section>';
@@ -3773,6 +3762,7 @@ react-dom/cjs/react-dom.production.min.js:
     animar(HOY);
     chequearDia();
     sincronizarPush();
+    navSimple();
     if (lg.nuevos.length) {
       setTimeout(() => { festejo(true); sfx("listo"); showStatus("Logro desbloqueado: " + lg.nuevos[0], 3200); }, 500);
     }
@@ -4573,6 +4563,21 @@ react-dom/cjs/react-dom.production.min.js:
   }
 
   /* Hoy: los cuatro pilares de la semana, de un vistazo */
+  /* Tu progreso: cada tarjeta aparece cuando tiene algo para mostrar.
+     El primer día, Hoy es corto: solo lo que hay que hacer. */
+  function progresoHoy(lg, nc) {
+    const dias = Object.keys(leer(KEY_DIAS, {})).length;
+    const p = plataData();
+    const h = (Object.keys(entrenoPorDia()).length ? cardSemana() : "") +
+      (p.mov.length || p.metas.length ? cardPlata() : "") +
+      (nc && !nutriEdit ? cardNutri() : "") +
+      (pesos().length ? cardPeso() : "") +
+      (medidas().length || dias >= 7 ? cardMedidas() : "") +
+      (lg.ok.length ? cardLogros(lg) : "") +
+      cardHistorial() + cardPush(false);
+    return h ? '<h2 class="sec-h">Tu progreso</h2>' + h : "";
+  }
+
   function cardPilares() {
     const r = rangoRes("semana", 0);
     const s = statsRes(r.desde, r.hasta, ctxRes());
@@ -4682,9 +4687,9 @@ react-dom/cjs/react-dom.production.min.js:
     const s = sistemaData();
     if (s) {
       const m = misionesHoy(s);
-      if (m.total) it.push({ id: "mis", ic: "⚡", t: "Misiones", s: m.done + " de " + m.total + (m.xp ? " · +" + m.xp + " xp" : ""), pct: m.done / m.total, go: "sistema", btn: "Ir" });
+      if (m.total) it.push({ id: "mis", ic: "⚡", t: "Hábitos", s: m.done + " de " + m.total + (m.xp ? " · +" + m.xp + " xp" : ""), pct: m.done / m.total, go: "sistema", btn: "Ir" });
     } else {
-      it.push({ id: "mis", ic: "⚡", t: "Armá tus misiones", s: "Hábitos que suben de nivel", pct: 0, go: "sistema", btn: "Armar", extra: true });
+      it.push({ id: "mis", ic: "⚡", t: "Elegí tus hábitos", s: "Suben de nivel y te avisan a su hora", pct: 0, go: "sistema", btn: "Armar", extra: true });
     }
     const p = plataData(), hl = (p.habLog || {})[k] || {};
     const movHoy = p.mov.filter((m) => m.d === k && m.t === "g");
@@ -5158,30 +5163,181 @@ react-dom/cjs/react-dom.production.min.js:
   document.addEventListener("visibilitychange", () => { if (document.hidden) sincronizarPush(); });
   setInterval(() => { if (!document.hidden) sincronizarPush(); }, 60000);
 
+  /* ═══════════ Arranque: la primera vez, en un minuto ═══════════
+     Alguien nuevo no tiene que entender la app: le preguntamos lo justo,
+     una cosa por pantalla, y la dejamos armada (nombre, objetivo, cuánto
+     comer, hábitos con horario, instalación y avisos). */
+  const SUGERIDOS = [
+    ["Despertar a la misma hora", "base", "06:30", 2, true],
+    ["Tomar 2 litros de agua", "cuerpo", "12:00", 1, true],
+    ["Leer 20 minutos", "mente", "21:00", 1, true],
+    ["Hacer la cama", "base", "06:45", 1, false],
+    ["Meditar u orar 10 minutos", "espiritu", "07:00", 1, false],
+    ["Caminar 30 minutos", "cuerpo", "19:00", 1, false],
+    ["Agradecer 3 cosas", "espiritu", "22:00", 1, false],
+    ["Pantallas off antes de dormir", "base", "23:00", 2, false],
+  ];
+  const ARR = document.createElement("div");
+  ARR.className = "rt arr"; ARR.hidden = true;
+  ARR.setAttribute("role", "dialog"); ARR.setAttribute("aria-label", "Primeros pasos");
+  document.body.appendChild(ARR);
+  let arrPaso = 0, arrNota = "", promptInst = null, habsCreados = false;
+  const arr = { obj: "", sexo: "m", habs: SUGERIDOS.map((x) => ({ on: x[4], t: x[2] })) };
+  window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); promptInst = e; });
+
+  function pasosArr() {
+    const l = ["nombre", "como", "objetivo"];
+    if (!sistemaData()) l.push("habitos");
+    l.push("listo");
+    return l;
+  }
+  function renderArr() {
+    const pasos = pasosArr(), p = pasos[arrPaso] || "listo";
+    const pr = pasos.map((_, i) => '<i class="' + (i === arrPaso ? "on" : i < arrPaso ? "ya" : "") + '"></i>').join("");
+    const quien = MARCA.split(" ")[0];
+    let h = "";
+    if (p === "nombre") {
+      h = '<p class="arr-k">' + esc(String(CFG.producto || "SISTEMA")) + " · " + esc(MARCA) + "</p>" +
+        '<h1 class="arr-t">Hola 👋</h1><p class="arr-s">Esta es tu app para entrenar con ' + esc(quien) + ". En un minuto la dejamos lista.</p>" +
+        '<label class="fld"><span class="fl">¿Cómo te llamás?</span><input class="in arr-big" id="arr-nom" autocomplete="given-name" placeholder="Tu nombre" value="' + esc(nombre) + '"></label>' +
+        '<button type="button" class="btn pri arr-go" data-arr="sig">Empezar</button>';
+    } else if (p === "como") {
+      h = '<h1 class="arr-t">Así de simple</h1>' +
+        '<ol class="arr-como">' +
+        '<li><span>☀️</span><b>Abrís y ves Tu día</b><small>Todo lo que te toca hoy, en una sola lista.</small></li>' +
+        '<li><span>👆</span><b>Lo tachás con un toque</b><small>Entreno, comida, hábitos y plata. Nada más.</small></li>' +
+        '<li><span>📲</span><b>El domingo, tu resumen a ' + esc(quien) + "</b><small>Lo ve y ajusta tu plan.</small></li></ol>" +
+        '<button type="button" class="btn pri arr-go" data-arr="sig">Dale</button>';
+    } else if (p === "objetivo") {
+      const op = [["grasa", "🔥", "Bajar grasa"], ["musculo", "💪", "Ganar músculo"], ["mantener", "⚖️", "Sentirme mejor"]];
+      h = '<h1 class="arr-t">¿Qué querés lograr?</h1><p class="arr-s">Con esto te calculo cuánto comer.</p>' +
+        '<div class="arr-ops">' + op.map((o) => '<button type="button" data-arr="obj" data-v="' + o[0] + '" aria-pressed="' + (arr.obj === o[0]) + '"><span>' + o[1] + "</span>" + o[2] + "</button>").join("") + "</div>" +
+        (arr.obj ? '<div class="seg arr-sexo"><button type="button" data-arr="sexo" data-v="m" aria-pressed="' + (arr.sexo === "m") + '">Hombre</button><button type="button" data-arr="sexo" data-v="f" aria-pressed="' + (arr.sexo === "f") + '">Mujer</button></div>' +
+          '<div class="arr-g"><label class="fld"><span class="fl">Edad</span><input class="in" id="arr-edad" inputmode="numeric" placeholder="30" value="' + (arr.edad || "") + '"></label>' +
+          '<label class="fld"><span class="fl">Altura (cm)</span><input class="in" id="arr-alt" inputmode="numeric" placeholder="170" value="' + (arr.altura || "") + '"></label>' +
+          '<label class="fld"><span class="fl">Peso (kg)</span><input class="in" id="arr-peso" inputmode="decimal" placeholder="75" value="' + (arr.peso ? fmtNum(arr.peso) : "") + '"></label></div>' : "") +
+        '<button type="button" class="btn pri arr-go" data-arr="sig"' + (arr.obj ? "" : " disabled") + ">Siguiente</button>" +
+        '<button type="button" class="btn lnk arr-skip" data-arr="saltar-paso">Lo completo después</button>';
+    } else if (p === "habitos") {
+      h = '<h1 class="arr-t">Elegí tus hábitos</h1><p class="arr-s">Arrancá con 3. Si a esa hora no lo hiciste, te avisamos.</p>' +
+        '<ul class="arr-habs">' + SUGERIDOS.map((x, i) => '<li class="' + (arr.habs[i].on ? "on" : "") + '"><button type="button" data-arr="hab" data-i="' + i + '" aria-pressed="' + arr.habs[i].on + '">' +
+          '<span class="pl-ck">' + CHECK + "</span>" + esc(x[0]) + '</button><input class="in" type="time" data-ht="' + i + '" value="' + arr.habs[i].t + '" aria-label="Hora de ' + esc(x[0]) + '"></li>').join("") + "</ul>" +
+        '<button type="button" class="btn pri arr-go" data-arr="sig">Siguiente</button>';
+    } else {
+      const ios = esIOS(), inst = instalada();
+      const pushOk = hayPush() && (!ios || inst);
+      h = '<h1 class="arr-t">Último paso</h1>' +
+        (inst ? "" : '<div class="arr-box"><b>📱 Tenela como app</b><p>' + (ios
+          ? "En Safari tocá Compartir (el cuadradito con la flecha) → <b>Agregar a inicio</b>. Después abrila desde el ícono."
+          : promptInst ? "Un toque y te queda en la pantalla de inicio, como cualquier app." : "Abrí el menú del navegador (los tres puntos) → <b>Instalar app</b>.") + "</p>" +
+          (!ios && promptInst ? '<button type="button" class="btn alt" data-arr="instalar">Instalar app</button>' : "") + "</div>") +
+        (pushOk ? '<div class="arr-box"><b>🔔 Que tus hábitos te busquen</b><p>Te avisamos a la hora de cada hábito si no lo hiciste, y a la noche si falta algo.</p>' +
+          (pushCfg().on ? '<p class="arr-ok">Avisos activados ✓</p>' : '<button type="button" class="btn alt" data-arr="avisos">Activar avisos</button>') + "</div>"
+          : ios && !inst ? '<div class="arr-box"><b>🔔 Avisos de hábitos</b><p>Cuando la abras desde el ícono de inicio, activalos en Hoy.</p></div>' : "") +
+        '<p class="arr-n">' + esc(arrNota) + "</p>" +
+        '<button type="button" class="btn pri arr-go" data-arr="fin">Entrar a mi día</button>';
+    }
+    ARR.innerHTML = '<div class="arr-in"><div class="arr-top"><div class="arr-pr">' + pr + "</div>" +
+      (arrPaso > 0 ? '<button type="button" class="btn lnk" data-arr="atras">‹ Atrás</button>' : "<span></span>") + "</div>" +
+      '<div class="arr-c" key="' + p + '">' + h + "</div></div>";
+    const f = ARR.querySelector("#arr-nom");
+    if (f && !f.value) setTimeout(() => f.focus(), 300);
+  }
+  function guardarPasoArr() {
+    const p = pasosArr()[arrPaso];
+    const val = (id) => (document.getElementById(id) || {}).value || "";
+    if (p === "nombre") {
+      const n = val("arr-nom").trim().slice(0, 24);
+      if (!n) { const el = document.getElementById("arr-nom"); if (el) el.focus(); return false; }
+      nombre = n;
+      try { localStorage.setItem(KEY_NAME, n); } catch (err) { /* sin almacenamiento */ }
+    }
+    if (p === "objetivo") {
+      arr.edad = num(val("arr-edad")); arr.altura = num(val("arr-alt")); arr.peso = num(val("arr-peso"));
+      if (!(arr.edad >= 12 && arr.edad <= 99) || !(arr.altura >= 120 && arr.altura <= 230) || !(arr.peso >= 30 && arr.peso <= 300)) {
+        arrNota = ""; renderArr();
+        const n = ARR.querySelector(".arr-c"); if (n) n.insertAdjacentHTML("beforeend", '<p class="arr-n">Completá edad, altura y peso, o tocá "Lo completo después".</p>');
+        return false;
+      }
+      try { localStorage.setItem(KEY_NUT, JSON.stringify({ obj: arr.obj, sexo: arr.sexo, edad: arr.edad, altura: arr.altura, act: 1.55, peso: arr.peso })); } catch (err) { /* sin almacenamiento */ }
+      if (!pesos().length) guardarPeso(Math.round(arr.peso * 10) / 10);
+    }
+    if (p === "habitos" && !sistemaData()) {
+      const elegidos = SUGERIDOS.map((x, i) => [x, arr.habs[i]]).filter((y) => y[1].on);
+      if (elegidos.length) {
+        const habits = elegidos.map((y, i) => ({ id: "h" + Date.now().toString(36) + i, name: y[0][0], cat: y[0][1], time: /^\d{2}:\d{2}$/.test(y[1].t) ? y[1].t : y[0][2], days: [0, 1, 2, 3, 4, 5, 6], w: y[0][3] }));
+        try { localStorage.setItem("sistema:v1", JSON.stringify({ habits: habits, log: {}, metas: [] })); habsCreados = true; } catch (err) { /* sin almacenamiento */ }
+      }
+    }
+    return true;
+  }
+  function cerrarArr() {
+    bienvHecha = true;
+    try { localStorage.setItem(KEY_BIENV, "1"); } catch (err) { /* sin almacenamiento */ }
+    /* la pestaña de hábitos lee sus datos al abrir: si los armamos acá, recargamos */
+    if (habsCreados) { location.reload(); return; }
+    ARR.classList.remove("on");
+    setTimeout(() => { ARR.hidden = true; }, 250);
+    document.documentElement.classList.remove("arr-abierto");
+    renderHoy();
+    festejo(true); sfx("listo");
+  }
+  function abrirArr() {
+    renderArr();
+    ARR.hidden = false;
+    document.documentElement.classList.add("arr-abierto");
+    requestAnimationFrame(() => ARR.classList.add("on"));
+  }
+  ARR.addEventListener("click", (ev) => {
+    const b = ev.target.closest("[data-arr]");
+    if (!b || b.disabled) return;
+    const a = b.dataset.arr;
+    if (a === "sig") { if (!guardarPasoArr()) return; sfx("toque"); arrPaso++; return renderArr(); }
+    if (a === "saltar-paso") { arrPaso++; return renderArr(); }
+    if (a === "atras") { arrPaso = Math.max(0, arrPaso - 1); return renderArr(); }
+    if (a === "obj") {
+      const v = (id) => (document.getElementById(id) || {}).value || "";
+      if (document.getElementById("arr-edad")) { arr.edad = num(v("arr-edad")); arr.altura = num(v("arr-alt")); arr.peso = num(v("arr-peso")); }
+      arr.obj = b.dataset.v; sfx("toque"); renderArr();
+      const e = document.getElementById("arr-edad"); if (e && !e.value) e.focus();
+      return;
+    }
+    if (a === "sexo") { arr.sexo = b.dataset.v; ARR.querySelectorAll('[data-arr="sexo"]').forEach((x) => x.setAttribute("aria-pressed", String(x === b))); return; }
+    if (a === "hab") {
+      const i = Number(b.dataset.i); arr.habs[i].on = !arr.habs[i].on;
+      b.setAttribute("aria-pressed", String(arr.habs[i].on)); b.parentNode.classList.toggle("on", arr.habs[i].on);
+      return sfx("toque");
+    }
+    if (a === "instalar" && promptInst) { promptInst.prompt(); promptInst.userChoice.finally(() => { promptInst = null; renderArr(); }); return; }
+    if (a === "avisos") {
+      b.disabled = true; arrNota = "Activando…"; renderArr();
+      activarPush("21:30", true).then(() => { arrNota = ""; sfx("listo"); renderArr(); })
+        .catch((err) => { arrNota = typeof err === "string" ? err : "No se pudo activar. Lo podés hacer después desde Hoy."; renderArr(); });
+      return;
+    }
+    if (a === "fin") return cerrarArr();
+  });
+  ARR.addEventListener("change", (ev) => {
+    const i = ev.target.dataset && ev.target.dataset.ht;
+    if (i != null) arr.habs[Number(i)].t = ev.target.value;
+  });
+  ARR.addEventListener("keydown", (ev) => {
+    if (ev.key === "Enter" && ev.target.tagName === "INPUT" && ev.target.type !== "time") { const b = ARR.querySelector(".arr-go"); if (b && !b.disabled) b.click(); }
+  });
+  if (!bienvHecha) abrirArr();
+
+  /* La pestaña Armar sirve para quien todavía no tiene su rutina: después estorba */
+  function navSimple() {
+    const b = document.querySelector('#shellnav [data-go="armar"]');
+    let propia = false;
+    try { propia = !!localStorage.getItem(KEY_STATE); } catch (err) { /* sin almacenamiento */ }
+    if (b) b.hidden = propia;
+  }
+
   if (HOY) {
     HOY.addEventListener("click", (ev) => {
       const b = ev.target.closest("[data-act]");
       if (!b) return;
-      if (b.dataset.act === "bv-salir") return bienvCerrar();
-      if (b.dataset.act === "bv-noti") {
-        pedirAviso().then((listo) => {
-          aviso = listo;
-          try { localStorage.setItem(KEY_NOTI, listo ? "1" : "0"); } catch (err) { /* sin almacenamiento */ }
-          if (listo) { sfx("listo"); bienvAvanzar(); }
-          else { bienvNota = "El navegador no dio permiso. Lo podés activar después desde Ajustes."; renderHoy(); }
-        });
-        return;
-      }
-      if (b.dataset.act === "bv-sigue") {
-        const campo = document.getElementById("bv-hora");
-        if (campo) {
-          horaEntreno = minutosDe(campo.value) >= 0 ? campo.value : "";
-          try { localStorage.setItem(KEY_HORA, horaEntreno); } catch (err) { /* sin almacenamiento */ }
-          programarRecordatorio();
-        }
-        sfx("toque");
-        return bienvAvanzar();
-      }
       if (b.dataset.act === "nom") {
         const el = document.getElementById("rt-nom");
         nombre = (el && el.value || "").trim().slice(0, 24);
