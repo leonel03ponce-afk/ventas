@@ -104,8 +104,9 @@ Hay 6 rutinas listas (principiante, ganar músculo, bajar grasa, en casa, glúte
 
 La app trabaja cuatro pilares: **Entreno**, **Hábitos**, **Nutrición** y **Finanzas**.
 
-- **Tu día** (arriba de todo en Hoy): una lista con lo de hoy (entreno o descanso, proteína, agua, misiones, gastos y, si toca, pesarse). Cada fila se completa con un toque. Con el 80% del día cumplido suma a la racha 🔥.
-- **Botón +** (abajo a la derecha en Hoy y Finanzas): anotar un gasto, proteína (con alimentos comunes), agua o peso en dos segundos.
+- **Tu día** (arriba de todo en Hoy): una lista con lo de hoy (entreno o descanso, proteína, agua, cuentas que vencen, gastos y, si toca, pesarse) y abajo **cada hábito del día con su hora, que se tacha con un toque** (la pestaña Hábitos se recarga sola para mostrarlo). Con el 80% del día cumplido suma a la racha 🔥. Al pie, una línea para activar los avisos de hábitos.
+- **Hoy corto**: el progreso (peso, medidas, logros, historial) va plegado en "Tu progreso". **Finanzas** igual: arriba cuánto te queda libre, los botones − Gasto / + Ingreso y las cuentas del mes; ahorro, movimientos, hábitos de plata y el año van plegados con un resumen de una línea.
+- **Botón Anotar** (abajo a la derecha en Hoy y Finanzas): anotar un gasto o ingreso, proteína (con alimentos comunes), agua o peso en dos segundos.
 - **Finanzas** (pestaña propia): cuánto te queda libre en el mes (lo que entró, menos lo gastado, menos lo que falta pagar). **Cuentas del mes**: fijas (alquiler, luz, internet), en cuotas (cuota 4 de 12) o de una vez, con su vencimiento; se pagan con un toque y quedan como gasto. Si algo vence hoy o ya venció, aparece en Tu día. Además: gastos por categoría, presupuesto para el día a día, metas de ahorro, hábitos de plata y el año mes por mes.
 - **Rangos**: el puntaje semanal (0 a 100, promedio de los pilares) da un rango: Hierro, Bronce, Acero, Oro, Diamante y Leyenda.
 - **Récords**: la app detecta sola cuando un ejercicio supera su mejor marca y arma una imagen para compartir.

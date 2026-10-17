@@ -883,6 +883,43 @@ body.bloqueado .arr { display: none !important; }
 .rt .ct-form { margin-top: 14px; padding-top: 4px; border-top: 1px solid var(--line); }
 .rt .ct-form .seg { --c: #FF8F5E; }
 .rt .ct-form .seg button { font-size: 12.5px; }
+/* ════ Más simple: hábitos tachables, plegables y botón Anotar ════ */
+.rt .td-x small { white-space: normal; overflow: visible; line-height: 1.3; }
+.rt .td-sub { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line2); }
+.rt .td-sub span { font: 600 12px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: #A98BFF; }
+.rt .card .td-sub .btn { margin: 0; min-height: 32px; padding: 0 4px; color: var(--muted); font-size: 13px; }
+.rt .td.hb { grid-template-columns: 52px minmax(0, 1fr) 40px; min-height: 54px; padding: 8px 0; -webkit-tap-highlight-color: transparent; }
+.rt .td.hb:active { background: rgba(255,255,255,.03); }
+.rt .td-hora { font: 700 15px/1 var(--display); color: var(--muted); }
+.rt .td.hb .td-x b { white-space: normal; font-size: 16px; }
+.rt .td-ck { display: grid; place-items: center; width: 34px; height: 34px; border: 2px solid var(--edge2); font: 700 13px/1 var(--display); color: var(--muted); transition: background-color .15s ease, border-color .15s ease; }
+.rt .td-ck .ic { width: 20px; height: 20px; stroke-width: 3; }
+.rt .td.hb.ok .td-ck { background: #A98BFF; border-color: #A98BFF; color: #0B0715; }
+.rt .td.hb.ok .td-x b { color: var(--muted); text-decoration: line-through; text-decoration-color: rgba(169,139,255,.6); }
+.rt .td.hb.ok .td-hora { color: #A98BFF; }
+.rt .td-aviso { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin-top: 16px; padding: 12px; background: rgba(124,156,255,.1); border-left: 3px solid #7C9CFF; font-size: 14px; line-height: 1.35; }
+.rt .td-aviso span { flex: 1 1 200px; }
+.rt .card .td-aviso .btn { margin: 0; }
+.rt .card .td-aviso .btn.pri { --c: #7C9CFF; }
+.rt details.prog { margin-top: 30px; }
+.rt details.prog > summary { margin: 0; padding: 14px 0; cursor: pointer; list-style: none; flex-wrap: wrap; }
+.rt details.prog > summary::-webkit-details-marker { display: none; }
+.rt details.prog > summary small { order: 3; flex-basis: 100%; margin-top: 6px; font: 400 13px/1 var(--sans); letter-spacing: 0; text-transform: none; color: var(--muted2); }
+.rt details.prog > summary::after { content: "›"; flex: 0 0 auto; height: auto; background: none; font: 400 24px/1 var(--display); color: var(--muted); transform: rotate(90deg); transition: transform .2s ease; }
+.rt details.prog[open] > summary::after { transform: rotate(-90deg); }
+.rt details.prog > summary::before { content: ""; order: 2; flex: 1; height: 1px; background: var(--line2); }
+.fab { width: auto; height: 54px; padding: 0 20px 0 16px; gap: 8px; display: flex; align-items: center; font: 700 16px/1 Archivo, system-ui, sans-serif; }
+.fab svg { width: 22px; height: 22px; }
+.rt .pl-acc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
+.rt .card .pl-acc .btn { margin-top: 0; min-height: 50px; font-size: 16px; }
+.rt .card.acc { padding: 0; }
+.rt .acc-h { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; padding: 16px; border: 0; background: none; color: var(--ink); text-align: left; cursor: pointer; font: inherit; }
+.rt .acc-x { min-width: 0; }
+.rt .acc-x b { display: block; margin-top: 7px; font: 600 16px/1.25 var(--sans); }
+.rt .acc-f { font: 400 26px/1 var(--display); font-style: normal; color: var(--muted); transform: rotate(90deg); transition: transform .2s ease; }
+.rt .acc.abierta .acc-f { transform: rotate(-90deg); }
+.rt .acc-b { padding: 0 16px 18px; }
+.rt .sh-modo { margin-top: 2px; }
 @media (max-width: 350px) { #shellnav { gap: 3px; padding-left: 6px; padding-right: 6px; } #shellnav button { font-size: 9.5px; letter-spacing: 0; } }
 @media (max-width: 360px) { .rt .pil .ring { transform: scale(.88); } .rt .res-acc { grid-template-columns: 1fr; } }
 </style>
@@ -3456,7 +3493,7 @@ react-dom/cjs/react-dom.production.min.js:
     const compartir = hayAlgo
       ? '<div class="pan-b" style="margin-top:14px"><button type="button" class="btn alt" data-act="go" data-to="resumen">Ver resumen y compartir</button></div>'
       : "";
-    return '<section class="card rise"><p class="card-k">Tu semana</p>' + insignia + '<div class="wdays">' + dots + "</div>" +
+    return '<section class="card rise"><p class="card-k">Entrenos de la semana</p>' + insignia + '<div class="wdays">' + dots + "</div>" +
       '<div class="prog-k"><span><b data-n="' + s.kg + '" data-fin="' + fmtKg(s.kg) + '">' + fmtKg(s.kg) + '</b> kg movidos</span>' +
       '<span><b data-n="' + s.series + '" data-fin="' + s.series + '">' + s.series + '</b> series</span>' +
       '<span><b data-n="' + Object.keys(s.dias).length + '" data-fin="' + Object.keys(s.dias).length + '">' + Object.keys(s.dias).length + '</b> ' + (Object.keys(s.dias).length === 1 ? "día" : "días") + "</span></div>" + compartir + "</section>";
@@ -3785,7 +3822,7 @@ react-dom/cjs/react-dom.production.min.js:
     }
     const lg = logrosNuevos();
     const nc = nutriCfg();
-    h += cardPendiente() + cardCierre() + cardTuDia() + cardPush(true) + cardRecordsHoy() + cardEntreno() + cardPilares() + (sistemaData() ? "" : cardSistema()) + (nc && !nutriEdit ? "" : cardNutri()) +
+    h += cardPendiente() + cardCierre() + cardTuDia() + cardRecordsHoy() + (diaDeHoy() ? "" : cardEntreno()) + cardPilares() + (sistemaData() ? "" : cardSistema()) + (nc && !nutriEdit ? "" : cardNutri()) +
       progresoHoy(lg, nc);
     h += '<section class="card rise"><p class="card-k">Tu entrenador</p><p class="card-t">' + esc(MARCA) + "</p>" +
       '<p class="card-s">Dudas, cambios o una rutina hecha a tu medida: escribime al ' + esc(TEL) + ".</p>" +
@@ -3992,7 +4029,8 @@ react-dom/cjs/react-dom.production.min.js:
   }
 
   let plataMes = todayKey().slice(0, 7);
-  let plataTipo = "g", plataCat = "comida", plataPresEdit = false, plataVerTodo = false, plataHabEdit = false;
+  let plataPresEdit = false, plataVerTodo = false, plataHabEdit = false;
+  const plataAbre = {};
   const mesRango = (ym) => {
     const p = ym.split("-").map(Number);
     const ult = new Date(p[0], p[1], 0).getDate();
@@ -4034,6 +4072,7 @@ react-dom/cjs/react-dom.production.min.js:
       '<div><span>Por pagar</span><b class="' + (porPagar ? "mal" : "") + '">' + money(porPagar) + "</b></div></div>" +
       (pres ? '<div class="pl-pres"><div class="pl-ph"><span>Día a día</span><b>' + money(diario) + " de " + money(pres) + '</b></div><div class="pl-mb"><i style="width:' + pctP + "%" + (diario > pres ? ";background:#FF6F4E" : "") + '"></i></div>' +
         (bajada ? "<p>" + bajada + "</p>" : "") + "</div>" : "") +
+      '<div class="pl-acc"><button type="button" class="btn pri" style="--c:#FF6F4E" data-pa="sh" data-t="g">− Gasto</button><button type="button" class="btn pri" style="--c:#4BD489" data-pa="sh" data-t="i">+ Ingreso</button></div>' +
       '<div class="pan-b"><button type="button" class="btn lnk" data-pa="pres">' + (pres ? "Cambiar presupuesto" : "Poner un presupuesto para el día a día") + "</button></div></section>";
 
     h += cardCuentas(p, plataMes);
@@ -4046,68 +4085,72 @@ react-dom/cjs/react-dom.production.min.js:
         '</div><div class="pan-b"><button type="button" class="btn pri" data-pa="pres-ok">Guardar</button> <button type="button" class="btn alt" data-pa="pres-x">Cancelar</button></div></section>';
     }
 
-    /* Anotar */
-    h += '<section class="card rise pl-add" style="--c:' + (plataTipo === "i" ? "#4BD489" : "#FF6F4E") + '"><p class="card-k">Anotar</p>' +
-      '<div class="seg"><button type="button" data-pa="tipo" data-t="g" aria-pressed="' + (plataTipo === "g") + '">Gasto</button>' +
-      '<button type="button" data-pa="tipo" data-t="i" aria-pressed="' + (plataTipo === "i") + '">Ingreso</button></div>' +
-      '<div class="pl-monto"><span>$</span><input class="in" id="pl-m" inputmode="decimal" placeholder="0" autocomplete="off"></div>' +
-      (plataTipo === "g" ? '<div class="pl-chips">' + CATS.map((c) =>
-        '<button type="button" class="chip" style="--k:' + c[2] + '" data-pa="cat" data-c="' + c[0] + '" aria-pressed="' + (plataCat === c[0]) + '">' + c[1] + "</button>").join("") + "</div>" : "") +
-      '<label class="fld"><span class="fl">Nota (opcional)</span><input class="in" id="pl-n" maxlength="40" placeholder="' + (plataTipo === "g" ? "ej. café con amigos" : "ej. sueldo") + '"></label>' +
-      '<div class="pan-b"><button type="button" class="btn pri" data-pa="add">' + (plataTipo === "g" ? "Anotar gasto" : "Anotar ingreso") + "</button></div></section>";
+    /* Lo de abajo va plegado: una línea con lo importante, se abre con un toque */
+    const plegado = (id, color, titulo, resumen, cuerpo) => {
+      const ab = !!plataAbre[id];
+      return '<section class="card rise acc' + (ab ? " abierta" : "") + '" style="--c:' + color + '"><button type="button" class="acc-h" data-pa="acc" data-id="' + id + '" aria-expanded="' + ab + '">' +
+        '<span class="acc-x"><span class="card-k">' + titulo + "</span><b>" + resumen + '</b></span><i class="acc-f" aria-hidden="true">›</i></button>' +
+        (ab ? '<div class="acc-b">' + cuerpo + "</div>" : "") + "</section>";
+    };
 
-    /* Por categoría */
+    /* En qué se fue: las 4 categorías más grandes, el resto con un toque */
     const cats = Object.keys(s.porCat).sort((a, b) => s.porCat[b] - s.porCat[a]);
     if (cats.length) {
       const tope = Math.max.apply(null, cats.map((c) => Math.max(s.porCat[c], p.pres.cats[c] || 0)));
-      h += '<section class="card rise" style="--c:#C98BFF"><p class="card-k">En qué se fue</p><ul class="pl-bars">' + cats.map((c) => {
+      const verCats = plataAbre.cats ? cats : cats.slice(0, 4);
+      h += '<section class="card rise" style="--c:#C98BFF"><p class="card-k">En qué se fue</p><ul class="pl-bars">' + verCats.map((c) => {
         const k = catDe(c), v = s.porCat[c], lim = p.pres.cats[c] || 0;
         return '<li style="--k:' + k[2] + '"><span class="pl-bn"><i class="pl-dot"></i>' + k[1] + "</span><b>" + money(v) +
           (lim ? "<small> / " + money(lim) + "</small>" : "") + '</b><span class="pl-bt"><i class="' + (lim && v > lim ? "pasado" : "") + '" style="width:' + Math.max(3, Math.round((v / tope) * 100)) + '%"></i>' +
           (lim ? '<u style="left:' + Math.round((lim / tope) * 100) + '%"></u>' : "") + "</span></li>";
-      }).join("") + "</ul></section>";
+      }).join("") + "</ul>" +
+        (cats.length > 4 ? '<button type="button" class="btn lnk" data-pa="acc" data-id="cats">' + (plataAbre.cats ? "Ver menos" : "Ver las " + cats.length + " categorías") + "</button>" : "") + "</section>";
+    }
+
+    /* Ahorro */
+    let ah = "";
+    p.metas.forEach((mt) => {
+      const junto = (mt.aportes || []).reduce((a, x) => a + x.m, 0);
+      const pc = mt.obj ? Math.min(100, Math.round((junto / mt.obj) * 100)) : 0;
+      ah += '<div class="pl-meta' + (pc >= 100 ? " lista" : "") + '"><div class="pl-mh"><b>' + esc(mt.n) + "</b><span>" + money(junto) + " de " + money(mt.obj) + "</span></div>" +
+        '<div class="pl-mb"><i style="width:' + pc + '%"></i></div>' +
+        '<div class="pl-ma"><input class="in" data-ap="' + mt.id + '" inputmode="decimal" placeholder="Sumar $"><button type="button" class="btn alt sm" data-pa="aportar" data-id="' + mt.id + '">+ Sumar</button>' +
+        '<button type="button" class="btn dng" data-pa="meta-del" data-id="' + mt.id + '" aria-label="Borrar meta">' + XIC + "</button></div></div>";
+    });
+    ah += (p.metas.length ? "" : '<p class="card-s">Una meta con nombre (un viaje, el fondo de emergencia, la moto) se cumple más que "ahorrar".</p>') +
+      '<div class="two"><label class="fld"><span class="fl">Nueva meta</span><input class="in" id="pl-mn" maxlength="30" placeholder="ej. Vacaciones"></label>' +
+      '<label class="fld"><span class="fl">¿Cuánto?</span><input class="in" id="pl-mo" inputmode="decimal" placeholder="ej. 500.000"></label></div>' +
+      '<div class="pan-b"><button type="button" class="btn alt" data-pa="meta-add">Crear meta</button></div>';
+    const meta1 = p.metas[0];
+    const junto1 = meta1 ? (meta1.aportes || []).reduce((a, x) => a + x.m, 0) : 0;
+    h += plegado("ahorro", "#7C9CFF", "Ahorro", meta1 ? esc(meta1.n) + " · " + (meta1.obj ? Math.min(100, Math.round((junto1 / meta1.obj) * 100)) : 0) + "%" + (p.metas.length > 1 ? " y " + (p.metas.length - 1) + " más" : "") : "Creá una meta", ah);
+
+    /* Movimientos */
+    const movs = p.mov.filter((m) => m.d >= desde && m.d <= hasta).sort((a, b) => (a.d < b.d ? 1 : a.d > b.d ? -1 : 0));
+    if (movs.length) {
+      const ver = plataVerTodo ? movs.length : 10;
+      const mv = '<ul class="pl-mov">' + movs.slice(0, ver).map((m) => {
+        const k = catDe(m.cat);
+        return '<li style="--k:' + (m.t === "i" ? "#4BD489" : k[2]) + '"><i class="pl-dot"></i><span class="pl-mt">' + esc(m.nota || (m.t === "i" ? "Ingreso" : k[1])) +
+          "<small>" + fmtDay(m.d) + (m.nota && m.t !== "i" ? " · " + k[1] : "") + "</small></span><b class=\"" + (m.t === "i" ? "ok" : "") + '">' + (m.t === "i" ? "+" : "−") + money(m.m) +
+          '</b><button type="button" class="btn dng" data-pa="del" data-id="' + m.id + '" aria-label="Borrar">' + XIC + "</button></li>";
+      }).join("") + "</ul>" +
+        (movs.length > 10 ? '<button type="button" class="btn alt" data-pa="vertodo">' + (plataVerTodo ? "Ver menos" : "Ver los " + movs.length) + "</button>" : "");
+      h += plegado("movs", "#9C8AB8", "Movimientos", movs.length + (movs.length === 1 ? " este mes" : " este mes") + " · último: " + esc(movs[0].nota || (movs[0].t === "i" ? "Ingreso" : catDe(movs[0].cat)[1])), mv);
     }
 
     /* Hábitos de plata */
     if (esEste) {
       const hs = habitosPlata(p), hoyL = (p.habLog || {})[todayKey()] || {};
       const racha = rachaPlata(p);
-      h += '<section class="card rise" style="--c:#4BD489"><p class="card-k">Hábitos de plata · hoy</p>' +
-        (racha > 1 ? '<p class="racha"><span class="llama">▲</span> ' + racha + " días seguidos</p>" : "") +
+      const hb = (racha > 1 ? '<p class="racha"><span class="llama">▲</span> ' + racha + " días seguidos</p>" : "") +
         '<ul class="pl-hab">' + hs.map((x) => '<li><button type="button" class="pl-hb' + (hoyL[x.id] ? " si" : "") + '" data-pa="hab" data-h="' + esc(x.id) + '" aria-pressed="' + !!hoyL[x.id] + '">' +
           '<span class="pl-ck">' + CHECK + "</span><span>" + esc(x.n) + "</span></button>" +
           (plataHabEdit ? '<button type="button" class="btn dng" data-pa="hab-del" data-h="' + esc(x.id) + '" aria-label="Sacar">' + XIC + "</button>" : "") + "</li>").join("") + "</ul>" +
         (plataHabEdit ? '<div class="two"><label class="fld"><span class="fl">Nuevo hábito</span><input class="in" id="pl-hn" maxlength="40" placeholder="ej. Cociné en casa"></label>' +
           '<button type="button" class="btn alt" data-pa="hab-add">Sumar</button></div>' : "") +
-        '<div class="pan-b"><button type="button" class="btn lnk" data-pa="hab-edit">' + (plataHabEdit ? "Listo" : "Cambiar mis hábitos") + "</button></div></section>";
-    }
-
-    /* Ahorro */
-    h += '<section class="card rise" style="--c:#7C9CFF"><p class="card-k">Ahorro</p>' +
-      (p.metas.length ? "" : '<p class="card-t">Ponele nombre a lo que juntás</p><p class="card-s">Una meta con nombre (un viaje, el fondo de emergencia, la moto) se cumple más que "ahorrar".</p>');
-    p.metas.forEach((mt) => {
-      const junto = (mt.aportes || []).reduce((a, x) => a + x.m, 0);
-      const pc = mt.obj ? Math.min(100, Math.round((junto / mt.obj) * 100)) : 0;
-      h += '<div class="pl-meta' + (pc >= 100 ? " lista" : "") + '"><div class="pl-mh"><b>' + esc(mt.n) + "</b><span>" + money(junto) + " de " + money(mt.obj) + "</span></div>" +
-        '<div class="pl-mb"><i style="width:' + pc + '%"></i></div>' +
-        '<div class="pl-ma"><input class="in" data-ap="' + mt.id + '" inputmode="decimal" placeholder="Sumar $"><button type="button" class="btn alt sm" data-pa="aportar" data-id="' + mt.id + '">+ Sumar</button>' +
-        '<button type="button" class="btn dng" data-pa="meta-del" data-id="' + mt.id + '" aria-label="Borrar meta">' + XIC + "</button></div></div>";
-    });
-    h += '<div class="two"><label class="fld"><span class="fl">Nueva meta</span><input class="in" id="pl-mn" maxlength="30" placeholder="ej. Vacaciones"></label>' +
-      '<label class="fld"><span class="fl">¿Cuánto?</span><input class="in" id="pl-mo" inputmode="decimal" placeholder="ej. 500.000"></label></div>' +
-      '<div class="pan-b"><button type="button" class="btn alt" data-pa="meta-add">Crear meta</button></div></section>';
-
-    /* Movimientos */
-    const movs = p.mov.filter((m) => m.d >= desde && m.d <= hasta).sort((a, b) => (a.d < b.d ? 1 : a.d > b.d ? -1 : 0));
-    if (movs.length) {
-      const ver = plataVerTodo ? movs.length : 8;
-      h += '<section class="card rise" style="--c:#9C8AB8"><p class="card-k">Movimientos</p><ul class="pl-mov">' + movs.slice(0, ver).map((m) => {
-        const k = catDe(m.cat);
-        return '<li style="--k:' + (m.t === "i" ? "#4BD489" : k[2]) + '"><i class="pl-dot"></i><span class="pl-mt">' + esc(m.nota || (m.t === "i" ? "Ingreso" : k[1])) +
-          "<small>" + fmtDay(m.d) + (m.nota && m.t !== "i" ? " · " + k[1] : "") + "</small></span><b class=\"" + (m.t === "i" ? "ok" : "") + '">' + (m.t === "i" ? "+" : "−") + money(m.m) +
-          '</b><button type="button" class="btn dng" data-pa="del" data-id="' + m.id + '" aria-label="Borrar">' + XIC + "</button></li>";
-      }).join("") + "</ul>" +
-        (movs.length > 8 ? '<button type="button" class="btn alt" data-pa="vertodo">' + (plataVerTodo ? "Ver menos" : "Ver los " + movs.length) + "</button>" : "") + "</section>";
+        '<div class="pan-b"><button type="button" class="btn lnk" data-pa="hab-edit">' + (plataHabEdit ? "Listo" : "Cambiar mis hábitos") + "</button></div>";
+      h += plegado("habs", "#4BD489", "Hábitos de plata", hs.filter((x) => hoyL[x.id]).length + " de " + hs.length + " hoy" + (racha > 1 ? " · " + racha + " días seguidos" : ""), hb);
     }
 
     /* El año */
@@ -4117,12 +4160,12 @@ react-dom/cjs/react-dom.production.min.js:
     const tope = Math.max.apply(null, [1].concat(meses.map((m) => Math.max(m.gasto, m.ingreso))));
     const totG = meses.reduce((a, m) => a + m.gasto, 0), totI = meses.reduce((a, m) => a + m.ingreso, 0);
     if (totG || totI) {
-      h += '<section class="card rise" style="--c:#5FD6E0"><p class="card-k">Tu ' + anio + "</p>" +
-        '<div class="pl-tri"><div><span>Entró</span><b class="ok">' + money(totI) + "</b></div><div><span>Salió</span><b>" + money(totG) + "</b></div>" +
+      const an = '<div class="pl-tri"><div><span>Entró</span><b class="ok">' + money(totI) + "</b></div><div><span>Salió</span><b>" + money(totG) + "</b></div>" +
         '<div><span>Te quedó</span><b class="' + (totI - totG >= 0 ? "ok" : "mal") + '">' + money(totI - totG) + "</b></div></div>" +
         '<div class="pl-anio">' + meses.map((m, i) => '<button type="button" class="pl-am' + (anio + "-" + pad2(i + 1) === plataMes ? " on" : "") + '" data-pa="ir-mes" data-m="' + anio + "-" + pad2(i + 1) + '">' +
           '<span class="pl-ab"><i class="ent" style="height:' + Math.round((m.ingreso / tope) * 100) + '%"></i><i class="sal" style="height:' + Math.round((m.gasto / tope) * 100) + '%"></i></span>' + MESES_C[i].slice(0, 1).toUpperCase() + "</button>").join("") +
-        '</div><p class="pl-ley"><i class="ent"></i> entró <i class="sal"></i> salió · tocá un mes para verlo</p></section>';
+        '</div><p class="pl-ley"><i class="ent"></i> entró <i class="sal"></i> salió · tocá un mes para verlo</p>';
+      h += plegado("anio", "#5FD6E0", "Tu " + anio, "Te quedó " + money(totI - totG) + " en el año", an);
     }
 
     PLATA_BODY.innerHTML = h;
@@ -4143,19 +4186,8 @@ react-dom/cjs/react-dom.production.min.js:
         plataVerTodo = false; sfx("toque"); return renderPlata();
       }
       if (a === "ir-mes") { plataMes = b.dataset.m; sfx("toque"); renderPlata(); window.scrollTo(0, 0); return; }
-      if (a === "tipo") { plataTipo = b.dataset.t; return renderPlata(); }
-      if (a === "cat") {
-        plataCat = b.dataset.c;
-        PLATA_BODY.querySelectorAll(".pl-chips .chip").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
-        return;
-      }
-      if (a === "add") {
-        const m = numPlata(val("pl-m"));
-        if (!m || m <= 0) { const el = document.getElementById("pl-m"); if (el) el.focus(); return; }
-        const esEste = plataMes === todayKey().slice(0, 7);
-        plataAgregar(plataTipo, m, plataCat, val("pl-n"), esEste ? todayKey() : mesRango(plataMes)[1]);
-        sfx("guardar"); renderPlata(); return chequearDia();
-      }
+      if (a === "acc") { plataAbre[b.dataset.id] = !plataAbre[b.dataset.id]; sfx("toque"); return renderPlata(); }
+      if (a === "sh") { sfx("toque"); sheetIngreso = b.dataset.t === "i"; return abrirSheet("gasto"); }
       if (a === "del") {
         const mv = p.mov.filter((m) => m.id === b.dataset.id)[0];
         /* si era el pago de una cuenta, la cuenta vuelve a quedar pendiente */
@@ -4260,9 +4292,6 @@ react-dom/cjs/react-dom.production.min.js:
         if (!confirm("¿Borrar esta meta?")) return;
         p.metas = p.metas.filter((x) => x.id !== b.dataset.id); plataGuardar(p); return renderPlata();
       }
-    });
-    PLATA_BODY.addEventListener("keydown", (ev) => {
-      if (ev.key === "Enter" && ev.target.id === "pl-m") { const b = PLATA_BODY.querySelector('[data-pa="add"]'); if (b) b.click(); }
     });
   }
 
@@ -4676,6 +4705,8 @@ react-dom/cjs/react-dom.production.min.js:
   /* Hoy: los cuatro pilares de la semana, de un vistazo */
   /* Tu progreso: cada tarjeta aparece cuando tiene algo para mostrar.
      El primer día, Hoy es corto: solo lo que hay que hacer. */
+  let progAbierto = false;
+  if (HOY) HOY.addEventListener("toggle", (ev) => { if (ev.target.classList && ev.target.classList.contains("prog")) progAbierto = ev.target.open; }, true);
   function progresoHoy(lg, nc) {
     const dias = Object.keys(leer(KEY_DIAS, {})).length;
     const p = plataData();
@@ -4686,7 +4717,8 @@ react-dom/cjs/react-dom.production.min.js:
       (medidas().length || dias >= 7 ? cardMedidas() : "") +
       (lg.ok.length ? cardLogros(lg) : "") +
       cardHistorial() + cardPush(false);
-    return h ? '<h2 class="sec-h">Tu progreso</h2>' + h : "";
+    if (!h) return "";
+    return '<details class="prog"' + (progAbierto ? " open" : "") + '><summary class="sec-h">Tu progreso <small>peso, medidas, logros, historial</small></summary>' + h + "</details>";
   }
 
   function cardPilares() {
@@ -4699,10 +4731,10 @@ react-dom/cjs/react-dom.production.min.js:
       return '<button type="button" class="pil" style="--c:' + PILARES[k].c + '"' + (ir[k] ? ' data-act="go" data-to="' + ir[k] + '"' : "") + ">" +
         anillo(v || 0, v == null ? "—" : '<i data-n="' + v + '" data-fin="' + v + '">' + v + "</i>", "", 62) + "<span>" + PILARES[k].n + "</span></button>";
     }).join("");
-    return '<section class="card rise pils-card"><div class="bv-top"><p class="card-k">Tus 4 pilares · esta semana</p>' +
+    return '<section class="card rise pils-card"><div class="bv-top"><p class="card-k">Tu semana · entreno, hábitos, comida y finanzas</p>' +
       (s.puntaje != null ? '<p class="pils-tot"><b>' + s.puntaje + "</b>/100</p>" : "") + "</div>" +
       '<div class="pils">' + mini + "</div>" +
-      '<button type="button" class="btn pri wide" data-act="go" data-to="resumen">Ver mi resumen semanal</button></section>';
+      '<button type="button" class="btn pri wide" data-act="go" data-to="resumen">Ver mi semana completa</button></section>';
   }
 
   /* Hoy: la plata del mes, chiquito */
@@ -4793,8 +4825,14 @@ react-dom/cjs/react-dom.production.min.js:
     }
     const s = sistemaData();
     if (s) {
-      const m = misionesHoy(s);
-      if (m.total) it.push({ id: "mis", ic: "⚡", t: "Hábitos", s: m.done + " de " + m.total + (m.xp ? " · +" + m.xp + " xp" : ""), pct: m.done / m.total, go: "sistema", btn: "Ir" });
+      /* cada hábito de hoy es una fila: se tacha acá mismo, sin ir a otra pestaña */
+      const log = (s.log || {})[k] || {};
+      s.habits.filter((x) => toca(x, k, s)).sort((a, b) => ((a.time || "99") < (b.time || "99") ? -1 : 1)).forEach((x) => {
+        const cuenta = x.type === "count";
+        const v = log[x.id], n = typeof v === "number" ? v : v ? x.target || 1 : 0;
+        it.push({ id: "hab-" + x.id, grupo: "hab", hora: x.time || "", t: x.name || "Hábito", hab: String(x.id),
+          s: cuenta ? n + " de " + (x.target || 1) : "", pct: avance(x, log), hecho: hecho(x, log), btn: cuenta && !hecho(x, log) ? "+1" : "" });
+      });
     } else {
       it.push({ id: "mis", ic: "⚡", t: "Elegí tus hábitos", s: "Suben de nivel y te avisan a su hora", pct: 0, go: "sistema", btn: "Armar", extra: true });
     }
@@ -4811,9 +4849,31 @@ react-dom/cjs/react-dom.production.min.js:
     if (diasPeso >= 7) it.push({ id: "peso", ic: "⚖️", t: "Pesate", s: ult ? "Hace " + diasPeso + " días que no te pesás" : "Una vez por semana alcanza", pct: 0, q: "peso", btn: "Anotar", extra: true });
     return it;
   }
+  /* Los hábitos cuentan como un solo ítem (su promedio), para que tener
+     muchos no tape lo demás */
   function pctDelDia(it) {
-    const cuentan = (it || diaItems()).filter((x) => !x.extra);
-    return cuentan.length ? cuentan.reduce((a, x) => a + x.pct, 0) / cuentan.length : 0;
+    const l = (it || diaItems()).filter((x) => !x.extra);
+    const habs = l.filter((x) => x.grupo === "hab"), resto = l.filter((x) => x.grupo !== "hab");
+    const vals = resto.map((x) => x.pct);
+    if (habs.length) vals.push(habs.reduce((a, x) => a + x.pct, 0) / habs.length);
+    return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : 0;
+  }
+  /* Tacha (o destacha) un hábito del Sistema desde Hoy */
+  let sisSucio = false;
+  function marcarHabito(id) {
+    const d = sistemaData();
+    if (!d) return null;
+    const k = todayKey(), x = d.habits.filter((y) => String(y.id) === String(id))[0];
+    if (!x) return null;
+    const log = d.log || (d.log = {}), l = log[k] || (log[k] = {});
+    if (x.type === "count") {
+      const v = typeof l[x.id] === "number" ? l[x.id] : l[x.id] ? x.target || 1 : 0;
+      l[x.id] = v >= (x.target || 1) ? 0 : v + 1;
+    } else l[x.id] = !l[x.id];
+    if (!l[x.id]) delete l[x.id];
+    try { localStorage.setItem("sistema:v1", JSON.stringify(d)); } catch (err) { return null; }
+    sisSucio = true;
+    return { hecho: hecho(x, l), todos: d.habits.filter((y) => toca(y, k, d)).every((y) => hecho(y, l)) };
   }
   /* Guarda cómo va el día, para la racha y el resumen */
   function guardarDia() {
@@ -4837,7 +4897,7 @@ react-dom/cjs/react-dom.production.min.js:
   function cardTuDia() {
     const it = diaItems();
     const pct = Math.round(pctDelDia(it) * 100);
-    const filas = it.map((x) => {
+    const fila = (x) => {
       const ok = !x.extra && x.pct >= 1;
       const accion = x.go ? 'data-act="go" data-to="' + x.go + '"' + (x.day ? ' data-day="' + x.day + '"' : "")
         : x.q ? 'data-act="td-q" data-q="' + x.q + '"' : 'data-act="td-' + x.act + '"' + (x.cta ? ' data-id="' + x.cta + '"' : "");
@@ -4846,13 +4906,23 @@ react-dom/cjs/react-dom.production.min.js:
         (x.extra ? "" : '<span class="td-bar"><i style="width:' + Math.round(x.pct * 100) + '%"></i></span>') + "</span>" +
         '<span class="td-b">' + (x.alt ? '<button type="button" class="btn sm lnk" data-act="td-' + x.alt + '">' + esc(x.altT) + "</button>" : "") +
         (ok && !x.q ? "" : '<button type="button" class="btn sm ' + (ok ? "alt" : "pri") + '" ' + accion + ">" + esc(x.btn) + "</button>") + "</span></li>";
-    }).join("");
+    };
+    /* un hábito: toda la fila es el botón */
+    const habFila = (x) => '<li class="td hb' + (x.hecho ? " ok" : "") + '" data-act="td-hab" data-id="' + esc(x.hab) + '">' +
+      '<span class="td-hora">' + esc(x.hora) + '</span><span class="td-x"><b>' + esc(x.t) + "</b>" + (x.s ? "<small>" + esc(x.s) + "</small>" : "") + "</span>" +
+      '<span class="td-ck" aria-hidden="true">' + (x.hecho ? CHECK : x.btn ? "+1" : "") + "</span></li>";
+    const habs = it.filter((x) => x.grupo === "hab"), resto = it.filter((x) => x.grupo !== "hab");
+    const hechos = habs.filter((x) => x.hecho).length;
     const msg = pct >= 100 ? "Día completo. Así se construye." : pct >= 80 ? "Ya cuenta para la racha. Cerralo al 100." : pct >= 40 ? "Vas bien. Lo que falta, de a uno." : "Arrancá por lo más fácil.";
     return '<section class="card rise hero tudia" style="--c:' + (pct >= 100 ? "#4BD489" : "#E9B75B") + '"><p class="card-k">Tu día</p>' +
       '<div class="hero-g">' + anillo(pct, '<i data-n="' + pct + '" data-fin="' + pct + '">' + pct + "</i><u>%</u>", "", 92) +
       '<div class="hero-x"><p class="card-t">' + (pct >= 100 ? "¡Completo!" : "Lo de hoy") + '</p><p class="hero-s">' + msg + "</p></div></div>" +
-      '<ul class="tds">' + filas + "</ul></section>";
+      '<ul class="tds">' + resto.map(fila).join("") + "</ul>" +
+      (habs.length ? '<div class="td-sub"><span>Hábitos · ' + hechos + " de " + habs.length + '</span><button type="button" class="btn lnk" data-act="go" data-to="sistema">Editar ›</button></div>' +
+        '<ul class="tds">' + habs.map(habFila).join("") + "</ul>" : "") +
+      avisoRapido() + "</section>";
   }
+
 
   /* Al terminar una acción: si el día se completó, festejo grande */
   function chequearDia() {
@@ -4991,22 +5061,25 @@ react-dom/cjs/react-dom.production.min.js:
   const FAB = document.createElement("button");
   FAB.type = "button"; FAB.className = "fab"; FAB.hidden = true;
   FAB.setAttribute("aria-label", "Anotar rápido");
-  FAB.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
+  FAB.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Anotar</span>';
   const SHEET = document.createElement("div");
   SHEET.className = "rt sheet"; SHEET.hidden = true;
   SHEET.setAttribute("role", "dialog"); SHEET.setAttribute("aria-label", "Anotar rápido");
   document.body.appendChild(FAB);
   document.body.appendChild(SHEET);
-  let sheetTab = "gasto", sheetCat = "comida", paneActual = "hoy";
+  let sheetTab = "gasto", sheetCat = "comida", sheetIngreso = false, paneActual = "hoy";
 
   function renderSheet() {
-    const tabs = [["gasto", "💰 Gasto"], ["prot", "🥩 Proteína"], ["agua", "💧 Agua"], ["peso", "⚖️ Peso"]];
+    const tabs = [["gasto", "💰 Plata"], ["prot", "🥩 Proteína"], ["agua", "💧 Agua"], ["peso", "⚖️ Peso"]];
     let b = "";
     if (sheetTab === "gasto") {
-      b = '<div class="pl-monto" style="--c:#FF6F4E"><span>$</span><input class="in" id="sh-m" inputmode="decimal" placeholder="0" autocomplete="off"></div>' +
-        '<div class="pl-chips">' + CATS.map((c) => '<button type="button" class="chip" style="--k:' + c[2] + '" data-sh="cat" data-c="' + c[0] + '" aria-pressed="' + (sheetCat === c[0]) + '">' + c[1] + "</button>").join("") + "</div>" +
-        '<input class="in sh-nota" id="sh-n" maxlength="40" placeholder="Nota (opcional)">' +
-        '<div class="sh-acc"><button type="button" class="btn pri" style="--c:#FF6F4E" data-sh="gasto">Anotar gasto</button><button type="button" class="btn alt" data-sh="nogaste">Hoy no gasté</button></div>';
+      const col = sheetIngreso ? "#4BD489" : "#FF6F4E";
+      b = '<div class="seg sh-modo" style="--c:' + col + '"><button type="button" data-sh="modo" data-i="0" aria-pressed="' + !sheetIngreso + '">Gasto</button><button type="button" data-sh="modo" data-i="1" aria-pressed="' + sheetIngreso + '">Ingreso</button></div>' +
+        '<div class="pl-monto" style="--c:' + col + '"><span>$</span><input class="in" id="sh-m" inputmode="decimal" placeholder="0" autocomplete="off"></div>' +
+        (sheetIngreso ? "" : '<div class="pl-chips">' + CATS.map((c) => '<button type="button" class="chip" style="--k:' + c[2] + '" data-sh="cat" data-c="' + c[0] + '" aria-pressed="' + (sheetCat === c[0]) + '">' + c[1] + "</button>").join("") + "</div>") +
+        '<input class="in sh-nota" id="sh-n" maxlength="40" placeholder="' + (sheetIngreso ? "¿De qué? ej. sueldo, venta" : "Nota (opcional)") + '">' +
+        '<div class="sh-acc"><button type="button" class="btn pri" style="--c:' + col + '" data-sh="gasto">' + (sheetIngreso ? "Anotar ingreso" : "Anotar gasto") + "</button>" +
+        (sheetIngreso ? "" : '<button type="button" class="btn alt" data-sh="nogaste">Hoy no gasté</button>') + "</div>";
     } else if (sheetTab === "prot") {
       const nc = nutriCfg();
       if (!nc) {
@@ -5053,7 +5126,7 @@ react-dom/cjs/react-dom.production.min.js:
     if (paneActual === "plata") renderPlata();
     chequearDia();
   }
-  FAB.addEventListener("click", () => { sfx("toque"); abrirSheet(paneActual === "plata" ? "gasto" : null); });
+  FAB.addEventListener("click", () => { sfx("toque"); sheetIngreso = false; abrirSheet(paneActual === "plata" ? "gasto" : null); });
   SHEET.addEventListener("click", (ev) => {
     if (ev.target === SHEET) return cerrarSheet();
     const b = ev.target.closest("[data-sh]");
@@ -5061,12 +5134,13 @@ react-dom/cjs/react-dom.production.min.js:
     const a = b.dataset.sh, val = (id) => (document.getElementById(id) || {}).value || "";
     if (a === "cerrar") return cerrarSheet();
     if (a === "tab") { sheetTab = b.dataset.t; return abrirSheet(); }
+    if (a === "modo") { const v = val("sh-m"); sheetIngreso = b.dataset.i === "1"; renderSheet(); const el = document.getElementById("sh-m"); if (el) { el.value = v; el.focus(); } return; }
     if (a === "cat") { sheetCat = b.dataset.c; SHEET.querySelectorAll('[data-sh="cat"]').forEach((x) => x.setAttribute("aria-pressed", String(x === b))); return; }
     if (a === "gasto") {
       const m = numPlata(val("sh-m"));
       if (!m || m <= 0) { const el = document.getElementById("sh-m"); if (el) el.focus(); return; }
-      plataAgregar("g", m, sheetCat, val("sh-n"));
-      sfx("guardar"); showStatus("Gasto anotado: " + money(m)); cerrarSheet(); return refrescar();
+      plataAgregar(sheetIngreso ? "i" : "g", m, sheetCat, val("sh-n"));
+      sfx("guardar"); showStatus((sheetIngreso ? "Ingreso anotado: " : "Gasto anotado: ") + money(m)); cerrarSheet(); return refrescar();
     }
     if (a === "nogaste") {
       const p = plataData(), l = p.habLog[todayKey()] || (p.habLog[todayKey()] = {});
@@ -5106,6 +5180,13 @@ react-dom/cjs/react-dom.production.min.js:
       const b = ev.target.closest("[data-act]");
       if (!b) return;
       const a = b.dataset.act;
+      if (a === "td-hab") {
+        const r = marcarHabito(b.dataset.id);
+        if (!r) return;
+        if (r.todos && r.hecho) { festejo(false); sfx("listo"); showStatus("Hábitos de hoy completos 🔥", 2600); } else sfx(r.hecho ? "guardar" : "toque");
+        sincronizarPush();
+        return refrescar();
+      }
       if (a === "td-sheet" && b.tagName === "LI") { if (ev.target.closest("button")) return; sfx("toque"); return abrirSheet(b.dataset.q); }
       if (a === "td-q") {
         ev.stopPropagation();
@@ -5150,6 +5231,8 @@ react-dom/cjs/react-dom.production.min.js:
   }
   document.addEventListener("visibilitychange", () => { if (document.hidden) guardarDia(); });
   window.addEventListener("shell-tab", (ev) => {
+    /* la pestaña Hábitos lee sus datos al abrir: si se tachó algo desde Hoy, se recarga */
+    if (ev.detail === "sistema" && sisSucio) { sisSucio = false; location.hash = "#sistema"; location.reload(); return; }
     paneActual = ev.detail;
     FAB.hidden = !(ev.detail === "hoy" || ev.detail === "plata");
     if (!SHEET.hidden) cerrarSheet();
@@ -5219,6 +5302,15 @@ react-dom/cjs/react-dom.production.min.js:
     }).catch(() => {});
   }
 
+  /* Una línea al pie de Tu día, en vez de una tarjeta grande */
+  function avisoRapido() {
+    const c = pushCfg();
+    if (!sistemaData() || !hayPush() || c.on || c.no) return "";
+    const ios = esIOS() && !instalada();
+    return '<div class="td-aviso"><span>🔔 ' + (ios ? "Agregá la app a tu pantalla de inicio y te avisamos a la hora de cada hábito." : "¿Te avisamos a la hora de cada hábito si no lo hiciste?") + "</span>" +
+      (ios ? "" : '<button type="button" class="btn sm pri" data-act="push-rapido">Sí, avisame</button>') +
+      '<button type="button" class="btn sm lnk" data-act="push-no" aria-label="No, gracias">No</button></div><p class="pan-n" id="push-n">' + esc(pushNota) + "</p>";
+  }
   function horasCierre(cur) {
     let o = '<option value=""' + (!cur ? " selected" : "") + ">Sin repaso</option>";
     for (let m = 19 * 60; m <= 23 * 60 + 30; m += 30) {
@@ -5269,6 +5361,13 @@ react-dom/cjs/react-dom.production.min.js:
           .catch((err) => { b.disabled = false; decir(typeof err === "string" ? err : "No se pudo activar. Probá de nuevo."); });
         return;
       }
+      if (a === "push-rapido") {
+        b.disabled = true; decir("Activando…");
+        activarPush(pushCfg().cierre || "21:30", true)
+          .then(() => { pushNota = ""; sfx("listo"); showStatus("Avisos activados 🔔", 2600); renderHoy(); })
+          .catch((err) => { b.disabled = false; decir(typeof err === "string" ? err : "No se pudo activar. Probá de nuevo."); });
+        return;
+      }
       if (a === "push-no") { escribir(KEY_PUSH, Object.assign(pushCfg(), { no: true })); return renderHoy(); }
       if (a === "push-edit") { pushEdit = true; pushNota = ""; return renderHoy(); }
       if (a === "push-x") { pushEdit = false; pushNota = ""; return renderHoy(); }
@@ -5292,7 +5391,7 @@ react-dom/cjs/react-dom.production.min.js:
      comer, hábitos con horario, instalación y avisos). */
   const SUGERIDOS = [
     ["Despertar a la misma hora", "base", "06:30", 2, true],
-    ["Tomar 2 litros de agua", "cuerpo", "12:00", 1, true],
+    ["Comer fruta o verdura", "cuerpo", "13:00", 1, true],
     ["Leer 20 minutos", "mente", "21:00", 1, true],
     ["Hacer la cama", "base", "06:45", 1, false],
     ["Meditar u orar 10 minutos", "espiritu", "07:00", 1, false],
