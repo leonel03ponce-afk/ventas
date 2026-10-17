@@ -4,7 +4,7 @@
 **Sitio:** https://brian-ponce.netlify.app · **Repo:** leonel03ponce-afk/ventas, rama `claude/upbeat-archimedes-pab9s2`.
 
 ## Qué hay
-- `app/`: la app (`index.html`), venta (`planes.html`), vendedores (`vendedores.html`, `guia-vendedores.html`), después del pago (`gracias.html`), ventas automáticas (`ventas.html`). Todo se configura en `app/config.js` (después correr `python3 app/sincronizar-config.py`).
+- `app/`: la app (`index.html`: Hoy, Armar, Entreno, Sistema, **Plata** y **Resumen** semana/mes/año con "Mandárselo a Brian" e imagen para historias), venta (`planes.html`), vendedores (`vendedores.html`, `guia-vendedores.html`), después del pago (`gracias.html`), ventas automáticas (`ventas.html`). Todo se configura en `app/config.js` (después correr `python3 app/sincronizar-config.py`).
 - `netlify/`: funciones de cobro automático (Mercado Pago Checkout Pro + Hotmart webhook, códigos, bajas por reembolso). Guía: `COBRO-AUTOMATICO.md`.
 - `app/ventas.html` (**Mi negocio**): clientes, vencimientos, ventas, vendedores, comisiones, ventas a mano y rutinas. Clave: variable `CLAVE_VENTAS` de Netlify.
 - `app/ranking.html`: ranking público de vendedores. `rutinas/`: 6 rutinas base (`python3 rutinas/generar.py` regenera los links).
@@ -20,6 +20,7 @@
 - Nunca poner tokens ni claves privadas en el repo: van como variables de entorno en Netlify (`MP_ACCESS_TOKEN`, `CLAVE_VENTAS`, `HOTMART_HOTTOK`).
 
 ## Pendiente
+0. Notificaciones push (quedaron para después).
 1. Ya hecho: Netlify conectado a GitHub (rama claude/upbeat-archimedes-pab9s2), MP_ACCESS_TOKEN y CLAVE_VENTAS cargados. Falta confirmar una compra real de punta a punta.
 2. Armar SISTEMA en Hotmart (producto + 3 ofertas + webhook + afiliados al 43%).
 3. Salir a reclutar vendedores con `campanas/TEXTOS-CLOSERS-Y-LATAM.md`.

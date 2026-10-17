@@ -4,7 +4,7 @@ La app está en la carpeta `app/`. Es una página web instalable en el celular (
 
 | Archivo | Para qué es |
 |---|---|
-| `app/index.html` | La app: Hoy, Armar, Entreno y Sistema |
+| `app/index.html` | La app: Hoy, Armar, Entreno, Sistema y Plata, más el Resumen (semana, mes y año) |
 | `app/planes.html` | Página de venta corta, para el link de la bio y para los vendedores |
 | `app/vendedores.html` | Página para vendedores: sacan su link, copian textos listos, bajan el video y calculan cuánto ganan |
 | `app/guia-vendedores.html` | Guía para vendedores: perfil, dónde buscar clientes, mensajes en frío, cierre, objeciones y seguimiento, listos para copiar |
@@ -99,3 +99,12 @@ Hay 6 rutinas listas (principiante, ganar músculo, bajar grasa, en casa, glúte
 3. Reemplazá los íconos (`icono-*.png`, `apple-touch-icon.png`) y el nombre en `manifest.webmanifest`.
 4. La rutina base está en `index.html`, en el bloque `<script type="application/json" id="rt-data">`.
 5. Publicala en otro sitio de Netlify.
+
+## Los cuatro pilares y el resumen
+
+La app trabaja cuatro pilares: **Entreno**, **Hábitos** (pestaña Sistema), **Nutrición** y **Plata**.
+
+- **Plata** (pestaña nueva): gastos e ingresos por categoría, presupuesto del mes (total y por categoría, con cuánto queda por día), metas de ahorro con nombre y hábitos de plata diarios con racha. Abajo está el año entero, mes por mes. Todo queda en el teléfono del cliente, como el resto.
+- **Resumen**: desde Hoy → *Ver mi resumen semanal*. Muestra un puntaje de 0 a 100 por pilar y uno general, con gráficos por día (semana y mes) o por mes (año) y la comparación con el período anterior.
+  - **Mandárselo a Brian**: abre WhatsApp con el resumen en texto, listo para enviar.
+  - **Para historias**: arma una imagen 1080×1920 con la marca. No muestra montos de plata, solo porcentajes.

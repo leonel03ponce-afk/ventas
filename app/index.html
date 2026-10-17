@@ -23,8 +23,8 @@
 :root { --shell-h: 52px; --acento: #E9B75B; }
 html, body { margin: 0; padding: 0; background: #0B0715; }
 body { -webkit-font-smoothing: antialiased; overscroll-behavior-y: none; }
-#pane-hoy, #pane-armar, #pane-entreno, #pane-sistema { min-height: calc(100vh - 52px); min-height: calc(100dvh - 52px); }
-#pane-hoy[hidden], #pane-armar[hidden], #pane-entreno[hidden], #pane-sistema[hidden] { display: none; }
+#pane-hoy, #pane-armar, #pane-entreno, #pane-sistema, #pane-plata, #pane-resumen { min-height: calc(100vh - 52px); min-height: calc(100dvh - 52px); }
+#pane-hoy[hidden], #pane-armar[hidden], #pane-entreno[hidden], #pane-sistema[hidden], #pane-plata[hidden], #pane-resumen[hidden] { display: none; }
 #shellnav { position: sticky; top: 0; z-index: 9999; display: flex; gap: 6px; padding: 8px 10px; padding-top: calc(8px + env(safe-area-inset-top, 0px)); background: rgba(11, 7, 21, .94); backdrop-filter: blur(10px); border-bottom: 1px solid #241A3A; }
 #shellnav button { position: relative; overflow: hidden; flex: 1 1 0; min-height: 44px; padding: 0 6px; border: 1px solid #332248; background: transparent; color: #9C8AB8; font: 600 12px/1 Archivo, system-ui, sans-serif; letter-spacing: .04em; text-transform: uppercase; cursor: pointer; -webkit-tap-highlight-color: transparent; clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); transition: color .18s ease, background-color .18s ease, transform .12s ease; }
 #shellnav button[aria-pressed="true"] { background: var(--acento); border-color: var(--acento); color: #0B0715; }
@@ -33,7 +33,7 @@ body.bloqueado { overflow: hidden; }
 /* El bundle de Sistema mide su alto con 100vh, que en iPhone cuenta la barra
    del navegador y deja un sobrante que se scrollea. dvh mide el alto real. */
 #pane-sistema [style*="100vh"] { min-height: 100dvh !important; }
-body.bloqueado #shellnav, body.bloqueado #pane-hoy, body.bloqueado #pane-armar, body.bloqueado #pane-entreno, body.bloqueado #pane-sistema { display: none !important; }
+body.bloqueado #shellnav, body.bloqueado #pane-hoy, body.bloqueado #pane-armar, body.bloqueado #pane-entreno, body.bloqueado #pane-sistema, body.bloqueado #pane-plata, body.bloqueado #pane-resumen { display: none !important; }
 #gate { position: fixed; inset: 0; z-index: 99999; overflow: auto; display: flex; align-items: center; justify-content: center; padding: 24px 16px calc(24px + env(safe-area-inset-bottom, 0px)); background: #0B0715; color: #F3EDE4; font-family: Archivo, system-ui, -apple-system, sans-serif; }
 #gate[hidden] { display: none; }
 #gate *, #gate *::before, #gate *::after { box-sizing: border-box; }
@@ -511,10 +511,10 @@ button.g-link.boton { display: block; width: 100%; margin-top: 20px; padding: 6p
 #rt-fx.on { opacity: 1; }
 
 /* Cambio de pestaña */
-#pane-hoy, #pane-armar, #pane-entreno, #pane-sistema { animation: rt-rise .3s ease-out; }
+#pane-hoy, #pane-armar, #pane-entreno, #pane-sistema, #pane-plata, #pane-resumen { animation: rt-rise .3s ease-out; }
 
 @media (prefers-reduced-motion: reduce) {
-  .rt .rise, .rt .sl li, .rt .tm-in, #pane-hoy, #pane-armar, #pane-entreno, #pane-sistema { animation: none; opacity: 1; }
+  .rt .rise, .rt .sl li, .rt .tm-in, #pane-hoy, #pane-armar, #pane-entreno, #pane-sistema, #pane-plata, #pane-resumen { animation: none; opacity: 1; }
   .rt .btn.pri, .rt .llama, .rt .tm-ya .tm-dial, .rt .racha.viva .llama { animation: none; }
   .rt .set.late .in, .rt .set.late .sn { animation: none; }
   .rt .ring-v, .rt .wd i::after, .rt .d-v { transition: none; }
@@ -586,6 +586,137 @@ button.g-link.boton { display: block; width: 100%; margin-top: 20px; padding: 6p
 .rt .card.bienv .in { margin-top: 12px; }
 .rt .bv-n { margin-top: 10px; font: 400 13px/1.4 var(--sans); color: var(--coral); }
 </style>
+<style id="pilares">
+/* ════ Pasada de diseño: fondo con luz, tarjetas teñidas, títulos con brillo ════ */
+html { background: #0B0715; }
+body { background: transparent; }
+body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(70% 45% at 0% 0%, rgba(233,183,91,.16), transparent 70%),
+    radial-gradient(60% 40% at 100% 30%, rgba(169,139,255,.13), transparent 70%),
+    radial-gradient(70% 45% at 30% 100%, rgba(95,214,224,.09), transparent 70%),
+    #0B0715; }
+#pane-hoy, #pane-armar, #pane-plata, #pane-resumen { background: transparent; }
+#shellnav { gap: 5px; padding-left: 8px; padding-right: 8px; background: rgba(11, 7, 21, .82); backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); }
+#shellnav button { padding: 0 2px; font-size: 11px; letter-spacing: .03em; background: rgba(21,14,36,.6); }
+#shellnav button[aria-pressed="true"] { background: linear-gradient(120deg, #F5D08A, var(--acento) 55%, #FF8F5E); box-shadow: 0 0 18px rgba(233,183,91,.35); }
+#shellnav button[data-go="plata"][aria-pressed="false"] { color: #5FD6E0; border-color: rgba(95,214,224,.35); }
+
+.rt .hoy-t { background: linear-gradient(100deg, #F3EDE4 35%, #F5D08A 65%, #FF8F5E); -webkit-background-clip: text; background-clip: text; color: transparent; padding-bottom: 4px; }
+.rt .hoy-t em { font-style: normal; }
+.rt .hoy-d { display: inline-block; padding: 6px 10px; background: rgba(243,237,228,.06); border: 1px solid rgba(243,237,228,.08); clip-path: var(--bevel-sm); }
+.rt .card { background: linear-gradient(160deg, color-mix(in srgb, var(--c) 13%, #150E24) 0%, rgba(21,14,36,.94) 42%, rgba(21,14,36,.9) 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,.05); }
+.rt .card-k { color: var(--muted); }
+.rt .card-k::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 8px; vertical-align: 0; background: var(--c); clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+.rt .bv-top .card-k::before, .rt .pils-card .card-k::before { background: var(--gold); }
+.rt .ring-v { filter: drop-shadow(0 0 5px color-mix(in srgb, var(--c, #E9B75B) 70%, transparent)); }
+.rt .card-t small { font: 400 14px/1.2 var(--sans); color: var(--muted); }
+
+/* ════ Los cuatro pilares ════ */
+.rt .pils { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin-top: 14px; }
+.rt .pil { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 0 8px; margin: 0; border: 0; color: var(--ink); font: inherit; background: rgba(255,255,255,.035); clip-path: var(--bevel-sm); -webkit-tap-highlight-color: transparent; }
+button.pil { cursor: pointer; }
+.rt .pil .ring circle { stroke-width: 11; }
+.rt .pil .ring-in b { font-size: 19px; }
+.rt .pil > span { font: 600 11px/1 var(--sans); letter-spacing: .04em; color: var(--c); }
+.rt .pils-card { --c: #E9B75B; }
+.rt .pils-tot { font: 400 13px/1 var(--sans); color: var(--muted); }
+.rt .pils-tot b { font: 700 24px/1 var(--display); color: var(--gold); }
+.rt .board .pils-card .wide { margin-top: 14px; }
+
+/* ════ Controles compartidos ════ */
+.rt .mes-nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 14px; padding: 2px; background: rgba(255,255,255,.04); clip-path: var(--bevel-sm); }
+.rt .mes-nav span { font: 700 16px/1 var(--display); letter-spacing: .02em; text-transform: capitalize; }
+.rt .mes-nav .ib { width: 46px; font: 700 24px/1 var(--display); color: var(--ink); }
+.rt .mes-nav .ib:disabled { opacity: .25; cursor: default; }
+.rt .seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px; margin-top: 12px; padding: 4px; background: rgba(0,0,0,.25); clip-path: var(--bevel-sm); }
+.rt .seg button { min-height: 38px; border: 0; font: 600 14px/1 var(--sans); color: var(--muted); background: transparent; cursor: pointer; clip-path: var(--bevel-sm); }
+.rt .seg button[aria-pressed="true"] { color: var(--on, #0B0715); background: var(--c); }
+
+/* ════ Plata ════ */
+.rt .pl-tri { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-top: 14px; }
+.rt .pl-tri div { padding: 10px 8px; background: rgba(255,255,255,.04); min-width: 0; }
+.rt .pl-tri span { display: block; font: 400 10.5px/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--muted2); }
+.rt .pl-tri b { display: block; margin-top: 6px; font: 700 clamp(12px, 3.9vw, 16px)/1.1 var(--display); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rt b.ok { color: #4BD489; }
+.rt b.mal { color: var(--coral); }
+.rt .pl-monto { display: flex; align-items: center; gap: 6px; margin-top: 12px; padding-left: 14px; background: var(--field); border: 1px solid var(--edge2); }
+.rt .pl-monto:focus-within { border-color: var(--c); box-shadow: 0 0 0 1px var(--c); }
+.rt .pl-monto span { font: 700 30px/1 var(--display); color: var(--c); }
+.rt .pl-monto .in { height: 62px; padding-left: 0; border: 0; background: transparent; box-shadow: none; font: 700 34px/1 var(--display); }
+.rt .pl-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.rt .chip { display: inline-flex; align-items: center; gap: 7px; min-height: 36px; padding: 0 12px; border: 1px solid var(--edge2); background: rgba(255,255,255,.03); color: var(--muted); font: 500 13px/1 var(--sans); cursor: pointer; clip-path: var(--bevel-sm); }
+.rt .chip::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--k); }
+.rt .chip[aria-pressed="true"] { color: var(--ink); border-color: var(--k); background: color-mix(in srgb, var(--k) 22%, transparent); }
+.rt .pl-dot { display: inline-block; flex: none; width: 9px; height: 9px; margin-right: 6px; border-radius: 50%; background: var(--k); }
+.rt .pl-cats-g { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 10px; }
+.rt .pl-bars { margin-top: 10px; }
+.rt .pl-bars li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 10px; padding: 9px 0; border-top: 1px solid var(--line); font-size: 14px; }
+.rt .pl-bars li:first-child { border-top: 0; }
+.rt .pl-bn { display: flex; align-items: center; color: var(--ink); }
+.rt .pl-bars b { font: 700 15px/1 var(--display); }
+.rt .pl-bars small { font: 400 12px/1 var(--sans); color: var(--muted); }
+.rt .pl-bt { position: relative; grid-column: 1 / -1; height: 8px; background: rgba(255,255,255,.05); }
+.rt .pl-bt i { display: block; height: 100%; background: linear-gradient(90deg, color-mix(in srgb, var(--k) 55%, transparent), var(--k)); }
+.rt .pl-bt i.pasado { background: linear-gradient(90deg, var(--k), var(--coral)); }
+.rt .pl-bt u { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--ink); opacity: .7; }
+.rt .pl-hab { margin-top: 10px; }
+.rt .pl-hab li { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+.rt .pl-hb { flex: 1; display: flex; align-items: center; gap: 12px; min-height: 50px; padding: 0 14px; border: 1px solid var(--edge2); background: rgba(255,255,255,.03); color: var(--ink); font: 500 15px/1.25 var(--sans); text-align: left; cursor: pointer; clip-path: var(--bevel-sm); transition: background-color .2s ease; }
+.rt .pl-ck { display: grid; place-items: center; flex: none; width: 26px; height: 26px; border: 1.5px solid var(--edge2); color: transparent; }
+.rt .pl-ck .ic { width: 18px; height: 18px; stroke-width: 3; }
+.rt .pl-hb.si { border-color: var(--c); background: color-mix(in srgb, var(--c) 14%, transparent); }
+.rt .pl-hb.si .pl-ck { background: var(--c); border-color: var(--c); color: #0B0715; }
+.rt .pl-meta { margin-top: 14px; padding: 12px; background: rgba(255,255,255,.035); clip-path: var(--bevel-sm); }
+.rt .pl-meta.lista { box-shadow: inset 0 0 0 1px #4BD489; }
+.rt .pl-mh { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.rt .pl-mh b { font: 700 18px/1.1 var(--display); }
+.rt .pl-mh span { font-size: 13px; color: var(--muted); text-align: right; }
+.rt .pl-mb { height: 10px; margin-top: 10px; background: rgba(255,255,255,.06); }
+.rt .pl-mb i { display: block; height: 100%; background: linear-gradient(90deg, #7C9CFF, #5FD6E0); box-shadow: 0 0 12px rgba(95,214,224,.45); }
+.rt .pl-meta.lista .pl-mb i { background: linear-gradient(90deg, #4BD489, #E9B75B); }
+.rt .pl-ma { display: flex; gap: 6px; margin-top: 10px; align-items: center; }
+.rt .pl-ma .in { height: 40px; font-size: 16px; }
+.rt .card .pl-ma .btn { margin-top: 0; flex: none; }
+.rt .pl-mov li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 4px; padding: 8px 0; border-top: 1px solid var(--line); }
+.rt .pl-mov li:first-child { border-top: 0; }
+.rt .pl-mt { font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rt .pl-mt small { display: block; margin-top: 3px; font-size: 11.5px; color: var(--muted2); }
+.rt .pl-mov b { font: 700 15px/1 var(--display); }
+.rt .card .pl-mov .btn, .rt .card .pl-hab .btn { margin-top: 0; }
+.rt .pl-mov { margin-top: 8px; }
+.rt .pl-anio { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 4px; margin-top: 16px; }
+.rt .pl-am { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 0 0 4px; border: 0; background: transparent; color: var(--muted2); font: 500 11px/1 var(--sans); cursor: pointer; }
+.rt .pl-am.on { color: var(--ink); background: rgba(255,255,255,.05); }
+.rt .pl-ab { display: flex; align-items: flex-end; justify-content: center; gap: 2px; width: 100%; height: 90px; }
+.rt .pl-ab i { display: block; width: 38%; min-height: 2px; }
+.rt .pl-ab i.ent, .rt .pl-ley i.ent { background: #4BD489; }
+.rt .pl-ab i.sal, .rt .pl-ley i.sal { background: #FF6F4E; }
+.rt .pl-ley { margin-top: 10px; font-size: 12px; color: var(--muted); }
+.rt .pl-ley i { display: inline-block; width: 9px; height: 9px; margin: 0 2px 0 6px; }
+.rt .pl-ley i:first-child { margin-left: 0; }
+
+/* ════ Resumen ════ */
+.rt .res-volver { margin: 0 0 6px -8px; min-height: 36px; color: var(--muted); font-size: 14px; }
+.rt .res-seg { --c: #E9B75B; }
+.rt .res-nav span { text-transform: none; font-size: 15px; color: var(--muted); }
+.rt .res-hero .card-t { font-size: 28px; }
+.rt .res-acc { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 8px; margin-top: 16px; }
+.rt .card .res-acc .btn { margin-top: 0; padding: 0 10px; }
+.rt .btn.pri.wa-btn { --c: #25D366; --on: #062512; }
+.rt .rb { display: flex; align-items: flex-end; gap: 4px; height: 110px; margin-top: 16px; }
+.rt .rb.fino { gap: 2px; }
+.rt .rb span { flex: 1 1 0; min-width: 0; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 6px; }
+.rt .rb i { display: block; width: 100%; height: var(--h); background: rgba(156,138,184,.2); clip-path: polygon(0 4px, 4px 0, 100% 0, 100% 100%, 0 100%); }
+.rt .rb i.si { background: linear-gradient(180deg, var(--k), color-mix(in srgb, var(--k) 45%, transparent)); }
+.rt .rb em { height: 11px; font: 400 10.5px/1 var(--sans); font-style: normal; color: var(--muted2); white-space: nowrap; }
+.rt .rc { margin-top: 12px; font: 600 13px/1.3 var(--sans); color: var(--muted); }
+.rt .rc.up { color: #4BD489; }
+.rt .rc.down { color: var(--coral); }
+.rt .hero-x .rc { margin-top: 8px; }
+@media (max-width: 350px) { #shellnav { gap: 3px; padding-left: 6px; padding-right: 6px; } #shellnav button { font-size: 9.5px; letter-spacing: 0; } }
+@media (max-width: 360px) { .rt .pil .ring { transform: scale(.88); } .rt .res-acc { grid-template-columns: 1fr; } }
+</style>
 </head>
 <body>
 <div id="gate" hidden></div>
@@ -594,6 +725,7 @@ button.g-link.boton { display: block; width: 100%; margin-top: 20px; padding: 6p
   <button type="button" data-go="armar" aria-pressed="false">Armar</button>
   <button type="button" data-go="entreno" aria-pressed="false">Entreno</button>
   <button type="button" data-go="sistema" aria-pressed="false">Sistema</button>
+  <button type="button" data-go="plata" aria-pressed="false">Plata</button>
 </nav>
 <div id="pane-hoy" class="rt"><div class="board" id="hoy-body"></div></div>
 <div id="pane-armar" class="rt" hidden><div class="board" id="armar-body"></div></div>
@@ -609,6 +741,8 @@ button.g-link.boton { display: block; width: 100%; margin-top: 20px; padding: 6p
   <a class="wa" id="wa-flot" href="https://wa.me/5491171158427?text=Hola%20Brian!%20Te%20escribo%20por%20la%20rutina." target="_blank" rel="noopener" aria-label="Escribir por WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 11.6a8.4 8.4 0 0 1-12.3 7.5L3.6 20.4l1.4-4.7A8.4 8.4 0 1 1 20.5 11.6z"/><path d="M9.1 8.9c.2 1 .7 1.9 1.4 2.6.7.7 1.6 1.2 2.6 1.5l.8-1.1 1.9.9-.3 1.3c-1.6.4-3.4-.4-4.7-1.7-1.3-1.3-2.1-3.1-1.7-4.7l1.3-.3.7 1.5z"/></svg></a>
 </div>
 <div id="pane-sistema" hidden></div>
+<div id="pane-plata" class="rt" hidden><div class="board" id="plata-body"></div></div>
+<div id="pane-resumen" class="rt" hidden><div class="board" id="resumen-body"></div></div>
 <canvas id="rt-fx" aria-hidden="true"></canvas>
 <script src="config.js"></script>
 <script>
@@ -3050,126 +3184,6 @@ react-dom/cjs/react-dom.production.min.js:
     setTimeout(() => sp.remove(), 650);
   }, true);
 
-  /* ───── Imagen de la semana, para compartir ─────
-     Se dibuja acá mismo con los datos reales. Cada cliente que la postea
-     lleva la marca puesta: es la publicidad que no hay que pagar. */
-  function imagenSemana() {
-    const s = semana(), r = rachaEntreno();
-    const dias = Object.keys(s.dias).length;
-    const W = 1080, H = 1920;
-    const c = document.createElement("canvas");
-    c.width = W; c.height = H;
-    const x = c.getContext("2d");
-
-    const ORO = "#E9B75B", CORAL = "#FF6F4E", TINTA = "#F3EDE4", GRIS = "#9C8AB8";
-    x.fillStyle = "#0B0715";
-    x.fillRect(0, 0, W, H);
-
-    /* resplandor diagonal, para que no sea un rectángulo plano */
-    const g = x.createLinearGradient(0, 0, W, H);
-    g.addColorStop(0, "rgba(233,183,91,.16)");
-    g.addColorStop(0.45, "rgba(255,111,78,.05)");
-    g.addColorStop(1, "rgba(11,7,21,0)");
-    x.fillStyle = g;
-    x.fillRect(0, 0, W, H);
-
-    const centro = (txt, fuente, color, y) => {
-      x.font = fuente; x.fillStyle = color; x.textAlign = "center";
-      x.fillText(txt, W / 2, y);
-    };
-    const bisel = (bx, by, bw, bh, col, corte) => {
-      x.beginPath();
-      x.moveTo(bx + corte, by); x.lineTo(bx + bw, by);
-      x.lineTo(bx + bw, by + bh - corte); x.lineTo(bx + bw - corte, by + bh);
-      x.lineTo(bx, by + bh); x.lineTo(bx, by + corte);
-      x.closePath(); x.fillStyle = col; x.fill();
-    };
-
-    centro("MI SEMANA", "700 46px 'Chakra Petch', sans-serif", ORO, 210);
-    centro(nombre ? nombre.toUpperCase() : "EN EL GIMNASIO",
-           "700 70px 'Chakra Petch', sans-serif", TINTA, 300);
-
-    /* el número grande: los kilos movidos */
-    centro(fmtKg(s.kg), "700 250px 'Chakra Petch', sans-serif", ORO, 620);
-    centro("KILOS MOVIDOS", "600 44px 'Archivo', sans-serif", TINTA, 700);
-
-    /* tres datos en fila */
-    const fila = [[String(dias), dias === 1 ? "día" : "días"],
-                  [String(s.series), "series"],
-                  [String(r.semanas || 1), r.semanas === 1 ? "semana" : "semanas"]];
-    fila.forEach((d, i) => {
-      const cx = W / 2 + (i - 1) * 300;
-      x.textAlign = "center";
-      x.font = "700 96px 'Chakra Petch', sans-serif"; x.fillStyle = TINTA;
-      x.fillText(d[0], cx, 900);
-      x.font = "400 38px 'Archivo', sans-serif"; x.fillStyle = GRIS;
-      x.fillText(d[1], cx, 955);
-    });
-
-    /* barras de la semana */
-    const ws = weekStart().split("-").map(Number);
-    const lunes = new Date(ws[0], ws[1] - 1, ws[2]);
-    const tope = Math.max.apply(null, [1].concat(Object.keys(s.porDia || {}).map((k) => s.porDia[k])));
-    const bw = 96, hueco = 24, x0 = (W - (bw * 7 + hueco * 6)) / 2, base = 1360, alto = 280;
-    for (let i = 0; i < 7; i++) {
-      const dd = new Date(lunes.getFullYear(), lunes.getMonth(), lunes.getDate() + i);
-      const k = dd.getFullYear() + "-" + pad2(dd.getMonth() + 1) + "-" + pad2(dd.getDate());
-      const v = (s.porDia || {})[k] || 0;
-      const h = v ? Math.max(40, Math.round((v / tope) * alto)) : 14;
-      const bx = x0 + i * (bw + hueco);
-      bisel(bx, base - h, bw, h, v ? ORO : "rgba(156,138,184,.28)", v ? 12 : 0);
-      x.font = "600 32px 'Archivo', sans-serif";
-      x.fillStyle = v ? TINTA : GRIS;
-      x.textAlign = "center";
-      x.fillText(DIAS_C[dd.getDay()], bx + bw / 2, base + 48);
-    }
-
-    if (r.semanas > 1 && r.estaSemana) {
-      centro(r.semanas + " SEMANAS SEGUIDAS", "700 46px 'Chakra Petch', sans-serif", CORAL, 1530);
-    }
-
-    /* firma */
-    x.fillStyle = "rgba(243,237,228,.14)";
-    x.fillRect(120, 1650, W - 240, 2);
-    centro(String(CFG.producto || "SISTEMA"), "700 52px 'Chakra Petch', sans-serif", TINTA, 1740);
-    centro("con " + MARCA, "400 38px 'Archivo', sans-serif", GRIS, 1800);
-    return c;
-  }
-
-  function textoSemana() {
-    const s = semana(), r = rachaEntreno();
-    const dias = Object.keys(s.dias).length;
-    return "Mi semana en " + (CFG.producto || "SISTEMA") + ":\n" +
-      fmtKg(s.kg) + " kg movidos · " + s.series + " series · " + dias + (dias === 1 ? " día" : " días") +
-      (r.semanas > 1 && r.estaSemana ? "\n" + r.semanas + " semanas seguidas 🔥" : "") +
-      "\nEntreno con " + MARCA + ".";
-  }
-
-  function compartirSemana() {
-    const nota = document.getElementById("rt-semn");
-    const decir = (t) => { if (nota) nota.textContent = t; };
-    const listo = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
-    listo.then(() => {
-      const lienzo = imagenSemana();
-      lienzo.toBlob((blob) => {
-        if (!blob) return decir("No se pudo armar la imagen.");
-        const archivo = new File([blob], "mi-semana.png", { type: "image/png" });
-        const datos = { files: [archivo], text: textoSemana() };
-        if (navigator.canShare && navigator.canShare(datos) && navigator.share) {
-          navigator.share(datos).then(() => decir("¡Compartida!")).catch(() => decir(""));
-          return;
-        }
-        /* sin menú de compartir: se la descarga y la sube a mano */
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url; a.download = "mi-semana.png";
-        document.body.appendChild(a); a.click(); a.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 4000);
-        decir("Imagen descargada. Subila a tu historia.");
-      }, "image/png");
-    });
-  }
-
   /* ───── Bienvenida de tres pasos ─────
      Instalar, avisos y hora estaban escondidos en Ajustes: funciones buenas
      que nadie encontraba. Acá se las mostramos una sola vez, al principio. */
@@ -3327,8 +3341,7 @@ react-dom/cjs/react-dom.production.min.js:
       : "";
     const hayAlgo = Object.keys(s.dias).length > 0;
     const compartir = hayAlgo
-      ? '<div class="pan-b" style="margin-top:14px"><button type="button" class="btn alt" data-act="sem-share">Compartir mi semana</button></div>' +
-        '<p class="pan-n" id="rt-semn"></p>'
+      ? '<div class="pan-b" style="margin-top:14px"><button type="button" class="btn alt" data-act="go" data-to="resumen">Ver resumen y compartir</button></div>'
       : "";
     return '<section class="card rise"><p class="card-k">Tu semana</p>' + insignia + '<div class="wdays">' + dots + "</div>" +
       '<div class="prog-k"><span><b data-n="' + s.kg + '" data-fin="' + fmtKg(s.kg) + '">' + fmtKg(s.kg) + '</b> kg movidos</span>' +
@@ -3666,7 +3679,7 @@ react-dom/cjs/react-dom.production.min.js:
         '<div class="pan-b"><button type="button" class="btn pri" data-act="nom">Guardar</button></div></section>';
     }
     const lg = logrosNuevos();
-    h += cardPendiente() + cardEntreno() + cardSistema() + cardNutri() + cardAvisos() + cardSemana() + cardPeso() + cardMedidas() + cardLogros(lg) + cardHistorial();
+    h += cardPendiente() + cardPilares() + cardEntreno() + cardSistema() + cardNutri() + cardPlata() + cardAvisos() + cardSemana() + cardPeso() + cardMedidas() + cardLogros(lg) + cardHistorial();
     h += '<section class="card rise"><p class="card-k">Tu entrenador</p><p class="card-t">' + esc(MARCA) + "</p>" +
       '<p class="card-s">Dudas, cambios o una rutina hecha a tu medida: escribime al ' + esc(TEL) + ".</p>" +
       '<a class="btn alt" href="' + esc(waUrl("Hola " + MARCA + "! " + (nombre ? "Soy " + nombre + ". " : "") + "Te escribo por la rutina.")) + '" target="_blank" rel="noopener">Abrir WhatsApp</a></section>';
@@ -3677,11 +3690,725 @@ react-dom/cjs/react-dom.production.min.js:
     }
   }
 
+
+  /* ═══════════ Fechas para resúmenes ═══════════ */
+  const claveDe = (f) => f.getFullYear() + "-" + pad2(f.getMonth() + 1) + "-" + pad2(f.getDate());
+  const fechaDe = (k) => { const p = k.split("-").map(Number); return new Date(p[0], p[1] - 1, p[2]); };
+  const masDias = (k, n) => { const f = fechaDe(k); f.setDate(f.getDate() + n); return claveDe(f); };
+  const MESES_C = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+  function diasEntre(desde, hasta) {
+    const l = [];
+    for (let k = desde; k <= hasta; k = masDias(k, 1)) l.push(k);
+    return l;
+  }
+
+  /* ═══════════ Plata: el cuarto pilar ═══════════
+     Gastos, ingresos, presupuesto del mes, metas de ahorro y hábitos de
+     plata. Igual que todo lo demás, queda guardado solo en este teléfono. */
+  const KEY_PLATA = "plata:v1";
+  const PLATA_BODY = document.getElementById("plata-body");
+  const CATS = [
+    ["comida", "Comida", "#FF8F5E"], ["super", "Súper", "#4BD489"], ["transporte", "Transporte", "#7C9CFF"],
+    ["casa", "Casa y servicios", "#5FD6E0"], ["salidas", "Salidas", "#C98BFF"], ["salud", "Salud y gym", "#E9B75B"],
+    ["ropa", "Ropa", "#FF6FA8"], ["otros", "Otros", "#9C8AB8"],
+  ];
+  const catDe = (id) => CATS.filter((c) => c[0] === id)[0] || CATS[CATS.length - 1];
+  const HAB_PLATA = [
+    { id: "anote", n: "Anoté todo lo que gasté" },
+    { id: "hormiga", n: "Cero gastos hormiga" },
+    { id: "ahorre", n: "Separé algo para ahorrar" },
+  ];
+  function plataData() {
+    const vacio = { mov: [], pres: { total: 0, cats: {} }, metas: [], hab: null, habLog: {} };
+    try {
+      const d = JSON.parse(localStorage.getItem(KEY_PLATA) || "null");
+      if (d) return Object.assign(vacio, d);
+    } catch (e) { /* datos rotos: arrancamos de cero */ }
+    return vacio;
+  }
+  function plataGuardar(p) {
+    if (!p.inicio) p.inicio = todayKey();
+    try { localStorage.setItem(KEY_PLATA, JSON.stringify(p)); } catch (e) { /* sin almacenamiento */ }
+  }
+  const habitosPlata = (p) => p.hab || HAB_PLATA;
+  const money = (n) => (n < 0 ? "−$" : "$") + Math.round(Math.abs(n)).toLocaleString("es-AR");
+  /* "12.500", "12500", "1.234,50" y "12,5" son todos montos válidos */
+  function numPlata(v) {
+    let s = String(v || "").trim().replace(/[^\d.,]/g, "");
+    if (!s) return null;
+    if (s.indexOf(",") > -1) s = s.replace(/\./g, "").replace(",", ".");
+    else if (/^\d{1,3}(\.\d{3})+$/.test(s)) s = s.replace(/\./g, "");
+    const n = parseFloat(s);
+    return isNaN(n) ? null : n;
+  }
+  const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+
+  /* Lo que pasó con la plata entre dos fechas (incluidas) */
+  function plataStats(desde, hasta) {
+    const p = plataData();
+    const r = { gasto: 0, ingreso: 0, porCat: {}, aportes: 0, habPct: null, hayDatos: false, pres: p.pres.total || 0 };
+    p.mov.forEach((m) => {
+      if (m.d < desde || m.d > hasta) return;
+      r.hayDatos = true;
+      if (m.t === "i") r.ingreso += m.m;
+      else { r.gasto += m.m; r.porCat[m.cat] = (r.porCat[m.cat] || 0) + m.m; }
+    });
+    p.metas.forEach((mt) => (mt.aportes || []).forEach((a) => { if (a.d >= desde && a.d <= hasta) r.aportes += a.m; }));
+    const hs = habitosPlata(p);
+    const ini = Object.keys(p.habLog || {}).sort()[0];
+    if (ini && hs.length) {
+      const fin = hasta < todayKey() ? hasta : todayKey();
+      const dias = diasEntre(desde > ini ? desde : ini, fin);
+      if (dias.length) {
+        let hechos = 0;
+        dias.forEach((k) => { const l = p.habLog[k] || {}; hs.forEach((h) => { if (l[h.id]) hechos++; }); });
+        r.habPct = hechos / (dias.length * hs.length);
+        r.hayDatos = true;
+      }
+    }
+    r.ahorro = r.ingreso - r.gasto;
+    return r;
+  }
+  /* Puntaje de plata (0 a 1): hábitos de plata y, si hay presupuesto,
+     qué tan adentro del presupuesto vas para esta altura del período */
+  function puntajePlata(desde, hasta) {
+    const s = plataStats(desde, hasta);
+    if (!s.hayDatos) return null;
+    const partes = [];
+    if (s.habPct != null) partes.push(s.habPct);
+    if (s.pres) {
+      const fin = hasta < todayKey() ? hasta : todayKey();
+      const dias = diasEntre(desde, fin).length;
+      const tope = (s.pres / 30.4) * dias;
+      partes.push(s.gasto <= tope ? 1 : Math.max(0, tope / s.gasto));
+    }
+    if (!partes.length) return null;
+    return partes.reduce((a, b) => a + b, 0) / partes.length;
+  }
+  function rachaPlata(p) {
+    const hs = habitosPlata(p);
+    if (!hs.length) return 0;
+    let n = 0;
+    for (let k = todayKey(), i = 0; i < 400; i++, k = masDias(k, -1)) {
+      const l = (p.habLog || {})[k] || {};
+      const hechos = hs.filter((h) => l[h.id]).length;
+      if (hechos >= Math.ceil(hs.length * 0.66)) n++;
+      else if (i > 0) break;
+    }
+    return n;
+  }
+
+  let plataMes = todayKey().slice(0, 7);
+  let plataTipo = "g", plataCat = "comida", plataPresEdit = false, plataVerTodo = false, plataHabEdit = false;
+  const mesRango = (ym) => {
+    const p = ym.split("-").map(Number);
+    const ult = new Date(p[0], p[1], 0).getDate();
+    return [ym + "-01", ym + "-" + pad2(ult)];
+  };
+  const nombreMes = (ym) => { const p = ym.split("-").map(Number); return MESES[p[1] - 1] + " " + p[0]; };
+
+  function renderPlata() {
+    if (!PLATA_BODY) return;
+    const p = plataData();
+    const [desde, hasta] = mesRango(plataMes);
+    const s = plataStats(desde, hasta);
+    const esEste = plataMes === todayKey().slice(0, 7);
+    let h = '<header class="hoy-h"><p class="hoy-k">El cuarto pilar</p><h1 class="hoy-t">Tu <em>plata</em></h1>' +
+      '<div class="mes-nav"><button type="button" class="ib" data-pa="mes" data-d="-1" aria-label="Mes anterior">‹</button>' +
+      "<span>" + nombreMes(plataMes) + "</span>" +
+      '<button type="button" class="ib" data-pa="mes" data-d="1" aria-label="Mes siguiente"' + (esEste ? " disabled" : "") + ">›</button></div></header>";
+
+    /* Presupuesto y cómo viene el mes */
+    const pres = p.pres.total || 0;
+    const pct = pres ? Math.round((s.gasto / pres) * 100) : 0;
+    let bajada = "";
+    if (pres && esEste) {
+      const queda = pres - s.gasto;
+      const diasRest = Number(hasta.slice(8)) - new Date().getDate() + 1;
+      bajada = queda >= 0
+        ? "Te quedan <b>" + money(queda) + "</b>: " + money(queda / diasRest) + " por día hasta fin de mes."
+        : "Te pasaste <b>" + money(-queda) + "</b>. Desde hoy, solo lo necesario.";
+    } else if (pres) {
+      bajada = s.gasto <= pres ? "Cerraste el mes adentro del presupuesto. Bien ahí." : "Ese mes te pasaste " + money(s.gasto - pres) + ".";
+    }
+    h += '<section class="card rise hero pl-hero" style="--c:' + (pres && pct > 100 ? "#FF6F4E" : "#E9B75B") + '"><p class="card-k">' + (esEste ? "Este mes" : nombreMes(plataMes)) + "</p>" +
+      '<div class="hero-g">' + (pres ? anillo(Math.min(pct, 100), '<i data-n="' + pct + '" data-fin="' + pct + '">' + pct + "</i><u>%</u>", "", 112) : "") +
+      '<div class="hero-x"><p class="card-t">' + money(s.gasto) + '</p><p class="hero-s">' + (pres ? "gastado de " + money(pres) : "gastado en " + MESES[Number(plataMes.slice(5)) - 1]) + "</p></div></div>" +
+      (bajada ? '<p class="card-s">' + bajada + "</p>" : '<p class="card-s">Poné un tope para el mes y te digo cuánto podés gastar por día.</p>') +
+      '<div class="pl-tri"><div><span>Entró</span><b class="ok">' + money(s.ingreso) + "</b></div><div><span>Salió</span><b>" + money(s.gasto) + "</b></div>" +
+      "<div><span>Te quedó</span><b class=\"" + (s.ahorro >= 0 ? "ok" : "mal") + '">' + money(s.ahorro) + "</b></div></div>" +
+      '<div class="pan-b"><button type="button" class="btn alt" data-pa="pres">' + (pres ? "Cambiar presupuesto" : "Poner un presupuesto") + "</button></div></section>";
+
+    if (plataPresEdit) {
+      h += '<section class="card rise" style="--c:#E9B75B"><p class="card-k">Presupuesto mensual</p><p class="card-t">¿Cuánto querés gastar por mes?</p>' +
+        '<label class="fld"><span class="fl">Total del mes</span><input class="in pl-in" id="pl-pres" inputmode="decimal" placeholder="ej. 400.000" value="' + (pres || "") + '"></label>' +
+        '<p class="card-s">Si querés, ponele un tope a cada categoría (si no, dejalas vacías).</p><div class="pl-cats-g">' +
+        CATS.map((c) => '<label class="fld"><span class="fl"><i class="pl-dot" style="--k:' + c[2] + '"></i>' + c[1] + '</span><input class="in" data-pc="' + c[0] + '" inputmode="decimal" value="' + (p.pres.cats[c[0]] || "") + '"></label>').join("") +
+        '</div><div class="pan-b"><button type="button" class="btn pri" data-pa="pres-ok">Guardar</button> <button type="button" class="btn alt" data-pa="pres-x">Cancelar</button></div></section>';
+    }
+
+    /* Anotar */
+    h += '<section class="card rise pl-add" style="--c:' + (plataTipo === "i" ? "#4BD489" : "#FF6F4E") + '"><p class="card-k">Anotar</p>' +
+      '<div class="seg"><button type="button" data-pa="tipo" data-t="g" aria-pressed="' + (plataTipo === "g") + '">Gasto</button>' +
+      '<button type="button" data-pa="tipo" data-t="i" aria-pressed="' + (plataTipo === "i") + '">Ingreso</button></div>' +
+      '<div class="pl-monto"><span>$</span><input class="in" id="pl-m" inputmode="decimal" placeholder="0" autocomplete="off"></div>' +
+      (plataTipo === "g" ? '<div class="pl-chips">' + CATS.map((c) =>
+        '<button type="button" class="chip" style="--k:' + c[2] + '" data-pa="cat" data-c="' + c[0] + '" aria-pressed="' + (plataCat === c[0]) + '">' + c[1] + "</button>").join("") + "</div>" : "") +
+      '<label class="fld"><span class="fl">Nota (opcional)</span><input class="in" id="pl-n" maxlength="40" placeholder="' + (plataTipo === "g" ? "ej. café con amigos" : "ej. sueldo") + '"></label>' +
+      '<div class="pan-b"><button type="button" class="btn pri" data-pa="add">' + (plataTipo === "g" ? "Anotar gasto" : "Anotar ingreso") + "</button></div></section>";
+
+    /* Por categoría */
+    const cats = Object.keys(s.porCat).sort((a, b) => s.porCat[b] - s.porCat[a]);
+    if (cats.length) {
+      const tope = Math.max.apply(null, cats.map((c) => Math.max(s.porCat[c], p.pres.cats[c] || 0)));
+      h += '<section class="card rise" style="--c:#C98BFF"><p class="card-k">En qué se fue</p><ul class="pl-bars">' + cats.map((c) => {
+        const k = catDe(c), v = s.porCat[c], lim = p.pres.cats[c] || 0;
+        return '<li style="--k:' + k[2] + '"><span class="pl-bn"><i class="pl-dot"></i>' + k[1] + "</span><b>" + money(v) +
+          (lim ? "<small> / " + money(lim) + "</small>" : "") + '</b><span class="pl-bt"><i class="' + (lim && v > lim ? "pasado" : "") + '" style="width:' + Math.max(3, Math.round((v / tope) * 100)) + '%"></i>' +
+          (lim ? '<u style="left:' + Math.round((lim / tope) * 100) + '%"></u>' : "") + "</span></li>";
+      }).join("") + "</ul></section>";
+    }
+
+    /* Hábitos de plata */
+    if (esEste) {
+      const hs = habitosPlata(p), hoyL = (p.habLog || {})[todayKey()] || {};
+      const racha = rachaPlata(p);
+      h += '<section class="card rise" style="--c:#4BD489"><p class="card-k">Hábitos de plata · hoy</p>' +
+        (racha > 1 ? '<p class="racha"><span class="llama">▲</span> ' + racha + " días seguidos</p>" : "") +
+        '<ul class="pl-hab">' + hs.map((x) => '<li><button type="button" class="pl-hb' + (hoyL[x.id] ? " si" : "") + '" data-pa="hab" data-h="' + esc(x.id) + '" aria-pressed="' + !!hoyL[x.id] + '">' +
+          '<span class="pl-ck">' + CHECK + "</span><span>" + esc(x.n) + "</span></button>" +
+          (plataHabEdit ? '<button type="button" class="btn dng" data-pa="hab-del" data-h="' + esc(x.id) + '" aria-label="Sacar">' + XIC + "</button>" : "") + "</li>").join("") + "</ul>" +
+        (plataHabEdit ? '<div class="two"><label class="fld"><span class="fl">Nuevo hábito</span><input class="in" id="pl-hn" maxlength="40" placeholder="ej. Cociné en casa"></label>' +
+          '<button type="button" class="btn alt" data-pa="hab-add">Sumar</button></div>' : "") +
+        '<div class="pan-b"><button type="button" class="btn lnk" data-pa="hab-edit">' + (plataHabEdit ? "Listo" : "Cambiar mis hábitos") + "</button></div></section>";
+    }
+
+    /* Ahorro */
+    h += '<section class="card rise" style="--c:#7C9CFF"><p class="card-k">Ahorro</p>' +
+      (p.metas.length ? "" : '<p class="card-t">Ponele nombre a lo que juntás</p><p class="card-s">Una meta con nombre (un viaje, el fondo de emergencia, la moto) se cumple más que "ahorrar".</p>');
+    p.metas.forEach((mt) => {
+      const junto = (mt.aportes || []).reduce((a, x) => a + x.m, 0);
+      const pc = mt.obj ? Math.min(100, Math.round((junto / mt.obj) * 100)) : 0;
+      h += '<div class="pl-meta' + (pc >= 100 ? " lista" : "") + '"><div class="pl-mh"><b>' + esc(mt.n) + "</b><span>" + money(junto) + " de " + money(mt.obj) + "</span></div>" +
+        '<div class="pl-mb"><i style="width:' + pc + '%"></i></div>' +
+        '<div class="pl-ma"><input class="in" data-ap="' + mt.id + '" inputmode="decimal" placeholder="Sumar $"><button type="button" class="btn alt sm" data-pa="aportar" data-id="' + mt.id + '">+ Sumar</button>' +
+        '<button type="button" class="btn dng" data-pa="meta-del" data-id="' + mt.id + '" aria-label="Borrar meta">' + XIC + "</button></div></div>";
+    });
+    h += '<div class="two"><label class="fld"><span class="fl">Nueva meta</span><input class="in" id="pl-mn" maxlength="30" placeholder="ej. Vacaciones"></label>' +
+      '<label class="fld"><span class="fl">¿Cuánto?</span><input class="in" id="pl-mo" inputmode="decimal" placeholder="ej. 500.000"></label></div>' +
+      '<div class="pan-b"><button type="button" class="btn alt" data-pa="meta-add">Crear meta</button></div></section>';
+
+    /* Movimientos */
+    const movs = p.mov.filter((m) => m.d >= desde && m.d <= hasta).sort((a, b) => (a.d < b.d ? 1 : a.d > b.d ? -1 : 0));
+    if (movs.length) {
+      const ver = plataVerTodo ? movs.length : 8;
+      h += '<section class="card rise" style="--c:#9C8AB8"><p class="card-k">Movimientos</p><ul class="pl-mov">' + movs.slice(0, ver).map((m) => {
+        const k = catDe(m.cat);
+        return '<li style="--k:' + (m.t === "i" ? "#4BD489" : k[2]) + '"><i class="pl-dot"></i><span class="pl-mt">' + esc(m.nota || (m.t === "i" ? "Ingreso" : k[1])) +
+          "<small>" + fmtDay(m.d) + (m.nota && m.t !== "i" ? " · " + k[1] : "") + "</small></span><b class=\"" + (m.t === "i" ? "ok" : "") + '">' + (m.t === "i" ? "+" : "−") + money(m.m) +
+          '</b><button type="button" class="btn dng" data-pa="del" data-id="' + m.id + '" aria-label="Borrar">' + XIC + "</button></li>";
+      }).join("") + "</ul>" +
+        (movs.length > 8 ? '<button type="button" class="btn alt" data-pa="vertodo">' + (plataVerTodo ? "Ver menos" : "Ver los " + movs.length) + "</button>" : "") + "</section>";
+    }
+
+    /* El año */
+    const anio = plataMes.slice(0, 4);
+    const meses = [];
+    for (let i = 1; i <= 12; i++) { const r = mesRango(anio + "-" + pad2(i)); meses.push(plataStats(r[0], r[1])); }
+    const tope = Math.max.apply(null, [1].concat(meses.map((m) => Math.max(m.gasto, m.ingreso))));
+    const totG = meses.reduce((a, m) => a + m.gasto, 0), totI = meses.reduce((a, m) => a + m.ingreso, 0);
+    if (totG || totI) {
+      h += '<section class="card rise" style="--c:#5FD6E0"><p class="card-k">Tu ' + anio + "</p>" +
+        '<div class="pl-tri"><div><span>Entró</span><b class="ok">' + money(totI) + "</b></div><div><span>Salió</span><b>" + money(totG) + "</b></div>" +
+        '<div><span>Te quedó</span><b class="' + (totI - totG >= 0 ? "ok" : "mal") + '">' + money(totI - totG) + "</b></div></div>" +
+        '<div class="pl-anio">' + meses.map((m, i) => '<button type="button" class="pl-am' + (anio + "-" + pad2(i + 1) === plataMes ? " on" : "") + '" data-pa="ir-mes" data-m="' + anio + "-" + pad2(i + 1) + '">' +
+          '<span class="pl-ab"><i class="ent" style="height:' + Math.round((m.ingreso / tope) * 100) + '%"></i><i class="sal" style="height:' + Math.round((m.gasto / tope) * 100) + '%"></i></span>' + MESES_C[i].slice(0, 1).toUpperCase() + "</button>").join("") +
+        '</div><p class="pl-ley"><i class="ent"></i> entró <i class="sal"></i> salió · tocá un mes para verlo</p></section>';
+    }
+
+    PLATA_BODY.innerHTML = h;
+    animar(PLATA_BODY);
+  }
+
+  if (PLATA_BODY) {
+    PLATA_BODY.addEventListener("click", (ev) => {
+      const b = ev.target.closest("[data-pa]");
+      if (!b || b.disabled) return;
+      const a = b.dataset.pa;
+      const p = plataData();
+      const val = (id) => (document.getElementById(id) || {}).value || "";
+      if (a === "mes") {
+        const q = plataMes.split("-").map(Number);
+        const f = new Date(q[0], q[1] - 1 + Number(b.dataset.d), 1);
+        plataMes = f.getFullYear() + "-" + pad2(f.getMonth() + 1);
+        plataVerTodo = false; sfx("toque"); return renderPlata();
+      }
+      if (a === "ir-mes") { plataMes = b.dataset.m; sfx("toque"); renderPlata(); window.scrollTo(0, 0); return; }
+      if (a === "tipo") { plataTipo = b.dataset.t; return renderPlata(); }
+      if (a === "cat") {
+        plataCat = b.dataset.c;
+        PLATA_BODY.querySelectorAll(".pl-chips .chip").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+        return;
+      }
+      if (a === "add") {
+        const m = numPlata(val("pl-m"));
+        if (!m || m <= 0) { const el = document.getElementById("pl-m"); if (el) el.focus(); return; }
+        const esEste = plataMes === todayKey().slice(0, 7);
+        p.mov.push({ id: uid(), d: esEste ? todayKey() : mesRango(plataMes)[1], t: plataTipo, m: Math.round(m * 100) / 100, cat: plataTipo === "g" ? plataCat : "", nota: val("pl-n").trim().slice(0, 40) });
+        /* anotar el gasto ya cumple el hábito de anotar */
+        if (esEste && plataTipo === "g" && habitosPlata(p).some((x) => x.id === "anote")) {
+          const l = p.habLog[todayKey()] || (p.habLog[todayKey()] = {});
+          l.anote = true;
+        }
+        plataGuardar(p); sfx("guardar"); return renderPlata();
+      }
+      if (a === "del") { p.mov = p.mov.filter((m) => m.id !== b.dataset.id); plataGuardar(p); return renderPlata(); }
+      if (a === "vertodo") { plataVerTodo = !plataVerTodo; return renderPlata(); }
+      if (a === "pres") { plataPresEdit = !plataPresEdit; renderPlata(); const el = document.getElementById("pl-pres"); if (el) el.focus(); return; }
+      if (a === "pres-x") { plataPresEdit = false; return renderPlata(); }
+      if (a === "pres-ok") {
+        p.pres = { total: numPlata(val("pl-pres")) || 0, cats: {} };
+        PLATA_BODY.querySelectorAll("[data-pc]").forEach((el) => { const n = numPlata(el.value); if (n) p.pres.cats[el.dataset.pc] = n; });
+        plataPresEdit = false; plataGuardar(p); sfx("guardar"); return renderPlata();
+      }
+      if (a === "hab") {
+        const k = todayKey(), l = p.habLog[k] || (p.habLog[k] = {});
+        l[b.dataset.h] = !l[b.dataset.h];
+        plataGuardar(p);
+        const todos = habitosPlata(p).every((x) => l[x.id]);
+        sfx(todos && l[b.dataset.h] ? "listo" : "toque");
+        if (todos && l[b.dataset.h]) festejo(false);
+        return renderPlata();
+      }
+      if (a === "hab-edit") { plataHabEdit = !plataHabEdit; return renderPlata(); }
+      if (a === "hab-del") { p.hab = habitosPlata(p).filter((x) => x.id !== b.dataset.h); plataGuardar(p); return renderPlata(); }
+      if (a === "hab-add") {
+        const n = val("pl-hn").trim().slice(0, 40);
+        if (!n) return;
+        p.hab = habitosPlata(p).concat([{ id: uid(), n: n }]);
+        plataGuardar(p); return renderPlata();
+      }
+      if (a === "meta-add") {
+        const n = val("pl-mn").trim().slice(0, 30), o = numPlata(val("pl-mo"));
+        if (!n || !o) return;
+        p.metas.push({ id: uid(), n: n, obj: o, aportes: [] });
+        plataGuardar(p); sfx("guardar"); return renderPlata();
+      }
+      if (a === "aportar") {
+        const el = PLATA_BODY.querySelector('[data-ap="' + b.dataset.id + '"]');
+        const m = numPlata(el && el.value);
+        const mt = p.metas.filter((x) => x.id === b.dataset.id)[0];
+        if (!m || !mt) return;
+        const antes = (mt.aportes || []).reduce((s, x) => s + x.m, 0);
+        (mt.aportes = mt.aportes || []).push({ d: todayKey(), m: m });
+        plataGuardar(p);
+        if (antes < mt.obj && antes + m >= mt.obj) { festejo(true); sfx("listo"); } else sfx("guardar");
+        return renderPlata();
+      }
+      if (a === "meta-del") {
+        if (!confirm("¿Borrar esta meta?")) return;
+        p.metas = p.metas.filter((x) => x.id !== b.dataset.id); plataGuardar(p); return renderPlata();
+      }
+    });
+    PLATA_BODY.addEventListener("keydown", (ev) => {
+      if (ev.key === "Enter" && ev.target.id === "pl-m") { const b = PLATA_BODY.querySelector('[data-pa="add"]'); if (b) b.click(); }
+    });
+  }
+
+  /* ═══════════ Resumen: semana, mes y año de los cuatro pilares ═══════════ */
+  const RES_BODY = document.getElementById("resumen-body");
+  let resModo = "semana", resOff = 0;
+  const PILARES = {
+    entreno: { n: "Entreno", c: "#E9B75B" },
+    habitos: { n: "Hábitos", c: "#A98BFF" },
+    nutri: { n: "Nutrición", c: "#4BD489" },
+    plata: { n: "Plata", c: "#5FD6E0" },
+  };
+
+  function rangoRes(modo, off) {
+    const t = new Date();
+    if (modo === "semana") {
+      const desde = masDias(weekStart(), -7 * off);
+      const hasta = masDias(desde, 6);
+      const a = fechaDe(desde), b = fechaDe(hasta);
+      const nom = a.getMonth() === b.getMonth()
+        ? a.getDate() + " al " + b.getDate() + " de " + MESES[b.getMonth()]
+        : a.getDate() + " de " + MESES_C[a.getMonth()] + " al " + b.getDate() + " de " + MESES_C[b.getMonth()];
+      return { desde: desde, hasta: hasta, nom: nom, quien: off === 0 ? "esta semana" : off === 1 ? "la semana pasada" : "esa semana", ant: "la semana anterior" };
+    }
+    if (modo === "mes") {
+      const f = new Date(t.getFullYear(), t.getMonth() - off, 1);
+      const r = mesRango(f.getFullYear() + "-" + pad2(f.getMonth() + 1));
+      return { desde: r[0], hasta: r[1], nom: MESES[f.getMonth()] + " " + f.getFullYear(), quien: off === 0 ? "este mes" : "ese mes", ant: "el mes anterior" };
+    }
+    const y = t.getFullYear() - off;
+    return { desde: y + "-01-01", hasta: y + "-12-31", nom: String(y), quien: off === 0 ? "este año" : "ese año", ant: "el año anterior" };
+  }
+  /* Los cortes de la barra: días en la semana y el mes, meses en el año */
+  function cortesRes(modo, r) {
+    if (modo === "anio") {
+      const y = r.desde.slice(0, 4);
+      return MESES_C.map((m, i) => { const q = mesRango(y + "-" + pad2(i + 1)); return { desde: q[0], hasta: q[1], et: m.slice(0, 1).toUpperCase() }; });
+    }
+    return diasEntre(r.desde, r.hasta).map((k, i) => ({
+      desde: k, hasta: k,
+      et: modo === "semana" ? DIAS_C[fechaDe(k).getDay()] : (i === 0 || (i + 1) % 5 === 0 ? String(i + 1) : ""),
+    }));
+  }
+
+  function entrenoPorDia() {
+    const dias = {};
+    state.days.forEach((d) => flat(d).forEach((it) => (it.hist || []).forEach((s) => {
+      if (!s.d) return;
+      const hechas = s.sets.filter(hasVal);
+      if (!hechas.length) return;
+      const e = dias[s.d] || (dias[s.d] = { kg: 0, series: 0 });
+      e.kg += volumen(hechas);
+      e.series += hechas.length;
+    })));
+    return dias;
+  }
+
+  function statsRes(desde, hasta, ctx) {
+    const hoy = todayKey();
+    const fin = hasta < hoy ? hasta : hoy;
+    const corridos = desde > hoy ? [] : diasEntre(desde, fin);
+    const o = { entreno: null, habitos: null, nutri: null, plata: null };
+
+    /* Entreno: días, kilos y series. El objetivo son los días de la rutina por semana */
+    let dias = 0, kg = 0, series = 0;
+    Object.keys(ctx.ent).forEach((k) => { if (k >= desde && k <= hasta) { dias++; kg += ctx.ent[k].kg; series += ctx.ent[k].series; } });
+    if (ctx.hayEnt) {
+      /* lo esperado se cuenta desde que empezó a usar la app, no desde enero */
+      const desdeUso = corridos.filter((k) => !ctx.inicio || k >= ctx.inicio);
+      const porSemana = state.days.filter((d) => d.kind === "train").length || 3;
+      const espera = Math.max(1, Math.round((porSemana * desdeUso.length) / 7));
+      o.entreno = { dias: dias, kg: kg, series: series, score: desdeUso.length ? Math.min(1, dias / espera) : 0, espera: espera };
+    }
+
+    /* Hábitos del Sistema: promedio de cumplimiento de los días con misiones */
+    if (ctx.sis) {
+      const ini = Object.keys(ctx.sis.log || {}).sort()[0];
+      if (ini) {
+        let suma = 0, n = 0, buenos = 0;
+        corridos.forEach((k) => {
+          if (k < ini) return;
+          const r = pctDia(ctx.sis, k);
+          if (!r.n) return;
+          n++; suma += r.pct; if (r.pct >= 0.8) buenos++;
+        });
+        if (n) o.habitos = { pct: suma / n, buenos: buenos, dias: n, score: suma / n };
+      }
+    }
+
+    /* Nutrición: días que llegó a la proteína, y cómo se movió el peso */
+    const nc = nutriCfg();
+    const pl = pesos().filter((x) => x.d >= desde && x.d <= hasta);
+    if (nc) {
+      const m = metas(nc), l = protLog();
+      const ini = Object.keys(l).sort()[0];
+      const cuenta = corridos.filter((k) => ini && k >= ini);
+      const ok = cuenta.filter((k) => (l[k] || 0) >= m.prot).length;
+      o.nutri = { ok: ok, dias: cuenta.length, score: cuenta.length ? ok / cuenta.length : null };
+    }
+    if (pl.length) {
+      o.nutri = o.nutri || { ok: 0, dias: 0, score: null };
+      o.nutri.peso = pl[pl.length - 1].kg;
+      o.nutri.dif = pl.length > 1 ? pl[pl.length - 1].kg - pl[0].kg : 0;
+    }
+
+    const ps = plataStats(desde, hasta);
+    if (ps.hayDatos) o.plata = Object.assign(ps, { score: puntajePlata(desde, hasta) });
+
+    const sc = ["entreno", "habitos", "nutri", "plata"].map((k) => o[k] && o[k].score).filter((v) => v != null);
+    o.puntaje = sc.length ? Math.round((sc.reduce((a, b) => a + b, 0) / sc.length) * 100) : null;
+    return o;
+  }
+  function ctxRes() {
+    const ent = entrenoPorDia();
+    const sis = sistemaData(), p = plataData();
+    /* el primer día con algo anotado, en cualquier pilar */
+    const primeros = [Object.keys(ent).sort()[0], sis && Object.keys(sis.log || {}).sort()[0], Object.keys(protLog()).sort()[0],
+      (pesos()[0] || {}).d, p.inicio, p.mov.map((m) => m.d).sort()[0]].filter(Boolean).sort();
+    return { ent: ent, hayEnt: Object.keys(ent).length > 0 || state.days.some((d) => d.kind === "train" && flat(d).length), sis: sis, inicio: primeros[0] || todayKey() };
+  }
+
+  /* Barras simples: una por corte */
+  function barrasRes(vals, cortes, color) {
+    const tope = Math.max.apply(null, [0.0001].concat(vals));
+    return '<div class="rb' + (cortes.length > 12 ? " fino" : "") + '" style="--k:' + color + '">' + vals.map((v, i) =>
+      '<span><i style="--h:' + (v ? Math.max(6, Math.round((v / tope) * 100)) : 3) + '%"' + (v ? ' class="si"' : "") + "></i><em>" + cortes[i].et + "</em></span>").join("") + "</div>";
+  }
+  function compara(a, b, txt, ant, inverso) {
+    if (a == null || b == null) return "";
+    const d = a - b;
+    if (!d) return '<p class="rc">Igual que ' + ant + "</p>";
+    const bien = inverso ? d < 0 : d > 0;
+    return '<p class="rc ' + (bien ? "up" : "down") + '">' + (d > 0 ? "▲ " : "▼ ") + txt(Math.abs(d)) + (d > 0 ? " más" : " menos") + " que " + ant + "</p>";
+  }
+
+  function resumenDatos() {
+    const r = rangoRes(resModo, resOff);
+    const ctx = ctxRes();
+    const s = statsRes(r.desde, r.hasta, ctx);
+    const ra = rangoRes(resModo, resOff + 1);
+    /* antes de que empezara no hay con qué comparar */
+    const sa = ra.hasta < ctx.inicio ? { entreno: null, habitos: null, nutri: null, plata: null, puntaje: null } : statsRes(ra.desde, ra.hasta, ctx);
+    return { r: r, s: s, sa: sa, ctx: ctx };
+  }
+
+  function textoResumen(D) {
+    const r = D.r, s = D.s;
+    const titulo = { semana: "Resumen de la semana", mes: "Resumen de " + r.nom, anio: "Resumen de mi " + r.nom }[resModo];
+    const l = [titulo + (resModo === "semana" ? " (" + r.nom + ")" : "") + (nombre ? " · " + nombre : "")];
+    if (s.puntaje != null) l.push("Puntaje general: " + s.puntaje + "/100");
+    l.push("");
+    if (s.entreno) l.push("💪 Entreno: " + s.entreno.dias + (s.entreno.dias === 1 ? " día" : " días") + " · " + fmtKg(s.entreno.kg) + " kg · " + s.entreno.series + " series");
+    if (s.habitos) l.push("✅ Hábitos: " + Math.round(s.habitos.pct * 100) + "% cumplido · " + s.habitos.buenos + " días arriba del 80%");
+    if (s.nutri) {
+      const t = [];
+      if (s.nutri.dias) t.push("proteína cumplida " + s.nutri.ok + " de " + s.nutri.dias + " días");
+      if (s.nutri.peso) t.push("peso " + fmtNum(s.nutri.peso) + " kg" + (s.nutri.dif ? " (" + (s.nutri.dif > 0 ? "+" : "−") + fmtNum(Math.abs(s.nutri.dif)) + ")" : ""));
+      if (t.length) l.push("🥩 Nutrición: " + t.join(" · "));
+    }
+    if (s.plata) {
+      const t = ["gasté " + money(s.plata.gasto)];
+      if (s.plata.ingreso) t.push("me quedó " + money(s.plata.ahorro));
+      if (s.plata.aportes) t.push("ahorré " + money(s.plata.aportes) + " para mis metas");
+      if (s.plata.habPct != null) t.push("hábitos de plata " + Math.round(s.plata.habPct * 100) + "%");
+      l.push("💰 Plata: " + t.join(" · "));
+    }
+    if (l.length <= 2) l.push("Todavía no anoté nada en este período.");
+    return l.join("\n");
+  }
+
+  function renderResumen() {
+    if (!RES_BODY) return;
+    const D = resumenDatos(), r = D.r, s = D.s, sa = D.sa;
+    const cortes = cortesRes(resModo, r);
+    const modoTxt = { semana: "Semana", mes: "Mes", anio: "Año" };
+    let h = '<header class="hoy-h"><button type="button" class="btn lnk res-volver" data-rs="volver">‹ Volver</button>' +
+      '<p class="hoy-k">Tu resumen</p><h1 class="hoy-t">' + esc(r.nom.charAt(0).toUpperCase() + r.nom.slice(1)) + "</h1></header>" +
+      '<div class="seg res-seg">' + ["semana", "mes", "anio"].map((m) =>
+        '<button type="button" data-rs="modo" data-m="' + m + '" aria-pressed="' + (resModo === m) + '">' + modoTxt[m] + "</button>").join("") + "</div>" +
+      '<div class="mes-nav res-nav"><button type="button" class="ib" data-rs="off" data-d="1" aria-label="Anterior">‹</button><span>' + esc(r.quien) + "</span>" +
+      '<button type="button" class="ib" data-rs="off" data-d="-1" aria-label="Siguiente"' + (resOff === 0 ? " disabled" : "") + ">›</button></div>";
+
+    /* Puntaje general y los cuatro pilares */
+    const mini = ["entreno", "habitos", "nutri", "plata"].map((k) => {
+      const v = s[k] && s[k].score != null ? Math.round(s[k].score * 100) : null;
+      return '<div class="pil" style="--c:' + PILARES[k].c + '">' + anillo(v || 0, v == null ? "—" : '<i data-n="' + v + '" data-fin="' + v + '">' + v + "</i>", "", 62) + "<span>" + PILARES[k].n + "</span></div>";
+    }).join("");
+    h += '<section class="card rise hero res-hero" style="--c:#E9B75B"><p class="card-k">Puntaje general</p>' +
+      '<div class="hero-g">' + anillo(s.puntaje || 0, s.puntaje == null ? "—" : '<i data-n="' + s.puntaje + '" data-fin="' + s.puntaje + '">' + s.puntaje + "</i>", "de 100", 124) +
+      '<div class="hero-x"><p class="card-t">' + (s.puntaje == null ? "Sin datos todavía" : s.puntaje >= 80 ? "Imparable" : s.puntaje >= 60 ? "Muy bien" : s.puntaje >= 40 ? "En camino" : "A remontar") + "</p>" +
+      '<p class="hero-s">El promedio de tus pilares ' + esc(r.quien) + ".</p>" + compara(s.puntaje, sa.puntaje, (d) => d + " puntos", r.ant) + "</div></div>" +
+      '<div class="pils">' + mini + "</div>" +
+      '<div class="res-acc"><a class="btn pri wa-btn" data-rs="brian" href="' + esc(waUrl(textoResumen(D))) + '" target="_blank" rel="noopener">Mandárselo a ' + esc(MARCA.split(" ")[0]) + "</a>" +
+      '<button type="button" class="btn alt" data-rs="historia">Para historias</button></div>' +
+      '<p class="pan-n" id="res-n">La imagen para historias no muestra montos de plata.</p></section>';
+
+    /* Entreno */
+    if (s.entreno) {
+      const v = cortes.map((c) => Object.keys(D.ctx.ent).reduce((a, k) => a + (k >= c.desde && k <= c.hasta ? D.ctx.ent[k].kg : 0), 0));
+      h += '<section class="card rise" style="--c:' + PILARES.entreno.c + '"><p class="card-k">Entreno</p>' +
+        '<p class="card-t">' + s.entreno.dias + (s.entreno.dias === 1 ? " día" : " días") + ' <small class="res-de">de ' + s.entreno.espera + " esperados</small></p>" +
+        '<div class="prog-k"><span><b>' + fmtKg(s.entreno.kg) + "</b> kg movidos</span><span><b>" + s.entreno.series + "</b> series</span></div>" +
+        barrasRes(v, cortes, PILARES.entreno.c) + compara(s.entreno.dias, sa.entreno && sa.entreno.dias, (d) => d + (d === 1 ? " día" : " días"), r.ant) + "</section>";
+    }
+    /* Hábitos */
+    if (s.habitos) {
+      const v = cortes.map((c) => {
+        const ds = diasEntre(c.desde, c.hasta < todayKey() ? c.hasta : todayKey()).map((k) => pctDia(D.ctx.sis, k)).filter((x) => x.n);
+        return ds.length ? ds.reduce((a, x) => a + x.pct, 0) / ds.length : 0;
+      });
+      h += '<section class="card rise" style="--c:' + PILARES.habitos.c + '"><p class="card-k">Hábitos</p>' +
+        '<p class="card-t">' + Math.round(s.habitos.pct * 100) + '% <small class="res-de">cumplido</small></p>' +
+        '<div class="prog-k"><span><b>' + s.habitos.buenos + "</b> días arriba del 80%</span><span><b>" + s.habitos.dias + "</b> días con misiones</span></div>" +
+        barrasRes(v, cortes, PILARES.habitos.c) + compara(Math.round(s.habitos.pct * 100), sa.habitos && Math.round(sa.habitos.pct * 100), (d) => d + " puntos", r.ant) + "</section>";
+    }
+    /* Nutrición */
+    if (s.nutri) {
+      const l = protLog(), nc = nutriCfg(), meta = nc ? metas(nc).prot : 0;
+      const v = cortes.map((c) => diasEntre(c.desde, c.hasta).filter((k) => meta && (l[k] || 0) >= meta).length);
+      h += '<section class="card rise" style="--c:' + PILARES.nutri.c + '"><p class="card-k">Nutrición</p>' +
+        (s.nutri.dias ? '<p class="card-t">' + s.nutri.ok + ' <small class="res-de">de ' + s.nutri.dias + " días con la proteína cumplida</small></p>" : "") +
+        (s.nutri.peso ? '<div class="prog-k"><span><b>' + fmtNum(s.nutri.peso) + "</b> kg</span>" + (s.nutri.dif ? "<span><b>" + (s.nutri.dif > 0 ? "+" : "−") + fmtNum(Math.abs(s.nutri.dif)) + "</b> kg en el período</span>" : "") + "</div>" : "") +
+        (meta ? barrasRes(v, cortes, PILARES.nutri.c) : "") + "</section>";
+    }
+    /* Plata */
+    if (s.plata) {
+      const v = cortes.map((c) => plataStats(c.desde, c.hasta).gasto);
+      h += '<section class="card rise" style="--c:' + PILARES.plata.c + '"><p class="card-k">Plata</p>' +
+        '<p class="card-t">' + money(s.plata.gasto) + ' <small class="res-de">gastado</small></p>' +
+        '<div class="prog-k">' + (s.plata.ingreso ? "<span><b>" + money(s.plata.ahorro) + "</b> te quedó</span>" : "") +
+        (s.plata.aportes ? "<span><b>" + money(s.plata.aportes) + "</b> a tus metas</span>" : "") +
+        (s.plata.habPct != null ? "<span><b>" + Math.round(s.plata.habPct * 100) + "%</b> hábitos de plata</span>" : "") + "</div>" +
+        barrasRes(v, cortes, PILARES.plata.c) + compara(s.plata.gasto, sa.plata && sa.plata.gasto, money, r.ant, true) + "</section>";
+    }
+    if (!s.entreno && !s.habitos && !s.nutri && !s.plata) {
+      h += '<section class="card rise"><p class="card-k">Nada por acá</p><p class="card-t">Todavía no hay datos</p>' +
+        '<p class="card-s">Entrená, marcá tus misiones, anotá tu proteína y tus gastos: acá vas a ver cómo te fue en cada pilar.</p></section>';
+    }
+    RES_BODY.innerHTML = h;
+    animar(RES_BODY);
+  }
+
+  /* ───── Imagen para historias (1080×1920) ─────
+     Cada cliente que la postea lleva la marca puesta: es la publicidad que
+     no hay que pagar. No muestra montos de plata, solo porcentajes. */
+  function imagenResumen(D) {
+    const r = D.r, s = D.s;
+    const W = 1080, H = 1920;
+    const c = document.createElement("canvas");
+    c.width = W; c.height = H;
+    const x = c.getContext("2d");
+    const ORO = "#E9B75B", TINTA = "#F3EDE4", GRIS = "#9C8AB8";
+    x.fillStyle = "#0B0715"; x.fillRect(0, 0, W, H);
+    const brillo = (cx, cy, rad, col) => {
+      const g = x.createRadialGradient(cx, cy, 0, cx, cy, rad);
+      g.addColorStop(0, col); g.addColorStop(1, "rgba(11,7,21,0)");
+      x.fillStyle = g; x.fillRect(0, 0, W, H);
+    };
+    brillo(160, 120, 900, "rgba(233,183,91,.22)");
+    brillo(1000, 1250, 900, "rgba(169,139,255,.18)");
+    brillo(200, 1800, 700, "rgba(95,214,224,.10)");
+    const texto = (t, f, col, px, py, al) => { x.font = f; x.fillStyle = col; x.textAlign = al || "center"; x.fillText(t, px, py); };
+    const bisel = (bx, by, bw, bh, col, corte) => {
+      x.beginPath();
+      x.moveTo(bx + corte, by); x.lineTo(bx + bw, by);
+      x.lineTo(bx + bw, by + bh - corte); x.lineTo(bx + bw - corte, by + bh);
+      x.lineTo(bx, by + bh); x.lineTo(bx, by + corte);
+      x.closePath(); x.fillStyle = col; x.fill();
+    };
+    const aro = (cx, cy, rad, grosor, pct, col) => {
+      x.lineCap = "round"; x.lineWidth = grosor;
+      x.strokeStyle = "rgba(156,138,184,.22)"; x.beginPath(); x.arc(cx, cy, rad, 0, Math.PI * 2); x.stroke();
+      if (pct > 0) { x.strokeStyle = col; x.beginPath(); x.arc(cx, cy, rad, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.min(1, pct)); x.stroke(); }
+    };
+
+    texto({ semana: "MI SEMANA", mes: "MI MES", anio: "MI AÑO" }[resModo], "700 50px 'Chakra Petch', sans-serif", ORO, W / 2, 190);
+    texto(nombre ? nombre.toUpperCase() : "EN MODO SISTEMA", "700 76px 'Chakra Petch', sans-serif", TINTA, W / 2, 285);
+    texto(r.nom, "400 38px 'Archivo', sans-serif", GRIS, W / 2, 345);
+
+    /* puntaje grande */
+    aro(W / 2, 640, 210, 34, (s.puntaje || 0) / 100, ORO);
+    texto(s.puntaje == null ? "—" : String(s.puntaje), "700 190px 'Chakra Petch', sans-serif", TINTA, W / 2, 700);
+    texto("PUNTAJE", "600 34px 'Archivo', sans-serif", GRIS, W / 2, 760);
+
+    /* cuatro pilares en 2×2 */
+    const tiles = [
+      ["entreno", s.entreno ? String(s.entreno.dias) : "—", s.entreno ? (s.entreno.dias === 1 ? "día entrenado" : "días entrenados") : "sin datos",
+        s.entreno && s.entreno.kg ? fmtKg(s.entreno.kg) + " kg movidos" : ""],
+      ["habitos", s.habitos ? Math.round(s.habitos.pct * 100) + "%" : "—", "misiones cumplidas", s.habitos ? s.habitos.buenos + " días arriba del 80%" : ""],
+      ["nutri", s.nutri && s.nutri.dias ? s.nutri.ok + "/" + s.nutri.dias : "—", "días con la proteína", s.nutri && s.nutri.dif ? (s.nutri.dif > 0 ? "+" : "−") + fmtNum(Math.abs(s.nutri.dif)) + " kg" : ""],
+      ["plata", s.plata && s.plata.score != null ? Math.round(s.plata.score * 100) + "%" : "—", "plata en orden", s.plata && s.plata.habPct != null ? "hábitos de plata " + Math.round(s.plata.habPct * 100) + "%" : ""],
+    ];
+    tiles.forEach((t, i) => {
+      const bx = 90 + (i % 2) * 465, by = 900 + Math.floor(i / 2) * 330, bw = 435, bh = 300;
+      const col = PILARES[t[0]].c;
+      bisel(bx, by, bw, bh, "rgba(30,20,51,.92)", 26);
+      x.fillStyle = col; x.fillRect(bx, by + 26, 8, bh - 26);
+      texto(PILARES[t[0]].n.toUpperCase(), "600 30px 'Archivo', sans-serif", col, bx + 44, by + 70, "left");
+      texto(t[1], "700 110px 'Chakra Petch', sans-serif", TINTA, bx + 40, by + 185, "left");
+      texto(t[2], "400 30px 'Archivo', sans-serif", GRIS, bx + 44, by + 232, "left");
+      if (t[3]) texto(t[3], "600 28px 'Archivo', sans-serif", TINTA, bx + 44, by + 272, "left");
+    });
+
+    /* firma */
+    x.fillStyle = "rgba(243,237,228,.14)"; x.fillRect(120, 1640, W - 240, 2);
+    texto(String(CFG.producto || "SISTEMA"), "700 56px 'Chakra Petch', sans-serif", TINTA, W / 2, 1735);
+    texto("con " + MARCA, "400 38px 'Archivo', sans-serif", GRIS, W / 2, 1795);
+    return c;
+  }
+
+  function compartirResumen() {
+    const nota = document.getElementById("res-n");
+    const decir = (t) => { if (nota) nota.textContent = t; };
+    const D = resumenDatos();
+    const listo = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+    listo.then(() => {
+      imagenResumen(D).toBlob((blob) => {
+        if (!blob) return decir("No se pudo armar la imagen.");
+        const nom = "mi-" + { semana: "semana", mes: "mes", anio: "anio" }[resModo] + ".png";
+        const archivo = new File([blob], nom, { type: "image/png" });
+        const datos = { files: [archivo] };
+        if (navigator.canShare && navigator.canShare(datos) && navigator.share) {
+          navigator.share(datos).then(() => decir("¡Compartida!")).catch(() => decir(""));
+          return;
+        }
+        /* sin menú de compartir: se la descarga y la sube a mano */
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url; a.download = nom;
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 4000);
+        decir("Imagen descargada. Subila a tu historia.");
+      }, "image/png");
+    });
+  }
+
+  let resDesde = "hoy";
+  if (RES_BODY) {
+    RES_BODY.addEventListener("click", (ev) => {
+      const b = ev.target.closest("[data-rs]");
+      if (!b || b.disabled) return;
+      const a = b.dataset.rs;
+      if (a === "volver") { if (window.__irA) window.__irA(resDesde || "hoy"); return; }
+      if (a === "modo") { resModo = b.dataset.m; resOff = 0; sfx("toque"); return renderResumen(); }
+      if (a === "off") { resOff = Math.max(0, resOff + Number(b.dataset.d)); sfx("toque"); return renderResumen(); }
+      if (a === "historia") { sfx("toque"); return compartirResumen(); }
+      if (a === "brian") sfx("toque");
+    });
+  }
+
+  /* Hoy: los cuatro pilares de la semana, de un vistazo */
+  function cardPilares() {
+    const r = rangoRes("semana", 0);
+    const s = statsRes(r.desde, r.hasta, ctxRes());
+    const ir = { entreno: "entreno", habitos: "sistema", nutri: "", plata: "plata" };
+    const mini = ["entreno", "habitos", "nutri", "plata"].map((k) => {
+      const v = s[k] && s[k].score != null ? Math.round(s[k].score * 100) : null;
+      return '<button type="button" class="pil" style="--c:' + PILARES[k].c + '"' + (ir[k] ? ' data-act="go" data-to="' + ir[k] + '"' : "") + ">" +
+        anillo(v || 0, v == null ? "—" : '<i data-n="' + v + '" data-fin="' + v + '">' + v + "</i>", "", 62) + "<span>" + PILARES[k].n + "</span></button>";
+    }).join("");
+    return '<section class="card rise pils-card"><div class="bv-top"><p class="card-k">Tus 4 pilares · esta semana</p>' +
+      (s.puntaje != null ? '<p class="pils-tot"><b>' + s.puntaje + "</b>/100</p>" : "") + "</div>" +
+      '<div class="pils">' + mini + "</div>" +
+      '<button type="button" class="btn pri wide" data-act="go" data-to="resumen">Ver mi resumen semanal</button></section>';
+  }
+
+  /* Hoy: la plata del mes, chiquito */
+  function cardPlata() {
+    const p = plataData();
+    const [desde, hasta] = mesRango(todayKey().slice(0, 7));
+    const s = plataStats(desde, hasta);
+    if (!p.mov.length && !p.metas.length && !Object.keys(p.habLog || {}).length) {
+      return '<section class="card rise" style="--c:#5FD6E0"><p class="card-k">Plata</p><p class="card-t">El cuarto pilar</p>' +
+        '<p class="card-s">El cuerpo se ordena igual que la plata: anotando. Gastos, presupuesto, ahorro y hábitos, en el mismo lugar.</p>' +
+        '<button type="button" class="btn alt" data-act="go" data-to="plata">Ordenar mi plata</button></section>';
+    }
+    const pres = p.pres.total || 0;
+    const pct = pres ? Math.round((s.gasto / pres) * 100) : 0;
+    const hs = habitosPlata(p), l = (p.habLog || {})[todayKey()] || {};
+    const hechos = hs.filter((x) => l[x.id]).length;
+    return '<section class="card rise" style="--c:' + (pct > 100 ? "#FF6F4E" : "#5FD6E0") + '"><p class="card-k">Plata · ' + MESES[new Date().getMonth()] + "</p>" +
+      '<div class="hero-g">' + (pres ? anillo(Math.min(100, pct), '<i data-n="' + pct + '" data-fin="' + pct + '">' + pct + "</i><u>%</u>", "", 84) : "") +
+      '<div class="hero-x"><p class="card-t">' + money(s.gasto) + '</p><p class="hero-s">' + (pres ? "de " + money(pres) + " del mes" : "gastado este mes") + "</p>" +
+      (hs.length ? '<p class="hero-kg"><b>' + hechos + "/" + hs.length + "</b> hábitos de plata hoy</p>" : "") + "</div></div>" +
+      '<button type="button" class="btn alt" data-act="go" data-to="plata">Anotar un gasto</button></section>';
+  }
+
+  window.addEventListener("shell-tab", (ev) => {
+    if (ev.detail === "plata") renderPlata();
+    if (ev.detail === "resumen") renderResumen();
+    else resDesde = ev.detail;
+  });
+
   if (HOY) {
     HOY.addEventListener("click", (ev) => {
       const b = ev.target.closest("[data-act]");
       if (!b) return;
-      if (b.dataset.act === "sem-share") { sfx("toque"); return compartirSemana(); }
       if (b.dataset.act === "bv-salir") return bienvCerrar();
       if (b.dataset.act === "bv-noti") {
         pedirAviso().then((listo) => {
@@ -4122,7 +4849,7 @@ react-dom/cjs/react-dom.production.min.js:
 <script>
 (function () {
   var nav = document.getElementById("shellnav");
-  var panes = { hoy: document.getElementById("pane-hoy"), armar: document.getElementById("pane-armar"), entreno: document.getElementById("pane-entreno"), sistema: document.getElementById("pane-sistema") };
+  var panes = { hoy: document.getElementById("pane-hoy"), armar: document.getElementById("pane-armar"), entreno: document.getElementById("pane-entreno"), sistema: document.getElementById("pane-sistema"), plata: document.getElementById("pane-plata"), resumen: document.getElementById("pane-resumen") };
   var KEY = "shell:tab";
   function show(which) {
     Object.keys(panes).forEach(function (k) { panes[k].hidden = k !== which; });
