@@ -104,7 +104,16 @@ Hay 6 rutinas listas (principiante, ganar músculo, bajar grasa, en casa, glúte
 
 La app trabaja cuatro pilares: **Entreno**, **Hábitos** (pestaña Sistema), **Nutrición** y **Plata**.
 
-- **Plata** (pestaña nueva): gastos e ingresos por categoría, presupuesto del mes (total y por categoría, con cuánto queda por día), metas de ahorro con nombre y hábitos de plata diarios con racha. Abajo está el año entero, mes por mes. Todo queda en el teléfono del cliente, como el resto.
-- **Resumen**: desde Hoy → *Ver mi resumen semanal*. Muestra un puntaje de 0 a 100 por pilar y uno general, con gráficos por día (semana y mes) o por mes (año) y la comparación con el período anterior.
-  - **Mandárselo a Brian**: abre WhatsApp con el resumen en texto, listo para enviar.
-  - **Para historias**: arma una imagen 1080×1920 con la marca. No muestra montos de plata, solo porcentajes.
+- **Tu día** (arriba de todo en Hoy): una lista con lo de hoy (entreno o descanso, proteína, agua, misiones, gastos y, si toca, pesarse). Cada fila se completa con un toque. Con el 80% del día cumplido suma a la racha 🔥.
+- **Botón +** (abajo a la derecha en Hoy y Plata): anotar un gasto, proteína (con alimentos comunes), agua o peso en dos segundos.
+- **Plata** (pestaña propia): gastos e ingresos por categoría, presupuesto del mes (total y por categoría, con cuánto queda por día), metas de ahorro y hábitos de plata con racha. Abajo, el año mes por mes.
+- **Rangos**: el puntaje semanal (0 a 100, promedio de los pilares) da un rango: Hierro, Bronce, Acero, Oro, Diamante y Leyenda.
+- **Récords**: la app detecta sola cuando un ejercicio supera su mejor marca y arma una imagen para compartir.
+- **Resumen** (Hoy → *Ver mi resumen semanal*, por semana, mes o año): puntaje y rango, gráficos por pilar, comparación con el período anterior, *lo que dicen tus datos* (patrones como "la proteína se te cae el finde") y un objetivo para lo que viene.
+  - **¿Cómo te sentiste?** y una nota para Brian, que van en el mensaje.
+  - **Mandárselo a Brian**: abre WhatsApp con todo el resumen escrito.
+  - **Para historias**: imagen 1080×1920 con rango y la marca. No muestra montos de plata.
+  - **Retar a un amigo**: manda el puntaje con el link de recomendación del cliente (`planes.html?ref=...`), así cada reto puede ser una venta.
+- **Cierre de semana**: domingos y lunes aparece arriba una tarjeta para cerrar la semana y mandársela a Brian.
+
+Todo queda guardado en el teléfono del cliente, como el resto.

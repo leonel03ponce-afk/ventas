@@ -43,7 +43,7 @@ if (!window.CONFIG || !window.CONFIG.planes) window.CONFIG = /*CFG*/{
      Mercado Pago. "incluye" es la lista que se ve en la tarjeta del plan. */
   planes: [
     { id: "trimestral", nombre: "3 meses",      precio: 24900,  meses: 3,  detalle: "sale $8.300 por mes · 3 meses de acceso", pago: "https://mpago.la/2SDK5Ty",
-      incluye: ["Rutina personalizada armada por Brian", "Registro serie por serie y cronómetro", "Hábitos, niveles y rachas", "Plan de calorías y proteína", "Consultas por WhatsApp"] },
+      incluye: ["Rutina personalizada armada por Brian", "Tu día en una lista: entreno, comida, hábitos y plata", "Resumen semanal con puntaje que le llega a Brian", "Récords, rangos y rachas para compartir", "Gastos, presupuesto y ahorro", "Plan de calorías y proteína", "Consultas por WhatsApp"] },
     { id: "anual",      nombre: "Anual",        precio: 69900,  meses: 12, detalle: "sale $5.825 por mes · ahorrás 30%",              pago: "https://mpago.la/2cdoPet", destacado: "Más elegido",
       incluye: ["Todo lo del plan de 3 meses", "Rutina nueva cada 3 meses", "Revisión de tu progreso cada mes", "Prioridad en WhatsApp"] },
     { id: "vida",       nombre: "Para siempre", precio: 119900, meses: 0,  detalle: "un solo pago · acceso de por vida",              pago: "https://mpago.la/28ED6Ht",
@@ -194,7 +194,7 @@ footer a { color: var(--jade); font-weight: 600; text-decoration: none; }
     <div>
       <p class="logo"><i></i><span data-c="producto">SISTEMA</span></p>
       <h1>Dejá de empezar <span>el lunes.</span></h1>
-      <p class="sub">Tu rutina armada por <b data-c="marca">Brian Ponce</b>, en una app que te sigue todos los días: entrenamiento, hábitos y comidas. Cuerpo, mente y espíritu.</p>
+      <p class="sub">Tu rutina armada por <b data-c="marca">Brian Ponce</b>, en una app que te ordena la vida en cuatro pilares: <b>entreno, hábitos, comida y plata</b>. Abrís, ves lo que falta hoy, lo tachás. Y cada domingo, tu resumen le llega a Brian.</p>
       <div class="ctas">
         <a class="btn" href="#planes">Quiero mi plan</a>
         <a class="btn alt" data-prueba href="./">Consultar por WhatsApp</a>
@@ -212,6 +212,9 @@ footer a { color: var(--jade); font-weight: 600; text-decoration: none; }
   <div style="--c:#E9B75B"><b>Tu rutina, hecha a medida</b><p>No una plantilla: te la armo según tu objetivo, tus días y lo que tenés. Te llega directo a la app.</p></div>
   <div style="--c:#7C9CFF"><b>Una app que no te suelta</b><p>Anotás cada serie, el descanso se cronometra solo y la app te avisa cuando aflojás.</p></div>
   <div style="--c:#4BD489"><b>Hábitos que suben de nivel</b><p>Entrenar, leer, orar, dormir bien: cada misión suma experiencia. De Recluta a Leyenda.</p></div>
+  <div style="--c:#FF8F5E"><b>Tu día en una sola lista</b><p>Entreno, proteína, agua, misiones y gastos. Un toque y está. Completás el día y la racha sigue.</p></div>
+  <div style="--c:#5FD6E0"><b>La plata también se entrena</b><p>Gastos en 2 segundos, presupuesto del mes, metas de ahorro y hábitos de plata. El cuerpo y la billetera se ordenan igual.</p></div>
+  <div style="--c:#A98BFF"><b>Un coach que lee tus datos</b><p>Cada semana: puntaje, rango, récords y lo que dicen tus números. Se lo mandás a Brian y ajusta tu plan.</p></div>
 </div>
 
 <section id="planes">

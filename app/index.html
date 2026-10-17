@@ -714,6 +714,90 @@ button.pil { cursor: pointer; }
 .rt .rc.up { color: #4BD489; }
 .rt .rc.down { color: var(--coral); }
 .rt .hero-x .rc { margin-top: 8px; }
+/* ════ Hoy: chips, Tu día y secciones ════ */
+.rt .hoy-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 10px; }
+.rt .hoy-chips .hoy-d { margin-top: 0; }
+.rt .hchip { display: inline-flex; align-items: center; gap: 5px; min-height: 30px; padding: 0 11px; border: 1px solid color-mix(in srgb, var(--k) 55%, transparent); background: color-mix(in srgb, var(--k) 16%, transparent); color: var(--k); font: 700 13px/1 var(--display); letter-spacing: .03em; clip-path: var(--bevel-sm); cursor: pointer; }
+.rt .sec-h { margin: 34px 0 -2px; font: 700 13px/1 var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 10px; }
+.rt .sec-h::after { content: ""; flex: 1; height: 1px; background: var(--line2); }
+.rt .tudia .card-t { font-size: 28px; }
+.rt .tds { margin-top: 14px; }
+.rt .td { display: grid; grid-template-columns: 38px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); cursor: pointer; }
+.rt .td:first-child { border-top: 0; }
+.rt .td-ic { display: grid; place-items: center; width: 38px; height: 38px; font-size: 19px; background: rgba(255,255,255,.05); clip-path: var(--bevel-sm); }
+.rt .td.ok .td-ic { background: #4BD489; color: #0B0715; }
+.rt .td.ok .td-ic .ic { width: 20px; height: 20px; stroke-width: 3; }
+.rt .td-x { min-width: 0; }
+.rt .td-x b { display: block; font: 600 15px/1.2 var(--sans); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rt .td-x small { display: block; margin-top: 3px; font-size: 12.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rt .td.ok .td-x b { color: #4BD489; }
+.rt .td-bar { display: block; height: 4px; margin-top: 7px; background: rgba(255,255,255,.07); }
+.rt .td-bar i { display: block; height: 100%; background: linear-gradient(90deg, var(--gold), #FF8F5E); transition: width .6s ease; }
+.rt .td.ok .td-bar i { background: #4BD489; }
+.rt .td-b { display: flex; align-items: center; gap: 2px; }
+.rt .card .td-b .btn { margin-top: 0; }
+.rt .td-b .btn.sm { min-height: 36px; padding: 0 11px; font-size: 13px; }
+.rt .td-b .btn.lnk { color: var(--muted); padding: 0 6px; }
+.rt .td.extra { opacity: .85; }
+.rt .td.extra .td-x b { color: var(--muted); }
+.rt .cierre .card-t { font-size: 34px; }
+
+/* ════ Récords ════ */
+.rt .pr-l { margin-top: 10px; }
+.rt .pr-l li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 9px 0; border-top: 1px solid var(--line); }
+.rt .pr-l li:first-child { border-top: 0; }
+.rt .pr-cup { font-size: 22px; filter: drop-shadow(0 0 8px rgba(233,183,91,.6)); }
+.rt .pr-x b { display: block; font: 600 15px/1.2 var(--sans); }
+.rt .pr-x small { display: block; margin-top: 3px; font-size: 12.5px; color: var(--gold); }
+.rt .card .pr-l .btn { margin-top: 0; }
+
+/* ════ Resumen: rango, ánimo, datos ════ */
+.rt .rango { font: 400 11px/1 var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--muted2); }
+.rt .res-hero .rango-n { margin-top: 4px; font-size: 38px; color: var(--c); text-shadow: 0 0 24px color-mix(in srgb, var(--c) 50%, transparent); }
+.rt .rangos { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 3px; margin-top: 14px; }
+.rt .rangos li { padding: 7px 0 0; border-top: 3px solid color-mix(in srgb, var(--k) 35%, transparent); font: 600 9.5px/1 var(--sans); letter-spacing: .02em; text-align: center; color: var(--muted2); overflow: hidden; text-overflow: ellipsis; }
+.rt .rangos li.on { border-top-color: var(--k); color: var(--k); }
+.rt .animos { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; margin-top: 12px; }
+.rt .animos button { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 10px 0 8px; border: 1px solid var(--edge2); background: rgba(255,255,255,.03); color: var(--muted); font: 500 10.5px/1 var(--sans); cursor: pointer; clip-path: var(--bevel-sm); }
+.rt .animos span { font-size: 26px; line-height: 1; filter: grayscale(.6); transition: transform .15s ease, filter .15s ease; }
+.rt .animos button[aria-pressed="true"] { border-color: var(--c); color: var(--ink); background: color-mix(in srgb, var(--c) 18%, transparent); }
+.rt .animos button[aria-pressed="true"] span { filter: none; transform: scale(1.15); }
+.rt .card textarea.in { margin-top: 10px; min-height: 64px; font-size: 15px; }
+.rt .ins li { position: relative; padding: 10px 0 10px 22px; border-top: 1px solid var(--line); font: 400 15px/1.45 var(--sans); }
+.rt .ins li:first-child { border-top: 0; }
+.rt .ins li::before { content: ""; position: absolute; left: 2px; top: 17px; width: 8px; height: 8px; background: var(--c); clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+.rt .obj { margin-top: 12px; padding: 14px; background: color-mix(in srgb, var(--k) 12%, transparent); border-left: 3px solid var(--k); }
+.rt .obj-k { font: 400 10.5px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--k); }
+.rt .obj-t { margin-top: 8px; font: 700 21px/1.15 var(--display); }
+.rt .obj-s { margin-top: 6px; font-size: 14px; line-height: 1.45; color: var(--muted); }
+.rt .reto { background: linear-gradient(150deg, rgba(255,111,78,.2), rgba(21,14,36,.92) 60%); }
+
+/* ════ Botón + y hoja de anotar ════ */
+.fab { position: fixed; right: 16px; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 80; display: grid; place-items: center; width: 60px; height: 60px; padding: 0; border: 0; color: #0B0715; background: linear-gradient(135deg, #F5D08A, #E9B75B 50%, #FF8F5E); box-shadow: 0 10px 30px rgba(233,183,91,.4), 0 0 0 1px rgba(255,255,255,.2) inset; clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px); cursor: pointer; -webkit-tap-highlight-color: transparent; transition: transform .15s ease; }
+.fab[hidden] { display: none; }
+.fab:active { transform: scale(.92); }
+.fab svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; }
+body.bloqueado .fab, body.bloqueado .sheet { display: none !important; }
+.rt.sheet { position: fixed; inset: 0; z-index: 10000; display: flex; align-items: flex-end; justify-content: center; background: rgba(5,3,10,0); transition: background-color .22s ease; }
+.rt.sheet[hidden] { display: none; }
+.rt.sheet.on { background: rgba(5,3,10,.62); }
+.rt .sh-in { width: 100%; max-width: 560px; max-height: 88vh; overflow: auto; padding: 14px 16px calc(20px + env(safe-area-inset-bottom, 0px)); background: #150E24; border-top: 1px solid var(--line2); clip-path: polygon(18px 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%, 0 18px); transform: translateY(100%); transition: transform .26s cubic-bezier(.2,.8,.3,1); }
+.rt.sheet.on .sh-in { transform: none; }
+.rt .sh-top { display: flex; align-items: center; justify-content: space-between; }
+.rt .sh-top .card-k::before { background: var(--gold); }
+.rt .sh-tabs { --c: #E9B75B; }
+.rt .sh-tabs button { font-size: 12.5px; }
+.rt .sh-b { padding-top: 4px; }
+.rt .sh-nota { margin-top: 10px; }
+.rt .sh-acc { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 8px; margin-top: 14px; }
+.rt .sh-acc .btn:only-child { grid-column: 1 / -1; }
+.rt .sh-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; margin-top: 12px; }
+.rt .sh-big { margin-top: 12px; font-size: 15px; color: var(--muted); }
+.rt .sh-big b { font: 700 40px/1 var(--display); color: var(--ink); margin-right: 6px; }
+.rt .sh-l { margin-top: 14px; }
+.rt .vasos { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.rt .vasos i { width: 28px; height: 36px; border: 2px solid rgba(95,214,224,.4); border-top: 0; clip-path: polygon(0 0, 100% 0, 88% 100%, 12% 100%); background: rgba(95,214,224,.06); }
+.rt .vasos i.si { background: linear-gradient(180deg, #8EE8F0, #5FD6E0); border-color: #5FD6E0; }
 @media (max-width: 350px) { #shellnav { gap: 3px; padding-left: 6px; padding-right: 6px; } #shellnav button { font-size: 9.5px; letter-spacing: 0; } }
 @media (max-width: 360px) { .rt .pil .ring { transform: scale(.88); } .rt .res-acc { grid-template-columns: 1fr; } }
 </style>
@@ -772,7 +856,7 @@ if (!window.CONFIG) window.CONFIG = /*CFG*/{
      Mercado Pago. "incluye" es la lista que se ve en la tarjeta del plan. */
   planes: [
     { id: "trimestral", nombre: "3 meses",      precio: 24900,  meses: 3,  detalle: "sale $8.300 por mes · 3 meses de acceso", pago: "https://mpago.la/2SDK5Ty",
-      incluye: ["Rutina personalizada armada por Brian", "Registro serie por serie y cronómetro", "Hábitos, niveles y rachas", "Plan de calorías y proteína", "Consultas por WhatsApp"] },
+      incluye: ["Rutina personalizada armada por Brian", "Tu día en una lista: entreno, comida, hábitos y plata", "Resumen semanal con puntaje que le llega a Brian", "Récords, rangos y rachas para compartir", "Gastos, presupuesto y ahorro", "Plan de calorías y proteína", "Consultas por WhatsApp"] },
     { id: "anual",      nombre: "Anual",        precio: 69900,  meses: 12, detalle: "sale $5.825 por mes · ahorrás 30%",              pago: "https://mpago.la/2cdoPet", destacado: "Más elegido",
       incluye: ["Todo lo del plan de 3 meses", "Rutina nueva cada 3 meses", "Revisión de tu progreso cada mes", "Prioridad en WhatsApp"] },
     { id: "vida",       nombre: "Para siempre", precio: 119900, meses: 0,  detalle: "un solo pago · acceso de por vida",              pago: "https://mpago.la/28ED6Ht",
@@ -3288,6 +3372,12 @@ react-dom/cjs/react-dom.production.min.js:
         '<button type="button" class="btn pri" data-act="go" data-to="armar">Armar mi rutina</button></section>';
     }
     const p = progress(d);
+    const hoyRut = dayById(TODAY);
+    if (!p.done && (leer(KEY_DESC, {})[todayKey()] || (hoyRut && hoyRut.kind === "rest"))) {
+      return '<section class="card rise" style="--c:' + d.c + '"><p class="card-k">Hoy descansás</p><p class="card-t">Próximo: ' + esc(d.day) + "</p>" +
+        '<p class="card-s">' + esc(d.title) + " · " + flat(d).length + " ejercicios. Descansar también es parte del plan.</p>" +
+        '<button type="button" class="btn alt" data-act="go" data-to="entreno" data-day="' + d.id + '">Entrenar igual</button></section>';
+    }
     const pct = p.total ? Math.round((p.done / p.total) * 100) : 0;
     const prox = flat(d).filter((it) => !todaySets(it).length)[0];
     const kg = volDia(d);
@@ -3665,7 +3755,7 @@ react-dom/cjs/react-dom.production.min.js:
     const saludo = nombre ? "Hola, " + nombre : "Tu día";
     let h = '<header class="hoy-h"><p class="hoy-k">' + esc(String(CFG.producto || MARCA)) + "</p>" +
       '<h1 class="hoy-t">' + esc(saludo) + "</h1>" +
-      '<p class="hoy-d">' + DIAS_L[t.getDay()] + " " + t.getDate() + " de " + MESES[t.getMonth()] + "</p></header>";
+      '<div class="hoy-chips"><p class="hoy-d">' + DIAS_L[t.getDay()] + " " + t.getDate() + " de " + MESES[t.getMonth()] + "</p>" + chipsHoy() + "</div></header>";
     if (nombre && !bienvHecha) h += bienvHtml();
     if (tocaRecordar()) {
       h += '<section class="card aviso-h"><p class="card-k">Te toca</p>' +
@@ -3679,12 +3769,15 @@ react-dom/cjs/react-dom.production.min.js:
         '<div class="pan-b"><button type="button" class="btn pri" data-act="nom">Guardar</button></div></section>';
     }
     const lg = logrosNuevos();
-    h += cardPendiente() + cardPilares() + cardEntreno() + cardSistema() + cardNutri() + cardPlata() + cardAvisos() + cardSemana() + cardPeso() + cardMedidas() + cardLogros(lg) + cardHistorial();
+    const nc = nutriCfg();
+    h += cardPendiente() + cardCierre() + cardTuDia() + cardRecordsHoy() + cardEntreno() + cardPilares() + (sistemaData() ? "" : cardSistema()) + (nc && !nutriEdit ? "" : cardNutri()) + cardAvisos() +
+      '<h2 class="sec-h">Tu progreso</h2>' + cardSemana() + cardPlata() + (nc && !nutriEdit ? cardNutri() : "") + cardPeso() + cardMedidas() + cardLogros(lg) + cardHistorial();
     h += '<section class="card rise"><p class="card-k">Tu entrenador</p><p class="card-t">' + esc(MARCA) + "</p>" +
       '<p class="card-s">Dudas, cambios o una rutina hecha a tu medida: escribime al ' + esc(TEL) + ".</p>" +
       '<a class="btn alt" href="' + esc(waUrl("Hola " + MARCA + "! " + (nombre ? "Soy " + nombre + ". " : "") + "Te escribo por la rutina.")) + '" target="_blank" rel="noopener">Abrir WhatsApp</a></section>';
     HOY.innerHTML = h;
     animar(HOY);
+    chequearDia();
     if (lg.nuevos.length) {
       setTimeout(() => { festejo(true); sfx("listo"); showStatus("Logro desbloqueado: " + lg.nuevos[0], 3200); }, 500);
     }
@@ -3954,13 +4047,8 @@ react-dom/cjs/react-dom.production.min.js:
         const m = numPlata(val("pl-m"));
         if (!m || m <= 0) { const el = document.getElementById("pl-m"); if (el) el.focus(); return; }
         const esEste = plataMes === todayKey().slice(0, 7);
-        p.mov.push({ id: uid(), d: esEste ? todayKey() : mesRango(plataMes)[1], t: plataTipo, m: Math.round(m * 100) / 100, cat: plataTipo === "g" ? plataCat : "", nota: val("pl-n").trim().slice(0, 40) });
-        /* anotar el gasto ya cumple el hábito de anotar */
-        if (esEste && plataTipo === "g" && habitosPlata(p).some((x) => x.id === "anote")) {
-          const l = p.habLog[todayKey()] || (p.habLog[todayKey()] = {});
-          l.anote = true;
-        }
-        plataGuardar(p); sfx("guardar"); return renderPlata();
+        plataAgregar(plataTipo, m, plataCat, val("pl-n"), esEste ? todayKey() : mesRango(plataMes)[1]);
+        sfx("guardar"); renderPlata(); return chequearDia();
       }
       if (a === "del") { p.mov = p.mov.filter((m) => m.id !== b.dataset.id); plataGuardar(p); return renderPlata(); }
       if (a === "vertodo") { plataVerTodo = !plataVerTodo; return renderPlata(); }
@@ -3975,6 +4063,7 @@ react-dom/cjs/react-dom.production.min.js:
         const k = todayKey(), l = p.habLog[k] || (p.habLog[k] = {});
         l[b.dataset.h] = !l[b.dataset.h];
         plataGuardar(p);
+        chequearDia();
         const todos = habitosPlata(p).every((x) => l[x.id]);
         sfx(todos && l[b.dataset.h] ? "listo" : "toque");
         if (todos && l[b.dataset.h]) festejo(false);
@@ -4130,7 +4219,7 @@ react-dom/cjs/react-dom.production.min.js:
     /* el primer día con algo anotado, en cualquier pilar */
     const primeros = [Object.keys(ent).sort()[0], sis && Object.keys(sis.log || {}).sort()[0], Object.keys(protLog()).sort()[0],
       (pesos()[0] || {}).d, p.inicio, p.mov.map((m) => m.d).sort()[0]].filter(Boolean).sort();
-    return { ent: ent, hayEnt: Object.keys(ent).length > 0 || state.days.some((d) => d.kind === "train" && flat(d).length), sis: sis, inicio: primeros[0] || todayKey() };
+    return { ent: ent, hayEnt: Object.keys(ent).length > 0, sis: sis, inicio: primeros[0] || todayKey() };
   }
 
   /* Barras simples: una por corte */
@@ -4154,17 +4243,92 @@ react-dom/cjs/react-dom.production.min.js:
     const ra = rangoRes(resModo, resOff + 1);
     /* antes de que empezara no hay con qué comparar */
     const sa = ra.hasta < ctx.inicio ? { entreno: null, habitos: null, nutri: null, plata: null, puntaje: null } : statsRes(ra.desde, ra.hasta, ctx);
-    return { r: r, s: s, sa: sa, ctx: ctx };
+    return { r: r, s: s, sa: sa, ctx: ctx, recs: recordsEntre(r.desde, r.hasta) };
+  }
+
+  const prom = (l) => (l.length ? l.reduce((a, b) => a + b, 0) / l.length : 0);
+  const pc = (v) => Math.round(v * 100);
+
+  /* Lo que dicen tus datos: patrones que uno solo no ve */
+  function datosDicen(D) {
+    const r = D.r, s = D.s, out = [];
+    const dias = r.desde > todayKey() ? [] : diasEntre(r.desde, r.hasta < todayKey() ? r.hasta : todayKey());
+    const ent = D.ctx.ent;
+    if (D.ctx.sis) {
+      const con = [], sin = [];
+      dias.forEach((k) => { const q = pctDia(D.ctx.sis, k); if (!q.n) return; (ent[k] ? con : sin).push(q.pct); });
+      if (con.length >= 2 && sin.length >= 2) {
+        const d = pc(prom(con) - prom(sin));
+        if (d >= 10) out.push("Los días que entrenás cumplís un " + d + "% más de tus misiones. Entrenar ordena todo lo demás.");
+        else if (d <= -10) out.push("Los días que entrenás se te caen las misiones (" + -d + "% menos). Dejá las más cortas para esos días.");
+      }
+    }
+    const nc = nutriCfg();
+    if (nc) {
+      const l = protLog(), m = metas(nc).prot, fin = [], sem = [];
+      const ini = Object.keys(l).sort()[0];
+      dias.forEach((k) => { if (!ini || k < ini) return; const w = fechaDe(k).getDay(); (w === 0 || w === 6 ? fin : sem).push((l[k] || 0) >= m ? 1 : 0); });
+      if (fin.length >= 2 && sem.length >= 3 && prom(sem) - prom(fin) >= 0.25) {
+        out.push("La proteína se te cae el finde: la cumplís el " + pc(prom(fin)) + "% de esos días contra el " + pc(prom(sem)) + "% en la semana. Dejá algo listo el viernes.");
+      }
+    }
+    if (s.plata && s.plata.gasto) {
+      const cats = Object.keys(s.plata.porCat).sort((a, b) => s.plata.porCat[b] - s.plata.porCat[a]);
+      const parte = cats.length > 1 ? s.plata.porCat[cats[0]] / s.plata.gasto : 0;
+      if (parte >= 0.3) out.push("El " + pc(parte) + "% de lo que gastaste se fue en " + catDe(cats[0])[1].toLowerCase() + ". Si lo bajás un poco, ahí está tu ahorro.");
+      if (resModo !== "semana") {
+        const porDia = [0, 0, 0, 0, 0, 0, 0], cuenta = [0, 0, 0, 0, 0, 0, 0];
+        const p = plataData();
+        dias.forEach((k) => { cuenta[fechaDe(k).getDay()]++; });
+        p.mov.forEach((m) => { if (m.t === "g" && m.d >= r.desde && m.d <= r.hasta) porDia[fechaDe(m.d).getDay()] += m.m; });
+        const medias = porDia.map((v, i) => (cuenta[i] ? v / cuenta[i] : 0));
+        const media = prom(medias.filter((v, i) => cuenta[i]));
+        const top = medias.indexOf(Math.max.apply(null, medias));
+        if (media && medias[top] / media >= 1.5) out.push("Los " + DIAS_L[top] + (top === 0 || top === 6 ? "s" : "") + " gastás " + fmtNum(medias[top] / media) + " veces más que un día normal.");
+      }
+    }
+    if (s.entreno && D.sa.entreno && D.sa.entreno.kg && s.entreno.kg && r.hasta <= todayKey()) {
+      const d = s.entreno.kg / D.sa.entreno.kg - 1;
+      if (d >= 0.1) out.push("Moviste un " + pc(d) + "% más de kilos que " + r.ant + ". Eso es progreso de verdad.");
+      else if (d <= -0.15) out.push("Moviste un " + pc(-d) + "% menos de kilos que " + r.ant + ". Fijate si faltaron sesiones o bajaste los pesos.");
+    }
+    if (s.nutri && s.nutri.dif && nc && nc.obj !== "mantener") {
+      const bien = nc.obj === "musculo" ? s.nutri.dif > 0 : s.nutri.dif < 0;
+      out.push(bien ? (s.nutri.dif > 0 ? "Subiste " : "Bajaste ") + fmtNum(Math.abs(s.nutri.dif)) + " kg: vas en la dirección de tu objetivo."
+        : "El peso va al revés de tu objetivo (" + (s.nutri.dif > 0 ? "+" : "−") + fmtNum(Math.abs(s.nutri.dif)) + " kg). Revisalo con " + MARCA.split(" ")[0] + ".");
+    }
+    if (D.recs.length) out.push(D.recs.length === 1 ? "Rompiste tu récord en " + D.recs[0].n + "." : "Rompiste " + D.recs.length + " récords. La fuerza está subiendo.");
+    return out.slice(0, 4);
+  }
+
+  /* Un solo objetivo para lo que viene: el pilar más flojo */
+  function objetivo(D) {
+    const s = D.s;
+    const l = ["entreno", "habitos", "nutri", "plata"].filter((k) => s[k] && s[k].score != null).sort((a, b) => s[a].score - s[b].score);
+    if (!l.length) return null;
+    const k = l[0];
+    if (s[k].score >= 0.9) return { k: k, t: "Mantené todo como está", s: "Vas arriba del 90% en todos los pilares. El objetivo es no aflojar." };
+    const porSemana = state.days.filter((d) => d.kind === "train").length || 3;
+    const tips = {
+      entreno: ["Entrená " + porSemana + " días", "Agendá la hora como si fuera un turno médico. Si un día no podés, hacé 20 minutos: cuenta igual."],
+      habitos: ["Misiones al 80%, 5 días", "Empezá cada día por la misión más fácil. Lo que se hace primero, se hace."],
+      nutri: ["Proteína cumplida 5 de 7 días", "Sumá una fuente en cada comida: huevos al desayuno, un yogur proteico en la merienda."],
+      plata: ["Anotá cada gasto el mismo día", "Y marcá \"cero gastos hormiga\" al menos 4 días. Lo que se anota, se controla."],
+    };
+    return { k: k, t: tips[k][0], s: tips[k][1] };
   }
 
   function textoResumen(D) {
     const r = D.r, s = D.s;
     const titulo = { semana: "Resumen de la semana", mes: "Resumen de " + r.nom, anio: "Resumen de mi " + r.nom }[resModo];
     const l = [titulo + (resModo === "semana" ? " (" + r.nom + ")" : "") + (nombre ? " · " + nombre : "")];
-    if (s.puntaje != null) l.push("Puntaje general: " + s.puntaje + "/100");
+    if (s.puntaje != null) l.push("Puntaje: " + s.puntaje + "/100 · rango " + rango(s.puntaje).n);
+    const ck = resModo === "semana" ? leer(KEY_CHECK, {})[r.desde] : null;
+    if (ck && ck.a) l.push("Cómo me sentí: " + ANIMOS[ck.a - 1][0] + " " + ANIMOS[ck.a - 1][1]);
     l.push("");
-    if (s.entreno) l.push("💪 Entreno: " + s.entreno.dias + (s.entreno.dias === 1 ? " día" : " días") + " · " + fmtKg(s.entreno.kg) + " kg · " + s.entreno.series + " series");
-    if (s.habitos) l.push("✅ Hábitos: " + Math.round(s.habitos.pct * 100) + "% cumplido · " + s.habitos.buenos + " días arriba del 80%");
+    if (s.entreno) l.push("💪 Entreno: " + s.entreno.dias + (s.entreno.dias === 1 ? " día" : " días") + " de " + s.entreno.espera + " · " + fmtKg(s.entreno.kg) + " kg · " + s.entreno.series + " series");
+    if (D.recs.length) l.push("🏆 Récords: " + D.recs.slice(0, 4).map((x) => x.n + " " + prTxt(x)).join(" · "));
+    if (s.habitos) l.push("✅ Hábitos: " + pc(s.habitos.pct) + "% cumplido · " + s.habitos.buenos + " días arriba del 80%");
     if (s.nutri) {
       const t = [];
       if (s.nutri.dias) t.push("proteína cumplida " + s.nutri.ok + " de " + s.nutri.dias + " días");
@@ -4175,18 +4339,26 @@ react-dom/cjs/react-dom.production.min.js:
       const t = ["gasté " + money(s.plata.gasto)];
       if (s.plata.ingreso) t.push("me quedó " + money(s.plata.ahorro));
       if (s.plata.aportes) t.push("ahorré " + money(s.plata.aportes) + " para mis metas");
-      if (s.plata.habPct != null) t.push("hábitos de plata " + Math.round(s.plata.habPct * 100) + "%");
+      if (s.plata.habPct != null) t.push("hábitos de plata " + pc(s.plata.habPct) + "%");
       l.push("💰 Plata: " + t.join(" · "));
     }
-    if (l.length <= 2) l.push("Todavía no anoté nada en este período.");
+    if (l.length <= 3) l.push("Todavía no anoté nada en este período.");
+    const dd = datosDicen(D);
+    if (dd.length) { l.push(""); l.push("Lo que dicen mis datos:"); dd.forEach((x) => l.push("• " + x)); }
+    const ob = objetivo(D);
+    if (ob) { l.push(""); l.push("Mi objetivo para lo que viene: " + ob.t); }
+    if (ck && ck.nota) { l.push(""); l.push("Para vos: " + ck.nota); }
     return l.join("\n");
   }
+
+  const ANIMOS = [["😫", "Destruido"], ["😕", "Flojo"], ["😐", "Normal"], ["🙂", "Bien"], ["🔥", "Imparable"]];
 
   function renderResumen() {
     if (!RES_BODY) return;
     const D = resumenDatos(), r = D.r, s = D.s, sa = D.sa;
     const cortes = cortesRes(resModo, r);
     const modoTxt = { semana: "Semana", mes: "Mes", anio: "Año" };
+    const rg = rango(s.puntaje);
     let h = '<header class="hoy-h"><button type="button" class="btn lnk res-volver" data-rs="volver">‹ Volver</button>' +
       '<p class="hoy-k">Tu resumen</p><h1 class="hoy-t">' + esc(r.nom.charAt(0).toUpperCase() + r.nom.slice(1)) + "</h1></header>" +
       '<div class="seg res-seg">' + ["semana", "mes", "anio"].map((m) =>
@@ -4194,19 +4366,46 @@ react-dom/cjs/react-dom.production.min.js:
       '<div class="mes-nav res-nav"><button type="button" class="ib" data-rs="off" data-d="1" aria-label="Anterior">‹</button><span>' + esc(r.quien) + "</span>" +
       '<button type="button" class="ib" data-rs="off" data-d="-1" aria-label="Siguiente"' + (resOff === 0 ? " disabled" : "") + ">›</button></div>";
 
-    /* Puntaje general y los cuatro pilares */
+    /* Puntaje general, rango y los cuatro pilares */
     const mini = ["entreno", "habitos", "nutri", "plata"].map((k) => {
-      const v = s[k] && s[k].score != null ? Math.round(s[k].score * 100) : null;
+      const v = s[k] && s[k].score != null ? pc(s[k].score) : null;
       return '<div class="pil" style="--c:' + PILARES[k].c + '">' + anillo(v || 0, v == null ? "—" : '<i data-n="' + v + '" data-fin="' + v + '">' + v + "</i>", "", 62) + "<span>" + PILARES[k].n + "</span></div>";
     }).join("");
-    h += '<section class="card rise hero res-hero" style="--c:#E9B75B"><p class="card-k">Puntaje general</p>' +
+    h += '<section class="card rise hero res-hero" style="--c:' + (s.puntaje == null ? "#E9B75B" : rg.c) + '"><p class="card-k">Puntaje general</p>' +
       '<div class="hero-g">' + anillo(s.puntaje || 0, s.puntaje == null ? "—" : '<i data-n="' + s.puntaje + '" data-fin="' + s.puntaje + '">' + s.puntaje + "</i>", "de 100", 124) +
-      '<div class="hero-x"><p class="card-t">' + (s.puntaje == null ? "Sin datos todavía" : s.puntaje >= 80 ? "Imparable" : s.puntaje >= 60 ? "Muy bien" : s.puntaje >= 40 ? "En camino" : "A remontar") + "</p>" +
-      '<p class="hero-s">El promedio de tus pilares ' + esc(r.quien) + ".</p>" + compara(s.puntaje, sa.puntaje, (d) => d + " puntos", r.ant) + "</div></div>" +
+      '<div class="hero-x">' + (s.puntaje == null ? '<p class="card-t">Sin datos todavía</p>' : '<p class="rango">Rango</p><p class="card-t rango-n">' + rg.n + "</p>") +
+      compara(s.puntaje, sa.puntaje, (d) => d + (d === 1 ? " punto" : " puntos"), r.ant) + "</div></div>" +
       '<div class="pils">' + mini + "</div>" +
-      '<div class="res-acc"><a class="btn pri wa-btn" data-rs="brian" href="' + esc(waUrl(textoResumen(D))) + '" target="_blank" rel="noopener">Mandárselo a ' + esc(MARCA.split(" ")[0]) + "</a>" +
-      '<button type="button" class="btn alt" data-rs="historia">Para historias</button></div>' +
-      '<p class="pan-n" id="res-n">La imagen para historias no muestra montos de plata.</p></section>';
+      '<ol class="rangos">' + RANGOS.slice().reverse().map((x) => '<li style="--k:' + x[2] + '" class="' + (s.puntaje != null && x[1] === rg.n ? "on" : "") + '">' + x[1] + "</li>").join("") + "</ol></section>";
+
+    /* Cómo te sentiste: lo lee el entrenador */
+    if (resModo === "semana") {
+      const ck = leer(KEY_CHECK, {})[r.desde] || {};
+      h += '<section class="card rise" style="--c:#FF8F5E"><p class="card-k">Para ' + esc(MARCA.split(" ")[0]) + "</p><p class=\"card-t\">¿Cómo te sentiste?</p>" +
+        '<div class="animos">' + ANIMOS.map((a, i) => '<button type="button" data-rs="animo" data-v="' + (i + 1) + '" aria-pressed="' + (ck.a === i + 1) + '"><span>' + a[0] + "</span>" + a[1] + "</button>").join("") + "</div>" +
+        '<textarea class="in" id="res-nota" maxlength="280" rows="2" placeholder="Dolores, horarios, dudas, lo que quieras contarle">' + esc(ck.nota || "") + "</textarea>" +
+        '<div class="res-acc"><button type="button" class="btn pri wa-btn" data-rs="brian">Mandárselo a ' + esc(MARCA.split(" ")[0]) + "</button>" +
+        '<button type="button" class="btn alt" data-rs="historia">Para historias</button></div>' +
+        '<p class="pan-n" id="res-n">' + (leer(KEY_ENVIO, {})[r.desde] ? "Ya se lo mandaste. Podés mandarlo de nuevo si cambió algo." : "La imagen para historias no muestra montos de plata.") + "</p></section>";
+    } else {
+      h += '<section class="card rise" style="--c:#FF8F5E"><p class="card-k">Compartir</p><div class="res-acc"><button type="button" class="btn pri wa-btn" data-rs="brian">Mandárselo a ' + esc(MARCA.split(" ")[0]) + "</button>" +
+        '<button type="button" class="btn alt" data-rs="historia">Para historias</button></div><p class="pan-n" id="res-n">La imagen para historias no muestra montos de plata.</p></section>';
+    }
+
+    /* Lo que dicen tus datos y el objetivo */
+    const dd = datosDicen(D), ob = objetivo(D);
+    if (dd.length || ob) {
+      h += '<section class="card rise insights" style="--c:#A98BFF"><p class="card-k">Lo que dicen tus datos</p>' +
+        (dd.length ? '<ul class="ins">' + dd.map((x) => "<li>" + esc(x) + "</li>").join("") + "</ul>" : "") +
+        (ob ? '<div class="obj" style="--k:' + PILARES[ob.k].c + '"><p class="obj-k">Tu objetivo para ' + ({ semana: "la semana que viene", mes: "el mes que viene", anio: "lo que viene" }[resModo]) + "</p><p class=\"obj-t\">" + esc(ob.t) + '</p><p class="obj-s">' + esc(ob.s) + "</p></div>" : "") + "</section>";
+    }
+
+    /* Récords */
+    if (D.recs.length) {
+      h += '<section class="card rise recs" style="--c:#E9B75B"><p class="card-k">Récords</p><p class="card-t">' + D.recs.length + (D.recs.length === 1 ? " récord nuevo" : " récords nuevos") + "</p>" +
+        '<ul class="pr-l">' + D.recs.slice(0, 8).map((x, i) => '<li><span class="pr-cup">🏆</span><span class="pr-x"><b>' + esc(x.n) + "</b><small>" + prTxt(x) + " · antes " + prTxt(x.antes) + " · " + fmtDay(x.d) + "</small></span>" +
+          '<button type="button" class="btn sm alt" data-rs="pr" data-i="' + i + '">Compartir</button></li>').join("") + "</ul></section>";
+    }
 
     /* Entreno */
     if (s.entreno) {
@@ -4223,9 +4422,9 @@ react-dom/cjs/react-dom.production.min.js:
         return ds.length ? ds.reduce((a, x) => a + x.pct, 0) / ds.length : 0;
       });
       h += '<section class="card rise" style="--c:' + PILARES.habitos.c + '"><p class="card-k">Hábitos</p>' +
-        '<p class="card-t">' + Math.round(s.habitos.pct * 100) + '% <small class="res-de">cumplido</small></p>' +
+        '<p class="card-t">' + pc(s.habitos.pct) + '% <small class="res-de">cumplido</small></p>' +
         '<div class="prog-k"><span><b>' + s.habitos.buenos + "</b> días arriba del 80%</span><span><b>" + s.habitos.dias + "</b> días con misiones</span></div>" +
-        barrasRes(v, cortes, PILARES.habitos.c) + compara(Math.round(s.habitos.pct * 100), sa.habitos && Math.round(sa.habitos.pct * 100), (d) => d + " puntos", r.ant) + "</section>";
+        barrasRes(v, cortes, PILARES.habitos.c) + compara(pc(s.habitos.pct), sa.habitos && pc(sa.habitos.pct), (d) => d + (d === 1 ? " punto" : " puntos"), r.ant) + "</section>";
     }
     /* Nutrición */
     if (s.nutri) {
@@ -4243,12 +4442,19 @@ react-dom/cjs/react-dom.production.min.js:
         '<p class="card-t">' + money(s.plata.gasto) + ' <small class="res-de">gastado</small></p>' +
         '<div class="prog-k">' + (s.plata.ingreso ? "<span><b>" + money(s.plata.ahorro) + "</b> te quedó</span>" : "") +
         (s.plata.aportes ? "<span><b>" + money(s.plata.aportes) + "</b> a tus metas</span>" : "") +
-        (s.plata.habPct != null ? "<span><b>" + Math.round(s.plata.habPct * 100) + "%</b> hábitos de plata</span>" : "") + "</div>" +
+        (s.plata.habPct != null ? "<span><b>" + pc(s.plata.habPct) + "%</b> hábitos de plata</span>" : "") + "</div>" +
         barrasRes(v, cortes, PILARES.plata.c) + compara(s.plata.gasto, sa.plata && sa.plata.gasto, money, r.ant, true) + "</section>";
     }
     if (!s.entreno && !s.habitos && !s.nutri && !s.plata) {
       h += '<section class="card rise"><p class="card-k">Nada por acá</p><p class="card-t">Todavía no hay datos</p>' +
         '<p class="card-s">Entrená, marcá tus misiones, anotá tu proteína y tus gastos: acá vas a ver cómo te fue en cada pilar.</p></section>';
+    }
+
+    /* Retar a un amigo: el cliente trae al próximo cliente */
+    if (s.puntaje != null) {
+      h += '<section class="card rise reto" style="--c:#FF6F4E"><p class="card-k">Retá a un amigo</p><p class="card-t">¿Quién te sigue el ritmo?</p>' +
+        '<p class="card-s">Mandale tu puntaje y que intente superarte. Le llega con el link para arrancar.</p>' +
+        '<button type="button" class="btn pri" data-rs="reto">Retar a un amigo</button></section>';
     }
     RES_BODY.innerHTML = h;
     animar(RES_BODY);
@@ -4259,20 +4465,8 @@ react-dom/cjs/react-dom.production.min.js:
      no hay que pagar. No muestra montos de plata, solo porcentajes. */
   function imagenResumen(D) {
     const r = D.r, s = D.s;
-    const W = 1080, H = 1920;
-    const c = document.createElement("canvas");
-    c.width = W; c.height = H;
-    const x = c.getContext("2d");
+    const L = lienzoBase(), x = L.x, W = L.W;
     const ORO = "#E9B75B", TINTA = "#F3EDE4", GRIS = "#9C8AB8";
-    x.fillStyle = "#0B0715"; x.fillRect(0, 0, W, H);
-    const brillo = (cx, cy, rad, col) => {
-      const g = x.createRadialGradient(cx, cy, 0, cx, cy, rad);
-      g.addColorStop(0, col); g.addColorStop(1, "rgba(11,7,21,0)");
-      x.fillStyle = g; x.fillRect(0, 0, W, H);
-    };
-    brillo(160, 120, 900, "rgba(233,183,91,.22)");
-    brillo(1000, 1250, 900, "rgba(169,139,255,.18)");
-    brillo(200, 1800, 700, "rgba(95,214,224,.10)");
     const texto = (t, f, col, px, py, al) => { x.font = f; x.fillStyle = col; x.textAlign = al || "center"; x.fillText(t, px, py); };
     const bisel = (bx, by, bw, bh, col, corte) => {
       x.beginPath();
@@ -4281,71 +4475,52 @@ react-dom/cjs/react-dom.production.min.js:
       x.lineTo(bx, by + bh); x.lineTo(bx, by + corte);
       x.closePath(); x.fillStyle = col; x.fill();
     };
+    const rg = rango(s.puntaje);
     const aro = (cx, cy, rad, grosor, pct, col) => {
       x.lineCap = "round"; x.lineWidth = grosor;
       x.strokeStyle = "rgba(156,138,184,.22)"; x.beginPath(); x.arc(cx, cy, rad, 0, Math.PI * 2); x.stroke();
-      if (pct > 0) { x.strokeStyle = col; x.beginPath(); x.arc(cx, cy, rad, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.min(1, pct)); x.stroke(); }
+      if (pct > 0) { x.save(); x.shadowColor = col; x.shadowBlur = 40; x.strokeStyle = col; x.beginPath(); x.arc(cx, cy, rad, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.min(1, pct)); x.stroke(); x.restore(); }
     };
 
-    texto({ semana: "MI SEMANA", mes: "MI MES", anio: "MI AÑO" }[resModo], "700 50px 'Chakra Petch', sans-serif", ORO, W / 2, 190);
-    texto(nombre ? nombre.toUpperCase() : "EN MODO SISTEMA", "700 76px 'Chakra Petch', sans-serif", TINTA, W / 2, 285);
-    texto(r.nom, "400 38px 'Archivo', sans-serif", GRIS, W / 2, 345);
+    texto({ semana: "MI SEMANA", mes: "MI MES", anio: "MI AÑO" }[resModo], "700 50px 'Chakra Petch', sans-serif", ORO, W / 2, 170);
+    texto(nombre ? nombre.toUpperCase() : "EN MODO SISTEMA", "700 76px 'Chakra Petch', sans-serif", TINTA, W / 2, 262);
+    texto(r.nom, "400 38px 'Archivo', sans-serif", GRIS, W / 2, 320);
 
-    /* puntaje grande */
-    aro(W / 2, 640, 210, 34, (s.puntaje || 0) / 100, ORO);
-    texto(s.puntaje == null ? "—" : String(s.puntaje), "700 190px 'Chakra Petch', sans-serif", TINTA, W / 2, 700);
-    texto("PUNTAJE", "600 34px 'Archivo', sans-serif", GRIS, W / 2, 760);
+    aro(W / 2, 590, 200, 34, (s.puntaje || 0) / 100, s.puntaje == null ? ORO : rg.c);
+    texto(s.puntaje == null ? "—" : String(s.puntaje), "700 180px 'Chakra Petch', sans-serif", TINTA, W / 2, 645);
+    texto("PUNTAJE", "600 32px 'Archivo', sans-serif", GRIS, W / 2, 700);
+    if (s.puntaje != null) {
+      x.font = "700 46px 'Chakra Petch', sans-serif";
+      const t = "RANGO " + rg.n.toUpperCase(), tw = x.measureText(t).width + 70;
+      bisel(W / 2 - tw / 2, 820, tw, 76, rg.c, 16);
+      texto(t, "700 46px 'Chakra Petch', sans-serif", "#0B0715", W / 2, 874);
+    }
 
-    /* cuatro pilares en 2×2 */
     const tiles = [
       ["entreno", s.entreno ? String(s.entreno.dias) : "—", s.entreno ? (s.entreno.dias === 1 ? "día entrenado" : "días entrenados") : "sin datos",
-        s.entreno && s.entreno.kg ? fmtKg(s.entreno.kg) + " kg movidos" : ""],
-      ["habitos", s.habitos ? Math.round(s.habitos.pct * 100) + "%" : "—", "misiones cumplidas", s.habitos ? s.habitos.buenos + " días arriba del 80%" : ""],
+        D.recs.length ? "🏆 " + D.recs.length + (D.recs.length === 1 ? " récord nuevo" : " récords nuevos") : s.entreno && s.entreno.kg ? fmtKg(s.entreno.kg) + " kg movidos" : ""],
+      ["habitos", s.habitos ? pc(s.habitos.pct) + "%" : "—", "misiones cumplidas", s.habitos ? s.habitos.buenos + " días arriba del 80%" : ""],
       ["nutri", s.nutri && s.nutri.dias ? s.nutri.ok + "/" + s.nutri.dias : "—", "días con la proteína", s.nutri && s.nutri.dif ? (s.nutri.dif > 0 ? "+" : "−") + fmtNum(Math.abs(s.nutri.dif)) + " kg" : ""],
-      ["plata", s.plata && s.plata.score != null ? Math.round(s.plata.score * 100) + "%" : "—", "plata en orden", s.plata && s.plata.habPct != null ? "hábitos de plata " + Math.round(s.plata.habPct * 100) + "%" : ""],
+      ["plata", s.plata && s.plata.score != null ? pc(s.plata.score) + "%" : "—", "plata en orden", s.plata && s.plata.habPct != null ? "hábitos de plata " + pc(s.plata.habPct) + "%" : ""],
     ];
     tiles.forEach((t, i) => {
-      const bx = 90 + (i % 2) * 465, by = 900 + Math.floor(i / 2) * 330, bw = 435, bh = 300;
+      const bx = 90 + (i % 2) * 465, by = 960 + Math.floor(i / 2) * 320, bw = 435, bh = 290;
       const col = PILARES[t[0]].c;
       bisel(bx, by, bw, bh, "rgba(30,20,51,.92)", 26);
       x.fillStyle = col; x.fillRect(bx, by + 26, 8, bh - 26);
-      texto(PILARES[t[0]].n.toUpperCase(), "600 30px 'Archivo', sans-serif", col, bx + 44, by + 70, "left");
-      texto(t[1], "700 110px 'Chakra Petch', sans-serif", TINTA, bx + 40, by + 185, "left");
-      texto(t[2], "400 30px 'Archivo', sans-serif", GRIS, bx + 44, by + 232, "left");
-      if (t[3]) texto(t[3], "600 28px 'Archivo', sans-serif", TINTA, bx + 44, by + 272, "left");
+      texto(PILARES[t[0]].n.toUpperCase(), "600 30px 'Archivo', sans-serif", col, bx + 44, by + 66, "left");
+      texto(t[1], "700 104px 'Chakra Petch', sans-serif", TINTA, bx + 40, by + 175, "left");
+      texto(t[2], "400 30px 'Archivo', sans-serif", GRIS, bx + 44, by + 222, "left");
+      if (t[3]) texto(t[3], "600 28px 'Archivo', sans-serif", TINTA, bx + 44, by + 262, "left");
     });
-
-    /* firma */
-    x.fillStyle = "rgba(243,237,228,.14)"; x.fillRect(120, 1640, W - 240, 2);
-    texto(String(CFG.producto || "SISTEMA"), "700 56px 'Chakra Petch', sans-serif", TINTA, W / 2, 1735);
-    texto("con " + MARCA, "400 38px 'Archivo', sans-serif", GRIS, W / 2, 1795);
-    return c;
+    firma(x, W);
+    return L.c;
   }
 
-  function compartirResumen() {
-    const nota = document.getElementById("res-n");
-    const decir = (t) => { if (nota) nota.textContent = t; };
-    const D = resumenDatos();
-    const listo = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
-    listo.then(() => {
-      imagenResumen(D).toBlob((blob) => {
-        if (!blob) return decir("No se pudo armar la imagen.");
-        const nom = "mi-" + { semana: "semana", mes: "mes", anio: "anio" }[resModo] + ".png";
-        const archivo = new File([blob], nom, { type: "image/png" });
-        const datos = { files: [archivo] };
-        if (navigator.canShare && navigator.canShare(datos) && navigator.share) {
-          navigator.share(datos).then(() => decir("¡Compartida!")).catch(() => decir(""));
-          return;
-        }
-        /* sin menú de compartir: se la descarga y la sube a mano */
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url; a.download = nom;
-        document.body.appendChild(a); a.click(); a.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 4000);
-        decir("Imagen descargada. Subila a tu historia.");
-      }, "image/png");
-    });
+  function textoReto(D) {
+    const s = D.s;
+    return D.r.quien.charAt(0).toUpperCase() + D.r.quien.slice(1) + " saqué " + s.puntaje + "/100 en " + (CFG.producto || "SISTEMA") +
+      " (rango " + rango(s.puntaje).n + ") 💪 Entreno, hábitos, comida y plata, todo medido. ¿Te animás a superarme? Arrancá acá: " + linkAmigos();
   }
 
   let resDesde = "hoy";
@@ -4354,18 +4529,59 @@ react-dom/cjs/react-dom.production.min.js:
       const b = ev.target.closest("[data-rs]");
       if (!b || b.disabled) return;
       const a = b.dataset.rs;
+      const decir = (t) => { const n = document.getElementById("res-n"); if (n) n.textContent = t; };
       if (a === "volver") { if (window.__irA) window.__irA(resDesde || "hoy"); return; }
       if (a === "modo") { resModo = b.dataset.m; resOff = 0; sfx("toque"); return renderResumen(); }
       if (a === "off") { resOff = Math.max(0, resOff + Number(b.dataset.d)); sfx("toque"); return renderResumen(); }
-      if (a === "historia") { sfx("toque"); return compartirResumen(); }
-      if (a === "brian") sfx("toque");
+      if (a === "animo") {
+        const r = rangoRes(resModo, resOff), l = leer(KEY_CHECK, {});
+        l[r.desde] = Object.assign(l[r.desde] || {}, { a: Number(b.dataset.v) });
+        escribir(KEY_CHECK, l);
+        RES_BODY.querySelectorAll('[data-rs="animo"]').forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+        return sfx("toque");
+      }
+      const D = resumenDatos();
+      if (a === "historia") {
+        sfx("toque");
+        return compartirImagen(imagenResumen(D), "mi-" + { semana: "semana", mes: "mes", anio: "anio" }[resModo] + ".png",
+          D.s.puntaje != null ? textoReto(D) : "", decir);
+      }
+      if (a === "brian") {
+        sfx("toque");
+        const l = leer(KEY_ENVIO, {}); l[D.r.desde] = true; escribir(KEY_ENVIO, l);
+        window.open(waUrl(textoResumen(D)), "_blank", "noopener");
+        return decir("Listo. " + MARCA.split(" ")[0] + " lo va a ver en WhatsApp.");
+      }
+      if (a === "reto") {
+        sfx("toque");
+        const t = textoReto(D);
+        if (navigator.share) { navigator.share({ text: t }).catch(() => {}); return; }
+        window.open("https://wa.me/?text=" + encodeURIComponent(t), "_blank", "noopener");
+        return;
+      }
+      if (a === "pr" && D.recs[Number(b.dataset.i)]) { sfx("toque"); return compartirRecord(D.recs[Number(b.dataset.i)]); }
     });
+    RES_BODY.addEventListener("input", (ev) => {
+      if (ev.target.id !== "res-nota") return;
+      const r = rangoRes(resModo, resOff), l = leer(KEY_CHECK, {});
+      l[r.desde] = Object.assign(l[r.desde] || {}, { nota: ev.target.value.slice(0, 280) });
+      escribir(KEY_CHECK, l);
+    });
+  }
+
+  function chipsHoy() {
+    const n = rachaDias();
+    const r = rangoRes("semana", 0), s = statsRes(r.desde, r.hasta, ctxRes());
+    const rg = s.puntaje != null ? rango(s.puntaje) : null;
+    return (n ? '<span class="hchip" style="--k:#FF6F4E">🔥 ' + n + (n === 1 ? " día" : " días") + "</span>" : "") +
+      (rg ? '<button type="button" class="hchip" style="--k:' + rg.c + '" data-act="go" data-to="resumen">◆ ' + rg.n + "</button>" : "");
   }
 
   /* Hoy: los cuatro pilares de la semana, de un vistazo */
   function cardPilares() {
     const r = rangoRes("semana", 0);
     const s = statsRes(r.desde, r.hasta, ctxRes());
+    if (s.puntaje == null) return "";
     const ir = { entreno: "entreno", habitos: "sistema", nutri: "", plata: "plata" };
     const mini = ["entreno", "habitos", "nutri", "plata"].map((k) => {
       const v = s[k] && s[k].score != null ? Math.round(s[k].score * 100) : null;
@@ -4403,6 +4619,417 @@ react-dom/cjs/react-dom.production.min.js:
     if (ev.detail === "plata") renderPlata();
     if (ev.detail === "resumen") renderResumen();
     else resDesde = ev.detail;
+  });
+
+
+  /* ═══════════ Tu día: todo lo de hoy en una sola lista ═══════════
+     La app se abre para una cosa: saber qué falta hoy y tacharlo rápido.
+     Cada fila se completa con un toque, sin ir a otra pantalla. */
+  const KEY_AGUA = "rutina-cliente-agua";
+  const KEY_DIAS = "rutina-cliente-dias";       /* % del día cumplido, para la racha */
+  const KEY_DESC = "rutina-cliente-descanso";   /* días marcados como descanso */
+  const KEY_CHECK = "rutina-cliente-checkin";   /* cómo se sintió cada semana */
+  const KEY_ENVIO = "rutina-cliente-envios";    /* semanas ya mandadas al entrenador */
+  const leer = (k, def) => { try { return JSON.parse(localStorage.getItem(k) || "null") || def; } catch (e) { return def; } };
+  const escribir = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* sin almacenamiento */ } };
+  const metaVasos = () => { const c = nutriCfg(); return c ? Math.max(6, Math.round(metas(c).agua / 0.25)) : 8; };
+  const COMIDAS = [["Huevo", 6], ["Pollo 100 g", 31], ["Carne 100 g", 26], ["Atún (lata)", 25], ["Whey (scoop)", 24], ["Yogur proteico", 15], ["Queso 50 g", 12], ["Lentejas (taza)", 18]];
+
+  function plataAgregar(tipo, m, cat, nota, fecha) {
+    const p = plataData();
+    const d = fecha || todayKey();
+    p.mov.push({ id: uid(), d: d, t: tipo, m: Math.round(m * 100) / 100, cat: tipo === "g" ? cat : "", nota: (nota || "").trim().slice(0, 40) });
+    /* anotar el gasto ya cumple el hábito de anotar */
+    if (d === todayKey() && tipo === "g" && habitosPlata(p).some((x) => x.id === "anote")) {
+      (p.habLog[d] || (p.habLog[d] = {})).anote = true;
+    }
+    plataGuardar(p);
+  }
+  function sumarAgua(n) {
+    const l = leer(KEY_AGUA, {}), k = todayKey();
+    l[k] = Math.max(0, (l[k] || 0) + n);
+    escribir(KEY_AGUA, l);
+    return l[k];
+  }
+  function sumarProt(g) {
+    const l = protLog(), k = todayKey();
+    l[k] = Math.max(0, (l[k] || 0) + g);
+    try { localStorage.setItem(KEY_PROT, JSON.stringify(l)); } catch (err) { /* sin almacenamiento */ }
+    return l[k];
+  }
+
+  function diaItems() {
+    const k = todayKey(), it = [];
+    const d = diaDeHoy();
+    const desc = leer(KEY_DESC, {});
+    if (d && flat(d).length) {
+      const p = progress(d);
+      const hoyRutina = dayById(TODAY);
+      const tocaDescanso = !p.done && hoyRutina && hoyRutina.kind === "rest";
+      if (desc[k] || tocaDescanso) {
+        it.push({ id: "ent", ic: "🧘", t: "Descanso activo", s: desc[k] ? "Hecho. El músculo crece hoy." : "Caminá 10.000 pasos y estirá 10 minutos",
+          pct: desc[k] ? 1 : 0, act: desc[k] ? "" : "desc", btn: "Listo" });
+      } else {
+        it.push({ id: "ent", ic: "💪", t: d.day + " · " + d.title, s: p.done ? p.done + " de " + p.total + " ejercicios" : "Todavía no arrancaste",
+          pct: p.total ? Math.min(1, p.done / p.total / 0.8) : 0, go: "entreno", day: d.id, btn: p.done ? "Seguir" : "Entrenar",
+          alt: p.done ? "" : "desc", altT: "Descanso" });
+      }
+    }
+    const nc = nutriCfg();
+    if (nc) {
+      const m = metas(nc), g = protLog()[k] || 0;
+      it.push({ id: "prot", ic: "🥩", t: "Proteína", s: g + " de " + m.prot + " g", pct: Math.min(1, g / m.prot), q: "prot", btn: "+25 g", sheet: "prot" });
+      const v = leer(KEY_AGUA, {})[k] || 0, mv = metaVasos();
+      it.push({ id: "agua", ic: "💧", t: "Agua", s: v + " de " + mv + " vasos", pct: Math.min(1, v / mv), q: "agua", btn: "+1 vaso", sheet: "agua" });
+    } else {
+      it.push({ id: "prot", ic: "🥩", t: "¿Cuánto tenés que comer?", s: "5 datos y lo sabés", pct: 0, act: "nutri", btn: "Calcular", extra: true });
+    }
+    const s = sistemaData();
+    if (s) {
+      const m = misionesHoy(s);
+      if (m.total) it.push({ id: "mis", ic: "⚡", t: "Misiones", s: m.done + " de " + m.total + (m.xp ? " · +" + m.xp + " xp" : ""), pct: m.done / m.total, go: "sistema", btn: "Ir" });
+    } else {
+      it.push({ id: "mis", ic: "⚡", t: "Armá tus misiones", s: "Hábitos que suben de nivel", pct: 0, go: "sistema", btn: "Armar", extra: true });
+    }
+    const p = plataData(), hl = (p.habLog || {})[k] || {};
+    const movHoy = p.mov.filter((m) => m.d === k && m.t === "g");
+    const anotado = movHoy.length > 0 || !!hl.anote || !!hl.nogaste;
+    it.push({ id: "plata", ic: "💰", t: "Plata", pct: anotado ? 1 : 0, q: "gasto", btn: "+ Gasto", alt: anotado ? "" : "nogaste", altT: "No gasté",
+      s: movHoy.length ? movHoy.length + (movHoy.length === 1 ? " gasto · " : " gastos · ") + money(movHoy.reduce((a, m) => a + m.m, 0)) : hl.nogaste ? "Hoy no gastaste nada" : "Anotá lo que gastes" });
+    const ps = pesos(), ult = ps[ps.length - 1];
+    const diasPeso = ult ? Math.round((fechaDe(k) - fechaDe(ult.d)) / 86400000) : 99;
+    if (diasPeso >= 7) it.push({ id: "peso", ic: "⚖️", t: "Pesate", s: ult ? "Hace " + diasPeso + " días que no te pesás" : "Una vez por semana alcanza", pct: 0, q: "peso", btn: "Anotar", extra: true });
+    return it;
+  }
+  function pctDelDia(it) {
+    const cuentan = (it || diaItems()).filter((x) => !x.extra);
+    return cuentan.length ? cuentan.reduce((a, x) => a + x.pct, 0) / cuentan.length : 0;
+  }
+  /* Guarda cómo va el día, para la racha y el resumen */
+  function guardarDia() {
+    const l = leer(KEY_DIAS, {});
+    l[todayKey()] = Math.round(pctDelDia() * 100);
+    escribir(KEY_DIAS, l);
+    return l[todayKey()];
+  }
+  /* Días seguidos con el día cumplido (80% o más). Hoy suma si ya llegaste */
+  function rachaDias() {
+    const l = leer(KEY_DIAS, {});
+    let n = 0, k = todayKey();
+    if ((l[k] || 0) < 80) k = masDias(k, -1);
+    for (let i = 0; i < 1000 && (l[k] || 0) >= 80; i++, k = masDias(k, -1)) n++;
+    return n;
+  }
+  const RANGOS = [[92, "Leyenda", "#FF6F4E"], [80, "Diamante", "#5FD6E0"], [65, "Oro", "#E9B75B"], [50, "Acero", "#B8C4D9"], [30, "Bronce", "#D08B5B"], [0, "Hierro", "#9C8AB8"]];
+  const rango = (p) => { const r = RANGOS.filter((x) => (p || 0) >= x[0])[0]; return { n: r[1], c: r[2] }; };
+
+  let diaAntes = -1;
+  function cardTuDia() {
+    const it = diaItems();
+    const pct = Math.round(pctDelDia(it) * 100);
+    const filas = it.map((x) => {
+      const ok = !x.extra && x.pct >= 1;
+      const accion = x.go ? 'data-act="go" data-to="' + x.go + '"' + (x.day ? ' data-day="' + x.day + '"' : "")
+        : x.q ? 'data-act="td-q" data-q="' + x.q + '"' : 'data-act="td-' + x.act + '"';
+      return '<li class="td' + (ok ? " ok" : "") + (x.extra ? " extra" : "") + '"' + (x.sheet ? ' data-act="td-sheet" data-q="' + x.sheet + '"' : x.q ? ' data-act="td-sheet" data-q="' + x.q + '"' : "") + ">" +
+        '<span class="td-ic">' + (ok ? CHECK : x.ic) + '</span><span class="td-x"><b>' + esc(x.t) + "</b><small>" + esc(x.s) + "</small>" +
+        (x.extra ? "" : '<span class="td-bar"><i style="width:' + Math.round(x.pct * 100) + '%"></i></span>') + "</span>" +
+        '<span class="td-b">' + (x.alt ? '<button type="button" class="btn sm lnk" data-act="td-' + x.alt + '">' + esc(x.altT) + "</button>" : "") +
+        (ok && !x.q ? "" : '<button type="button" class="btn sm ' + (ok ? "alt" : "pri") + '" ' + accion + ">" + esc(x.btn) + "</button>") + "</span></li>";
+    }).join("");
+    const msg = pct >= 100 ? "Día completo. Así se construye." : pct >= 80 ? "Ya cuenta para la racha. Cerralo al 100." : pct >= 40 ? "Vas bien. Lo que falta, de a uno." : "Arrancá por lo más fácil.";
+    return '<section class="card rise hero tudia" style="--c:' + (pct >= 100 ? "#4BD489" : "#E9B75B") + '"><p class="card-k">Tu día</p>' +
+      '<div class="hero-g">' + anillo(pct, '<i data-n="' + pct + '" data-fin="' + pct + '">' + pct + "</i><u>%</u>", "", 92) +
+      '<div class="hero-x"><p class="card-t">' + (pct >= 100 ? "¡Completo!" : "Lo de hoy") + '</p><p class="hero-s">' + msg + "</p></div></div>" +
+      '<ul class="tds">' + filas + "</ul></section>";
+  }
+
+  /* Al terminar una acción: si el día se completó, festejo grande */
+  function chequearDia() {
+    const ahora = guardarDia();
+    if (diaAntes > -1 && diaAntes < 100 && ahora >= 100) {
+      setTimeout(() => { festejo(true); sfx("listo"); }, 250);
+      const r = rachaDias();
+      showStatus(r > 1 ? "Día completo · " + r + " días seguidos 🔥" : "Día completo 🔥", 3200);
+    }
+    diaAntes = ahora;
+  }
+
+  /* El domingo y el lunes: cerrar la semana y mandársela al entrenador */
+  function cardCierre() {
+    const dow = new Date().getDay();
+    if (dow !== 0 && dow !== 1) return "";
+    const off = dow === 0 ? 0 : 1;
+    const r = rangoRes("semana", off);
+    if (leer(KEY_ENVIO, {})[r.desde]) return "";
+    const s = statsRes(r.desde, r.hasta, ctxRes());
+    if (s.puntaje == null) return "";
+    const rg = rango(s.puntaje);
+    return '<section class="card rise hero cierre" style="--c:' + rg.c + '"><p class="card-k">' + (off ? "Cerró tu semana" : "Hoy cierra tu semana") + "</p>" +
+      '<p class="card-t">' + s.puntaje + "/100 · " + rg.n + "</p>" +
+      '<p class="card-s">Mirá cómo te fue en los cuatro pilares, contá cómo te sentiste y mandáselo a ' + esc(MARCA.split(" ")[0]) + ". Así ajusta tu plan.</p>" +
+      '<button type="button" class="btn pri" data-act="go-res" data-off="' + off + '">Cerrar mi semana</button></section>';
+  }
+
+  /* ───── Récords personales: más peso, o mismas reps con más peso ───── */
+  function recordsEntre(desde, hasta) {
+    const vistos = {};
+    state.days.forEach((d) => flat(d).forEach((it) => {
+      const ses = (it.hist || []).filter((s) => s.d).slice().sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : 0));
+      let top = null;
+      ses.forEach((s) => {
+        let mejor = null;
+        s.sets.forEach((x) => {
+          const p = num(x.p), r = num(x.r);
+          if (!p || !r) return;
+          const sc = p * 1000 + r;
+          if (!mejor || sc > mejor.sc) mejor = { sc: sc, p: p, r: r };
+        });
+        if (!mejor) return;
+        if (top && mejor.sc > top.sc && s.d >= desde && s.d <= hasta) {
+          const ya = vistos[it.n];
+          if (!ya || ya.d <= s.d) vistos[it.n] = { n: it.n, p: mejor.p, r: mejor.r, d: s.d, antes: top };
+        }
+        if (!top || mejor.sc > top.sc) top = mejor;
+      });
+    }));
+    return Object.keys(vistos).map((k) => vistos[k]).sort((a, b) => (a.d < b.d ? 1 : -1));
+  }
+  const prTxt = (x) => fmtNum(x.p) + " kg × " + fmtNum(x.r);
+  function cardRecordsHoy() {
+    const l = recordsEntre(todayKey(), todayKey());
+    if (!l.length) return "";
+    return '<section class="card rise hero recs" style="--c:#E9B75B"><p class="card-k">' + (l.length === 1 ? "Récord nuevo" : l.length + " récords nuevos") + "</p>" +
+      '<ul class="pr-l">' + l.map((x, i) => '<li><span class="pr-cup">🏆</span><span class="pr-x"><b>' + esc(x.n) + "</b><small>" + prTxt(x) + " · antes " + prTxt(x.antes) + "</small></span>" +
+        '<button type="button" class="btn sm alt" data-act="pr-share" data-i="' + i + '" data-hoy="1">Compartir</button></li>').join("") + "</ul></section>";
+  }
+
+  /* Texto con una sola línea por renglón para el lienzo */
+  function partir(x, txt, ancho) {
+    const pal = String(txt).split(" "), l = [];
+    let cur = "";
+    pal.forEach((w) => { const t = cur ? cur + " " + w : w; if (x.measureText(t).width > ancho && cur) { l.push(cur); cur = w; } else cur = t; });
+    if (cur) l.push(cur);
+    return l;
+  }
+  const sitioCorto = () => String(CFG.sitio || location.host).replace(/^https?:\/\//, "").replace(/\/$/, "");
+  function lienzoBase() {
+    const W = 1080, H = 1920, c = document.createElement("canvas");
+    c.width = W; c.height = H;
+    const x = c.getContext("2d");
+    x.fillStyle = "#0B0715"; x.fillRect(0, 0, W, H);
+    const brillo = (cx, cy, rad, col) => {
+      const g = x.createRadialGradient(cx, cy, 0, cx, cy, rad);
+      g.addColorStop(0, col); g.addColorStop(1, "rgba(11,7,21,0)");
+      x.fillStyle = g; x.fillRect(0, 0, W, H);
+    };
+    brillo(160, 120, 900, "rgba(233,183,91,.22)");
+    brillo(1000, 1250, 900, "rgba(169,139,255,.18)");
+    brillo(200, 1800, 700, "rgba(95,214,224,.10)");
+    return { c: c, x: x, W: W, H: H };
+  }
+  function firma(x, W) {
+    const texto = (t, f, col, py) => { x.font = f; x.fillStyle = col; x.textAlign = "center"; x.fillText(t, W / 2, py); };
+    x.fillStyle = "rgba(243,237,228,.14)"; x.fillRect(120, 1630, W - 240, 2);
+    texto(String(CFG.producto || "SISTEMA") + " · " + MARCA, "700 50px 'Chakra Petch', sans-serif", "#F3EDE4", 1715);
+    texto("Pedí tu rutina en " + sitioCorto(), "400 34px 'Archivo', sans-serif", "#9C8AB8", 1775);
+  }
+  function imagenRecord(pr) {
+    const L = lienzoBase(), x = L.x, W = L.W;
+    const texto = (t, f, col, py) => { x.font = f; x.fillStyle = col; x.textAlign = "center"; x.fillText(t, W / 2, py); };
+    texto("🏆", "160px sans-serif", "#E9B75B", 360);
+    texto("NUEVO RÉCORD", "700 64px 'Chakra Petch', sans-serif", "#E9B75B", 480);
+    if (nombre) texto(nombre.toUpperCase(), "600 40px 'Archivo', sans-serif", "#9C8AB8", 545);
+    x.font = "700 82px 'Chakra Petch', sans-serif";
+    const lineas = partir(x, pr.n, W - 160).slice(0, 3);
+    lineas.forEach((ln, i) => texto(ln, "700 82px 'Chakra Petch', sans-serif", "#F3EDE4", 720 + i * 92));
+    const y = 720 + lineas.length * 92 + 250;
+    texto(fmtNum(pr.p) + " kg", "700 260px 'Chakra Petch', sans-serif", "#F3EDE4", y);
+    texto("× " + fmtNum(pr.r) + (pr.r === 1 ? " repetición" : " repeticiones"), "600 60px 'Archivo', sans-serif", "#E9B75B", y + 110);
+    const sube = pr.p - pr.antes.p;
+    texto("Antes: " + prTxt(pr.antes) + (sube > 0 ? "  ·  +" + fmtNum(sube) + " kg" : ""), "400 42px 'Archivo', sans-serif", "#9C8AB8", y + 220);
+    firma(x, W);
+    return L.c;
+  }
+  /* Comparte una imagen: menú del celular si hay, si no la descarga */
+  function compartirImagen(lienzo, nom, texto, decir) {
+    const listo = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+    listo.then(() => lienzo.toBlob((blob) => {
+      if (!blob) return decir("No se pudo armar la imagen.");
+      const archivo = new File([blob], nom, { type: "image/png" });
+      const datos = { files: [archivo], text: texto };
+      if (navigator.canShare && navigator.canShare(datos) && navigator.share) {
+        navigator.share(datos).then(() => decir("¡Compartida!")).catch(() => decir(""));
+        return;
+      }
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = nom;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+      decir("Imagen descargada. Subila a tu historia.");
+    }, "image/png"));
+  }
+  const linkAmigos = () => (window.__linkRef && window.__linkRef()) || (String(CFG.sitio || "").replace(/\/?$/, "/") + "planes.html");
+  function compartirRecord(pr) {
+    compartirImagen(imagenRecord(pr), "record.png",
+      "Nuevo récord en " + pr.n + ": " + prTxt(pr) + " 🏆 Entreno con " + MARCA + " → " + linkAmigos(),
+      (t) => { if (t) showStatus(t, 2600); });
+  }
+
+  /* ───── Anotar rápido: el botón + y su hoja ───── */
+  const FAB = document.createElement("button");
+  FAB.type = "button"; FAB.className = "fab"; FAB.hidden = true;
+  FAB.setAttribute("aria-label", "Anotar rápido");
+  FAB.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
+  const SHEET = document.createElement("div");
+  SHEET.className = "rt sheet"; SHEET.hidden = true;
+  SHEET.setAttribute("role", "dialog"); SHEET.setAttribute("aria-label", "Anotar rápido");
+  document.body.appendChild(FAB);
+  document.body.appendChild(SHEET);
+  let sheetTab = "gasto", sheetCat = "comida", paneActual = "hoy";
+
+  function renderSheet() {
+    const tabs = [["gasto", "💰 Gasto"], ["prot", "🥩 Proteína"], ["agua", "💧 Agua"], ["peso", "⚖️ Peso"]];
+    let b = "";
+    if (sheetTab === "gasto") {
+      b = '<div class="pl-monto" style="--c:#FF6F4E"><span>$</span><input class="in" id="sh-m" inputmode="decimal" placeholder="0" autocomplete="off"></div>' +
+        '<div class="pl-chips">' + CATS.map((c) => '<button type="button" class="chip" style="--k:' + c[2] + '" data-sh="cat" data-c="' + c[0] + '" aria-pressed="' + (sheetCat === c[0]) + '">' + c[1] + "</button>").join("") + "</div>" +
+        '<input class="in sh-nota" id="sh-n" maxlength="40" placeholder="Nota (opcional)">' +
+        '<div class="sh-acc"><button type="button" class="btn pri" style="--c:#FF6F4E" data-sh="gasto">Anotar gasto</button><button type="button" class="btn alt" data-sh="nogaste">Hoy no gasté</button></div>';
+    } else if (sheetTab === "prot") {
+      const nc = nutriCfg();
+      if (!nc) {
+        b = '<p class="card-s">Primero calculá cuánta proteína necesitás: son 5 datos.</p><div class="sh-acc"><button type="button" class="btn pri" data-sh="nutri">Calcular mi plan</button></div>';
+      } else {
+        const m = metas(nc), g = protLog()[todayKey()] || 0;
+        b = '<p class="sh-big"><b>' + g + "</b> de " + m.prot + " g hoy</p>" +
+          '<div class="pl-mb"><i style="width:' + Math.min(100, Math.round((g / m.prot) * 100)) + '%;background:#4BD489"></i></div>' +
+          '<p class="fl sh-l">Tocá lo que comiste</p><div class="pl-chips">' +
+          COMIDAS.map((c) => '<button type="button" class="chip" style="--k:#4BD489" data-sh="prot" data-g="' + c[1] + '">' + c[0] + " · " + c[1] + " g</button>").join("") + "</div>" +
+          '<div class="sh-row"><input class="in" id="sh-g" inputmode="numeric" placeholder="Otra cantidad (g)"><button type="button" class="btn alt" data-sh="prot-x">Sumar</button></div>' +
+          (g ? '<button type="button" class="btn lnk" data-sh="prot-0">Poner en cero</button>' : "");
+      }
+    } else if (sheetTab === "agua") {
+      const v = leer(KEY_AGUA, {})[todayKey()] || 0, mv = metaVasos();
+      let vasos = "";
+      for (let i = 0; i < Math.max(mv, v); i++) vasos += '<i class="' + (i < v ? "si" : "") + '"></i>';
+      b = '<p class="sh-big"><b>' + v + "</b> de " + mv + " vasos</p><div class=\"vasos\">" + vasos + "</div>" +
+        '<div class="sh-acc"><button type="button" class="btn pri" style="--c:#5FD6E0" data-sh="agua" data-n="1">+1 vaso</button><button type="button" class="btn alt" data-sh="agua" data-n="-1">−1</button></div>';
+    } else {
+      const ps = pesos(), ult = ps[ps.length - 1];
+      b = '<p class="card-s">' + (ult ? "Último: " + fmtNum(ult.kg) + " kg (" + fmtDay(ult.d) + ")" : "Pesate en ayunas, una vez por semana.") + "</p>" +
+        '<div class="pl-monto" style="--c:#A98BFF"><input class="in" id="sh-p" inputmode="decimal" placeholder="' + (ult ? fmtNum(ult.kg) : "78,5") + '"><span>kg</span></div>' +
+        '<div class="sh-acc"><button type="button" class="btn pri" style="--c:#A98BFF" data-sh="peso">Guardar peso</button></div>';
+    }
+    SHEET.innerHTML = '<div class="sh-in"><div class="sh-top"><p class="card-k">Anotar rápido</p><button type="button" class="ib" data-sh="cerrar" aria-label="Cerrar">' + XIC + "</button></div>" +
+      '<div class="seg sh-tabs">' + tabs.map((t) => '<button type="button" data-sh="tab" data-t="' + t[0] + '" aria-pressed="' + (sheetTab === t[0]) + '">' + t[1] + "</button>").join("") + "</div>" +
+      '<div class="sh-b">' + b + "</div></div>";
+  }
+  function abrirSheet(tab) {
+    if (tab) sheetTab = tab;
+    renderSheet();
+    SHEET.hidden = false;
+    requestAnimationFrame(() => SHEET.classList.add("on"));
+    const f = SHEET.querySelector(".sh-b input");
+    if (f && (sheetTab === "gasto" || sheetTab === "peso")) setTimeout(() => f.focus(), 260);
+  }
+  function cerrarSheet() {
+    SHEET.classList.remove("on");
+    setTimeout(() => { SHEET.hidden = true; }, 220);
+  }
+  function refrescar() {
+    if (paneActual === "hoy") renderHoy();
+    if (paneActual === "plata") renderPlata();
+    chequearDia();
+  }
+  FAB.addEventListener("click", () => { sfx("toque"); abrirSheet(paneActual === "plata" ? "gasto" : null); });
+  SHEET.addEventListener("click", (ev) => {
+    if (ev.target === SHEET) return cerrarSheet();
+    const b = ev.target.closest("[data-sh]");
+    if (!b) return;
+    const a = b.dataset.sh, val = (id) => (document.getElementById(id) || {}).value || "";
+    if (a === "cerrar") return cerrarSheet();
+    if (a === "tab") { sheetTab = b.dataset.t; return abrirSheet(); }
+    if (a === "cat") { sheetCat = b.dataset.c; SHEET.querySelectorAll('[data-sh="cat"]').forEach((x) => x.setAttribute("aria-pressed", String(x === b))); return; }
+    if (a === "gasto") {
+      const m = numPlata(val("sh-m"));
+      if (!m || m <= 0) { const el = document.getElementById("sh-m"); if (el) el.focus(); return; }
+      plataAgregar("g", m, sheetCat, val("sh-n"));
+      sfx("guardar"); showStatus("Gasto anotado: " + money(m)); cerrarSheet(); return refrescar();
+    }
+    if (a === "nogaste") {
+      const p = plataData(), l = p.habLog[todayKey()] || (p.habLog[todayKey()] = {});
+      l.nogaste = true; l.anote = true; plataGuardar(p);
+      sfx("listo"); cerrarSheet(); return refrescar();
+    }
+    if (a === "nutri") { cerrarSheet(); nutriEdit = true; if (window.__irA) window.__irA("hoy"); setTimeout(() => { const c = document.getElementById("nu-edad"); if (c) c.scrollIntoView({ block: "center" }); }, 150); return; }
+    if (a === "prot" || a === "prot-x") {
+      const g = a === "prot" ? Number(b.dataset.g) : num(val("sh-g"));
+      if (!g) return;
+      const m = metas(nutriCfg()), antes = protLog()[todayKey()] || 0, ahora = sumarProt(g);
+      sfx(antes < m.prot && ahora >= m.prot ? "listo" : "toque");
+      if (antes < m.prot && ahora >= m.prot) festejo(false);
+      renderSheet(); return refrescar();
+    }
+    if (a === "prot-0") { const l = protLog(); delete l[todayKey()]; try { localStorage.setItem(KEY_PROT, JSON.stringify(l)); } catch (err) { /* sin almacenamiento */ } renderSheet(); return refrescar(); }
+    if (a === "agua") {
+      const v = sumarAgua(Number(b.dataset.n));
+      sfx(v === metaVasos() && Number(b.dataset.n) > 0 ? "listo" : "toque");
+      renderSheet(); return refrescar();
+    }
+    if (a === "peso") {
+      const v = num(val("sh-p"));
+      if (!v || v < 20 || v > 400) return;
+      guardarPeso(Math.round(v * 10) / 10);
+      sfx("guardar"); showStatus("Peso guardado"); cerrarSheet(); return refrescar();
+    }
+  });
+  SHEET.addEventListener("keydown", (ev) => {
+    if (ev.key === "Escape") cerrarSheet();
+    if (ev.key === "Enter" && ev.target.tagName === "INPUT") { const b = SHEET.querySelector(".sh-acc .btn.pri, .sh-row .btn"); if (b) b.click(); }
+  });
+
+  /* Acciones de "Tu día", los récords y el cierre de semana, en Hoy */
+  if (HOY) {
+    HOY.addEventListener("click", (ev) => {
+      const b = ev.target.closest("[data-act]");
+      if (!b) return;
+      const a = b.dataset.act;
+      if (a === "td-sheet" && b.tagName === "LI") { if (ev.target.closest("button")) return; sfx("toque"); return abrirSheet(b.dataset.q); }
+      if (a === "td-q") {
+        ev.stopPropagation();
+        const q = b.dataset.q;
+        if (q === "prot") {
+          const m = metas(nutriCfg()), antes = protLog()[todayKey()] || 0, ahora = sumarProt(25);
+          if (antes < m.prot && ahora >= m.prot) { festejo(false); sfx("listo"); } else sfx("toque");
+          return refrescar();
+        }
+        if (q === "agua") { sumarAgua(1); sfx("toque"); return refrescar(); }
+        sfx("toque"); return abrirSheet(q);
+      }
+      if (a === "td-desc") {
+        const l = leer(KEY_DESC, {}); l[todayKey()] = true; escribir(KEY_DESC, l);
+        sfx("listo"); return refrescar();
+      }
+      if (a === "td-nogaste") {
+        const p = plataData(), l = p.habLog[todayKey()] || (p.habLog[todayKey()] = {});
+        l.nogaste = true; l.anote = true; plataGuardar(p); sfx("listo"); return refrescar();
+      }
+      if (a === "td-nutri") { nutriEdit = true; renderHoy(); const c = document.getElementById("nu-edad"); if (c) c.scrollIntoView({ block: "center" }); return; }
+      if (a === "go-res") { resModo = "semana"; resOff = Number(b.dataset.off) || 0; if (window.__irA) window.__irA("resumen"); return; }
+      if (a === "pr-share") {
+        sfx("toque");
+        const l = recordsEntre(todayKey(), todayKey());
+        if (l[Number(b.dataset.i)]) compartirRecord(l[Number(b.dataset.i)]);
+      }
+    });
+  }
+  document.addEventListener("visibilitychange", () => { if (document.hidden) guardarDia(); });
+  window.addEventListener("shell-tab", (ev) => {
+    paneActual = ev.detail;
+    FAB.hidden = !(ev.detail === "hoy" || ev.detail === "plata");
+    if (!SHEET.hidden) cerrarSheet();
   });
 
   if (HOY) {
@@ -5321,6 +5948,7 @@ react-dom/cjs/react-dom.production.min.js:
     return r;
   }
   function linkRef() { var r = miRef(); return r ? SITIO.split("?")[0].split("#")[0].replace(/[^/]*$/, "") + "planes.html?ref=" + encodeURIComponent(r) : ""; }
+  window.__linkRef = linkRef;
   function textoRef() { return "Estoy entrenando con " + (window.CONFIG || {}).producto + " de " + MARCA + ": rutina, hábitos y niveles en el celu. Mirala acá: " + linkRef(); }
   function cardRef() {
     if (!REC.activo || !PLANES.length || !linkRef()) return "";
