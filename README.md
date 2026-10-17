@@ -4,7 +4,7 @@ La app está en la carpeta `app/`. Es una página web instalable en el celular (
 
 | Archivo | Para qué es |
 |---|---|
-| `app/index.html` | La app: Hoy, Armar (se oculta cuando ya hay rutina propia), Entreno, Hábitos (el Sistema) y Plata, más el Resumen (semana, mes y año) |
+| `app/index.html` | La app: Hoy, Entreno (con Armar adentro), Hábitos (el Sistema) y Finanzas, más el Resumen (semana, mes y año) |
 | `app/planes.html` | Página de venta corta, para el link de la bio y para los vendedores |
 | `app/vendedores.html` | Página para vendedores: sacan su link, copian textos listos, bajan el video y calculan cuánto ganan |
 | `app/guia-vendedores.html` | Guía para vendedores: perfil, dónde buscar clientes, mensajes en frío, cierre, objeciones y seguimiento, listos para copiar |
@@ -102,19 +102,18 @@ Hay 6 rutinas listas (principiante, ganar músculo, bajar grasa, en casa, glúte
 
 ## Los cuatro pilares y el resumen
 
-La app trabaja cuatro pilares: **Entreno**, **Hábitos** (pestaña Sistema), **Nutrición** y **Plata**.
+La app trabaja cuatro pilares: **Entreno**, **Hábitos**, **Nutrición** y **Finanzas**.
 
 - **Tu día** (arriba de todo en Hoy): una lista con lo de hoy (entreno o descanso, proteína, agua, misiones, gastos y, si toca, pesarse). Cada fila se completa con un toque. Con el 80% del día cumplido suma a la racha 🔥.
-- **Botón +** (abajo a la derecha en Hoy y Plata): anotar un gasto, proteína (con alimentos comunes), agua o peso en dos segundos.
-- **Plata** (pestaña propia): gastos e ingresos por categoría, presupuesto del mes (total y por categoría, con cuánto queda por día), metas de ahorro y hábitos de plata con racha. Abajo, el año mes por mes.
+- **Botón +** (abajo a la derecha en Hoy y Finanzas): anotar un gasto, proteína (con alimentos comunes), agua o peso en dos segundos.
+- **Finanzas** (pestaña propia): cuánto te queda libre en el mes (lo que entró, menos lo gastado, menos lo que falta pagar). **Cuentas del mes**: fijas (alquiler, luz, internet), en cuotas (cuota 4 de 12) o de una vez, con su vencimiento; se pagan con un toque y quedan como gasto. Si algo vence hoy o ya venció, aparece en Tu día. Además: gastos por categoría, presupuesto para el día a día, metas de ahorro, hábitos de plata y el año mes por mes.
 - **Rangos**: el puntaje semanal (0 a 100, promedio de los pilares) da un rango: Hierro, Bronce, Acero, Oro, Diamante y Leyenda.
 - **Récords**: la app detecta sola cuando un ejercicio supera su mejor marca y arma una imagen para compartir.
 - **Resumen** (Hoy → *Ver mi resumen semanal*, por semana, mes o año): puntaje y rango, gráficos por pilar, comparación con el período anterior, *lo que dicen tus datos* (patrones como "la proteína se te cae el finde") y un objetivo para lo que viene.
-  - **¿Cómo te sentiste?** y una nota para Brian, que van en el mensaje.
-  - **Mandárselo a Brian**: abre WhatsApp con todo el resumen escrito.
   - **Para historias**: imagen 1080×1920 con rango y la marca. No muestra montos de plata.
   - **Retar a un amigo**: manda el puntaje con el link de recomendación del cliente (`planes.html?ref=...`), así cada reto puede ser una venta.
-- **Cierre de semana**: domingos y lunes aparece arriba una tarjeta para cerrar la semana y mandársela a Brian.
+  - El resumen es para el alumno: no se le manda al entrenador.
+- **Cierre de semana**: domingos y lunes aparece arriba una tarjeta para ver cómo cerró la semana.
 
 Todo queda guardado en el teléfono del cliente, como el resto.
 

@@ -4,7 +4,7 @@
 **Sitio:** https://brian-ponce.netlify.app · **Repo:** leonel03ponce-afk/ventas, rama `claude/upbeat-archimedes-pab9s2`.
 
 ## Qué hay
-- `app/`: la app (`index.html`: Hoy con "Tu día" y botón +, Armar, Entreno, Sistema, **Plata** y **Resumen** semana/mes/año con rangos, récords, "lo que dicen tus datos", "Mandárselo a Brian", historias y "Retar a un amigo"; detalle en README), venta (`planes.html`), vendedores (`vendedores.html`, `guia-vendedores.html`), después del pago (`gracias.html`), ventas automáticas (`ventas.html`). Todo se configura en `app/config.js` (después correr `python3 app/sincronizar-config.py`).
+- `app/`: la app (`index.html`: Hoy con "Tu día" y botón +, Entreno (Armar adentro), Hábitos, **Finanzas** (cuentas a pagar, gastos, ahorro) y **Resumen** semana/mes/año con rangos, récords, "lo que dicen tus datos", historias y "Retar a un amigo"; detalle en README), venta (`planes.html`), vendedores (`vendedores.html`, `guia-vendedores.html`), después del pago (`gracias.html`), ventas automáticas (`ventas.html`). Todo se configura en `app/config.js` (después correr `python3 app/sincronizar-config.py`).
 - `netlify/`: funciones de cobro automático (Mercado Pago Checkout Pro + Hotmart webhook, códigos, bajas por reembolso). Guía: `COBRO-AUTOMATICO.md`.
 - `app/ventas.html` (**Mi negocio**): clientes, vencimientos, ventas, vendedores, comisiones, ventas a mano y rutinas. Clave: variable `CLAVE_VENTAS` de Netlify.
 - `app/ranking.html`: ranking público de vendedores. `rutinas/`: 6 rutinas base (`python3 rutinas/generar.py` regenera los links).

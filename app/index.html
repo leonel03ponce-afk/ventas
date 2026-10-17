@@ -704,7 +704,6 @@ button.pil { cursor: pointer; }
 .rt .res-hero .card-t { font-size: 28px; }
 .rt .res-acc { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 8px; margin-top: 16px; }
 .rt .card .res-acc .btn { margin-top: 0; padding: 0 10px; }
-.rt .btn.pri.wa-btn { --c: #25D366; --on: #062512; }
 .rt .rb { display: flex; align-items: flex-end; gap: 4px; height: 110px; margin-top: 16px; }
 .rt .rb.fino { gap: 2px; }
 .rt .rb span { flex: 1 1 0; min-width: 0; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 6px; }
@@ -758,12 +757,6 @@ button.pil { cursor: pointer; }
 .rt .rangos { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 3px; margin-top: 14px; }
 .rt .rangos li { padding: 7px 0 0; border-top: 3px solid color-mix(in srgb, var(--k) 35%, transparent); font: 600 9.5px/1 var(--sans); letter-spacing: .02em; text-align: center; color: var(--muted2); overflow: hidden; text-overflow: ellipsis; }
 .rt .rangos li.on { border-top-color: var(--k); color: var(--k); }
-.rt .animos { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; margin-top: 12px; }
-.rt .animos button { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 10px 0 8px; border: 1px solid var(--edge2); background: rgba(255,255,255,.03); color: var(--muted); font: 500 10.5px/1 var(--sans); cursor: pointer; clip-path: var(--bevel-sm); }
-.rt .animos span { font-size: 26px; line-height: 1; filter: grayscale(.6); transition: transform .15s ease, filter .15s ease; }
-.rt .animos button[aria-pressed="true"] { border-color: var(--c); color: var(--ink); background: color-mix(in srgb, var(--c) 18%, transparent); }
-.rt .animos button[aria-pressed="true"] span { filter: none; transform: scale(1.15); }
-.rt .card textarea.in { margin-top: 10px; min-height: 64px; font-size: 15px; }
 .rt .ins li { position: relative; padding: 10px 0 10px 22px; border-top: 1px solid var(--line); font: 400 15px/1.45 var(--sans); }
 .rt .ins li:first-child { border-top: 0; }
 .rt .ins li::before { content: ""; position: absolute; left: 2px; top: 17px; width: 8px; height: 8px; background: var(--c); clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
@@ -848,6 +841,48 @@ body.bloqueado .arr { display: none !important; }
 .rt .arr-box .btn { margin-top: 12px; }
 .rt .arr-ok { color: #4BD489 !important; font-weight: 600; }
 .rt .arr-n { margin-top: 12px; min-height: 18px; font-size: 14px; color: var(--coral); }
+/* ════ Entreno más calmo: el día como tarjeta, no como cartel ════ */
+.rt .block { margin: 16px 0 0; padding: 18px 18px 18px 20px; color: var(--ink); background: linear-gradient(150deg, color-mix(in srgb, var(--c) 26%, #150E24), rgba(21,14,36,.95) 70%); border-left: 4px solid var(--c); clip-path: var(--bevel); }
+.rt .block::after { display: none; }
+.rt .block .big { font: 700 12px/1.2 var(--sans) !important; letter-spacing: .16em; color: var(--c); }
+.rt .block .session { margin-top: 8px; font-size: 30px; }
+.rt .block .focus { margin-top: 6px; opacity: 1; color: var(--muted); }
+/* overflow-x: hidden volvía al panel un contenedor de scroll y la tira de días
+   no se pegaba arriba (quedaba corrida). clip recorta igual sin ese efecto. */
+#pane-entreno { overflow-x: clip; }
+#pane-entreno .strip { top: calc(61px + env(safe-area-inset-top, 0px)); background: rgba(11,7,21,.9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+#pane-entreno .tabs { padding-top: 6px; padding-bottom: 6px; }
+.rt .arm-back { max-width: 560px; margin: 0 auto; padding: 12px 16px 0; }
+.rt .arm-back .btn { margin-left: -8px; min-height: 36px; color: var(--muted); font-size: 14px; }
+/* ════ Finanzas: cuentas del mes ════ */
+.rt .pl-libre { font-size: 40px; }
+.rt .card-t.ok, .rt .pl-libre.ok { color: #4BD489; }
+.rt .card-t.mal, .rt .pl-libre.mal { color: var(--coral); }
+.rt .pl-pres { margin-top: 14px; padding: 12px; background: rgba(255,255,255,.035); }
+.rt .pl-ph { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; color: var(--muted); }
+.rt .pl-ph b { font: 700 15px/1 var(--display); color: var(--ink); }
+.rt .pl-pres .pl-mb { margin-top: 8px; }
+.rt .pl-pres p { margin-top: 8px; font-size: 13px; color: var(--muted); }
+.rt .ct-l { margin-top: 12px; }
+.rt .ct-l li { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto auto; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); }
+.rt .ct-l li:first-child { border-top: 0; }
+.rt .ct-e { width: 10px; height: 10px; border-radius: 50%; background: var(--muted2); }
+.rt .ct-l li.ok .ct-e { background: #4BD489; }
+.rt .ct-l li.venc .ct-e { background: var(--coral); box-shadow: 0 0 10px var(--coral); }
+.rt .ct-l li.pronto .ct-e { background: var(--gold); }
+.rt .ct-x { min-width: 0; }
+.rt .ct-x b { display: block; font: 600 15px/1.2 var(--sans); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rt .ct-x small { display: block; margin-top: 3px; font-size: 12.5px; color: var(--muted); }
+.rt .ct-l li.venc small { color: var(--coral); }
+.rt .ct-l li.pronto small { color: var(--gold); }
+.rt .ct-l li.ok .ct-x b, .rt .ct-l li.ok .ct-m { color: var(--muted); }
+.rt .ct-m { font: 700 15px/1 var(--display); }
+.rt .card .ct-l .btn { margin-top: 0; }
+.rt .ct-b { min-width: 70px; }
+.rt .ct-l li.ok .ct-b { min-width: 44px; color: #4BD489; }
+.rt .ct-form { margin-top: 14px; padding-top: 4px; border-top: 1px solid var(--line); }
+.rt .ct-form .seg { --c: #FF8F5E; }
+.rt .ct-form .seg button { font-size: 12.5px; }
 @media (max-width: 350px) { #shellnav { gap: 3px; padding-left: 6px; padding-right: 6px; } #shellnav button { font-size: 9.5px; letter-spacing: 0; } }
 @media (max-width: 360px) { .rt .pil .ring { transform: scale(.88); } .rt .res-acc { grid-template-columns: 1fr; } }
 </style>
@@ -856,13 +891,12 @@ body.bloqueado .arr { display: none !important; }
 <div id="gate" hidden></div>
 <nav id="shellnav" aria-label="Secciones">
   <button type="button" data-go="hoy" aria-pressed="true">Hoy</button>
-  <button type="button" data-go="armar" aria-pressed="false">Armar</button>
   <button type="button" data-go="entreno" aria-pressed="false">Entreno</button>
   <button type="button" data-go="sistema" aria-pressed="false">Hábitos</button>
-  <button type="button" data-go="plata" aria-pressed="false">Plata</button>
+  <button type="button" data-go="plata" aria-pressed="false">Finanzas</button>
 </nav>
 <div id="pane-hoy" class="rt"><div class="board" id="hoy-body"></div></div>
-<div id="pane-armar" class="rt" hidden><div class="board" id="armar-body"></div></div>
+<div id="pane-armar" class="rt" hidden><div class="arm-back"><button type="button" class="btn lnk" data-go-back="entreno">‹ Volver a Entreno</button></div><div class="board" id="armar-body"></div></div>
 <div id="pane-entreno" class="rt" hidden>
   <nav class="strip" aria-label="Días de la rutina">
     <div class="col tabs" id="rt-tabs" role="tablist"></div>
@@ -906,7 +940,7 @@ if (!window.CONFIG) window.CONFIG = /*CFG*/{
      Mercado Pago. "incluye" es la lista que se ve en la tarjeta del plan. */
   planes: [
     { id: "trimestral", nombre: "3 meses",      precio: 24900,  meses: 3,  detalle: "sale $8.300 por mes · 3 meses de acceso", pago: "https://mpago.la/2SDK5Ty",
-      incluye: ["Rutina personalizada armada por Brian", "Tu día en una lista: entreno, comida, hábitos y plata", "Resumen semanal con puntaje que le llega a Brian", "Récords, rangos y rachas para compartir", "Gastos, presupuesto y ahorro", "Plan de calorías y proteína", "Consultas por WhatsApp"] },
+      incluye: ["Rutina personalizada armada por Brian", "Tu día en una lista: entreno, comida, hábitos y plata", "Resumen semanal con puntaje y rango", "Récords, rangos y rachas para compartir", "Finanzas: cuentas a pagar, gastos y ahorro", "Plan de calorías y proteína", "Consultas por WhatsApp"] },
     { id: "anual",      nombre: "Anual",        precio: 69900,  meses: 12, detalle: "sale $5.825 por mes · ahorrás 30%",              pago: "https://mpago.la/2cdoPet", destacado: "Más elegido",
       incluye: ["Todo lo del plan de 3 meses", "Rutina nueva cada 3 meses", "Revisión de tu progreso cada mes", "Prioridad en WhatsApp"] },
     { id: "vida",       nombre: "Para siempre", precio: 119900, meses: 0,  detalle: "un solo pago · acceso de por vida",              pago: "https://mpago.la/28ED6Ht",
@@ -2450,13 +2484,10 @@ react-dom/cjs/react-dom.production.min.js:
   }
 
   function renderFoot() {
-    let h = '<div class="fcard"><h3>¿Querés una rutina hecha para vos?</h3>' +
-      "<p>Contame tu objetivo, tus días y con qué contás, y te la armo personalizada.</p>" +
-      '<button type="button" class="btn pri" data-act="form">Completar formulario</button></div>';
-    h += '<div class="fcard"><h3>Tenela a mano</h3>' +
-      '<p>En Chrome tocá el menú ⋮ y elegí "Instalar y crear acceso directo". Te queda el ícono en la pantalla de inicio y abre de una.</p></div>';
-    h += '<div class="fcard"><h3>Dudas</h3><p>Escribime al ' + WA_TEL + " y lo vemos.</p>" +
-      '<a class="btn alt" href="' + esc(waUrl("Hola " + MARCA.split(" ")[0] + "! Te escribo por la rutina.")) + '" target="_blank" rel="noopener">Abrir WhatsApp</a></div>';
+    /* Armar vive acá adentro: una sola pestaña para todo lo de entrenar */
+    let h = '<div class="fcard"><h3>¿Otra rutina?</h3>' +
+      "<p>Armala vos en dos minutos, o pedile a " + esc(MARCA.split(" ")[0]) + " una hecha a tu medida.</p>" +
+      '<div class="pan-b"><button type="button" class="btn pri" data-act="armar">Armar una nueva</button> <button type="button" class="btn alt" data-act="form">Pedírsela a ' + esc(MARCA.split(" ")[0]) + "</button></div></div>";
     h += '<button type="button" class="btn alt wide" data-act="backup">Respaldo y ajustes</button>';
     h += '<p class="legal">Esto es una guía general de entrenamiento, no una indicación médica. Si tenés una lesión o una condición de salud, consultá con un profesional antes de arrancar.</p>';
     if (panel === "form") h += formHtml();
@@ -2492,6 +2523,7 @@ react-dom/cjs/react-dom.production.min.js:
     if (!b) return;
     const act = b.dataset.act;
     if (act === "form") return openPanel("form");
+    if (act === "armar") { if (window.__irA) window.__irA("armar"); return; }
     if (act === "imp") return openPanel("import");
     if (act === "imp-go") return applyPlan(window.__ultimaRutina);
     if (act === "imp-paste") return applyPlan((document.getElementById("rt-imp") || {}).value || "");
@@ -3762,7 +3794,6 @@ react-dom/cjs/react-dom.production.min.js:
     animar(HOY);
     chequearDia();
     sincronizarPush();
-    navSimple();
     if (lg.nuevos.length) {
       setTimeout(() => { festejo(true); sfx("listo"); showStatus("Logro desbloqueado: " + lg.nuevos[0], 3200); }, 500);
     }
@@ -3797,7 +3828,7 @@ react-dom/cjs/react-dom.production.min.js:
     { id: "ahorre", n: "Separé algo para ahorrar" },
   ];
   function plataData() {
-    const vacio = { mov: [], pres: { total: 0, cats: {} }, metas: [], hab: null, habLog: {} };
+    const vacio = { mov: [], pres: { total: 0, cats: {} }, metas: [], hab: null, habLog: {}, cuentas: [] };
     try {
       const d = JSON.parse(localStorage.getItem(KEY_PLATA) || "null");
       if (d) return Object.assign(vacio, d);
@@ -3824,12 +3855,12 @@ react-dom/cjs/react-dom.production.min.js:
   /* Lo que pasó con la plata entre dos fechas (incluidas) */
   function plataStats(desde, hasta) {
     const p = plataData();
-    const r = { gasto: 0, ingreso: 0, porCat: {}, aportes: 0, habPct: null, hayDatos: false, pres: p.pres.total || 0 };
+    const r = { gasto: 0, fijos: 0, ingreso: 0, porCat: {}, aportes: 0, habPct: null, hayDatos: false, pres: p.pres.total || 0 };
     p.mov.forEach((m) => {
       if (m.d < desde || m.d > hasta) return;
       r.hayDatos = true;
       if (m.t === "i") r.ingreso += m.m;
-      else { r.gasto += m.m; r.porCat[m.cat] = (r.porCat[m.cat] || 0) + m.m; }
+      else { r.gasto += m.m; r.porCat[m.cat] = (r.porCat[m.cat] || 0) + m.m; if (m.cuenta) r.fijos += m.m; }
     });
     p.metas.forEach((mt) => (mt.aportes || []).forEach((a) => { if (a.d >= desde && a.d <= hasta) r.aportes += a.m; }));
     const hs = habitosPlata(p);
@@ -3858,7 +3889,8 @@ react-dom/cjs/react-dom.production.min.js:
       const fin = hasta < todayKey() ? hasta : todayKey();
       const dias = diasEntre(desde, fin).length;
       const tope = (s.pres / 30.4) * dias;
-      partes.push(s.gasto <= tope ? 1 : Math.max(0, tope / s.gasto));
+      const diario = s.gasto - s.fijos;   /* el presupuesto es para el día a día; las cuentas fijas van aparte */
+      partes.push(diario <= tope ? 1 : Math.max(0, tope / diario));
     }
     if (!partes.length) return null;
     return partes.reduce((a, b) => a + b, 0) / partes.length;
@@ -3876,6 +3908,89 @@ react-dom/cjs/react-dom.production.min.js:
     return n;
   }
 
+  /* ───── Cuentas a pagar: fijas de todos los meses, en cuotas o de una vez ─────
+     Se anotan una sola vez. Cada mes la app muestra qué vence, qué ya se
+     pagó y cuánto queda libre después de pagar todo. */
+  const ultimoDia = (ym) => { const q = ym.split("-").map(Number); return new Date(q[0], q[1], 0).getDate(); };
+  const sumarMeses = (ym, n) => { const q = ym.split("-").map(Number); const f = new Date(q[0], q[1] - 1 + n, 1); return f.getFullYear() + "-" + pad2(f.getMonth() + 1); };
+  const mesesEntre = (a, b) => { const x = a.split("-").map(Number), y = b.split("-").map(Number); return (y[0] - x[0]) * 12 + y[1] - x[1]; };
+  const NOMBRES_CTA = ["Alquiler", "Expensas", "Luz", "Gas", "Agua", "Internet", "Celular", "Tarjeta", "Gimnasio", "Seguro"];
+  function cuentasDelMes(p, ym) {
+    const hoy = todayKey();
+    return (p.cuentas || []).map((c) => {
+      let vence = "", cuota = 0;
+      if (c.tipo === "unica") {
+        if (!c.fecha || c.fecha.slice(0, 7) !== ym) return null;
+        vence = c.fecha;
+      } else {
+        const n = mesesEntre(c.desde, ym);
+        if (n < 0) return null;
+        if (c.tipo === "cuotas") { if (n >= c.total) return null; cuota = n + 1; }
+        vence = ym + "-" + pad2(Math.min(c.dia || 1, ultimoDia(ym)));
+      }
+      const pago = (c.pagos || {})[ym] || null;
+      return { c: c, vence: vence, cuota: cuota, pago: pago, m: pago ? pago.m : c.m || 0, dias: Math.round((fechaDe(vence) - fechaDe(hoy)) / 86400000) };
+    }).filter(Boolean).sort((a, b) => (!!a.pago - !!b.pago) || (a.vence < b.vence ? -1 : a.vence > b.vence ? 1 : 0));
+  }
+  function pagarCuenta(id, ym, monto) {
+    const p = plataData(), c = (p.cuentas || []).filter((x) => x.id === id)[0];
+    if (!c) return;
+    const m = monto || c.m;
+    const este = todayKey().slice(0, 7);
+    const d = ym === este ? todayKey() : ym < este ? mesRango(ym)[1] : ym + "-01";
+    const mov = { id: uid(), d: d, t: "g", m: m, cat: c.cat || "casa", nota: c.n, cuenta: id };
+    p.mov.push(mov);
+    (c.pagos = c.pagos || {})[ym] = { m: m, d: d, mov: mov.id };
+    plataGuardar(p);
+  }
+  function despagarCuenta(id, ym) {
+    const p = plataData(), c = (p.cuentas || []).filter((x) => x.id === id)[0];
+    if (!c || !c.pagos || !c.pagos[ym]) return;
+    p.mov = p.mov.filter((m) => m.id !== c.pagos[ym].mov);
+    delete c.pagos[ym];
+    plataGuardar(p);
+  }
+  const venceTxt = (x) => x.pago ? "Pagada el " + fmtDay(x.pago.d)
+    : x.dias < -1 ? "Venció hace " + -x.dias + " días" : x.dias === -1 ? "Venció ayer" : x.dias === 0 ? "Vence hoy" : x.dias === 1 ? "Vence mañana" : "Vence el " + fmtDay(x.vence);
+  const estadoCta = (x) => (x.pago ? "ok" : x.dias < 0 ? "venc" : x.dias <= 3 ? "pronto" : "pend");
+
+  let plataCtaForm = false, plataCtaEdit = false, ctaTipo = "fija";
+  function cardCuentas(p, ym) {
+    const cs = cuentasDelMes(p, ym);
+    const falta = cs.filter((x) => !x.pago), pagado = cs.filter((x) => x.pago);
+    const sum = (l) => l.reduce((a, x) => a + x.m, 0);
+    let h = '<section class="card rise cuentas" style="--c:' + (falta.some((x) => x.dias < 0) ? "#FF6F4E" : "#FF8F5E") + '"><p class="card-k">Cuentas del mes</p>';
+    if (cs.length) {
+      h += '<p class="card-t">' + (falta.length ? "Te falta pagar " + money(sum(falta)) : "Todo pagado ✓") + "</p>" +
+        '<p class="hero-s">' + (pagado.length ? "Pagaste " + money(sum(pagado)) + " de " + money(sum(cs)) : falta.length + (falta.length === 1 ? " cuenta" : " cuentas") + " este mes") + "</p>" +
+        '<ul class="ct-l">' + cs.map((x) => '<li class="' + estadoCta(x) + '"><i class="ct-e"></i><span class="ct-x"><b>' + esc(x.c.n) + "</b><small>" +
+          (x.cuota ? "Cuota " + x.cuota + " de " + x.c.total + " · " : "") + venceTxt(x) + "</small></span>" +
+          "<b class=\"ct-m\">" + (x.m ? money(x.m) : "—") + "</b>" +
+          (plataCtaEdit ? '<button type="button" class="btn dng" data-pa="cta-del" data-id="' + x.c.id + '" aria-label="Borrar">' + XIC + "</button>"
+            : x.pago ? '<button type="button" class="btn sm alt ct-b" data-pa="cta-no" data-id="' + x.c.id + '" aria-label="Marcar como no pagada">' + CHECK + "</button>"
+            : '<button type="button" class="btn sm pri ct-b" data-pa="cta-pagar" data-id="' + x.c.id + '">Pagar</button>') + "</li>").join("") + "</ul>";
+    } else {
+      h += '<p class="card-t">Tus cuentas fijas</p><p class="card-s">Alquiler, luz, internet, la tarjeta, las cuotas: anotalas una vez y cada mes ves qué vence, qué pagaste y cuánto te queda libre.</p>';
+    }
+    if (plataCtaForm) {
+      const tipos = [["fija", "Todos los meses"], ["cuotas", "En cuotas"], ["unica", "Una sola vez"]];
+      h += '<div class="ct-form"><div class="seg">' + tipos.map((t) => '<button type="button" data-pa="cta-tipo" data-t="' + t[0] + '" aria-pressed="' + (ctaTipo === t[0]) + '">' + t[1] + "</button>").join("") + "</div>" +
+        '<div class="pl-chips">' + NOMBRES_CTA.map((n) => '<button type="button" class="chip" style="--k:#FF8F5E" data-pa="cta-nom" data-nom="' + n + '">' + n + "</button>").join("") + "</div>" +
+        '<div class="two"><label class="fld"><span class="fl">Nombre</span><input class="in" id="ct-n" maxlength="30" placeholder="ej. Alquiler"></label>' +
+        '<label class="fld"><span class="fl">' + (ctaTipo === "cuotas" ? "Valor de la cuota" : "Monto") + '</span><input class="in" id="ct-m" inputmode="decimal" placeholder="' + (ctaTipo === "fija" ? "si cambia, dejalo vacío" : "ej. 25.000") + '"></label></div>' +
+        (ctaTipo === "unica"
+          ? '<label class="fld"><span class="fl">Vence el</span><input class="in" id="ct-f" type="date" value="' + todayKey() + '"></label>'
+          : '<div class="two"><label class="fld"><span class="fl">Vence el día</span><input class="in" id="ct-d" inputmode="numeric" placeholder="10"></label>' +
+            (ctaTipo === "cuotas" ? '<label class="fld"><span class="fl">Cuotas (total)</span><input class="in" id="ct-t" inputmode="numeric" placeholder="12"></label></div>' +
+              '<label class="fld"><span class="fl">¿Cuántas ya pagaste antes de este mes?</span><input class="in" id="ct-p" inputmode="numeric" placeholder="0"></label>' : "</div>")) +
+        '<div class="pan-b"><button type="button" class="btn pri" data-pa="cta-ok">Guardar cuenta</button> <button type="button" class="btn alt" data-pa="cta-x">Cancelar</button></div><p class="arr-n" id="ct-nota"></p></div>';
+    } else {
+      h += '<div class="pan-b"><button type="button" class="btn alt" data-pa="cta-form">+ Agregar cuenta</button>' +
+        (cs.length ? ' <button type="button" class="btn lnk" data-pa="cta-edit">' + (plataCtaEdit ? "Listo" : "Editar") + "</button>" : "") + "</div>";
+    }
+    return h + "</section>";
+  }
+
   let plataMes = todayKey().slice(0, 7);
   let plataTipo = "g", plataCat = "comida", plataPresEdit = false, plataVerTodo = false, plataHabEdit = false;
   const mesRango = (ym) => {
@@ -3891,31 +4006,37 @@ react-dom/cjs/react-dom.production.min.js:
     const [desde, hasta] = mesRango(plataMes);
     const s = plataStats(desde, hasta);
     const esEste = plataMes === todayKey().slice(0, 7);
-    let h = '<header class="hoy-h"><p class="hoy-k">El cuarto pilar</p><h1 class="hoy-t">Tu <em>plata</em></h1>' +
+    let h = '<header class="hoy-h"><p class="hoy-k">Gastos, cuentas y ahorro</p><h1 class="hoy-t">Tus <em>finanzas</em></h1>' +
       '<div class="mes-nav"><button type="button" class="ib" data-pa="mes" data-d="-1" aria-label="Mes anterior">‹</button>' +
       "<span>" + nombreMes(plataMes) + "</span>" +
       '<button type="button" class="ib" data-pa="mes" data-d="1" aria-label="Mes siguiente"' + (esEste ? " disabled" : "") + ">›</button></div></header>";
 
-    /* Presupuesto y cómo viene el mes */
+    /* Cuánto te queda libre: lo que entró, menos lo gastado, menos lo que falta pagar */
+    const cs = cuentasDelMes(p, plataMes);
+    const porPagar = cs.filter((x) => !x.pago).reduce((a, x) => a + x.m, 0);
+    const libre = s.ingreso - s.gasto - porPagar;
+    const diario = s.gasto - s.fijos;
     const pres = p.pres.total || 0;
-    const pct = pres ? Math.round((s.gasto / pres) * 100) : 0;
     let bajada = "";
     if (pres && esEste) {
-      const queda = pres - s.gasto;
+      const queda = pres - diario;
       const diasRest = Number(hasta.slice(8)) - new Date().getDate() + 1;
-      bajada = queda >= 0
-        ? "Te quedan <b>" + money(queda) + "</b>: " + money(queda / diasRest) + " por día hasta fin de mes."
-        : "Te pasaste <b>" + money(-queda) + "</b>. Desde hoy, solo lo necesario.";
+      bajada = queda >= 0 ? "Te quedan " + money(queda) + ": " + money(queda / diasRest) + " por día." : "Te pasaste " + money(-queda) + ". Desde hoy, solo lo necesario.";
     } else if (pres) {
-      bajada = s.gasto <= pres ? "Cerraste el mes adentro del presupuesto. Bien ahí." : "Ese mes te pasaste " + money(s.gasto - pres) + ".";
+      bajada = diario <= pres ? "Cerraste adentro del presupuesto." : "Te pasaste " + money(diario - pres) + ".";
     }
-    h += '<section class="card rise hero pl-hero" style="--c:' + (pres && pct > 100 ? "#FF6F4E" : "#E9B75B") + '"><p class="card-k">' + (esEste ? "Este mes" : nombreMes(plataMes)) + "</p>" +
-      '<div class="hero-g">' + (pres ? anillo(Math.min(pct, 100), '<i data-n="' + pct + '" data-fin="' + pct + '">' + pct + "</i><u>%</u>", "", 112) : "") +
-      '<div class="hero-x"><p class="card-t">' + money(s.gasto) + '</p><p class="hero-s">' + (pres ? "gastado de " + money(pres) : "gastado en " + MESES[Number(plataMes.slice(5)) - 1]) + "</p></div></div>" +
-      (bajada ? '<p class="card-s">' + bajada + "</p>" : '<p class="card-s">Poné un tope para el mes y te digo cuánto podés gastar por día.</p>') +
-      '<div class="pl-tri"><div><span>Entró</span><b class="ok">' + money(s.ingreso) + "</b></div><div><span>Salió</span><b>" + money(s.gasto) + "</b></div>" +
-      "<div><span>Te quedó</span><b class=\"" + (s.ahorro >= 0 ? "ok" : "mal") + '">' + money(s.ahorro) + "</b></div></div>" +
-      '<div class="pan-b"><button type="button" class="btn alt" data-pa="pres">' + (pres ? "Cambiar presupuesto" : "Poner un presupuesto") + "</button></div></section>";
+    const pctP = pres ? Math.min(100, Math.round((diario / pres) * 100)) : 0;
+    h += '<section class="card rise hero pl-hero" style="--c:' + (s.ingreso && libre < 0 ? "#FF6F4E" : "#4BD489") + '"><p class="card-k">' + (esEste ? "Este mes" : nombreMes(plataMes)) + "</p>" +
+      (s.ingreso
+        ? '<p class="card-t pl-libre ' + (libre >= 0 ? "ok" : "mal") + '">' + money(libre) + '</p><p class="hero-s">' + (libre >= 0 ? "te queda libre" : "te falta") + (porPagar ? " después de pagar lo pendiente" : "") + "</p>"
+        : '<p class="card-t">' + money(s.gasto) + '</p><p class="hero-s">gastado</p><p class="card-s">Anotá lo que te entra (sueldo, ventas, changas) y te digo cuánto te queda libre.</p>') +
+      '<div class="pl-tri"><div><span>Entró</span><b class="ok">' + money(s.ingreso) + "</b></div><div><span>Gastado</span><b>" + money(s.gasto) + "</b></div>" +
+      '<div><span>Por pagar</span><b class="' + (porPagar ? "mal" : "") + '">' + money(porPagar) + "</b></div></div>" +
+      (pres ? '<div class="pl-pres"><div class="pl-ph"><span>Día a día</span><b>' + money(diario) + " de " + money(pres) + '</b></div><div class="pl-mb"><i style="width:' + pctP + "%" + (diario > pres ? ";background:#FF6F4E" : "") + '"></i></div>' +
+        (bajada ? "<p>" + bajada + "</p>" : "") + "</div>" : "") +
+      '<div class="pan-b"><button type="button" class="btn lnk" data-pa="pres">' + (pres ? "Cambiar presupuesto" : "Poner un presupuesto para el día a día") + "</button></div></section>";
+
+    h += cardCuentas(p, plataMes);
 
     if (plataPresEdit) {
       h += '<section class="card rise" style="--c:#E9B75B"><p class="card-k">Presupuesto mensual</p><p class="card-t">¿Cuánto querés gastar por mes?</p>' +
@@ -4035,7 +4156,63 @@ react-dom/cjs/react-dom.production.min.js:
         plataAgregar(plataTipo, m, plataCat, val("pl-n"), esEste ? todayKey() : mesRango(plataMes)[1]);
         sfx("guardar"); renderPlata(); return chequearDia();
       }
-      if (a === "del") { p.mov = p.mov.filter((m) => m.id !== b.dataset.id); plataGuardar(p); return renderPlata(); }
+      if (a === "del") {
+        const mv = p.mov.filter((m) => m.id === b.dataset.id)[0];
+        /* si era el pago de una cuenta, la cuenta vuelve a quedar pendiente */
+        if (mv && mv.cuenta) (p.cuentas || []).forEach((c) => Object.keys(c.pagos || {}).forEach((k) => { if (c.pagos[k].mov === mv.id) delete c.pagos[k]; }));
+        p.mov = p.mov.filter((m) => m.id !== b.dataset.id); plataGuardar(p); return renderPlata();
+      }
+      if (a === "cta-form") { plataCtaForm = true; plataCtaEdit = false; renderPlata(); const el = document.getElementById("ct-n"); if (el) el.focus(); return; }
+      if (a === "cta-x") { plataCtaForm = false; return renderPlata(); }
+      if (a === "cta-edit") { plataCtaEdit = !plataCtaEdit; return renderPlata(); }
+      if (a === "cta-tipo") {
+        const keep = { n: val("ct-n"), m: val("ct-m") };
+        ctaTipo = b.dataset.t; renderPlata();
+        const n = document.getElementById("ct-n"), m = document.getElementById("ct-m");
+        if (n) n.value = keep.n; if (m) m.value = keep.m;
+        return;
+      }
+      if (a === "cta-nom") { const el = document.getElementById("ct-n"); if (el) { el.value = b.dataset.nom; const m = document.getElementById("ct-m"); if (m) m.focus(); } return; }
+      if (a === "cta-ok") {
+        const nota = (t) => { const el = document.getElementById("ct-nota"); if (el) el.textContent = t; };
+        const n = val("ct-n").trim().slice(0, 30), m = numPlata(val("ct-m")) || 0;
+        if (!n) return nota("Ponele un nombre.");
+        const c = { id: uid(), n: n, m: m, tipo: ctaTipo, cat: /tarjeta|seguro/i.test(n) ? "otros" : /gimnasio/i.test(n) ? "salud" : "casa", pagos: {} };
+        if (ctaTipo === "unica") {
+          c.fecha = val("ct-f");
+          if (!/^\d{4}-\d{2}-\d{2}$/.test(c.fecha)) return nota("Elegí la fecha de vencimiento.");
+          if (!m) return nota("Poné el monto.");
+        } else {
+          c.dia = Math.round(num(val("ct-d")) || 0);
+          if (!(c.dia >= 1 && c.dia <= 31)) return nota("¿Qué día del mes vence? (1 a 31)");
+          c.desde = plataMes;
+          if (ctaTipo === "cuotas") {
+            c.total = Math.round(num(val("ct-t")) || 0);
+            if (!(c.total >= 1 && c.total <= 120)) return nota("¿Cuántas cuotas son en total?");
+            if (!m) return nota("Poné el valor de la cuota.");
+            const ya = Math.min(c.total - 1, Math.max(0, Math.round(num(val("ct-p")) || 0)));
+            c.desde = sumarMeses(plataMes, -ya);
+          }
+        }
+        (p.cuentas = p.cuentas || []).push(c);
+        plataGuardar(p); plataCtaForm = false; sfx("guardar"); return renderPlata();
+      }
+      if (a === "cta-pagar") {
+        const c = (p.cuentas || []).filter((x) => x.id === b.dataset.id)[0];
+        if (!c) return;
+        let m = c.m;
+        if (!m) {
+          const r = window.prompt("¿Cuánto pagaste de " + c.n + "?", "");
+          m = numPlata(r);
+          if (!m) return;
+        }
+        pagarCuenta(c.id, plataMes, m); sfx("listo"); renderPlata(); return chequearDia();
+      }
+      if (a === "cta-no") { despagarCuenta(b.dataset.id, plataMes); sfx("toque"); return renderPlata(); }
+      if (a === "cta-del") {
+        if (!confirm("¿Borrar esta cuenta? Lo que ya pagaste queda en tus movimientos.")) return;
+        p.cuentas = (p.cuentas || []).filter((x) => x.id !== b.dataset.id); plataGuardar(p); return renderPlata();
+      }
       if (a === "vertodo") { plataVerTodo = !plataVerTodo; return renderPlata(); }
       if (a === "pres") { plataPresEdit = !plataPresEdit; renderPlata(); const el = document.getElementById("pl-pres"); if (el) el.focus(); return; }
       if (a === "pres-x") { plataPresEdit = false; return renderPlata(); }
@@ -4096,7 +4273,7 @@ react-dom/cjs/react-dom.production.min.js:
     entreno: { n: "Entreno", c: "#E9B75B" },
     habitos: { n: "Hábitos", c: "#A98BFF" },
     nutri: { n: "Nutrición", c: "#4BD489" },
-    plata: { n: "Plata", c: "#5FD6E0" },
+    plata: { n: "Finanzas", c: "#5FD6E0" },
   };
 
   function rangoRes(modo, off) {
@@ -4296,47 +4473,12 @@ react-dom/cjs/react-dom.production.min.js:
     const porSemana = state.days.filter((d) => d.kind === "train").length || 3;
     const tips = {
       entreno: ["Entrená " + porSemana + " días", "Agendá la hora como si fuera un turno médico. Si un día no podés, hacé 20 minutos: cuenta igual."],
-      habitos: ["Misiones al 80%, 5 días", "Empezá cada día por la misión más fácil. Lo que se hace primero, se hace."],
+      habitos: ["Hábitos al 80%, 5 días", "Empezá cada día por el hábito más fácil. Lo que se hace primero, se hace."],
       nutri: ["Proteína cumplida 5 de 7 días", "Sumá una fuente en cada comida: huevos al desayuno, un yogur proteico en la merienda."],
       plata: ["Anotá cada gasto el mismo día", "Y marcá \"cero gastos hormiga\" al menos 4 días. Lo que se anota, se controla."],
     };
     return { k: k, t: tips[k][0], s: tips[k][1] };
   }
-
-  function textoResumen(D) {
-    const r = D.r, s = D.s;
-    const titulo = { semana: "Resumen de la semana", mes: "Resumen de " + r.nom, anio: "Resumen de mi " + r.nom }[resModo];
-    const l = [titulo + (resModo === "semana" ? " (" + r.nom + ")" : "") + (nombre ? " · " + nombre : "")];
-    if (s.puntaje != null) l.push("Puntaje: " + s.puntaje + "/100 · rango " + rango(s.puntaje).n);
-    const ck = resModo === "semana" ? leer(KEY_CHECK, {})[r.desde] : null;
-    if (ck && ck.a) l.push("Cómo me sentí: " + ANIMOS[ck.a - 1][0] + " " + ANIMOS[ck.a - 1][1]);
-    l.push("");
-    if (s.entreno) l.push("💪 Entreno: " + s.entreno.dias + (s.entreno.dias === 1 ? " día" : " días") + " de " + s.entreno.espera + " · " + fmtKg(s.entreno.kg) + " kg · " + s.entreno.series + " series");
-    if (D.recs.length) l.push("🏆 Récords: " + D.recs.slice(0, 4).map((x) => x.n + " " + prTxt(x)).join(" · "));
-    if (s.habitos) l.push("✅ Hábitos: " + pc(s.habitos.pct) + "% cumplido · " + s.habitos.buenos + " días arriba del 80%");
-    if (s.nutri) {
-      const t = [];
-      if (s.nutri.dias) t.push("proteína cumplida " + s.nutri.ok + " de " + s.nutri.dias + " días");
-      if (s.nutri.peso) t.push("peso " + fmtNum(s.nutri.peso) + " kg" + (s.nutri.dif ? " (" + (s.nutri.dif > 0 ? "+" : "−") + fmtNum(Math.abs(s.nutri.dif)) + ")" : ""));
-      if (t.length) l.push("🥩 Nutrición: " + t.join(" · "));
-    }
-    if (s.plata) {
-      const t = ["gasté " + money(s.plata.gasto)];
-      if (s.plata.ingreso) t.push("me quedó " + money(s.plata.ahorro));
-      if (s.plata.aportes) t.push("ahorré " + money(s.plata.aportes) + " para mis metas");
-      if (s.plata.habPct != null) t.push("hábitos de plata " + pc(s.plata.habPct) + "%");
-      l.push("💰 Plata: " + t.join(" · "));
-    }
-    if (l.length <= 3) l.push("Todavía no anoté nada en este período.");
-    const dd = datosDicen(D);
-    if (dd.length) { l.push(""); l.push("Lo que dicen mis datos:"); dd.forEach((x) => l.push("• " + x)); }
-    const ob = objetivo(D);
-    if (ob) { l.push(""); l.push("Mi objetivo para lo que viene: " + ob.t); }
-    if (ck && ck.nota) { l.push(""); l.push("Para vos: " + ck.nota); }
-    return l.join("\n");
-  }
-
-  const ANIMOS = [["😫", "Destruido"], ["😕", "Flojo"], ["😐", "Normal"], ["🙂", "Bien"], ["🔥", "Imparable"]];
 
   function renderResumen() {
     if (!RES_BODY) return;
@@ -4363,18 +4505,12 @@ react-dom/cjs/react-dom.production.min.js:
       '<div class="pils">' + mini + "</div>" +
       '<ol class="rangos">' + RANGOS.slice().reverse().map((x) => '<li style="--k:' + x[2] + '" class="' + (s.puntaje != null && x[1] === rg.n ? "on" : "") + '">' + x[1] + "</li>").join("") + "</ol></section>";
 
-    /* Cómo te sentiste: lo lee el entrenador */
-    if (resModo === "semana") {
-      const ck = leer(KEY_CHECK, {})[r.desde] || {};
-      h += '<section class="card rise" style="--c:#FF8F5E"><p class="card-k">Para ' + esc(MARCA.split(" ")[0]) + "</p><p class=\"card-t\">¿Cómo te sentiste?</p>" +
-        '<div class="animos">' + ANIMOS.map((a, i) => '<button type="button" data-rs="animo" data-v="' + (i + 1) + '" aria-pressed="' + (ck.a === i + 1) + '"><span>' + a[0] + "</span>" + a[1] + "</button>").join("") + "</div>" +
-        '<textarea class="in" id="res-nota" maxlength="280" rows="2" placeholder="Dolores, horarios, dudas, lo que quieras contarle">' + esc(ck.nota || "") + "</textarea>" +
-        '<div class="res-acc"><button type="button" class="btn pri wa-btn" data-rs="brian">Mandárselo a ' + esc(MARCA.split(" ")[0]) + "</button>" +
-        '<button type="button" class="btn alt" data-rs="historia">Para historias</button></div>' +
-        '<p class="pan-n" id="res-n">' + (leer(KEY_ENVIO, {})[r.desde] ? "Ya se lo mandaste. Podés mandarlo de nuevo si cambió algo." : "La imagen para historias no muestra montos de plata.") + "</p></section>";
-    } else {
-      h += '<section class="card rise" style="--c:#FF8F5E"><p class="card-k">Compartir</p><div class="res-acc"><button type="button" class="btn pri wa-btn" data-rs="brian">Mandárselo a ' + esc(MARCA.split(" ")[0]) + "</button>" +
-        '<button type="button" class="btn alt" data-rs="historia">Para historias</button></div><p class="pan-n" id="res-n">La imagen para historias no muestra montos de plata.</p></section>';
+    /* Compartir: historia y reto */
+    if (s.puntaje != null) {
+      h += '<section class="card rise reto" style="--c:#FF6F4E"><p class="card-k">Compartí</p><p class="card-t">¿Quién te sigue el ritmo?</p>' +
+        '<p class="card-s">Subí tu ' + ({ semana: "semana", mes: "mes", anio: "año" }[resModo]) + ' a una historia o retá a un amigo a superarte. La imagen no muestra montos de plata.</p>' +
+        '<div class="res-acc"><button type="button" class="btn pri" data-rs="historia">Para historias</button>' +
+        '<button type="button" class="btn alt" data-rs="reto">Retar a un amigo</button></div><p class="pan-n" id="res-n"></p></section>';
     }
 
     /* Lo que dicen tus datos y el objetivo */
@@ -4423,7 +4559,7 @@ react-dom/cjs/react-dom.production.min.js:
     /* Plata */
     if (s.plata) {
       const v = cortes.map((c) => plataStats(c.desde, c.hasta).gasto);
-      h += '<section class="card rise" style="--c:' + PILARES.plata.c + '"><p class="card-k">Plata</p>' +
+      h += '<section class="card rise" style="--c:' + PILARES.plata.c + '"><p class="card-k">Finanzas</p>' +
         '<p class="card-t">' + money(s.plata.gasto) + ' <small class="res-de">gastado</small></p>' +
         '<div class="prog-k">' + (s.plata.ingreso ? "<span><b>" + money(s.plata.ahorro) + "</b> te quedó</span>" : "") +
         (s.plata.aportes ? "<span><b>" + money(s.plata.aportes) + "</b> a tus metas</span>" : "") +
@@ -4435,12 +4571,6 @@ react-dom/cjs/react-dom.production.min.js:
         '<p class="card-s">Entrená, marcá tus misiones, anotá tu proteína y tus gastos: acá vas a ver cómo te fue en cada pilar.</p></section>';
     }
 
-    /* Retar a un amigo: el cliente trae al próximo cliente */
-    if (s.puntaje != null) {
-      h += '<section class="card rise reto" style="--c:#FF6F4E"><p class="card-k">Retá a un amigo</p><p class="card-t">¿Quién te sigue el ritmo?</p>' +
-        '<p class="card-s">Mandale tu puntaje y que intente superarte. Le llega con el link para arrancar.</p>' +
-        '<button type="button" class="btn pri" data-rs="reto">Retar a un amigo</button></section>';
-    }
     RES_BODY.innerHTML = h;
     animar(RES_BODY);
   }
@@ -4486,7 +4616,7 @@ react-dom/cjs/react-dom.production.min.js:
         D.recs.length ? "🏆 " + D.recs.length + (D.recs.length === 1 ? " récord nuevo" : " récords nuevos") : s.entreno && s.entreno.kg ? fmtKg(s.entreno.kg) + " kg movidos" : ""],
       ["habitos", s.habitos ? pc(s.habitos.pct) + "%" : "—", "misiones cumplidas", s.habitos ? s.habitos.buenos + " días arriba del 80%" : ""],
       ["nutri", s.nutri && s.nutri.dias ? s.nutri.ok + "/" + s.nutri.dias : "—", "días con la proteína", s.nutri && s.nutri.dif ? (s.nutri.dif > 0 ? "+" : "−") + fmtNum(Math.abs(s.nutri.dif)) + " kg" : ""],
-      ["plata", s.plata && s.plata.score != null ? pc(s.plata.score) + "%" : "—", "plata en orden", s.plata && s.plata.habPct != null ? "hábitos de plata " + pc(s.plata.habPct) + "%" : ""],
+      ["plata", s.plata && s.plata.score != null ? pc(s.plata.score) + "%" : "—", "finanzas en orden", s.plata && s.plata.habPct != null ? "hábitos de plata " + pc(s.plata.habPct) + "%" : ""],
     ];
     tiles.forEach((t, i) => {
       const bx = 90 + (i % 2) * 465, by = 960 + Math.floor(i / 2) * 320, bw = 435, bh = 290;
@@ -4505,7 +4635,7 @@ react-dom/cjs/react-dom.production.min.js:
   function textoReto(D) {
     const s = D.s;
     return D.r.quien.charAt(0).toUpperCase() + D.r.quien.slice(1) + " saqué " + s.puntaje + "/100 en " + (CFG.producto || "SISTEMA") +
-      " (rango " + rango(s.puntaje).n + ") 💪 Entreno, hábitos, comida y plata, todo medido. ¿Te animás a superarme? Arrancá acá: " + linkAmigos();
+      " (rango " + rango(s.puntaje).n + ") 💪 Entreno, hábitos, comida y finanzas, todo medido. ¿Te animás a superarme? Arrancá acá: " + linkAmigos();
   }
 
   let resDesde = "hoy";
@@ -4518,24 +4648,11 @@ react-dom/cjs/react-dom.production.min.js:
       if (a === "volver") { if (window.__irA) window.__irA(resDesde || "hoy"); return; }
       if (a === "modo") { resModo = b.dataset.m; resOff = 0; sfx("toque"); return renderResumen(); }
       if (a === "off") { resOff = Math.max(0, resOff + Number(b.dataset.d)); sfx("toque"); return renderResumen(); }
-      if (a === "animo") {
-        const r = rangoRes(resModo, resOff), l = leer(KEY_CHECK, {});
-        l[r.desde] = Object.assign(l[r.desde] || {}, { a: Number(b.dataset.v) });
-        escribir(KEY_CHECK, l);
-        RES_BODY.querySelectorAll('[data-rs="animo"]').forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
-        return sfx("toque");
-      }
       const D = resumenDatos();
       if (a === "historia") {
         sfx("toque");
         return compartirImagen(imagenResumen(D), "mi-" + { semana: "semana", mes: "mes", anio: "anio" }[resModo] + ".png",
           D.s.puntaje != null ? textoReto(D) : "", decir);
-      }
-      if (a === "brian") {
-        sfx("toque");
-        const l = leer(KEY_ENVIO, {}); l[D.r.desde] = true; escribir(KEY_ENVIO, l);
-        window.open(waUrl(textoResumen(D)), "_blank", "noopener");
-        return decir("Listo. " + MARCA.split(" ")[0] + " lo va a ver en WhatsApp.");
       }
       if (a === "reto") {
         sfx("toque");
@@ -4545,12 +4662,6 @@ react-dom/cjs/react-dom.production.min.js:
         return;
       }
       if (a === "pr" && D.recs[Number(b.dataset.i)]) { sfx("toque"); return compartirRecord(D.recs[Number(b.dataset.i)]); }
-    });
-    RES_BODY.addEventListener("input", (ev) => {
-      if (ev.target.id !== "res-nota") return;
-      const r = rangoRes(resModo, resOff), l = leer(KEY_CHECK, {});
-      l[r.desde] = Object.assign(l[r.desde] || {}, { nota: ev.target.value.slice(0, 280) });
-      escribir(KEY_CHECK, l);
     });
   }
 
@@ -4569,7 +4680,7 @@ react-dom/cjs/react-dom.production.min.js:
     const dias = Object.keys(leer(KEY_DIAS, {})).length;
     const p = plataData();
     const h = (Object.keys(entrenoPorDia()).length ? cardSemana() : "") +
-      (p.mov.length || p.metas.length ? cardPlata() : "") +
+      (p.mov.length || p.metas.length || (p.cuentas || []).length ? cardPlata() : "") +
       (nc && !nutriEdit ? cardNutri() : "") +
       (pesos().length ? cardPeso() : "") +
       (medidas().length || dias >= 7 ? cardMedidas() : "") +
@@ -4597,23 +4708,20 @@ react-dom/cjs/react-dom.production.min.js:
   /* Hoy: la plata del mes, chiquito */
   function cardPlata() {
     const p = plataData();
-    const [desde, hasta] = mesRango(todayKey().slice(0, 7));
+    const ym = todayKey().slice(0, 7);
+    const [desde, hasta] = mesRango(ym);
     const s = plataStats(desde, hasta);
-    if (!p.mov.length && !p.metas.length && !Object.keys(p.habLog || {}).length) {
-      return '<section class="card rise" style="--c:#5FD6E0"><p class="card-k">Plata</p><p class="card-t">El cuarto pilar</p>' +
-        '<p class="card-s">El cuerpo se ordena igual que la plata: anotando. Gastos, presupuesto, ahorro y hábitos, en el mismo lugar.</p>' +
-        '<button type="button" class="btn alt" data-act="go" data-to="plata">Ordenar mi plata</button></section>';
-    }
-    const pres = p.pres.total || 0;
-    const pct = pres ? Math.round((s.gasto / pres) * 100) : 0;
-    const hs = habitosPlata(p), l = (p.habLog || {})[todayKey()] || {};
-    const hechos = hs.filter((x) => l[x.id]).length;
-    return '<section class="card rise" style="--c:' + (pct > 100 ? "#FF6F4E" : "#5FD6E0") + '"><p class="card-k">Plata · ' + MESES[new Date().getMonth()] + "</p>" +
-      '<div class="hero-g">' + (pres ? anillo(Math.min(100, pct), '<i data-n="' + pct + '" data-fin="' + pct + '">' + pct + "</i><u>%</u>", "", 84) : "") +
-      '<div class="hero-x"><p class="card-t">' + money(s.gasto) + '</p><p class="hero-s">' + (pres ? "de " + money(pres) + " del mes" : "gastado este mes") + "</p>" +
-      (hs.length ? '<p class="hero-kg"><b>' + hechos + "/" + hs.length + "</b> hábitos de plata hoy</p>" : "") + "</div></div>" +
-      '<button type="button" class="btn alt" data-act="go" data-to="plata">Anotar un gasto</button></section>';
+    const cs = cuentasDelMes(p, ym), falta = cs.filter((x) => !x.pago);
+    const porPagar = falta.reduce((a, x) => a + x.m, 0);
+    const prox = falta[0];
+    const libre = s.ingreso - s.gasto - porPagar;
+    return '<section class="card rise" style="--c:' + (falta.some((x) => x.dias < 0) ? "#FF6F4E" : "#5FD6E0") + '"><p class="card-k">Finanzas · ' + MESES[new Date().getMonth()] + "</p>" +
+      (s.ingreso ? '<p class="card-t ' + (libre >= 0 ? "" : "mal") + '">' + money(libre) + '</p><p class="hero-s">' + (libre >= 0 ? "te queda libre este mes" : "te falta este mes") + "</p>"
+        : '<p class="card-t">' + money(s.gasto) + '</p><p class="hero-s">gastado este mes</p>') +
+      (falta.length ? '<p class="hero-kg"><b>' + money(porPagar) + "</b> por pagar · " + (prox ? esc(prox.c.n) + " " + venceTxt(prox).toLowerCase() : "") + "</p>" : cs.length ? '<p class="hero-kg">Cuentas del mes pagadas ✓</p>' : "") +
+      '<button type="button" class="btn alt" data-act="go" data-to="plata">Ver mis finanzas</button></section>';
   }
+
 
   window.addEventListener("shell-tab", (ev) => {
     if (ev.detail === "plata") renderPlata();
@@ -4628,8 +4736,7 @@ react-dom/cjs/react-dom.production.min.js:
   const KEY_AGUA = "rutina-cliente-agua";
   const KEY_DIAS = "rutina-cliente-dias";       /* % del día cumplido, para la racha */
   const KEY_DESC = "rutina-cliente-descanso";   /* días marcados como descanso */
-  const KEY_CHECK = "rutina-cliente-checkin";   /* cómo se sintió cada semana */
-  const KEY_ENVIO = "rutina-cliente-envios";    /* semanas ya mandadas al entrenador */
+  const KEY_ENVIO = "rutina-cliente-envios";    /* semanas ya cerradas (vistas en el resumen) */
   const leer = (k, def) => { try { return JSON.parse(localStorage.getItem(k) || "null") || def; } catch (e) { return def; } };
   const escribir = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* sin almacenamiento */ } };
   const metaVasos = () => { const c = nutriCfg(); return c ? Math.max(6, Math.round(metas(c).agua / 0.25)) : 8; };
@@ -4694,7 +4801,10 @@ react-dom/cjs/react-dom.production.min.js:
     const p = plataData(), hl = (p.habLog || {})[k] || {};
     const movHoy = p.mov.filter((m) => m.d === k && m.t === "g");
     const anotado = movHoy.length > 0 || !!hl.anote || !!hl.nogaste;
-    it.push({ id: "plata", ic: "💰", t: "Plata", pct: anotado ? 1 : 0, q: "gasto", btn: "+ Gasto", alt: anotado ? "" : "nogaste", altT: "No gasté",
+    cuentasDelMes(p, k.slice(0, 7)).filter((x) => !x.pago && x.dias <= 1).forEach((x) => {
+      it.push({ id: "cta-" + x.c.id, ic: "🧾", t: "Pagar " + x.c.n, s: venceTxt(x) + (x.m ? " · " + money(x.m) : ""), pct: 0, act: "pagar", cta: x.c.id, btn: "Pagada" });
+    });
+    it.push({ id: "plata", ic: "💰", t: "Finanzas", pct: anotado ? 1 : 0, q: "gasto", btn: "+ Gasto", alt: anotado ? "" : "nogaste", altT: "No gasté",
       s: movHoy.length ? movHoy.length + (movHoy.length === 1 ? " gasto · " : " gastos · ") + money(movHoy.reduce((a, m) => a + m.m, 0)) : hl.nogaste ? "Hoy no gastaste nada" : "Anotá lo que gastes" });
     const ps = pesos(), ult = ps[ps.length - 1];
     const diasPeso = ult ? Math.round((fechaDe(k) - fechaDe(ult.d)) / 86400000) : 99;
@@ -4730,7 +4840,7 @@ react-dom/cjs/react-dom.production.min.js:
     const filas = it.map((x) => {
       const ok = !x.extra && x.pct >= 1;
       const accion = x.go ? 'data-act="go" data-to="' + x.go + '"' + (x.day ? ' data-day="' + x.day + '"' : "")
-        : x.q ? 'data-act="td-q" data-q="' + x.q + '"' : 'data-act="td-' + x.act + '"';
+        : x.q ? 'data-act="td-q" data-q="' + x.q + '"' : 'data-act="td-' + x.act + '"' + (x.cta ? ' data-id="' + x.cta + '"' : "");
       return '<li class="td' + (ok ? " ok" : "") + (x.extra ? " extra" : "") + '"' + (x.sheet ? ' data-act="td-sheet" data-q="' + x.sheet + '"' : x.q ? ' data-act="td-sheet" data-q="' + x.q + '"' : "") + ">" +
         '<span class="td-ic">' + (ok ? CHECK : x.ic) + '</span><span class="td-x"><b>' + esc(x.t) + "</b><small>" + esc(x.s) + "</small>" +
         (x.extra ? "" : '<span class="td-bar"><i style="width:' + Math.round(x.pct * 100) + '%"></i></span>') + "</span>" +
@@ -4767,7 +4877,7 @@ react-dom/cjs/react-dom.production.min.js:
     const rg = rango(s.puntaje);
     return '<section class="card rise hero cierre" style="--c:' + rg.c + '"><p class="card-k">' + (off ? "Cerró tu semana" : "Hoy cierra tu semana") + "</p>" +
       '<p class="card-t">' + s.puntaje + "/100 · " + rg.n + "</p>" +
-      '<p class="card-s">Mirá cómo te fue en los cuatro pilares, contá cómo te sentiste y mandáselo a ' + esc(MARCA.split(" ")[0]) + ". Así ajusta tu plan.</p>" +
+      '<p class="card-s">Mirá cómo te fue en los cuatro pilares, tus récords y qué mejorar la semana que viene.</p>' +
       '<button type="button" class="btn pri" data-act="go-res" data-off="' + off + '">Cerrar mi semana</button></section>';
   }
 
@@ -5012,12 +5122,25 @@ react-dom/cjs/react-dom.production.min.js:
         const l = leer(KEY_DESC, {}); l[todayKey()] = true; escribir(KEY_DESC, l);
         sfx("listo"); return refrescar();
       }
+      if (a === "td-pagar") {
+        const p = plataData(), c = (p.cuentas || []).filter((x) => x.id === b.dataset.id)[0];
+        if (!c) return;
+        let m = c.m;
+        if (!m) { m = numPlata(window.prompt("¿Cuánto pagaste de " + c.n + "?", "")); if (!m) return; }
+        pagarCuenta(c.id, todayKey().slice(0, 7), m);
+        sfx("listo"); showStatus(c.n + " pagada"); return refrescar();
+      }
       if (a === "td-nogaste") {
         const p = plataData(), l = p.habLog[todayKey()] || (p.habLog[todayKey()] = {});
         l.nogaste = true; l.anote = true; plataGuardar(p); sfx("listo"); return refrescar();
       }
       if (a === "td-nutri") { nutriEdit = true; renderHoy(); const c = document.getElementById("nu-edad"); if (c) c.scrollIntoView({ block: "center" }); return; }
-      if (a === "go-res") { resModo = "semana"; resOff = Number(b.dataset.off) || 0; if (window.__irA) window.__irA("resumen"); return; }
+      if (a === "go-res") {
+        resModo = "semana"; resOff = Number(b.dataset.off) || 0;
+        const l = leer(KEY_ENVIO, {}); l[rangoRes("semana", resOff).desde] = true; escribir(KEY_ENVIO, l);
+        if (window.__irA) window.__irA("resumen");
+        return;
+      }
       if (a === "pr-share") {
         sfx("toque");
         const l = recordsEntre(todayKey(), todayKey());
@@ -5206,7 +5329,7 @@ react-dom/cjs/react-dom.production.min.js:
         '<ol class="arr-como">' +
         '<li><span>☀️</span><b>Abrís y ves Tu día</b><small>Todo lo que te toca hoy, en una sola lista.</small></li>' +
         '<li><span>👆</span><b>Lo tachás con un toque</b><small>Entreno, comida, hábitos y plata. Nada más.</small></li>' +
-        '<li><span>📲</span><b>El domingo, tu resumen a ' + esc(quien) + "</b><small>Lo ve y ajusta tu plan.</small></li></ol>" +
+        '<li><span>🏆</span><b>El domingo, tu resumen</b><small>Tu rango de la semana, tus récords y qué mejorar.</small></li></ol>' +
         '<button type="button" class="btn pri arr-go" data-arr="sig">Dale</button>';
     } else if (p === "objetivo") {
       const op = [["grasa", "🔥", "Bajar grasa"], ["musculo", "💪", "Ganar músculo"], ["mantener", "⚖️", "Sentirme mejor"]];
@@ -5326,13 +5449,6 @@ react-dom/cjs/react-dom.production.min.js:
   });
   if (!bienvHecha) abrirArr();
 
-  /* La pestaña Armar sirve para quien todavía no tiene su rutina: después estorba */
-  function navSimple() {
-    const b = document.querySelector('#shellnav [data-go="armar"]');
-    let propia = false;
-    try { propia = !!localStorage.getItem(KEY_STATE); } catch (err) { /* sin almacenamiento */ }
-    if (b) b.hidden = propia;
-  }
 
   if (HOY) {
     HOY.addEventListener("click", (ev) => {
@@ -5752,12 +5868,17 @@ react-dom/cjs/react-dom.production.min.js:
   var KEY = "shell:tab";
   function show(which) {
     Object.keys(panes).forEach(function (k) { panes[k].hidden = k !== which; });
-    [].forEach.call(nav.querySelectorAll("button"), function (b) { b.setAttribute("aria-pressed", String(b.dataset.go === which)); });
+    var luz = which === "armar" ? "entreno" : which;   /* Armar vive dentro de Entreno */
+    [].forEach.call(nav.querySelectorAll("button"), function (b) { b.setAttribute("aria-pressed", String(b.dataset.go === luz)); });
     try { localStorage.setItem(KEY, which); } catch (e) {}
     window.dispatchEvent(new CustomEvent("shell-tab", { detail: which }));
     window.scrollTo(0, 0);
   }
   window.__irA = show;
+  document.getElementById("pane-armar").addEventListener("click", function (ev) {
+    var b = ev.target.closest("[data-go-back]");
+    if (b) show(b.dataset.goBack);
+  });
   nav.addEventListener("click", function (ev) {
     var b = ev.target.closest("button[data-go]");
     if (b) show(b.dataset.go);
