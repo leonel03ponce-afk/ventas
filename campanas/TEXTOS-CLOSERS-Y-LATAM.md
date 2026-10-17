@@ -40,7 +40,7 @@ Antes de publicar, fijate en qué canal de la comunidad se pueden ofrecer oportu
 
 > **Busco closers para practicar y cobrar · 43% de comisión + 15% recurrente**
 >
-> Soy Brian Ponce, entrenador. Llevo meses construyendo **SISTEMA**: rutina personalizada armada por mí + una app propia que acompaña al cliente todos los días (entreno, hábitos, nutrición, rachas y niveles). El producto está terminado y funcionando.
+> Soy Brian Ponce, entrenador. Llevo meses construyendo **SISTEMA**: rutina personalizada armada por mí + una app propia que le ordena el día al cliente: entreno, hábitos con avisos a su hora, nutrición y finanzas (cuentas a pagar, gastos y ahorro), con rachas, rangos y récords para compartir. El producto está terminado y funcionando.
 >
 > **Lo que busco:** gente que quiera salir a buscar clientes. **No hay leads**: vos prospectás, escribís, hacés seguimiento y cerrás por chat. Si estás aprendiendo a vender, es el lugar ideal para practicar con un producto real y cobrar por cada cierre.
 >
@@ -89,7 +89,7 @@ En Venezuela y en buena parte de LatAm se habla de **"tú"**. Estos textos ya es
 
 > **¿Quieres generar ingresos en dólares desde tu celular?** 💵
 >
-> Busco personas en Venezuela y LatAm para recomendar **SISTEMA**: una app de entrenamiento con rutina personalizada hecha por un entrenador, hábitos y plan de nutrición.
+> Busco personas en Venezuela y LatAm para recomendar **SISTEMA**: una app de entrenamiento con rutina personalizada hecha por un entrenador, hábitos con avisos, plan de nutrición y finanzas personales.
 >
 > • Ganas el **43% de cada venta** (de US$8 a US$38 por cliente)
 > • Y el **15% cada vez que tu cliente renueva**
@@ -112,7 +112,7 @@ En Venezuela y en buena parte de LatAm se habla de **"tú"**. Estos textos ya es
 ### Texto para que el vendedor le mande a un cliente
 
 > ¿Te pasa que empiezas el gym y a las dos semanas lo dejas? 🙋‍♂️
-> Te recomiendo SISTEMA: un entrenador te arma la rutina a tu medida y una app te acompaña todos los días con el entreno, los hábitos y la comida.
+> Te recomiendo SISTEMA: un entrenador te arma la rutina a tu medida y una app te ordena el día: entreno, hábitos (te avisa a la hora), comida y tus gastos.
 > Desde US$4 al mes. Mira aquí 👉 [TU LINK]
 
 ### Cuando el cliente dice que sí

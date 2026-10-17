@@ -142,6 +142,8 @@ footer a { color: var(--gold); }
 .bonus b { color: var(--gold); }
 details.calc-d summary { cursor: pointer; padding: 14px 0; font-weight: 600; color: var(--jade); list-style: none; }
 details.calc-d summary::-webkit-details-marker { display: none; }
+.card.que ul { margin: 6px 0 0; padding-left: 18px; line-height: 1.55; }
+.card.que li { margin-top: 4px; }
 </style>
 </head>
 <body>
@@ -230,6 +232,17 @@ details.calc-d summary::-webkit-details-marker { display: none; }
 <section id="p4">
   <div class="wrap">
     <h2><span class="paso-n">4</span>Escribiles y mandá tu link</h2>
+    <div class="card que">
+      <label>Qué vendés, en 20 segundos</label>
+      <ul>
+        <li><b>Rutina hecha por <span data-c="corto">Brian</span></b>, a la medida de cada uno, y la app registra cada serie.</li>
+        <li><b>Tu día en una lista:</b> entreno, proteína, agua, hábitos y gastos. Se tacha con un toque.</li>
+        <li><b>Te avisa a la hora de cada hábito</b> si todavía no lo hiciste.</li>
+        <li><b>Finanzas:</b> cuentas a pagar con vencimiento, gastos y cuánto te queda libre en el mes.</li>
+        <li><b>Rangos, rachas y récords</b> para compartir en historias. Engancha.</li>
+      </ul>
+      <p class="mini">Arranca en un minuto: la app hace 4 preguntas y queda lista. Lo que más convence: mostrar una captura de "Tu día" o de un récord.</p>
+    </div>
     <div class="card">
       <label>Para contactos o grupos</label>
       <textarea id="t1" readonly></textarea>
@@ -308,10 +321,10 @@ details.calc-d summary::-webkit-details-marker { display: none; }
   document.getElementById("cn").addEventListener("input", calc); cp.addEventListener("change", calc); calc();
 
   /* competencia (precios anuales en dólares de las tiendas de apps) */
-  var COMP = [["Fitbod", "solo rutinas de gym", 95.99], ["Fabulous", "solo hábitos", 39.99], ["Habitica", "solo hábitos", 47.99]];
+  var COMP = [["Fitbod", "solo rutinas de gym", 95.99], ["Fabulous", "solo hábitos", 39.99], ["YNAB", "solo finanzas", 109]];
   document.getElementById("comp").innerHTML = COMP.map(function (c) {
     return "<tr><td>" + c[0] + "<small>" + c[1] + "</small></td><td>US$" + c[2].toLocaleString("es-AR") + " / año</td></tr>";
-  }).join("") + '<tr class="yo"><td>' + vals.producto + "<small>rutina + hábitos + nutrición + entrenador por WhatsApp</small></td><td>" + plata(anual.precio) + " / año</td></tr>";
+  }).join("") + '<tr class="yo"><td>' + vals.producto + "<small>rutina + hábitos con avisos + nutrición + finanzas + entrenador por WhatsApp</small></td><td>" + plata(anual.precio) + " / año</td></tr>";
 
   var TITULOS = enAR ? [
     "Si dejaste el gym 3 veces este año, mirá esto",
@@ -321,6 +334,8 @@ details.calc-d summary::-webkit-details-marker { display: none; }
     "Tu rutina + tus hábitos en una sola app",
     "Disciplina > motivación",
     "La razón por la que siempre abandonás el gym",
+    "Gym, hábitos, comida y plata: todo en una app",
+    "Mi semana en rango Diamante 💎",
     "Cuerpo, mente y espíritu en una app"
   ] : [
     "Si dejaste el gym 3 veces este año, mira esto",
@@ -330,6 +345,8 @@ details.calc-d summary::-webkit-details-marker { display: none; }
     "Tu rutina + tus hábitos en una sola app",
     "Disciplina > motivación",
     "La razón por la que siempre abandonas el gym",
+    "Gym, hábitos, comida y dinero: todo en una app",
+    "Mi semana en rango Diamante 💎",
     "Cuerpo, mente y espíritu en una app"
   ];
   document.getElementById("titulos").innerHTML = TITULOS.map(function (t) { return '<button type="button" data-tt="' + t.replace(/"/g, "&quot;") + '">' + t + "</button>"; }).join("");
@@ -340,20 +357,20 @@ details.calc-d summary::-webkit-details-marker { display: none; }
   function textos() {
     var L = link || "[tu link]";
     var t1 = enAR
-      ? "¿Te pasa que arrancás el gym y lo dejás a las dos semanas? 🙋‍♂️\nEstoy recomendando " + vals.producto + ", de " + (C.marca || "") + ": te arma la rutina a medida y una app te sigue todos los días (entreno, hábitos, comidas).\nMirá los planes acá 👉 " + L
-      : "¿Te pasa que empiezas el gym y a las dos semanas lo dejas? 🙋‍♂️\nTe recomiendo " + vals.producto + ", de " + (C.marca || "") + ": te arma la rutina a tu medida y una app te acompaña todos los días (entreno, hábitos, comidas).\nMira los planes aquí 👉 " + L;
+      ? "¿Te pasa que arrancás el gym y lo dejás a las dos semanas? 🙋‍♂️\nEstoy recomendando " + vals.producto + ", de " + (C.marca || "") + ": te arma la rutina a medida y una app te ordena el día: entreno, hábitos (te avisa a la hora), comida y hasta tus gastos.\nMirá los planes acá 👉 " + L
+      : "¿Te pasa que empiezas el gym y a las dos semanas lo dejas? 🙋‍♂️\nTe recomiendo " + vals.producto + ", de " + (C.marca || "") + ": te arma la rutina a tu medida y una app te ordena el día: entreno, hábitos (te avisa a la hora), comida y hasta tus gastos.\nMira los planes aquí 👉 " + L;
     var t2 = enAR
-      ? "Dejá de empezar el lunes 🔥\nRutina a tu medida + una app que te sigue todos los días.\nCuerpo · Mente · Espíritu\nComentá RUTINA y te paso cómo funciona 👇\n(link en mi perfil)"
-      : "Deja de empezar el lunes 🔥\nRutina a tu medida + una app que te acompaña todos los días.\nCuerpo · Mente · Espíritu\nComenta RUTINA y te paso cómo funciona 👇\n(link en mi perfil)";
+      ? "Dejá de empezar el lunes 🔥\nRutina a tu medida + una app que te ordena el día.\nEntreno · Hábitos · Comida · Plata\nComentá RUTINA y te paso cómo funciona 👇\n(link en mi perfil)"
+      : "Deja de empezar el lunes 🔥\nRutina a tu medida + una app que te ordena el día.\nEntreno · Hábitos · Comida · Dinero\nComenta RUTINA y te paso cómo funciona 👇\n(link en mi perfil)";
     var t3 = enAR
       ? "¡Genial! Entrá acá: " + L + "\nElegí tu plan y pagá. Al terminar te aparece tu código para entrar a la app (si no te aparece, tocá el botón verde \"Ya pagué · mandar comprobante\") 💪"
       : "¡Genial! Entra aquí: " + L + "\nElige tu plan y toca \"Quiero este plan\": te abre WhatsApp con " + corto + " y te dice cómo pagar (" + (I.metodos || "PayPal o USDT") + "). Ese mensaje ya dice que vas de mi parte 💪";
     var t4 = enAR
-      ? "¡Hola! Vi tu comentario en el video del habit tracker 🙌 ¿Seguís buscando una app así?\nYo uso " + vals.producto + ": además de los hábitos te arma la rutina del gym y te sigue todos los días (series, descanso, comidas, rachas y niveles).\nSi querés te paso cómo funciona, sale menos que una salida por mes."
-      : "¡Hola! Vi tu comentario en el video del habit tracker 🙌 ¿Sigues buscando una app así?\nYo uso " + vals.producto + ": además de los hábitos te arma la rutina del gym y te acompaña todos los días (series, descanso, comidas, rachas y niveles).\nSi quieres te paso cómo funciona, sale menos que una salida al mes.";
+      ? "¡Hola! Vi tu comentario en el video del habit tracker 🙌 ¿Seguís buscando una app así?\nYo uso " + vals.producto + ": además de los hábitos te arma la rutina del gym, te avisa a la hora de cada hábito y te ordena hasta la plata del mes (rachas, rangos y récords).\nSi querés te paso cómo funciona, sale menos que una salida por mes."
+      : "¡Hola! Vi tu comentario en el video del habit tracker 🙌 ¿Sigues buscando una app así?\nYo uso " + vals.producto + ": además de los hábitos te arma la rutina del gym, te avisa a la hora de cada hábito y te ordena hasta el dinero del mes (rachas, rangos y récords).\nSi quieres te paso cómo funciona, sale menos que una salida al mes.";
     var t5 = enAR
-      ? "Te entiendo. Mirá: Fitbod (solo rutinas) sale casi US$96 al año y Fabulous (solo hábitos) otros US$40 o más. " + vals.producto + " trae las dos cosas, más nutrición y un entrenador real por WhatsApp, y sale " + plata(anual.precio) + " el año" + lanz + ": " + plata(anual.precio / 12) + " por mes.\nAcá lo ves 👉 " + L
-      : "Te entiendo. Mira: Fitbod (solo rutinas) cuesta casi US$96 al año y Fabulous (solo hábitos) otros US$40 o más. " + vals.producto + " trae las dos cosas, más nutrición y un entrenador real por WhatsApp, y cuesta " + plata(anual.precio) + " el año" + lanz + ": " + plata(anual.precio / 12) + " al mes.\nAquí lo ves 👉 " + L;
+      ? "Te entiendo. Mirá: Fitbod (solo rutinas) sale casi US$96 al año y Fabulous (solo hábitos) otros US$40 o más. " + vals.producto + " trae las dos cosas, más nutrición, tus finanzas y un entrenador real por WhatsApp, y sale " + plata(anual.precio) + " el año" + lanz + ": " + plata(anual.precio / 12) + " por mes.\nAcá lo ves 👉 " + L
+      : "Te entiendo. Mira: Fitbod (solo rutinas) cuesta casi US$96 al año y Fabulous (solo hábitos) otros US$40 o más. " + vals.producto + " trae las dos cosas, más nutrición, tus finanzas y un entrenador real por WhatsApp, y cuesta " + plata(anual.precio) + " el año" + lanz + ": " + plata(anual.precio / 12) + " al mes.\nAquí lo ves 👉 " + L;
     document.getElementById("t1").value = t1;
     document.getElementById("t2").value = t2;
     document.getElementById("t3").value = t3;
