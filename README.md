@@ -107,6 +107,7 @@ La app trabaja cuatro pilares: **Entreno**, **Hábitos**, **Nutrición** y **Fin
 - **Tu día** (arriba de todo en Hoy): una lista con lo de hoy (entreno o descanso, proteína, agua, cuentas que vencen, gastos y, si toca, pesarse) y abajo **cada hábito del día con su hora, que se tacha con un toque** (la pestaña Hábitos se recarga sola para mostrarlo). Con el 80% del día cumplido suma a la racha 🔥. Al pie, una línea para activar los avisos de hábitos.
 - **Hoy corto**: el progreso (peso, medidas, logros, historial) va plegado en "Tu progreso". **Finanzas** igual: arriba cuánto te queda libre, los botones − Gasto / + Ingreso y las cuentas del mes; ahorro, movimientos, hábitos de plata y el año van plegados con un resumen de una línea.
 - **Botón Anotar** (abajo a la derecha en Hoy y Finanzas): anotar un gasto o ingreso, proteína (con alimentos comunes), agua o peso en dos segundos.
+- **Finanzas** es opcional: en el arranque se pregunta "¿Ordenamos también tu plata?" (viene gratis con el plan). Si dice que no, la pestaña y todo lo de plata no aparecen; se activa después desde el pie de Hoy, y se oculta desde el pie de Finanzas. Quien ya usaba la app la sigue viendo.
 - **Finanzas** (pestaña propia): cuánto te queda libre en el mes (lo que entró, menos lo gastado, menos lo que falta pagar). **Cuentas del mes**: fijas (alquiler, luz, internet), en cuotas (cuota 4 de 12) o de una vez, con su vencimiento; se pagan con un toque y quedan como gasto. Si algo vence hoy o ya venció, aparece en Tu día. Además: gastos por categoría, presupuesto para el día a día, metas de ahorro, hábitos de plata y el año mes por mes.
 - **Rangos**: el puntaje semanal (0 a 100, promedio de los pilares) da un rango: Hierro, Bronce, Acero, Oro, Diamante y Leyenda.
 - **Récords**: la app detecta sola cuando un ejercicio supera su mejor marca y arma una imagen para compartir.
@@ -130,6 +131,10 @@ Solo para los hábitos diarios del Sistema: nada de rutina ni de plata. El clien
 Costo en Netlify: la función corre cada 15 minutos (96 veces por día, siempre igual), y en cada corrida lee solo a quienes tienen un aviso en ese cuarto de hora (cada horario queda indexado como `t:<minuto UTC>:<cliente>`). O sea, el gasto crece con los avisos que salen, no con la cantidad de clientes. La app solo le escribe al servidor cuando cambia algo de sus hábitos.
 
 Cómo funciona: la app le cuenta al servidor qué misiones tiene hoy y cuáles hizo (`netlify/functions/push.mjs`, en `/api/push`), y cada 15 minutos `netlify/functions/push-habitos.mjs` revisa a quién le toca un aviso. No hace falta configurar nada: las claves de los avisos se crean solas la primera vez y quedan en Netlify Blobs. Si alguien deja de abrir la app 60 días, se da de baja solo.
+
+## Cuánto levantar hoy
+
+Cada ejercicio muestra en la lista lo que conviene hacer hoy según la última vez ("▲ Hoy: 47,5 kg × 6 repes · subí de peso"). Usa doble progresión con el rango de repes de la rutina: primero se suma una repe con el mismo peso; cuando todas las series llegan al tope del rango, se sube el peso (1 kg si es menos de 10, 2 kg hasta 30, 2,5 kg hasta 80 y 5 kg arriba de eso) y se vuelve al piso del rango. Al anotar, los campos vienen con ese peso y esas repes, y "Usar lo sugerido" los completa.
 
 ## Primera vez: el arranque
 

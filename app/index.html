@@ -614,7 +614,7 @@ body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-even
 .rt .card-t small { font: 400 14px/1.2 var(--sans); color: var(--muted); }
 
 /* ════ Los cuatro pilares ════ */
-.rt .pils { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin-top: 14px; }
+.rt .pils { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; margin-top: 14px; }
 .rt .pil { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 0 8px; margin: 0; border: 0; color: var(--ink); font: inherit; background: rgba(255,255,255,.035); clip-path: var(--bevel-sm); -webkit-tap-highlight-color: transparent; }
 button.pil { cursor: pointer; }
 .rt .pil .ring circle { stroke-width: 11; }
@@ -920,6 +920,22 @@ body.bloqueado .arr { display: none !important; }
 .rt .acc.abierta .acc-f { transform: rotate(-90deg); }
 .rt .acc-b { padding: 0 16px 18px; }
 .rt .sh-modo { margin-top: 2px; }
+/* ════ Cuánto levantar hoy ════ */
+.rt .obj-hoy { grid-column: 2 / -1; justify-self: start; margin-top: 8px; padding: 5px 10px; font: 500 13px/1.2 var(--sans); color: var(--gold); background: rgba(233,183,91,.1); clip-path: var(--bevel-sm); }
+.rt .obj-hoy b { font: 700 15px/1 var(--display); color: var(--ink); }
+.rt .obj-hoy.sube { color: #4BD489; background: rgba(75,212,137,.12); }
+.rt .mem .obj-hoy { grid-column: 2 / -1; }
+.rt .pair .mem .obj-hoy { grid-column: 1 / -1; }
+/* ════ Finanzas opcional ════ */
+.rt .arr-fin { display: grid; gap: 8px; margin-top: 8px; }
+.rt .arr-fin .arr-go { margin-top: 18px; }
+.rt .arr-fin .arr-go + .arr-go { margin-top: 0; }
+.rt .arr-chica { font-size: 14px; text-align: center; }
+.rt .arr-s b { color: var(--ink); }
+.rt .fin-on { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 18px; padding: 12px; background: rgba(95,214,224,.08); border-left: 3px solid #5FD6E0; font-size: 14px; color: var(--muted); }
+.rt .fin-on b { color: var(--ink); }
+.rt .fin-off { margin-top: 26px; text-align: center; }
+.rt .fin-off .btn { color: var(--muted2); font-size: 13px; }
 @media (max-width: 350px) { #shellnav { gap: 3px; padding-left: 6px; padding-right: 6px; } #shellnav button { font-size: 9.5px; letter-spacing: 0; } }
 @media (max-width: 360px) { .rt .pil .ring { transform: scale(.88); } .rt .res-acc { grid-template-columns: 1fr; } }
 </style>
@@ -1354,7 +1370,7 @@ react-dom/cjs/react-dom.production.min.js:
     if (it.r) bits.push(restHtml(it.r));
     if (it.note) bits.push("<span>" + esc(it.note) + "</span>");
     if (bits.length) h += '<div class="sub">' + bits.join("") + "</div>";
-    if (withLog) h += logHtml(it);
+    if (withLog) h += objetivoHtml(it) + logHtml(it);
     return h;
   }
 
@@ -1528,22 +1544,47 @@ react-dom/cjs/react-dom.production.min.js:
     return '<label class="fld' + (cls ? " " + cls : "") + '"><span class="fl">' + label + "</span>" + control + "</label>";
   }
 
-  /* Qué apuntar hoy según lo que hizo la última vez */
-  function sugerencia(x) {
-    const prev = lastPrev(x.hist, todayKey());
-    if (!prev) return "";
+  /* Qué apuntar hoy según lo que hizo la última vez (doble progresión):
+     primero se suman repes con el mismo peso; cuando todas las series
+     llegan al tope del rango, se sube el peso y se vuelve al piso. */
+  function objetivoHoy(x) {
+    const prev = lastPrev(x.hist || [], todayKey());
+    if (!prev) return null;
     const sets = prev.sets.filter(hasVal);
-    if (!sets.length) return "";
-    const last = sets[sets.length - 1];
-    const r = num(last.r), p = num(last.p);
-    if (!r) return "";
-    const tope = parseInt(String(x.re || "").split(/[^\d]+/).filter(Boolean).pop(), 10);
-    if (!p) return "La última vez hiciste " + r + " repes. Hoy apuntá a " + (r + 1) + ".";
-    if (tope && r >= tope) {
-      const sube = p < 20 ? p + 1 : p < 60 ? p + 2.5 : p + 5;
-      return "Cerraste " + r + " repes de " + p + " kg: llegaste al tope del rango. Subí a " + fmtNum(sube) + " kg y volvé al piso.";
+    if (!sets.length) return null;
+    const re = String(x.re || "");
+    if (/\d\s*(s|seg|min|'|"|″|′)/i.test(re)) return null;          /* ejercicios por tiempo */
+    const ns = (re.match(/\d+/g) || []).map(Number);
+    const lo = ns.length ? ns[0] : 0, hi = ns.length ? ns[ns.length - 1] : 0;
+    const pesos = sets.map((z) => num(z.p) || 0);
+    const w = Math.max.apply(null, pesos);
+    if (!w) {
+      const r = Math.max.apply(null, sets.map((z) => num(z.r) || 0));
+      if (!r) return null;
+      if (hi && r >= hi) return { tipo: "sube", r: hi, txt: "Llegaste a " + hi + " repes: sumá peso (mancuernas o una mochila) o hacelas más lentas." };
+      return { tipo: "reps", r: r + 1, txt: "La última vez hiciste " + r + " repes. Hoy apuntá a " + (r + 1) + "." };
     }
-    return "La última vez: " + r + " repes de " + p + " kg. Hoy apuntá a " + (r + 1) + " con el mismo peso.";
+    const enW = sets.filter((z) => (num(z.p) || 0) === w).map((z) => num(z.r) || 0);
+    const peor = Math.min.apply(null, enW);
+    if (hi && enW.every((r) => r >= hi)) {
+      const sube = w + (w < 10 ? 1 : w < 30 ? 2 : w < 80 ? 2.5 : 5);
+      return { tipo: "sube", p: sube, r: lo || peor, txt: "Hiciste " + hi + " repes con " + fmtNum(w) + " kg en todas las series: subí a " + fmtNum(sube) + " kg y volvé a " + (lo || peor) + " repes." };
+    }
+    if (lo && peor < lo) return { tipo: "mantiene", p: w, r: lo, txt: "Te quedaste en " + peor + " repes, abajo del rango. Mantené " + fmtNum(w) + " kg hasta llegar a " + lo + " en todas las series." };
+    const r = hi ? Math.min(hi, peor + 1) : peor + 1;
+    return { tipo: "reps", p: w, r: r, txt: "Mismo peso, una repe más: " + fmtNum(w) + " kg × " + r + ". Cuando llegues a " + (hi || r) + " en todas, subís." };
+  }
+  function sugerencia(x) {
+    const o = objetivoHoy(x);
+    return o ? o.txt : "";
+  }
+  /* Lo que se ve en la lista, sin abrir el ejercicio */
+  function objetivoHtml(it) {
+    if (todaySets(it).length) return "";
+    const o = objetivoHoy(it);
+    if (!o) return "";
+    return '<p class="obj-hoy ' + o.tipo + '">' + (o.tipo === "sube" ? "▲ " : "") + "Hoy: " +
+      (o.p ? "<b>" + fmtNum(o.p) + " kg</b> × " : "") + "<b>" + o.r + "</b> repes" + (o.tipo === "sube" ? " · subí de peso" : "") + "</p>";
   }
 
   function summaryTxt(x) {
@@ -1556,8 +1597,10 @@ react-dom/cjs/react-dom.production.min.js:
 
   function rowsHtml(idx, prev) {
     const s = edit.draft.hist[idx];
+    const o = prev ? objetivoHoy(edit.draft) : null;
     return s.sets.map((x, k) => {
-      const ph = prev && prev.sets.filter(hasVal)[k];
+      const ult = prev && prev.sets.filter(hasVal)[k];
+      const ph = o ? { r: String(o.r || (ult && ult.r) || ""), p: o.p ? fmtNum(o.p) : (ult && ult.p) || "" } : ult;
       const pesoNum = num(x.p);
       const mostrarDiscos = edit.discos === idx + ":" + k;
       return '<div class="set' + (mostrarDiscos ? " abierta" : "") + '"><span class="sn">Serie ' + (k + 1) + "</span>" +
@@ -1597,6 +1640,7 @@ react-dom/cjs/react-dom.production.min.js:
       h += '<div class="tb-h"><p class="tb-t">Hoy</p><span class="tb-d">' + esc(longDay(tk)) + "</span></div>" + rowsHtml(ti, prev) +
         '<div class="tb-b"><button type="button" class="btn sm pri" data-act="rest">' + CLOCK + "Descanso " + mmss(edit.rest) + "</button>" +
         '<button type="button" class="btn sm alt" data-act="addset" data-s="' + ti + '">+ Serie</button>' +
+        (objetivoHoy(edit.draft) ? '<button type="button" class="btn sm alt" data-act="usar-obj">Usar lo sugerido</button>' : "") +
         (prev ? '<button type="button" class="btn sm alt" data-act="copy">Copiar última vez</button>' : "") + "</div>";
     } else {
       h += '<button type="button" class="btn pri" data-act="today">+ Anotar hoy</button>';
@@ -2246,6 +2290,17 @@ react-dom/cjs/react-dom.production.min.js:
         focusIn('[data-s="' + hist.findIndex((s) => s.d === todayKey()) + '"][data-k="0"][data-f="r"]');
         afterChange();
         break;
+      case "usar-obj": {
+        const tk = todayKey(), ti = hist.findIndex((s) => s.d === tk), o = objetivoHoy(edit.draft);
+        if (ti < 0 || !o) break;
+        hist[ti].sets.forEach((z) => {
+          if (!z.r) z.r = String(o.r);
+          if (!z.p && o.p) z.p = fmtNum(o.p);
+        });
+        rerenderEditor();
+        afterChange();
+        break;
+      }
       case "copy": {
         const tk = todayKey(), ti = hist.findIndex((s) => s.d === tk), prev = lastPrev(hist, tk);
         if (ti < 0 || !prev) break;
@@ -3823,7 +3878,7 @@ react-dom/cjs/react-dom.production.min.js:
     const lg = logrosNuevos();
     const nc = nutriCfg();
     h += cardPendiente() + cardCierre() + cardTuDia() + cardRecordsHoy() + (diaDeHoy() ? "" : cardEntreno()) + cardPilares() + (sistemaData() ? "" : cardSistema()) + (nc && !nutriEdit ? "" : cardNutri()) +
-      progresoHoy(lg, nc);
+      progresoHoy(lg, nc) + (finOn() ? "" : '<p class="fin-on">💰 ¿Querés ordenar tu plata? <b>Finanzas</b> viene gratis con tu plan. <button type="button" class="btn sm alt" data-act="fin-on">Activar</button></p>');
     h += '<section class="card rise"><p class="card-k">Tu entrenador</p><p class="card-t">' + esc(MARCA) + "</p>" +
       '<p class="card-s">Dudas, cambios o una rutina hecha a tu medida: escribime al ' + esc(TEL) + ".</p>" +
       '<a class="btn alt" href="' + esc(waUrl("Hola " + MARCA + "! " + (nombre ? "Soy " + nombre + ". " : "") + "Te escribo por la rutina.")) + '" target="_blank" rel="noopener">Abrir WhatsApp</a></section>';
@@ -3852,6 +3907,15 @@ react-dom/cjs/react-dom.production.min.js:
      Gastos, ingresos, presupuesto del mes, metas de ahorro y hábitos de
      plata. Igual que todo lo demás, queda guardado solo en este teléfono. */
   const KEY_PLATA = "plata:v1";
+  /* Finanzas es opcional: se elige en el arranque. Quien ya usaba la app la sigue viendo */
+  const KEY_FIN = "finanzas:on";
+  const finOn = () => { try { return localStorage.getItem(KEY_FIN) !== "0"; } catch (e) { return true; } };
+  function ponerFinanzas(si) {
+    try { localStorage.setItem(KEY_FIN, si ? "1" : "0"); } catch (e) { /* sin almacenamiento */ }
+    const b = document.querySelector('#shellnav [data-go="plata"]');
+    if (b) b.hidden = !si;
+  }
+  ponerFinanzas(finOn());
   const PLATA_BODY = document.getElementById("plata-body");
   const CATS = [
     ["comida", "Comida", "#FF8F5E"], ["super", "Súper", "#4BD489"], ["transporte", "Transporte", "#7C9CFF"],
@@ -4168,6 +4232,7 @@ react-dom/cjs/react-dom.production.min.js:
       h += plegado("anio", "#5FD6E0", "Tu " + anio, "Te quedó " + money(totI - totG) + " en el año", an);
     }
 
+    h += '<p class="fin-off"><button type="button" class="btn lnk" data-pa="fin-off">No uso Finanzas: ocultar esta pestaña</button></p>';
     PLATA_BODY.innerHTML = h;
     animar(PLATA_BODY);
   }
@@ -4186,6 +4251,12 @@ react-dom/cjs/react-dom.production.min.js:
         plataVerTodo = false; sfx("toque"); return renderPlata();
       }
       if (a === "ir-mes") { plataMes = b.dataset.m; sfx("toque"); renderPlata(); window.scrollTo(0, 0); return; }
+      if (a === "fin-off") {
+        if (!confirm("¿Ocultar Finanzas? Tus datos quedan guardados y la podés volver a activar desde Hoy.")) return;
+        ponerFinanzas(false);
+        if (window.__irA) window.__irA("hoy");
+        return;
+      }
       if (a === "acc") { plataAbre[b.dataset.id] = !plataAbre[b.dataset.id]; sfx("toque"); return renderPlata(); }
       if (a === "sh") { sfx("toque"); sheetIngreso = b.dataset.t === "i"; return abrirSheet("gasto"); }
       if (a === "del") {
@@ -4303,6 +4374,7 @@ react-dom/cjs/react-dom.production.min.js:
     habitos: { n: "Hábitos", c: "#A98BFF" },
     nutri: { n: "Nutrición", c: "#4BD489" },
     plata: { n: "Finanzas", c: "#5FD6E0" },
+    racha: { n: "Racha", c: "#FF6F4E" },
   };
 
   function rangoRes(modo, off) {
@@ -4398,7 +4470,7 @@ react-dom/cjs/react-dom.production.min.js:
     }
 
     const ps = plataStats(desde, hasta);
-    if (ps.hayDatos) o.plata = Object.assign(ps, { score: puntajePlata(desde, hasta) });
+    if (ps.hayDatos && finOn()) o.plata = Object.assign(ps, { score: puntajePlata(desde, hasta) });
 
     const sc = ["entreno", "habitos", "nutri", "plata"].map((k) => o[k] && o[k].score).filter((v) => v != null);
     o.puntaje = sc.length ? Math.round((sc.reduce((a, b) => a + b, 0) / sc.length) * 100) : null;
@@ -4523,7 +4595,7 @@ react-dom/cjs/react-dom.production.min.js:
       '<button type="button" class="ib" data-rs="off" data-d="-1" aria-label="Siguiente"' + (resOff === 0 ? " disabled" : "") + ">›</button></div>";
 
     /* Puntaje general, rango y los cuatro pilares */
-    const mini = ["entreno", "habitos", "nutri", "plata"].map((k) => {
+    const mini = ["entreno", "habitos", "nutri"].concat(finOn() ? ["plata"] : []).map((k) => {
       const v = s[k] && s[k].score != null ? pc(s[k].score) : null;
       return '<div class="pil" style="--c:' + PILARES[k].c + '">' + anillo(v || 0, v == null ? "—" : '<i data-n="' + v + '" data-fin="' + v + '">' + v + "</i>", "", 62) + "<span>" + PILARES[k].n + "</span></div>";
     }).join("");
@@ -4645,7 +4717,8 @@ react-dom/cjs/react-dom.production.min.js:
         D.recs.length ? "🏆 " + D.recs.length + (D.recs.length === 1 ? " récord nuevo" : " récords nuevos") : s.entreno && s.entreno.kg ? fmtKg(s.entreno.kg) + " kg movidos" : ""],
       ["habitos", s.habitos ? pc(s.habitos.pct) + "%" : "—", "misiones cumplidas", s.habitos ? s.habitos.buenos + " días arriba del 80%" : ""],
       ["nutri", s.nutri && s.nutri.dias ? s.nutri.ok + "/" + s.nutri.dias : "—", "días con la proteína", s.nutri && s.nutri.dif ? (s.nutri.dif > 0 ? "+" : "−") + fmtNum(Math.abs(s.nutri.dif)) + " kg" : ""],
-      ["plata", s.plata && s.plata.score != null ? pc(s.plata.score) + "%" : "—", "finanzas en orden", s.plata && s.plata.habPct != null ? "hábitos de plata " + pc(s.plata.habPct) + "%" : ""],
+      finOn() ? ["plata", s.plata && s.plata.score != null ? pc(s.plata.score) + "%" : "—", "finanzas en orden", s.plata && s.plata.habPct != null ? "hábitos de plata " + pc(s.plata.habPct) + "%" : ""]
+        : ["racha", String(rachaDias()), rachaDias() === 1 ? "día completo seguido" : "días completos seguidos", D.recs.length ? "" : "🔥 racha"],
     ];
     tiles.forEach((t, i) => {
       const bx = 90 + (i % 2) * 465, by = 960 + Math.floor(i / 2) * 320, bw = 435, bh = 290;
@@ -4664,7 +4737,7 @@ react-dom/cjs/react-dom.production.min.js:
   function textoReto(D) {
     const s = D.s;
     return D.r.quien.charAt(0).toUpperCase() + D.r.quien.slice(1) + " saqué " + s.puntaje + "/100 en " + (CFG.producto || "SISTEMA") +
-      " (rango " + rango(s.puntaje).n + ") 💪 Entreno, hábitos, comida y finanzas, todo medido. ¿Te animás a superarme? Arrancá acá: " + linkAmigos();
+      " (rango " + rango(s.puntaje).n + ") 💪 Entreno, hábitos y comida" + (finOn() ? ", y hasta la plata" : "") + ", todo medido. ¿Te animás a superarme? Arrancá acá: " + linkAmigos();
   }
 
   let resDesde = "hoy";
@@ -4711,7 +4784,7 @@ react-dom/cjs/react-dom.production.min.js:
     const dias = Object.keys(leer(KEY_DIAS, {})).length;
     const p = plataData();
     const h = (Object.keys(entrenoPorDia()).length ? cardSemana() : "") +
-      (p.mov.length || p.metas.length || (p.cuentas || []).length ? cardPlata() : "") +
+      (finOn() && (p.mov.length || p.metas.length || (p.cuentas || []).length) ? cardPlata() : "") +
       (nc && !nutriEdit ? cardNutri() : "") +
       (pesos().length ? cardPeso() : "") +
       (medidas().length || dias >= 7 ? cardMedidas() : "") +
@@ -4726,12 +4799,12 @@ react-dom/cjs/react-dom.production.min.js:
     const s = statsRes(r.desde, r.hasta, ctxRes());
     if (s.puntaje == null) return "";
     const ir = { entreno: "entreno", habitos: "sistema", nutri: "", plata: "plata" };
-    const mini = ["entreno", "habitos", "nutri", "plata"].map((k) => {
+    const mini = ["entreno", "habitos", "nutri"].concat(finOn() ? ["plata"] : []).map((k) => {
       const v = s[k] && s[k].score != null ? Math.round(s[k].score * 100) : null;
       return '<button type="button" class="pil" style="--c:' + PILARES[k].c + '"' + (ir[k] ? ' data-act="go" data-to="' + ir[k] + '"' : "") + ">" +
         anillo(v || 0, v == null ? "—" : '<i data-n="' + v + '" data-fin="' + v + '">' + v + "</i>", "", 62) + "<span>" + PILARES[k].n + "</span></button>";
     }).join("");
-    return '<section class="card rise pils-card"><div class="bv-top"><p class="card-k">Tu semana · entreno, hábitos, comida y finanzas</p>' +
+    return '<section class="card rise pils-card"><div class="bv-top"><p class="card-k">Tu semana · entreno, hábitos, comida' + (finOn() ? " y finanzas" : "") + '</p>' +
       (s.puntaje != null ? '<p class="pils-tot"><b>' + s.puntaje + "</b>/100</p>" : "") + "</div>" +
       '<div class="pils">' + mini + "</div>" +
       '<button type="button" class="btn pri wide" data-act="go" data-to="resumen">Ver mi semana completa</button></section>';
@@ -4839,10 +4912,10 @@ react-dom/cjs/react-dom.production.min.js:
     const p = plataData(), hl = (p.habLog || {})[k] || {};
     const movHoy = p.mov.filter((m) => m.d === k && m.t === "g");
     const anotado = movHoy.length > 0 || !!hl.anote || !!hl.nogaste;
-    cuentasDelMes(p, k.slice(0, 7)).filter((x) => !x.pago && x.dias <= 1).forEach((x) => {
+    if (finOn()) cuentasDelMes(p, k.slice(0, 7)).filter((x) => !x.pago && x.dias <= 1).forEach((x) => {
       it.push({ id: "cta-" + x.c.id, ic: "🧾", t: "Pagar " + x.c.n, s: venceTxt(x) + (x.m ? " · " + money(x.m) : ""), pct: 0, act: "pagar", cta: x.c.id, btn: "Pagada" });
     });
-    it.push({ id: "plata", ic: "💰", t: "Finanzas", pct: anotado ? 1 : 0, q: "gasto", btn: "+ Gasto", alt: anotado ? "" : "nogaste", altT: "No gasté",
+    if (finOn()) it.push({ id: "plata", ic: "💰", t: "Finanzas", pct: anotado ? 1 : 0, q: "gasto", btn: "+ Gasto", alt: anotado ? "" : "nogaste", altT: "No gasté",
       s: movHoy.length ? movHoy.length + (movHoy.length === 1 ? " gasto · " : " gastos · ") + money(movHoy.reduce((a, m) => a + m.m, 0)) : hl.nogaste ? "Hoy no gastaste nada" : "Anotá lo que gastes" });
     const ps = pesos(), ult = ps[ps.length - 1];
     const diasPeso = ult ? Math.round((fechaDe(k) - fechaDe(ult.d)) / 86400000) : 99;
@@ -5070,7 +5143,8 @@ react-dom/cjs/react-dom.production.min.js:
   let sheetTab = "gasto", sheetCat = "comida", sheetIngreso = false, paneActual = "hoy";
 
   function renderSheet() {
-    const tabs = [["gasto", "💰 Plata"], ["prot", "🥩 Proteína"], ["agua", "💧 Agua"], ["peso", "⚖️ Peso"]];
+    if (!finOn() && sheetTab === "gasto") sheetTab = "prot";
+    const tabs = (finOn() ? [["gasto", "💰 Plata"]] : []).concat([["prot", "🥩 Proteína"], ["agua", "💧 Agua"], ["peso", "⚖️ Peso"]]);
     let b = "";
     if (sheetTab === "gasto") {
       const col = sheetIngreso ? "#4BD489" : "#FF6F4E";
@@ -5211,6 +5285,7 @@ react-dom/cjs/react-dom.production.min.js:
         pagarCuenta(c.id, todayKey().slice(0, 7), m);
         sfx("listo"); showStatus(c.n + " pagada"); return refrescar();
       }
+      if (a === "fin-on") { ponerFinanzas(true); sfx("listo"); showStatus("Finanzas activada", 2200); return renderHoy(); }
       if (a === "td-nogaste") {
         const p = plataData(), l = p.habLog[todayKey()] || (p.habLog[todayKey()] = {});
         l.nogaste = true; l.anote = true; plataGuardar(p); sfx("listo"); return refrescar();
@@ -5407,9 +5482,13 @@ react-dom/cjs/react-dom.production.min.js:
   const arr = { obj: "", sexo: "m", habs: SUGERIDOS.map((x) => ({ on: x[4], t: x[2] })) };
   window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); promptInst = e; });
 
+  /* los pasos se fijan al abrir: si se recalcularan, al crear los hábitos se saltearía uno */
+  let pasosFijos = null;
   function pasosArr() {
-    const l = ["nombre", "como", "objetivo"];
+    if (pasosFijos) return pasosFijos;
+    const l = pasosFijos = ["nombre", "como", "objetivo"];
     if (!sistemaData()) l.push("habitos");
+    l.push("finanzas");
     l.push("listo");
     return l;
   }
@@ -5445,6 +5524,12 @@ react-dom/cjs/react-dom.production.min.js:
         '<ul class="arr-habs">' + SUGERIDOS.map((x, i) => '<li class="' + (arr.habs[i].on ? "on" : "") + '"><button type="button" data-arr="hab" data-i="' + i + '" aria-pressed="' + arr.habs[i].on + '">' +
           '<span class="pl-ck">' + CHECK + "</span>" + esc(x[0]) + '</button><input class="in" type="time" data-ht="' + i + '" value="' + arr.habs[i].t + '" aria-label="Hora de ' + esc(x[0]) + '"></li>').join("") + "</ul>" +
         '<button type="button" class="btn pri arr-go" data-arr="sig">Siguiente</button>';
+    } else if (p === "finanzas") {
+      h = '<h1 class="arr-t">¿Ordenamos también tu plata?</h1>' +
+        '<p class="arr-s">Viene <b>gratis con tu plan</b>: anotás un gasto en dos segundos, ves qué cuentas vencen (alquiler, luz, la tarjeta) y cuánto te queda libre a fin de mes.</p>' +
+        '<div class="arr-fin"><button type="button" class="btn pri arr-go" data-arr="fin-si">Sí, quiero</button>' +
+        '<button type="button" class="btn alt arr-go" data-arr="fin-no">No, solo entreno y hábitos</button></div>' +
+        '<p class="arr-s arr-chica">Lo podés activar o sacar cuando quieras.</p>';
     } else {
       const ios = esIOS(), inst = instalada();
       const pushOk = hayPush() && (!ios || inst);
@@ -5516,6 +5601,7 @@ react-dom/cjs/react-dom.production.min.js:
     const a = b.dataset.arr;
     if (a === "sig") { if (!guardarPasoArr()) return; sfx("toque"); arrPaso++; return renderArr(); }
     if (a === "saltar-paso") { arrPaso++; return renderArr(); }
+    if (a === "fin-si" || a === "fin-no") { ponerFinanzas(a === "fin-si"); sfx("toque"); arrPaso++; return renderArr(); }
     if (a === "atras") { arrPaso = Math.max(0, arrPaso - 1); return renderArr(); }
     if (a === "obj") {
       const v = (id) => (document.getElementById(id) || {}).value || "";
