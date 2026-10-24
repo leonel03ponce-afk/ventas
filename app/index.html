@@ -942,6 +942,81 @@ body.bloqueado .arr { display: none !important; }
 .rt .diag li.ok b { color: #4BD489; }
 .rt .diag li.mal { color: var(--ink); }
 .rt .diag li.mal b { color: var(--coral); }
+/* ════ Lista de ejercicios más limpia ════ */
+.rt .lg-1 { margin-top: 4px; font: 400 13px/1.35 var(--sans); color: var(--muted); }
+.rt .lg-1 b { font-weight: 600; color: var(--ink); }
+.rt .lg-1.lg-ok { color: #4BD489; }
+.rt .lg-1 .ic { width: 14px; height: 14px; margin-right: 4px; vertical-align: -2px; stroke-width: 3; }
+.rt .go-wrap { margin-top: 14px; }
+.rt .go-start { width: 100%; min-height: 58px; font-size: 17px; background: linear-gradient(120deg, color-mix(in srgb, var(--c) 85%, #fff), var(--c)); color: var(--on, #0B0715); box-shadow: 0 10px 28px color-mix(in srgb, var(--c) 35%, transparent); }
+.rt .go-hint { margin-top: 8px; font-size: 13px; color: var(--muted); text-align: center; }
+
+/* ════ Modo entrenamiento ════ */
+html.go-abierto, html.go-abierto body { overflow: hidden; }
+body.bloqueado .go { display: none !important; }
+.rt.go { position: fixed; inset: 0; z-index: 10002; overflow: auto; background: #0B0715; opacity: 0; transition: opacity .22s ease; }
+.rt.go[hidden] { display: none; }
+.rt.go.on { opacity: 1; }
+.rt.go::before { content: ""; position: fixed; inset: 0; pointer-events: none; background: radial-gradient(90% 45% at 50% 0%, color-mix(in srgb, var(--c, #E9B75B) 22%, transparent), transparent 70%); }
+.rt .go-in { position: relative; max-width: 560px; margin: 0 auto; padding: calc(10px + env(safe-area-inset-top, 0px)) 16px calc(30px + env(safe-area-inset-bottom, 0px)); }
+.rt .go-top { display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; gap: 8px; }
+.rt .go-x { width: 44px; height: 44px; color: var(--ink); }
+.rt .go-tt { text-align: center; line-height: 1.15; }
+.rt .go-tt b { display: block; font: 700 12px/1.2 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--c); }
+.rt .go-tt span { font-size: 14px; color: var(--muted); }
+.rt .go-n { text-align: right; font: 700 16px/1 var(--display); color: var(--muted); }
+.rt .go-prog { display: flex; gap: 4px; margin-top: 10px; }
+.rt .go-prog i { flex: 1; height: 5px; background: rgba(255,255,255,.1); }
+.rt .go-prog i.on { background: var(--c); }
+.rt .go-prog i.ok { background: #4BD489; }
+.rt .go-ej { margin-top: 22px; }
+.rt .go-ss { font: 600 12px/1.3 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--c); }
+.rt .go-nm { margin-top: 6px; font: 700 32px/1.05 var(--display); }
+.rt .go-ch { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.rt .go-ch span { padding: 5px 10px; font-size: 13px; background: rgba(255,255,255,.06); clip-path: var(--bevel-sm); }
+.rt .go-nota { margin-top: 8px; font-size: 14px; color: var(--muted); }
+.rt .go-obj { margin-top: 14px; padding: 12px 14px; font: 500 15px/1.4 var(--sans); background: rgba(233,183,91,.12); border-left: 3px solid var(--gold); }
+.rt .go-obj.sube { background: rgba(75,212,137,.13); border-color: #4BD489; }
+.rt .go-ult { margin-top: 8px; font-size: 13.5px; color: var(--muted); }
+.rt .go-sets { margin: 18px 0 0; padding: 0; list-style: none; }
+.rt .go-sets li { display: grid; grid-template-columns: 30px minmax(0, 1fr) minmax(0, 1fr) 54px; align-items: center; gap: 8px; margin-top: 8px; padding: 10px; background: var(--panel); border: 1px solid var(--edge2); clip-path: var(--bevel-sm); transition: background-color .2s ease, border-color .2s ease; }
+.rt .go-sets li.on { border-color: var(--c); background: color-mix(in srgb, var(--c) 10%, var(--panel)); }
+.rt .go-sets li.ok { border-color: rgba(75,212,137,.5); background: rgba(75,212,137,.08); }
+.rt .go-sn { font: 700 20px/1 var(--display); color: var(--muted); text-align: center; }
+.rt .go-sets li.on .go-sn { color: var(--c); }
+.rt .go-f { display: grid; grid-template-columns: 30px minmax(0, 1fr) 30px; grid-template-rows: auto auto; align-items: center; }
+.rt .go-f small { grid-column: 1 / -1; text-align: center; font-size: 11px; color: var(--muted2); letter-spacing: .06em; text-transform: uppercase; margin-top: 3px; }
+.rt .go-pm { height: 40px; border: 0; background: rgba(255,255,255,.06); color: var(--ink); font: 700 20px/1 var(--display); cursor: pointer; }
+.rt .go-pm:active { background: rgba(255,255,255,.14); }
+.rt .go-v { width: 100%; min-width: 0; height: 40px; border: 0; background: transparent; color: var(--ink); text-align: center; font: 700 22px/1 var(--display); -webkit-appearance: none; appearance: none; }
+.rt .go-v:focus { outline: none; background: rgba(255,255,255,.05); }
+.rt .go-ok { display: grid; place-items: center; width: 54px; height: 54px; border: 2px solid var(--edge2); background: transparent; color: var(--muted); cursor: pointer; clip-path: var(--bevel-sm); }
+.rt .go-ok .ic { width: 26px; height: 26px; stroke-width: 3; }
+.rt .go-sets li.on .go-ok { border-color: var(--c); color: var(--c); }
+.rt .go-sets li.ok .go-ok { background: #4BD489; border-color: #4BD489; color: #0B0715; }
+.rt .go-mas { margin-top: 6px; color: var(--muted); }
+.rt .go-rest { margin-top: 14px; padding: 16px; text-align: center; background: var(--panel2); border: 1px solid var(--c); clip-path: var(--bevel); }
+.rt .go-rest p { font: 600 12px/1 var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--c); }
+.rt .go-rt { display: block; margin-top: 6px; font: 700 54px/1 var(--display); }
+.rt .go-rb { height: 6px; margin-top: 10px; background: rgba(255,255,255,.08); }
+.rt .go-rb i { display: block; height: 100%; background: var(--c); transition: width .5s linear; }
+.rt .go-ra { display: grid; grid-template-columns: 1fr 1.4fr; gap: 8px; margin-top: 12px; }
+.rt .go-nav { display: grid; grid-template-columns: 1fr 1.6fr; gap: 8px; margin-top: 20px; }
+.rt .go-nav .btn { min-height: 54px; font-size: 16px; }
+.rt .go-pie { margin-top: 12px; text-align: center; font-size: 13px; color: var(--muted2); }
+.rt .go-fin { text-align: center; }
+.rt .go-k { margin-top: 30px; font: 600 12px/1 var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--c); }
+.rt .go-big { margin-top: 10px; font: 700 44px/1.05 var(--display); }
+.rt .go-st { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 24px; }
+.rt .go-st div { padding: 16px 6px; background: var(--panel); clip-path: var(--bevel-sm); }
+.rt .go-st b { display: block; font: 700 30px/1 var(--display); }
+.rt .go-st span { display: block; margin-top: 6px; font-size: 12px; color: var(--muted); }
+.rt .go-recs { margin-top: 10px; text-align: left; }
+.rt .go-rec { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 8px; padding: 12px; background: rgba(233,183,91,.1); }
+.rt .go-rec b { display: block; } .rt .go-rec small { color: var(--gold); }
+.rt .go-tx { margin-top: 22px; color: var(--muted); }
+.rt .go-listo { width: 100%; min-height: 56px; margin-top: 28px; font-size: 17px; }
+@media (max-width: 360px) { .rt .go-sets li { grid-template-columns: 22px minmax(0,1fr) minmax(0,1fr) 46px; gap: 5px; padding: 8px 6px; } .rt .go-ok { width: 46px; height: 46px; } .rt .go-f { grid-template-columns: 26px minmax(0,1fr) 26px; } }
 @media (max-width: 350px) { #shellnav { gap: 3px; padding-left: 6px; padding-right: 6px; } #shellnav button { font-size: 9.5px; letter-spacing: 0; } }
 @media (max-width: 360px) { .rt .pil .ring { transform: scale(.88); } .rt .res-acc { grid-template-columns: 1fr; } }
 </style>
@@ -1358,12 +1433,13 @@ react-dom/cjs/react-dom.production.min.js:
       '<li><span class="sn">Serie ' + (k + 1) + '</span><span class="sv">' + setHtml(x) + "</span></li>").join("") + "</ol>";
   }
 
+  /* una sola línea: la lista entera de series ocupaba media pantalla por ejercicio */
   function logHtml(it) {
     const s = latestSession(it.hist, false);
     if (s) {
       const hoy = s.d === todayKey();
-      const label = hoy ? "Hoy" : s.d ? "Última vez · " + fmtDay(s.d) : "Última vez";
-      return '<div class="log"><p class="lg' + (hoy ? " lg-ok" : "") + '">' + (hoy ? CHECK : "") + esc(label) + "</p>" + seriesHtml(s.sets) + "</div>";
+      const resumen = s.sets.filter(hasVal).map((x) => (x.p ? fmtNum(num(x.p)) + " kg × " : "") + (x.r || "")).join(" · ");
+      return '<div class="log"><p class="lg-1' + (hoy ? " lg-ok" : "") + '">' + (hoy ? CHECK + "Hoy: " : "Última vez (" + esc(fmtDay(s.d)) + "): ") + "<b>" + esc(resumen) + "</b></p></div>";
     }
     return '<div class="log only-edit"><span class="addlog">+ Anotar series</span></div>';
   }
@@ -2179,6 +2255,7 @@ react-dom/cjs/react-dom.production.min.js:
       '<section class="day" id="rtp-' + d.id + '" role="tabpanel" aria-labelledby="rtt-' + d.id + '" style="' + vars(d) + '" hidden>' +
         '<header class="block"><h2 class="big" data-lines="' + (d.lines || 1) + '">' + esc(d.day) + "</h2>" +
         '<p class="session">' + esc(d.title) + "</p>" + (d.focus ? '<p class="focus">' + esc(d.focus) + "</p>" : "") + "</header>" +
+        '<div class="go-wrap" id="rtgo-' + d.id + '">' + textoGoBoton(d) + "</div>" +
         '<div class="dbody" id="rtb-' + d.id + '">' + bodyHtml(d) + "</div>" +
       "</section>"
     ).join("");
@@ -4889,7 +4966,7 @@ react-dom/cjs/react-dom.production.min.js:
           pct: desc[k] ? 1 : 0, act: desc[k] ? "" : "desc", btn: "Listo" });
       } else {
         it.push({ id: "ent", ic: "💪", t: d.day + " · " + d.title, s: p.done ? p.done + " de " + p.total + " ejercicios" : "Todavía no arrancaste",
-          pct: p.total ? Math.min(1, p.done / p.total / 0.8) : 0, go: "entreno", day: d.id, btn: p.done ? "Seguir" : "Entrenar",
+          pct: p.total ? Math.min(1, p.done / p.total / 0.8) : 0, act: "entrenar", cta: d.id, btn: p.done ? "Seguir" : "Entrenar",
           alt: p.done ? "" : "desc", altT: "Descanso" });
       }
     }
@@ -5283,6 +5360,7 @@ react-dom/cjs/react-dom.production.min.js:
         const l = leer(KEY_DESC, {}); l[todayKey()] = true; escribir(KEY_DESC, l);
         sfx("listo"); return refrescar();
       }
+      if (a === "td-entrenar") { sfx("toque"); return abrirGo(b.dataset.id); }
       if (a === "td-pagar") {
         const p = plataData(), c = (p.cuentas || []).filter((x) => x.id === b.dataset.id)[0];
         if (!c) return;
@@ -5680,6 +5758,232 @@ react-dom/cjs/react-dom.production.min.js:
   });
   if (!bienvHecha) abrirArr();
 
+
+  /* ═══════════ Modo entrenamiento: un ejercicio por pantalla ═══════════
+     En el gimnasio nadie quiere scrollear una lista ni abrir formularios.
+     Acá ves un ejercicio, cuánto levantar, tocás ✓ en cada serie y el
+     descanso arranca solo. Al final, el resumen con tus récords. */
+  const GO = document.createElement("div");
+  GO.className = "rt go"; GO.hidden = true;
+  GO.setAttribute("role", "dialog"); GO.setAttribute("aria-label", "Entrenamiento");
+  document.body.appendChild(GO);
+  let go = null;   /* { dia, lista, i, sets: {i: [{r,p,ok}]}, inicio, fin } */
+
+  function listaGo(d) {
+    const l = [];
+    (d.blocks || d.items || []).forEach((b) => {
+      if (b.type) b.items.forEach((it, j) => l.push({ it: it, ss: b.type === "ss", letra: LETTERS.charAt(j), ultimo: j === b.items.length - 1, r: b.r || it.r }));
+      else l.push({ it: b, r: b.r });
+    });
+    return l;
+  }
+  const pasoKg = (p) => (p >= 20 ? 2.5 : 1);
+  /* las series de hoy para un ejercicio: lo ya anotado, o lo sugerido */
+  function seriesGo(x) {
+    const it = x.it, hoy = (it.hist || []).filter((s) => s.d === todayKey())[0];
+    const prev = lastPrev(it.hist || [], todayKey());
+    const o = objetivoHoy(it);
+    const ant = prev ? prev.sets.filter(hasVal) : [];
+    const se = parseInt(it.se, 10);
+    const n = Math.min(12, Math.max(isNaN(se) ? 0 : se, ant.length, hoy ? hoy.sets.length : 0, 1));
+    const out = [];
+    for (let k = 0; k < n; k++) {
+      const ya = hoy && hoy.sets[k] && hasVal(hoy.sets[k]) ? hoy.sets[k] : null;
+      if (ya) { out.push({ r: String(ya.r || ""), p: String(ya.p || ""), ok: true }); continue; }
+      const a = ant[k] || ant[ant.length - 1];
+      out.push({ r: o && o.r ? String(o.r) : a ? String(a.r || "") : String(parseInt(it.re, 10) || ""), p: o && o.p ? fmtNum(o.p) : a ? String(a.p || "") : "", ok: false });
+    }
+    return out;
+  }
+  function guardarSerieGo(x, k, set) {
+    const it = x.it;
+    it.hist = it.hist || [];
+    let s = it.hist.filter((z) => z.d === todayKey())[0];
+    if (!s) { s = { d: todayKey(), sets: [] }; it.hist.push(s); }
+    while (s.sets.length <= k) s.sets.push({ r: "", p: "" });
+    s.sets[k] = set ? { r: set.r, p: set.p } : { r: "", p: "" };
+    try { saveState(state); } catch (err) { showStatus("No se pudo guardar en este navegador", 3000); }
+  }
+
+  function abrirGo(dayId, desde) {
+    const d = dayById(dayId);
+    if (!d) return;
+    const lista = listaGo(d);
+    if (!lista.length) return;
+    const sets = {};
+    lista.forEach((x, i) => { sets[i] = seriesGo(x); });
+    let i = typeof desde === "number" ? desde : lista.findIndex((x, n) => sets[n].some((z) => !z.ok));
+    if (i < 0) i = 0;
+    go = { dia: dayId, lista: lista, sets: sets, i: i, inicio: Date.now(), fin: false };
+    audioOn();
+    renderGo();
+    GO.hidden = false;
+    document.documentElement.classList.add("go-abierto");
+    requestAnimationFrame(() => GO.classList.add("on"));
+    pantallaPrendida(true);
+  }
+  function cerrarGo() {
+    GO.classList.remove("on");
+    document.documentElement.classList.remove("go-abierto");
+    setTimeout(() => { GO.hidden = true; }, 220);
+    const dia = go && go.dia;
+    go = null;
+    if (dia) { renderBody(dia); refreshTabs(); pintarGoBoton(dia); }
+    renderHoy();
+  }
+
+  function tiempoGo() {
+    const s = Math.round((Date.now() - (go.inicio || Date.now())) / 1000);
+    return Math.floor(s / 60) + " min";
+  }
+  function renderGo() {
+    if (!go) return;
+    const d = dayById(go.dia);
+    if (go.fin) return renderFinGo(d);
+    const x = go.lista[go.i], it = x.it, sets = go.sets[go.i];
+    const hechos = go.lista.filter((_, n) => go.sets[n].every((z) => z.ok)).length;
+    const o = objetivoHoy(it);
+    const prev = lastPrev(it.hist || [], todayKey());
+    const ult = prev ? prev.sets.filter(hasVal).map((z) => (z.p ? fmtNum(num(z.p)) + " kg × " : "") + z.r).join(" · ") : "";
+    const actual = sets.findIndex((z) => !z.ok);
+    const descanso = tm && !tm.done ? tm : null;
+    const chips = [];
+    const porTiempo = /\d\s*(s|seg|min|'|"|″|′)/i.test(String(it.re || ""));
+    if (it.se || it.re) chips.push((it.se ? it.se + " series" : "") + (it.se && it.re ? " · " : "") + (it.re ? it.re + (porTiempo ? "" : " repes") : "") + (it.sq ? " " + it.sq : ""));
+    if (x.r) chips.push("descanso " + x.r);
+    let h = '<div class="go-in" style="--c:' + d.c + '">' +
+      '<div class="go-top"><button type="button" class="ib go-x" data-go="salir" aria-label="Salir">' + XIC + "</button>" +
+      '<div class="go-tt"><b>' + esc(d.day) + "</b><span>" + esc(d.title) + "</span></div>" +
+      '<span class="go-n">' + (go.i + 1) + "/" + go.lista.length + "</span></div>" +
+      '<div class="go-prog">' + go.lista.map((_, n) => '<i class="' + (go.sets[n].every((z) => z.ok) ? "ok" : n === go.i ? "on" : "") + '"></i>').join("") + "</div>" +
+      '<div class="go-ej">' +
+        (x.ss ? '<p class="go-ss">Superserie · ' + x.letra + (x.ultimo ? " (después descansás)" : " (sin descanso, seguí con la siguiente)") + "</p>" : "") +
+        '<h2 class="go-nm">' + esc(it.n) + "</h2>" +
+        (chips.length ? '<p class="go-ch">' + chips.map((c) => "<span>" + esc(c) + "</span>").join("") + "</p>" : "") +
+        (it.note ? '<p class="go-nota">' + esc(it.note) + "</p>" : "") +
+        (o ? '<p class="go-obj ' + o.tipo + '">' + (o.tipo === "sube" ? "▲ " : "🎯 ") + esc(o.txt) + "</p>" : prev ? "" : '<p class="go-obj">🎯 Primera vez: elegí un peso con el que te sobren 2 repeticiones.</p>') +
+        (ult ? '<p class="go-ult">La última vez: ' + esc(ult) + "</p>" : "") +
+      "</div>" +
+      '<ol class="go-sets">' + sets.map((z, k) =>
+        '<li class="' + (z.ok ? "ok" : k === actual ? "on" : "") + '">' +
+          '<span class="go-sn">' + (k + 1) + "</span>" +
+          '<div class="go-f"><button type="button" class="go-pm" data-go="r-" data-k="' + k + '" aria-label="Una repe menos">−</button>' +
+            '<input class="go-v" data-go-in="r" data-k="' + k + '" inputmode="numeric" value="' + esc(z.r) + '" aria-label="Repeticiones serie ' + (k + 1) + '"><button type="button" class="go-pm" data-go="r+" data-k="' + k + '" aria-label="Una repe más">+</button><small>' + (porTiempo ? "seg" : "repes") + "</small></div>" +
+          '<div class="go-f"><button type="button" class="go-pm" data-go="p-" data-k="' + k + '" aria-label="Menos peso">−</button>' +
+            '<input class="go-v" data-go-in="p" data-k="' + k + '" inputmode="decimal" value="' + esc(z.p) + '" placeholder="—" aria-label="Kilos serie ' + (k + 1) + '"><button type="button" class="go-pm" data-go="p+" data-k="' + k + '" aria-label="Más peso">+</button><small>kg</small></div>' +
+          '<button type="button" class="go-ok" data-go="ok" data-k="' + k + '" aria-pressed="' + z.ok + '" aria-label="Serie hecha">' + CHECK + "</button></li>").join("") + "</ol>" +
+      '<button type="button" class="btn lnk go-mas" data-go="mas">+ Agregar serie</button>' +
+      (descanso ? '<div class="go-rest"><p>Descanso</p><b class="go-rt">' + mmss(descanso.left) + '</b><div class="go-rb"><i style="width:' + Math.round((1 - descanso.left / descanso.total) * 100) + '%"></i></div>' +
+        '<div class="go-ra"><button type="button" class="btn alt" data-go="d+">+30 s</button><button type="button" class="btn pri" data-go="d-ok">Listo, sigo</button></div></div>' : "") +
+      '<div class="go-nav"><button type="button" class="btn alt" data-go="ant"' + (go.i ? "" : " disabled") + ">‹ Anterior</button>" +
+        (go.i < go.lista.length - 1
+          ? '<button type="button" class="btn pri" data-go="sig">' + (sets.every((z) => z.ok) ? "Siguiente ›" : "Saltar ›") + "</button>"
+          : '<button type="button" class="btn pri" data-go="fin">Terminar</button>') + "</div>" +
+      '<p class="go-pie">' + hechos + " de " + go.lista.length + " ejercicios · " + tiempoGo() + "</p></div>";
+    GO.innerHTML = h;
+  }
+
+  function renderFinGo(d) {
+    const recs = recordsEntre(todayKey(), todayKey());
+    let series = 0, kg = 0;
+    go.lista.forEach((x) => { const s = (x.it.hist || []).filter((z) => z.d === todayKey())[0]; if (s) { const hh = s.sets.filter(hasVal); series += hh.length; kg += volumen(hh); } });
+    GO.innerHTML = '<div class="go-in go-fin" style="--c:' + d.c + '"><div class="go-top"><span></span><span></span><button type="button" class="ib go-x" data-go="salir" aria-label="Cerrar">' + XIC + "</button></div>" +
+      '<p class="go-k">Entrenamiento terminado</p><h2 class="go-big">¡Bien ahí' + (nombre ? ", " + esc(nombre) : "") + '!</h2>' +
+      '<div class="go-st"><div><b>' + series + "</b><span>series</span></div><div><b>" + fmtKg(kg) + "</b><span>kg movidos</span></div><div><b>" + tiempoGo().replace(" min", "") + "</b><span>minutos</span></div></div>" +
+      (recs.length ? '<div class="go-recs"><p class="go-k">🏆 ' + (recs.length === 1 ? "Récord nuevo" : recs.length + " récords nuevos") + "</p>" + recs.map((x, i) =>
+        '<div class="go-rec"><span><b>' + esc(x.n) + "</b><small>" + prTxt(x) + " · antes " + prTxt(x.antes) + '</small></span><button type="button" class="btn sm alt" data-go="pr" data-i="' + i + '">Compartir</button></div>').join("") + "</div>"
+        : '<p class="go-tx">Cada serie anotada es progreso que se ve. La próxima, la app te dice cuánto subir.</p>') +
+      '<button type="button" class="btn pri go-listo" data-go="salir">Listo</button></div>';
+    festejo(true); sfx("dia");
+  }
+
+  function irGo(n) {
+    go.i = Math.max(0, Math.min(go.lista.length - 1, n));
+    renderGo();
+    GO.scrollTop = 0;
+  }
+  GO.addEventListener("click", (ev) => {
+    const b = ev.target.closest("[data-go]");
+    if (!b || !go || b.disabled) return;
+    const a = b.dataset.go, k = Number(b.dataset.k), sets = go.sets[go.i] || [];
+    const z = sets[k];
+    if (a === "salir") return cerrarGo();
+    if (a === "ant") { sfx("toque"); return irGo(go.i - 1); }
+    if (a === "sig") { sfx("toque"); return irGo(go.i + 1); }
+    if (a === "fin") { tmStop(); go.fin = true; return renderGo(); }
+    if (a === "mas") { const u = sets[sets.length - 1] || { r: "", p: "" }; sets.push({ r: u.r, p: u.p, ok: false }); return renderGo(); }
+    if (a === "d+") { if (tm) { tm.endAt += 30000; tm.total += 30; tm.left += 30; } return renderGo(); }
+    if (a === "d-ok") { tmStop(); return renderGo(); }
+    if (a === "pr") { const l = recordsEntre(todayKey(), todayKey()); if (l[Number(b.dataset.i)]) compartirRecord(l[Number(b.dataset.i)]); return; }
+    if (!z) return;
+    if (a === "r-" || a === "r+") { z.r = String(Math.max(0, (num(z.r) || 0) + (a === "r+" ? 1 : -1))); if (z.ok) guardarSerieGo(go.lista[go.i], k, z); sfx("toque"); return renderGo(); }
+    if (a === "p-" || a === "p+") { const p = num(z.p) || 0; z.p = fmtNum(Math.max(0, p + (a === "p+" ? 1 : -1) * pasoKg(p))); if (z.ok) guardarSerieGo(go.lista[go.i], k, z); sfx("toque"); return renderGo(); }
+    if (a === "ok") {
+      const x = go.lista[go.i];
+      if (z.ok) { z.ok = false; guardarSerieGo(x, k, null); sfx("quitar"); return renderGo(); }
+      if (!num(z.r) && !num(z.p)) { const el = GO.querySelector('[data-go-in="r"][data-k="' + k + '"]'); if (el) el.focus(); return; }
+      const antes = recordsEntre(todayKey(), todayKey()).length;
+      z.ok = true;
+      guardarSerieGo(x, k, z);
+      const despues = recordsEntre(todayKey(), todayKey()).length;
+      if (despues > antes) { festejo(false); sfx("record"); showStatus("¡Récord nuevo!", 2400); } else sfx("guardar");
+      const todas = sets.every((y) => y.ok);
+      /* superserie: sin descanso entre ejercicios, se pasa al siguiente */
+      if (x.ss && !x.ultimo) { if (go.i < go.lista.length - 1) return irGo(go.i + 1); }
+      const ultimoDelDia = go.i === go.lista.length - 1 && go.lista.every((_, n) => go.sets[n].every((y) => y.ok));
+      if (!ultimoDelDia) tmStart(restSecs(x.it, { r: x.r }), x.it.n);
+      if (x.ss && x.ultimo) {
+        /* vuelve a la A de la superserie si le quedan series */
+        let ini = go.i;
+        while (ini > 0 && go.lista[ini - 1].ss && !go.lista[ini - 1].ultimo) ini--;
+        for (let n = ini; n <= go.i; n++) if (go.sets[n].some((y) => !y.ok)) return irGo(n);
+      }
+      if (todas && go.i < go.lista.length - 1) return irGo(go.i + 1);
+      if (ultimoDelDia) { tmStop(); go.fin = true; }
+      return renderGo();
+    }
+  });
+  GO.addEventListener("input", (ev) => {
+    const el = ev.target.closest("[data-go-in]");
+    if (!el || !go) return;
+    const z = go.sets[go.i][Number(el.dataset.k)];
+    if (!z) return;
+    z[el.dataset.goIn] = el.value.replace(/[^\d.,]/g, "");
+    if (z.ok) guardarSerieGo(go.lista[go.i], Number(el.dataset.k), z);
+  });
+  /* el descanso se ve grande adentro del modo entrenamiento */
+  setInterval(() => {
+    if (!go || go.fin || GO.hidden) return;
+    const rt = GO.querySelector(".go-rt");
+    if (tm && !tm.done) {
+      if (!rt) return renderGo();
+      rt.textContent = mmss(tm.left);
+      const bar = GO.querySelector(".go-rb i");
+      if (bar) bar.style.width = Math.round((1 - tm.left / tm.total) * 100) + "%";
+    } else if (rt) renderGo();
+  }, 500);
+
+  /* El botón grande arriba de cada día */
+  function textoGoBoton(d) {
+    const l = listaGo(d);
+    if (!l.length || d.kind === "rest") return "";
+    const hechos = l.filter((x) => todaySets(x.it).length).length;
+    return '<button type="button" class="btn pri go-start" data-act="go-start" data-day="' + d.id + '">' +
+      (hechos >= l.length ? "✓ Entrenamiento hecho · ver" : hechos ? "▶ Seguir entrenamiento · " + hechos + "/" + l.length : "▶ Empezar entrenamiento") + "</button>" +
+      (hechos ? "" : '<p class="go-hint">Un ejercicio por pantalla, la app te dice cuánto levantar y el descanso arranca solo.</p>');
+  }
+  function pintarGoBoton(id) {
+    const d = dayById(id), el = document.getElementById("rtgo-" + id);
+    if (d && el) el.innerHTML = textoGoBoton(d);
+  }
+  PANE.addEventListener("click", (ev) => {
+    const b = ev.target.closest('[data-act="go-start"]');
+    if (!b) return;
+    ev.stopPropagation();
+    sfx("toque");
+    abrirGo(b.dataset.day);
+  }, true);
+  window.addEventListener("shell-tab", (ev) => { if (ev.detail === "entreno") state.days.forEach((d) => pintarGoBoton(d.id)); });
 
   if (HOY) {
     HOY.addEventListener("click", (ev) => {
