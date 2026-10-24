@@ -5513,8 +5513,57 @@ react-dom/cjs/react-dom.production.min.js:
       paso("", "Mandando un aviso desde el servidor…");
       await apiPush({ accion: "prueba", endpoint: sub.endpoint });
       corregir("ok", "Aviso enviado desde el servidor: tiene que llegarte en unos segundos, aunque cierres la app.");
+      /* lo que anotó el servidor: si la revisión automática corre y qué avisos tenés hoy */
+      const info = await apiPush({ accion: "info", endpoint: sub.endpoint });
+      const hace = (iso) => { const m = Math.round((Date.now() - new Date(iso).getTime()) / 60000); return m < 1 ? "recién" : m < 60 ? "hace " + m + " min" : m < 1440 ? "hace " + Math.round(m / 60) + " h" : "hace " + Math.round(m / 1440) + " días"; };
+      if (!info.cron) paso("mal", "La revisión automática del servidor (la que manda los avisos a la hora de cada hábito) nunca corrió. En Netlify → Logs → Functions tiene que aparecer «push-habitos» corriendo cada 15 minutos. Si no aparece, el sitio no está publicado desde GitHub en producción.");
+      else if (Date.now() - new Date(info.cron.at).getTime() > 40 * 60000) paso("mal", "La revisión automática corrió por última vez " + hace(info.cron.at) + ": Netlify dejó de ejecutarla. Mirá Logs → Functions → push-habitos.");
+      else paso("ok", "Revisión automática funcionando (última: " + hace(info.cron.at) + ").");
+      const ahoraMin = new Date().getHours() * 60 + new Date().getMinutes();
+      const prox = (info.habitos || []).filter((x) => minutosDe(x.t) > ahoraMin).sort((a, c) => (a.t < c.t ? -1 : 1)).slice(0, 3);
+      if (!(info.habitos || []).length) paso("mal", "Tus hábitos no tienen horario: poné la hora de cada uno en la pestaña Hábitos (tocá el hábito → hora).");
+      else paso("ok", prox.length ? "Próximos avisos de hoy: " + prox.map((x) => x.n + " " + x.t).join(", ") + (info.cierre ? " · repaso " + info.cierre : "") + "." : "Por hoy no quedan avisos" + (info.cierre ? " (repaso a las " + info.cierre + " si te falta algo)" : "") + ".");
+      if (info.ultimo) paso("ok", "Último aviso automático: «" + info.ultimo.title + "», " + hace(info.ultimo.at) + ".");
+      if (info.fallo) paso("mal", "Un aviso automático falló " + hace(info.fallo.at) + " («" + info.fallo.title + "»). Si se repite, desactivá y volvé a activar los avisos.");
+      paso("ok", "Si llegan pero no suenan, el sonido lo maneja el teléfono: en Android, Ajustes → Apps → Chrome → Notificaciones → buscá este sitio → Sonido. En iPhone, Ajustes → Notificaciones → " + (CFG.producto || "SISTEMA") + " → Sonidos. Y revisá que no esté en No molestar.");
     } catch (err) { corregir("mal", typeof err === "string" ? err : "No se pudo anotar este dispositivo (" + (err && err.message || "error") + ")."); }
   }
+
+  /* Respaldo dentro del teléfono: si la app quedó abierta o en segundo plano,
+     ella misma avisa a la hora del hábito. Usa la misma etiqueta que el
+     servidor, así si llegan los dos se ve uno solo. */
+  const KEY_PUSH_LOCAL = "push:local";
+  function avisoLocal() {
+    const c = pushCfg();
+    if (!c.on || !hayPush() || Notification.permission !== "granted") return;
+    const d = sistemaData();
+    if (!d) return;
+    const k = todayKey(), t = new Date(), ahora = t.getHours() * 60 + t.getMinutes();
+    const ya = leer(KEY_PUSH_LOCAL, {});
+    if (ya.f !== k) { ya.f = k; ya.ids = []; }
+    const log = (d.log || {})[k] || {};
+    const pend = d.habits.filter((x) => toca(x, k, d) && !x.dependsOn && !hecho(x, log));
+    const mostrar = (titulo, cuerpo, etiqueta, marca) => {
+      ya.ids.push(marca); escribir(KEY_PUSH_LOCAL, ya);
+      suscripcion().then((sub) => { if (sub) apiPush({ accion: "estado", endpoint: sub.endpoint, fecha: k, marcar: ya.ids.filter((x) => x === "cierre" || x.indexOf("h:") === 0) }).catch(() => {}); }).catch(() => {});
+      navigator.serviceWorker.ready.then((reg) => reg.showNotification(titulo, { body: cuerpo, icon: "icono-192.png", badge: "icono-192.png", tag: etiqueta, renotify: true, silent: false, vibrate: [180, 90, 180], data: { url: "./#sistema" } })).catch(() => {});
+    };
+    if (c.porHabito !== false) {
+      const ahoraHab = pend.filter((x) => { const m = minutosDe(x.time); return m >= 0 && m <= ahora && ahora - m < 15 && ya.ids.indexOf("h:" + x.id) < 0; });
+      if (ahoraHab.length) {
+        const desde = minutosDe(ahoraHab[0].time) - (minutosDe(ahoraHab[0].time) % 15);
+        ahoraHab.forEach((x) => ya.ids.push("h:" + x.id));
+        const resto = pend.length - ahoraHab.length;
+        mostrar("⚡ Hora de: " + ahoraHab.map((x) => x.name).join(", "), resto ? "Después te " + (resto === 1 ? "queda 1 hábito más" : "quedan " + resto + " hábitos más") + " hoy." : "Es el último hábito de hoy. Cerrá el día.", "habito-" + desde, "h-lote");
+        return;
+      }
+    }
+    const ci = minutosDe(c.cierre);
+    if (ci >= 0 && ci <= ahora && ahora - ci < 15 && pend.length && ya.ids.indexOf("cierre") < 0) {
+      mostrar("Te " + (pend.length === 1 ? "falta 1 hábito" : "faltan " + pend.length + " hábitos"), "Falta: " + pend.slice(0, 4).map((x) => x.name).join(", ") + ". Todavía estás a tiempo de salvar la racha 🔥", "cierre", "cierre");
+    }
+  }
+  setInterval(avisoLocal, 60000);
 
   function horasCierre(cur) {
     let o = '<option value=""' + (!cur ? " selected" : "") + ">Sin repaso</option>";

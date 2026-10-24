@@ -1,4 +1,4 @@
-var CACHE = "sistema-v7";
+var CACHE = "sistema-v8";
 var ASSETS = ["./", "./index.html", "./config.js", "./manifest.webmanifest", "./icono-192.png", "./icono-512.png", "./icono-maskable.png", "./apple-touch-icon.png"];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(ASSETS); }).then(function () { return self.skipWaiting(); }));
@@ -38,7 +38,7 @@ self.addEventListener("push", function (e) {
   try { d = e.data ? e.data.json() : {}; } catch (x) { d = { body: e.data ? e.data.text() : "" }; }
   e.waitUntil(self.registration.showNotification(d.title || "SISTEMA", {
     body: d.body || "", icon: "icono-192.png", badge: "icono-192.png",
-    tag: d.tag || "habitos", renotify: true, vibrate: [180, 90, 180], data: { url: d.url || "./#sistema" }
+    tag: d.tag || "habitos", renotify: true, silent: false, vibrate: [180, 90, 180], data: { url: d.url || "./#sistema" }
   }));
 });
 /* Tocar el aviso abre la app en Sistema (o la trae al frente si ya estaba abierta) */

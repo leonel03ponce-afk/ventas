@@ -132,7 +132,9 @@ Costo en Netlify: la función corre cada 15 minutos (96 veces por día, siempre 
 
 Cómo funciona: la app le cuenta al servidor qué misiones tiene hoy y cuáles hizo (`netlify/functions/push.mjs`, en `/api/push`), y cada 15 minutos `netlify/functions/push-habitos.mjs` revisa a quién le toca un aviso. No hace falta configurar nada: las claves de los avisos se crean solas la primera vez y quedan en Netlify Blobs. Si alguien deja de abrir la app 60 días, se da de baja solo.
 
-**Si no llegan:** en Hoy (línea de avisos o tarjeta Avisos de hábitos) tocá **Probar**. La app prueba paso a paso y dice dónde falla: permiso del navegador, si el teléfono muestra avisos, si el servidor responde (si dice 404, las funciones de Netlify no están publicadas) y si el envío salió. El remitente de los avisos es la dirección del sitio (se puede cambiar con la variable `AVISOS_CONTACTO` en Netlify, por ejemplo `mailto:tu@mail.com`).
+**Respaldo en el teléfono:** si la app quedó abierta o en segundo plano, ella misma avisa a la hora del hábito (misma etiqueta que el servidor, así no se duplica) y le cuenta al servidor que ese aviso ya salió.
+
+**Si no llegan:** en Hoy (línea de avisos o tarjeta Avisos de hábitos) tocá **Probar**. La app prueba paso a paso y dice dónde falla: permiso del navegador, si el teléfono muestra avisos, si el servidor responde (si dice 404, las funciones de Netlify no están publicadas) si el envío salió, si la revisión automática de cada 15 minutos está corriendo (y cuándo fue la última), los próximos avisos de hoy y el último aviso automático que salió. El remitente de los avisos es la dirección del sitio (se puede cambiar con la variable `AVISOS_CONTACTO` en Netlify, por ejemplo `mailto:tu@mail.com`).
 
 ## Modo entrenamiento
 

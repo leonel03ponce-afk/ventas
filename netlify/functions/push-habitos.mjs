@@ -63,11 +63,14 @@ export default async () => {
       await st.delete(b.key);
       continue;
     }
-    if (r !== "ok") continue;
+    if (r !== "ok") { s.fallo = { at: ahora.toISOString(), title: aviso.title }; await st.setJSON(b.key, s); continue; }
     s.env.k = s.env.k.concat(aviso.marcas);
+    s.ultimo = { at: ahora.toISOString(), title: aviso.title };
     await st.setJSON(b.key, s);
     enviados++;
   }
   console.log("avisos de hábitos enviados:", enviados, "de", ids.size, "revisados");
+  /* la app muestra esto en "Probar": sirve para saber si la revisión automática corre */
+  await st.setJSON("cron", { at: ahora.toISOString(), revisados: ids.size, enviados: enviados });
 };
 export const config = { schedule: "*/15 * * * *" };
