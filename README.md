@@ -132,6 +132,12 @@ Costo en Netlify: la función corre cada 15 minutos (96 veces por día, siempre 
 
 Cómo funciona: la app le cuenta al servidor qué misiones tiene hoy y cuáles hizo (`netlify/functions/push.mjs`, en `/api/push`), y cada 15 minutos `netlify/functions/push-habitos.mjs` revisa a quién le toca un aviso. No hace falta configurar nada: las claves de los avisos se crean solas la primera vez y quedan en Netlify Blobs. Si alguien deja de abrir la app 60 días, se da de baja solo.
 
+**Si no llegan:** en Hoy (línea de avisos o tarjeta Avisos de hábitos) tocá **Probar**. La app prueba paso a paso y dice dónde falla: permiso del navegador, si el teléfono muestra avisos, si el servidor responde (si dice 404, las funciones de Netlify no están publicadas) y si el envío salió. El remitente de los avisos es la dirección del sitio (se puede cambiar con la variable `AVISOS_CONTACTO` en Netlify, por ejemplo `mailto:tu@mail.com`).
+
+## Modo entrenamiento
+
+Cada día de la rutina tiene arriba **▶ Empezar entrenamiento** (también desde Tu día, botón Entrenar). Abre una pantalla por ejercicio: nombre grande, series y descanso, cuánto levantar hoy, la última vez, y cada serie con +/− de repes y kilos y un ✓. Al tocar ✓ se guarda la serie, arranca el descanso (con aviso y sonido) y cuando se completan las series pasa solo al siguiente ejercicio. En las superseries pasa de la A a la B sin descanso y después vuelve a la A. Al final: series, kilos, minutos y récords para compartir.
+
 ## Cuánto levantar hoy
 
 Cada ejercicio muestra en la lista lo que conviene hacer hoy según la última vez ("▲ Hoy: 47,5 kg × 6 repes · subí de peso"). Usa doble progresión con el rango de repes de la rutina: primero se suma una repe con el mismo peso; cuando todas las series llegan al tope del rango, se sube el peso (1 kg si es menos de 10, 2 kg hasta 30, 2,5 kg hasta 80 y 5 kg arriba de eso) y se vuelve al piso del rango. Al anotar, los campos vienen con ese peso y esas repes, y "Usar lo sugerido" los completa.
