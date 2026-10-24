@@ -2,7 +2,7 @@
    qué misiones tiene, a qué hora y cuáles ya hizo. Así el aviso llega
    solo si falta algo. */
 import { json } from "../lib/sistema.mjs";
-import { pushTienda, claveDe, clavesVapid, enviar, minutos, reindexar } from "../lib/push.mjs";
+import { pushTienda, claveDe, clavesVapid, enviarDetalle, minutos, reindexar } from "../lib/push.mjs";
 
 const texto = (s, n) => String(s == null ? "" : s).slice(0, n);
 function limpiarHabitos(l) {
@@ -51,9 +51,11 @@ export default async (req) => {
   await st.setJSON(clave, previo);
 
   if (b.accion === "prueba") {
-    const r = await enviar(previo.sub, { title: "Así te van a llegar", body: "⚡ Hora de tus misiones. Un toque y las tachás.", tag: "prueba", url: "./#sistema" });
-    if (r === "baja") { await Promise.all((previo.idx || []).map((x) => st.delete("t:" + x + ":" + clave.slice(4)))); await st.delete(clave); return json({ error: "La suscripción venció. Activá los avisos de nuevo." }, 410); }
-    return json({ ok: r === "ok" });
+    const r = await enviarDetalle(previo.sub, { title: "Así te van a llegar", body: "⚡ Hora de tus hábitos. Un toque y los tachás.", tag: "prueba", url: "./#sistema" });
+    if (r.estado === "baja") { await Promise.all((previo.idx || []).map((x) => st.delete("t:" + x + ":" + clave.slice(4)))); await st.delete(clave); return json({ error: "La suscripción venció. Activá los avisos de nuevo." }, 410); }
+    /* si falla, se dice por qué: antes se respondía "ok" igual y no había forma de saberlo */
+    if (r.estado !== "ok") return json({ error: "El servicio de avisos rechazó el envío (código " + r.codigo + "). " + r.detalle }, 502);
+    return json({ ok: true });
   }
   return json({ ok: true });
 };

@@ -43,13 +43,13 @@ export default async () => {
       if (ya.length) {
         const resto = faltan.length - ya.length;
         avisos.push({ marcas: ya.map((h) => "h:" + h.id), title: "⚡ Hora de: " + lista(ya.map((h) => h.n)),
-          body: resto ? "Después te " + (resto === 1 ? "queda 1 misión más" : "quedan " + resto + " misiones más") + " hoy." : "Es la última misión de hoy. Cerrá el día.", tag: "habito-" + desde });
+          body: resto ? "Después te " + (resto === 1 ? "queda 1 hábito más" : "quedan " + resto + " hábitos más") + " hoy." : "Es el último hábito de hoy. Cerrá el día.", tag: "habito-" + desde });
       }
     }
     if (toca(minutos(s.cierre)) && faltan.length && s.env.k.indexOf("cierre") < 0) {
       const hechas = deHoy.length - faltan.length;
       avisos.push({ marcas: ["cierre"],
-        title: hechas ? "Te " + (faltan.length === 1 ? "falta 1" : "faltan " + faltan.length) + " de " + deHoy.length + " misiones" : "Tus misiones de hoy te esperan",
+        title: hechas ? "Te " + (faltan.length === 1 ? "falta 1" : "faltan " + faltan.length) + " de " + deHoy.length + " hábitos" : "Tus hábitos de hoy te esperan",
         body: "Falta: " + lista(faltan.slice(0, 4).map((h) => h.n)) + (faltan.length > 4 ? "…" : "") + ". Todavía estás a tiempo de salvar la racha 🔥",
         tag: "cierre" });
     }

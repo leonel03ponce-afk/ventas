@@ -936,6 +936,12 @@ body.bloqueado .arr { display: none !important; }
 .rt .fin-on b { color: var(--ink); }
 .rt .fin-off { margin-top: 26px; text-align: center; }
 .rt .fin-off .btn { color: var(--muted2); font-size: 13px; }
+.rt .diag { margin: 10px 0 0; padding: 0; list-style: none; font-size: 13.5px; line-height: 1.4; }
+.rt .diag li { padding: 6px 0 6px 24px; position: relative; color: var(--muted); }
+.rt .diag li b { position: absolute; left: 0; top: 6px; }
+.rt .diag li.ok b { color: #4BD489; }
+.rt .diag li.mal { color: var(--ink); }
+.rt .diag li.mal b { color: var(--coral); }
 @media (max-width: 350px) { #shellnav { gap: 3px; padding-left: 6px; padding-right: 6px; } #shellnav button { font-size: 9.5px; letter-spacing: 0; } }
 @media (max-width: 360px) { .rt .pil .ring { transform: scale(.88); } .rt .res-acc { grid-template-columns: 1fr; } }
 </style>
@@ -5384,8 +5390,54 @@ react-dom/cjs/react-dom.production.min.js:
     const ios = esIOS() && !instalada();
     return '<div class="td-aviso"><span>🔔 ' + (ios ? "Agregá la app a tu pantalla de inicio y te avisamos a la hora de cada hábito." : "¿Te avisamos a la hora de cada hábito si no lo hiciste?") + "</span>" +
       (ios ? "" : '<button type="button" class="btn sm pri" data-act="push-rapido">Sí, avisame</button>') +
+      '<button type="button" class="btn sm lnk" data-act="push-test">Probar</button>' +
       '<button type="button" class="btn sm lnk" data-act="push-no" aria-label="No, gracias">No</button></div><p class="pan-n" id="push-n">' + esc(pushNota) + "</p>";
   }
+  /* Prueba paso a paso: dice exactamente en qué parte falla */
+  async function probarAvisos() {
+    const pasos = [];
+    const pintar = () => {
+      const n = document.getElementById("push-n");
+      if (n) n.innerHTML = '<ul class="diag">' + pasos.map((p) => '<li class="' + p[0] + '"><b>' + (p[0] === "ok" ? "✓" : p[0] === "mal" ? "✗" : "…") + "</b> " + p[1] + "</li>").join("") + "</ul>";
+    };
+    const paso = (estado, txt) => { pasos.push([estado, txt]); pintar(); };
+    const corregir = (estado, txt) => { pasos[pasos.length - 1] = [estado, txt]; pintar(); };
+    if (!hayPush()) {
+      paso("mal", esIOS() && !instalada() ? "En iPhone los avisos solo andan con la app agregada a la pantalla de inicio (Compartir → Agregar a inicio) y abierta desde ese ícono." : "Este navegador no permite avisos. Probá con Chrome (Android o computadora) o Safari en iPhone con la app instalada.");
+      return;
+    }
+    paso("", "Permiso del navegador…");
+    if (!(await pedirAviso())) { corregir("mal", "El navegador tiene los avisos bloqueados para esta página. Tocá el candado (o los 3 puntos) → Configuración del sitio → Notificaciones → Permitir."); return; }
+    corregir("ok", "Permiso del navegador: dado.");
+    let reg = null;
+    try { reg = await Promise.race([navigator.serviceWorker.ready, new Promise((r) => setTimeout(() => r(null), 6000))]); } catch (e) { reg = null; }
+    if (!reg) { paso("mal", "La app todavía no terminó de instalarse en este navegador. Cerrala, volvé a abrirla y probá de nuevo."); return; }
+    try {
+      await reg.showNotification("Prueba de " + (CFG.producto || "SISTEMA"), { body: "Si ves esto, tu teléfono muestra los avisos de la app.", icon: "icono-192.png", badge: "icono-192.png", tag: "prueba-local" });
+      paso("ok", "Aviso de prueba mostrado en este dispositivo. Si no lo viste, el problema está en el teléfono o la compu: revisá que las notificaciones del navegador estén activadas en los ajustes del sistema y que no esté en No molestar.");
+    } catch (e) { paso("mal", "El dispositivo no dejó mostrar el aviso (" + (e && e.message || "error") + ")."); return; }
+    paso("", "Conexión con el servidor de avisos…");
+    let clave = "";
+    try {
+      const r = await fetch("/api/push", { cache: "no-store" });
+      if (!r.ok) throw new Error("código " + r.status);
+      clave = (await r.json()).clave;
+      corregir("ok", "Servidor de avisos: funcionando.");
+    } catch (e) { corregir("mal", "El servidor de avisos no responde (" + (e && e.message || "sin conexión") + "). Si dice 404, las funciones de Netlify no están publicadas: hay que conectar el sitio con GitHub (ver COBRO-AUTOMATICO.md)."); return; }
+    paso("", "Suscripción de este dispositivo…");
+    try {
+      let sub = await reg.pushManager.getSubscription();
+      if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: deb64u(clave) });
+      const c = pushCfg(), e = estadoHabitos();
+      await apiPush({ accion: "alta", sub: sub.toJSON(), zona: zona(), cierre: c.cierre || "21:30", porHabito: c.porHabito !== false, habitos: e.habitos, hoy: e.hoy });
+      escribir(KEY_PUSH, { on: true, cierre: c.cierre || "21:30", porHabito: c.porHabito !== false });
+      corregir("ok", "Este dispositivo quedó anotado para recibir avisos.");
+      paso("", "Mandando un aviso desde el servidor…");
+      await apiPush({ accion: "prueba", endpoint: sub.endpoint });
+      corregir("ok", "Aviso enviado desde el servidor: tiene que llegarte en unos segundos, aunque cierres la app.");
+    } catch (err) { corregir("mal", typeof err === "string" ? err : "No se pudo anotar este dispositivo (" + (err && err.message || "error") + ")."); }
+  }
+
   function horasCierre(cur) {
     let o = '<option value=""' + (!cur ? " selected" : "") + ">Sin repaso</option>";
     for (let m = 19 * 60; m <= 23 * 60 + 30; m += 30) {
@@ -5440,21 +5492,15 @@ react-dom/cjs/react-dom.production.min.js:
         b.disabled = true; decir("Activando…");
         activarPush(pushCfg().cierre || "21:30", true)
           .then(() => { pushNota = ""; sfx("listo"); showStatus("Avisos activados 🔔", 2600); renderHoy(); })
-          .catch((err) => { b.disabled = false; decir(typeof err === "string" ? err : "No se pudo activar. Probá de nuevo."); });
+          /* si algo falla, la prueba paso a paso muestra exactamente qué */
+          .catch(() => { b.disabled = false; probarAvisos(); });
         return;
       }
       if (a === "push-no") { escribir(KEY_PUSH, Object.assign(pushCfg(), { no: true })); return renderHoy(); }
       if (a === "push-edit") { pushEdit = true; pushNota = ""; return renderHoy(); }
       if (a === "push-x") { pushEdit = false; pushNota = ""; return renderHoy(); }
       if (a === "push-off") { apagarPush().then(() => { pushNota = ""; renderHoy(); }); return; }
-      if (a === "push-test") {
-        decir("Mandando…");
-        suscripcion().then((sub) => {
-          if (!sub) throw "La suscripción se perdió. Apagá y activá de nuevo.";
-          return apiPush({ accion: "prueba", endpoint: sub.endpoint });
-        }).then(() => decir("Enviado. Si no llega en unos segundos, revisá que el celular no tenga las notificaciones silenciadas."))
-          .catch((err) => decir(typeof err === "string" ? err : "No se pudo mandar."));
-      }
+      if (a === "push-test") { b.disabled = true; probarAvisos().then(() => { b.disabled = false; }); return; }
     });
   }
   document.addEventListener("visibilitychange", () => { if (document.hidden) sincronizarPush(); });

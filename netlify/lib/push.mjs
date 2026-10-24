@@ -24,18 +24,27 @@ export async function clavesVapid() {
   return vapid;
 }
 
-/* Manda un aviso. Devuelve "baja" si la suscripción ya no existe */
-export async function enviar(sub, datos, contacto) {
+/* Quién manda los avisos. Apple y algunos navegadores rechazan un mail de
+   ejemplo: va la dirección real del sitio (o AVISOS_CONTACTO si existe). */
+const CONTACTO = process.env.AVISOS_CONTACTO || (process.env.URL ? process.env.URL.replace(/\/$/, "") : "https://brian-ponce.netlify.app");
+
+/* Manda un aviso. Devuelve "ok", "baja" (la suscripción ya no existe) o "error" */
+export async function enviar(sub, datos) {
+  return (await enviarDetalle(sub, datos)).estado;
+}
+export async function enviarDetalle(sub, datos) {
   const k = await clavesVapid();
   try {
     await webpush.sendNotification(sub, JSON.stringify(datos), {
       TTL: 3600,
-      urgency: "normal",
-      vapidDetails: { subject: contacto || "mailto:avisos@example.com", publicKey: k.publicKey, privateKey: k.privateKey },
+      urgency: "high",
+      vapidDetails: { subject: CONTACTO, publicKey: k.publicKey, privateKey: k.privateKey },
     });
-    return "ok";
+    return { estado: "ok" };
   } catch (e) {
-    return e && (e.statusCode === 404 || e.statusCode === 410) ? "baja" : "error";
+    const codigo = e && e.statusCode;
+    console.log("push falló", codigo, e && (e.body || e.message));
+    return { estado: codigo === 404 || codigo === 410 ? "baja" : "error", codigo: codigo || 0, detalle: String((e && (e.body || e.message)) || "").slice(0, 200) };
   }
 }
 
