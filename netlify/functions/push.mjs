@@ -2,7 +2,7 @@
    qué misiones tiene, a qué hora y cuáles ya hizo. Así el aviso llega
    solo si falta algo. */
 import { json } from "../lib/sistema.mjs";
-import { pushTienda, claveDe, clavesVapid, enviarDetalle, minutos, reindexar } from "../lib/push.mjs";
+import { pushTienda, claveDe, clavesVapid, enviarDetalle, minutos, reindexar, ahoraEn, PASO } from "../lib/push.mjs";
 
 const texto = (s, n) => String(s == null ? "" : s).slice(0, n);
 function limpiarHabitos(l) {
@@ -51,8 +51,14 @@ export default async (req) => {
     previo.env = previo.env && previo.env.f === b.fecha ? previo.env : { f: b.fecha, k: [] };
     b.marcar.slice(0, 40).forEach((m) => { m = texto(m, 50); if (previo.env.k.indexOf(m) < 0) previo.env.k.push(m); });
   }
+  /* prueba del aviso automático: se programa para la próxima revisión (máx. 15 min) */
+  if (b.accion === "prueba-auto") {
+    const t = ahoraEn(previo.zona);
+    const m = (t.min - (t.min % PASO) + PASO) % 1440;
+    previo.pruebaProg = { f: m < t.min ? "" : t.fecha, t: String(Math.floor(m / 60)).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0") };
+  }
   previo.visto = new Date().toISOString();
-  if (b.accion === "alta" || "habitos" in b || "cierre" in b || "porHabito" in b || "zona" in b) await reindexar(st, clave, previo);
+  if (b.accion === "prueba-auto" || b.accion === "alta" || "habitos" in b || "cierre" in b || "porHabito" in b || "zona" in b) await reindexar(st, clave, previo);
   await st.setJSON(clave, previo);
 
   /* para la prueba de la app: ¿corre la revisión automática? ¿qué avisos tiene hoy? */
@@ -61,6 +67,7 @@ export default async (req) => {
     return json({ ok: true, cron: cron || null, ultimo: previo.ultimo || null, fallo: previo.fallo || null, idx: (previo.idx || []).length, zona: previo.zona || "", cierre: previo.cierre || "", porHabito: previo.porHabito !== false,
       habitos: (previo.habitos || []).filter((h) => !h.dep && h.t).map((h) => ({ n: h.n, t: h.t })) });
   }
+  if (b.accion === "prueba-auto") return json({ ok: true, hora: previo.pruebaProg.t });
   if (b.accion === "prueba") {
     const r = await enviarDetalle(previo.sub, { title: "Así te van a llegar", body: "⚡ Hora de tus hábitos. Un toque y los tachás.", tag: "prueba", url: "./#sistema" });
     if (r.estado === "baja") { await Promise.all((previo.idx || []).map((x) => st.delete("t:" + x + ":" + clave.slice(4)))); await st.delete(clave); return json({ error: "La suscripción venció. Activá los avisos de nuevo." }, 410); }

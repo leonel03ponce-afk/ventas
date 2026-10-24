@@ -85,6 +85,7 @@ export function ranurasDe(doc) {
   const horas = [];
   if (doc.porHabito !== false) (doc.habitos || []).forEach((h) => { if (!h.dep && minutos(h.t) >= 0) horas.push(minutos(h.t)); });
   if (minutos(doc.cierre) >= 0) horas.push(minutos(doc.cierre));
+  if (doc.pruebaProg && minutos(doc.pruebaProg.t) >= 0) horas.push(minutos(doc.pruebaProg.t));
   return [...new Set(horas.map((m) => ranura(m - dif)))];
 }
 export async function reindexar(st, clave, doc) {

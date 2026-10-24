@@ -35,6 +35,14 @@ export default async () => {
     const faltan = deHoy.filter((h) => hechos.indexOf(h.id) < 0);
     s.env = s.env && s.env.f === t.fecha ? s.env : { f: t.fecha, k: [] };
     const avisos = [];
+    /* la prueba del aviso automático (botón en la app) */
+    if (s.pruebaProg && (!s.pruebaProg.f || s.pruebaProg.f === t.fecha) && minutos(s.pruebaProg.t) < hasta && t.min - minutos(s.pruebaProg.t) < 30) {
+      const r0 = await enviar(s.sub, { title: "✓ Los avisos automáticos funcionan", body: "Este aviso lo mandó el servidor solo. Así te van a llegar los de tus hábitos.", tag: "prueba-auto", url: "./#sistema" });
+      delete s.pruebaProg;
+      s.ultimo = r0 === "ok" ? { at: ahora.toISOString(), title: "Prueba automática" } : s.ultimo;
+      await st.setJSON(b.key, s);
+      if (r0 === "ok") enviados++;
+    }
     /* ventana de 30 minutos: si una corrida se atrasa, el aviso igual sale */
     const toca = (m) => m >= 0 && m < hasta && t.min - m < 30;
 

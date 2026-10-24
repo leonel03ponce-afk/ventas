@@ -942,6 +942,8 @@ body.bloqueado .arr { display: none !important; }
 .rt .diag li.ok b { color: #4BD489; }
 .rt .diag li.mal { color: var(--ink); }
 .rt .diag li.mal b { color: var(--coral); }
+.rt .diag-b { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; font-size: 13px; color: var(--muted); }
+.rt .card .diag-b .btn { margin: 0; }
 /* ════ Lista de ejercicios más limpia ════ */
 .rt .lg-1 { margin-top: 4px; font: 400 13px/1.35 var(--sans); color: var(--muted); }
 .rt .lg-1 b { font-weight: 600; color: var(--ink); }
@@ -5526,6 +5528,8 @@ react-dom/cjs/react-dom.production.min.js:
       if (info.ultimo) paso("ok", "Último aviso automático: «" + info.ultimo.title + "», " + hace(info.ultimo.at) + ".");
       if (info.fallo) paso("mal", "Un aviso automático falló " + hace(info.fallo.at) + " («" + info.fallo.title + "»). Si se repite, desactivá y volvé a activar los avisos.");
       paso("ok", "Si llegan pero no suenan, el sonido lo maneja el teléfono: en Android, Ajustes → Apps → Chrome → Notificaciones → buscá este sitio → Sonido. En iPhone, Ajustes → Notificaciones → " + (CFG.producto || "SISTEMA") + " → Sonidos. Y revisá que no esté en No molestar.");
+      const n = document.getElementById("push-n");
+      if (n) n.insertAdjacentHTML("beforeend", '<p class="diag-b"><button type="button" class="btn sm pri" data-act="push-auto">Probar aviso automático</button><span>Lo manda el servidor solo, en menos de 15 minutos, aunque cierres la app. Así sabés si los avisos de tus hábitos van a llegar.</span></p>');
     } catch (err) { corregir("mal", typeof err === "string" ? err : "No se pudo anotar este dispositivo (" + (err && err.message || "error") + ")."); }
   }
 
@@ -5627,6 +5631,17 @@ react-dom/cjs/react-dom.production.min.js:
       if (a === "push-edit") { pushEdit = true; pushNota = ""; return renderHoy(); }
       if (a === "push-x") { pushEdit = false; pushNota = ""; return renderHoy(); }
       if (a === "push-off") { apagarPush().then(() => { pushNota = ""; renderHoy(); }); return; }
+      if (a === "push-auto") {
+        b.disabled = true;
+        suscripcion().then((sub) => {
+          if (!sub) throw "Primero tocá Probar para anotar este dispositivo.";
+          return apiPush({ accion: "prueba-auto", endpoint: sub.endpoint });
+        }).then((r) => {
+          const span = b.parentNode.querySelector("span");
+          if (span) span.textContent = "Listo. Te tiene que llegar un aviso solo a las " + r.hora + " (podés cerrar la app). Si llega, todo funciona. Si no llega, la revisión automática de Netlify no está corriendo: mirá Logs → Functions → push-habitos.";
+        }).catch((err) => { b.disabled = false; const span = b.parentNode.querySelector("span"); if (span) span.textContent = typeof err === "string" ? err : "No se pudo programar la prueba."; });
+        return;
+      }
       if (a === "push-test") { b.disabled = true; probarAvisos().then(() => { b.disabled = false; }); return; }
     });
   }
