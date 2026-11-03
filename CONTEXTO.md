@@ -1,5 +1,7 @@
 # Contexto del proyecto (para retomar en un chat nuevo)
 
+> El traspaso completo (decisiones, cómo está hecho, cómo trabajar y pendientes) está en **CLAUDE.md**.
+
 **Quién:** Brian Ponce, entrenador (Argentina). Vende SISTEMA: rutina personalizada + app de entreno y hábitos.
 **Sitio:** https://brian-ponce.netlify.app · **Repo:** leonel03ponce-afk/ventas, rama `claude/upbeat-archimedes-pab9s2`.
 
@@ -13,7 +15,7 @@
 - Tablero privado de vendedores y comisiones: https://claude.ai/artifact/Lq4khHvoPukjcEGxbhPzah
 
 ## Datos clave
-- Planes AR: 3 meses $24.900 (https://mpago.la/2SDK5Ty) · Anual $69.900 (https://mpago.la/2cdoPet) · Para siempre $119.900 (https://mpago.la/28ED6Ht). Afuera: US$19 / 49 / 89.
+- Planes AR: 3 meses $26.700 (https://mpago.la/2SDK5Ty) · Anual $69.900 (https://mpago.la/2cdoPet) · Para siempre $119.900 (https://mpago.la/28ED6Ht). Afuera: US$19 / 49 / 89.
 - Comisión vendedores: 43% primer pago, 15% renovaciones. Pago a fin de mes. No se dan leads.
 - Clave del panel de códigos: PONCE-2026 (entrar en brian-ponce.netlify.app/panel). Sin prueba gratis.
 - MP en dólares: alias solida.comun.amplias (solo recibe desde cuentas argentinas).
