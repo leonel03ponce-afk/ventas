@@ -1064,8 +1064,9 @@ if (!window.CONFIG) window.CONFIG = /*CFG*/{
 
   acceso: {
     libre: false,                                   /* true = sin código, entra cualquiera */
-    secreto: "ponce-2026-xK7m",                     /* firma de los códigos: cambialo y los viejos dejan de servir */
-    admin: "PONCE-2026",                            /* escribilo en la pantalla de acceso para abrir el panel */
+    /* La firma de los códigos y la clave del panel ya NO van acá (este archivo es público):
+       viven en Netlify → Environment variables: SECRETO_CODIGOS (y SECRETO_VIEJO mientras migran
+       los códigos dados antes del 04/11). El panel de la app se abre con la clave de Mi negocio (CLAVE_VENTAS). */
     bloqueados: [],                                 /* seriales dados de baja, ej: ["AB", "AC"] */
     prueba: 0,                                      /* días de prueba gratis (0 = sin prueba) */
     pruebaPorWhatsApp: true,                        /* true = para activarla te escriben y les pasás la palabra */
@@ -6499,8 +6500,8 @@ react-dom/cjs/react-dom.production.min.js:
   "use strict";
 
   var CFG = (window.CONFIG || {}).acceso || {};
-  var SECRETO = CFG.secreto || "cambiame";
-  var ADMIN = String(CFG.admin || "ADMIN-0000").toUpperCase().replace(/[^A-Z0-9]/g, "");
+  /* La firma de los códigos y la clave del panel ya no están acá: los revisa el servidor
+     (/api/acceso, con secretos guardados en Netlify). El teléfono solo recuerda que ya se verificó. */
   var BLOQUEADOS = CFG.bloqueados || [];
   /* códigos dados de baja desde el servidor (reembolsos): ver final del archivo */
   var BLOQ_COD = [];
@@ -6590,23 +6591,38 @@ react-dom/cjs/react-dom.production.min.js:
   function fecha(d) { return d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear(); }
   function vencimiento(meses) { return new Date(2026, meses + 1, 0, 23, 59, 59); }
 
-  function arma(serial, meses) {
-    var pay = dos(serial) + dos(meses);
-    return pay + firma(SECRETO + pay);
-  }
   function linda(c) { return c.slice(0, 4) + "-" + c.slice(4); }
 
+  /* Revisión en el teléfono (sin firma): formato, dados de baja y vencimiento.
+     La firma la revisa el servidor una vez, al activar (ver verificar). */
   function valida(code) {
     var c = limpio(code);
     if (c.length !== 8) return { error: "Ese código no tiene el formato correcto." };
-    var pay = c.slice(0, 4), chk = c.slice(4);
-    if (firma(SECRETO + pay) !== chk) return { error: "Ese código no es válido." };
+    var pay = c.slice(0, 4);
     var serial = pay.slice(0, 2);
     if (BLOQUEADOS.indexOf(serial) > -1 || BLOQ_COD.indexOf(c) > -1) return { error: "Ese código fue dado de baja. Si es un error, escribime." };
     var meses = leerDos(pay.slice(2));
     var vence = meses >= 1000 ? null : vencimiento(meses);
     if (vence && vence < new Date()) return { error: "Tu acceso venció el " + fecha(vence) + ". Escribime y lo renovamos.", vencido: true };
     return { ok: true, code: c, serial: serial, vence: vence };
+  }
+
+  /* Pregunta al servidor. resp(null) = sin internet o el servidor no respondió */
+  function servidor(cuerpo, resp) {
+    if (!window.fetch || !/^https?:$/.test(location.protocol)) return resp(null);
+    fetch("/api/acceso", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(cuerpo), cache: "no-store" })
+      .then(function (r) { return r.json().catch(function () { return null; }); })
+      .then(function (d) { resp(d && typeof d === "object" ? d : null); })
+      .catch(function () { resp(null); });
+  }
+  function verificar(code, resp) {
+    var r = valida(code);
+    if (!r.ok) return resp(r);
+    servidor({ codigo: limpio(code) }, function (d) {
+      if (!d) return resp({ error: "Necesito internet para activar tu código la primera vez. Conectate y probá de nuevo.", sinRed: true });
+      if (!d.ok) return resp({ error: d.error || "Ese código no es válido.", vencido: !!d.vencido });
+      resp(r);
+    });
   }
 
   function guardado() {
@@ -6664,12 +6680,9 @@ react-dom/cjs/react-dom.production.min.js:
     } else if (vista === "admin") {
       var lista = emitidos();
       h += '<p class="g-k">Panel privado</p><h1 class="g-t">Códigos</h1>' +
-        '<p class="g-s">Generá uno por cliente. El código entra solo en el teléfono donde lo pongan, pero si se reenvía, funciona: por eso conviene uno distinto por persona y con vencimiento.</p>' +
-        '<label class="g-l">Cliente<input id="g-nom" placeholder="Nombre y apellido" autocomplete="off"></label>' +
-        '<label class="g-l">Acceso<select id="g-mes"><option value="3">3 meses</option><option value="12">1 año</option><option value="0">Para siempre</option><option value="1">1 mes</option><option value="6">6 meses</option></select></label>' +
-        '<label class="g-l">Lo trajo (opcional)<input id="g-vend" placeholder="Quién lo recomendó" autocomplete="off"></label>' +
-        '<p class="g-s chica" style="text-align:left">Primer pago: ' + (REC.comision || 0) + '% para quien lo trajo. Si es una renovación, poné el mismo nombre de cliente: se acuerda quién lo trajo y le suma el ' + (REC.renovacion || 0) + '%.</p>' +
-        '<button type="button" class="g-btn" id="g-gen">Generar código</button>';
+        '<p class="g-s">Los códigos ahora se arman en <b>Mi negocio</b> (Ventas → Venta a mano): ahí queda registrada la venta, la comisión de quien lo trajo y el código, firmado por el servidor.</p>' +
+        '<a class="g-btn" href="ventas.html" target="_blank" rel="noopener">Abrir Mi negocio</a>' +
+        '<p class="g-s chica" style="text-align:left">Primer pago: ' + (REC.comision || 0) + '% para quien lo trajo · renovaciones: ' + (REC.renovacion || 0) + '%.</p>';
       if (generado) {
         h += '<div class="g-out"><p class="g-code">' + linda(generado.code) + "</p>" +
           '<p class="g-s">' + (generado.nombre ? generado.nombre + " · " : "") + (generado.vence ? "vence el " + fecha(generado.vence) : "sin vencimiento") + "</p>" +
@@ -6722,25 +6735,40 @@ react-dom/cjs/react-dom.production.min.js:
     if (inp && !msg) inp.focus();
   }
 
+  var ocupado = false;
   function intentar() {
+    if (ocupado) return;
     var inp = document.getElementById("g-code");
-    var txt = limpio(inp ? inp.value : "");
-    if (txt && txt === ADMIN) { vista = "admin"; pintar(); return; }
+    var crudo = inp ? inp.value.trim() : "";
+    var txt = limpio(crudo);
     if (txt && DIAS_PRUEBA && PALABRA && txt === PALABRA) {
       if (pruebaInicio()) { pintar(pruebaQuedan() > 0 ? "Tu prueba ya está activa." : "Ya usaste la prueba en este teléfono. Elegí un plan para seguir."); return; }
       return empezarPrueba();
     }
-    var r = valida(txt);
-    if (r.ok) {
-      guardar({ code: r.code, at: Date.now() });
-      var yaTiene = "";
-      try { yaTiene = localStorage.getItem("rutina-cliente-nombre") || ""; } catch (e) {}
-      if (yaTiene) { pintar("Listo, activado.", "ok"); setTimeout(function () { abrir(true); }, 350); return; }
-      vista = "nombre";
-      pintar();
-      return;
+    var msg = document.querySelector("#gate .g-msg");
+    if (msg) { msg.className = "g-msg"; msg.textContent = "Revisando…"; }
+    ocupado = true;
+    if (txt.length !== 8 && crudo) {
+      /* no tiene forma de código: puede ser la clave de Mi negocio para abrir el panel */
+      return servidor({ panel: crudo }, function (d) {
+        ocupado = false;
+        if (d && d.ok) { vista = "admin"; pintar(); return; }
+        pintar(d ? "Ese código no tiene el formato correcto." : "Necesito internet para revisar el código. Conectate y probá de nuevo.");
+      });
     }
-    pintar(r.error);
+    verificar(txt, function (r) {
+      ocupado = false;
+      if (r.ok) {
+        guardar({ code: r.code, at: Date.now(), srv: 1 });
+        var yaTiene = "";
+        try { yaTiene = localStorage.getItem("rutina-cliente-nombre") || ""; } catch (e) {}
+        if (yaTiene) { pintar("Listo, activado.", "ok"); setTimeout(function () { abrir(true); }, 350); return; }
+        vista = "nombre";
+        pintar();
+        return;
+      }
+      pintar(r.error);
+    });
   }
 
   if (gate) {
@@ -6774,34 +6802,7 @@ react-dom/cjs/react-dom.production.min.js:
         t.textContent = "Copiado";
         return;
       }
-      if (t.id === "g-gen") {
-        var serie = 1;
-        try { serie = parseInt(localStorage.getItem(KEY_SERIE) || "1", 10) || 1; } catch (e) {}
-        var meses = parseInt((document.getElementById("g-mes") || {}).value || "3", 10);
-        var hoy = new Date();
-        var idx = meses === 0 ? 1023 : (hoy.getFullYear() - 2026) * 12 + hoy.getMonth() + meses;
-        var code = arma(serie, idx);
-        var nom = (document.getElementById("g-nom") || {}).value || "";
-        var vend = ((document.getElementById("g-vend") || {}).value || "").trim().slice(0, 30);
-        /* Comisión recurrente: cada cliente queda atado a quien lo trajo,
-           y en cada renovación se le vuelve a sumar */
-        var clave = nom.trim().toLowerCase();
-        var clientes = {};
-        try { clientes = JSON.parse(localStorage.getItem(KEY_CLIENTES) || "{}") || {}; } catch (e) {}
-        var yaVino = clave && clientes[clave];
-        if (!vend && yaVino) vend = clientes[clave];
-        if (vend && clave && !yaVino) { clientes[clave] = vend; try { localStorage.setItem(KEY_CLIENTES, JSON.stringify(clientes)); } catch (e) {} }
-        var pctCom = yaVino ? (REC.renovacion || 0) : (REC.comision || 0);
-        var com = vend ? Math.round(precioMeses(meses) * pctCom / 100) : 0;
-        generado = { code: code, nombre: nom.trim(), vence: meses === 0 ? null : vencimiento(idx) };
-        try {
-          localStorage.setItem(KEY_SERIE, String(serie + 1));
-          var l = emitidos();
-          l.push({ code: code, nombre: nom.trim(), vence: meses === 0 ? "" : fecha(vencimiento(idx)), vend: vend, com: com });
-          localStorage.setItem(KEY_EMITIDOS, JSON.stringify(l.slice(-60)));
-        } catch (e) {}
-        pintar();
-      }
+      /* g-gen (armar códigos en el teléfono) se sacó el 04/11: los códigos se arman en Mi negocio */
     });
     gate.addEventListener("keydown", function (ev) {
       if (ev.key === "Enter" && ev.target.id === "g-code") { ev.preventDefault(); intentar(); }
@@ -6836,6 +6837,7 @@ react-dom/cjs/react-dom.production.min.js:
   /* Viene de gracias.html con ./?codigo=XXXX-XXXX: se activa solo.
      Si ya tenía un código que dura más, se queda con ese. */
   var codigoNuevo = false;
+  var pendiente = null;
   (function () {
     var m = /[?&]codigo=([A-Za-z0-9\-]+)/.exec(location.search || "");
     if (!m) return;
@@ -6843,14 +6845,7 @@ react-dom/cjs/react-dom.production.min.js:
       var u = new URL(location.href); u.searchParams.delete("codigo");
       history.replaceState(null, "", u.pathname + u.search + u.hash);
     } catch (e) {}
-    var r = valida(m[1]);
-    if (!r.ok) return;
-    var prev = guardado();
-    if (prev && prev.admin) return;
-    var pv = prev && prev.code ? valida(prev.code) : null;
-    if (pv && pv.ok && (!pv.vence || (r.vence && r.vence <= pv.vence))) return;
-    guardar({ code: r.code, at: Date.now() });
-    codigoNuevo = true;
+    pendiente = m[1];
   })();
 
   /* Lista de códigos dados de baja (reembolsos). Solo existe si el sitio
@@ -6865,8 +6860,47 @@ react-dom/cjs/react-dom.production.min.js:
     }).catch(function () {});
   }
 
+  var activando = false;
+  if (pendiente && !LIBRE && !pidePanel()) {
+    var prev0 = guardado();
+    if (!(prev0 && prev0.admin)) {
+      activando = true;
+      document.body.classList.add("bloqueado");
+      if (gate) gate.hidden = false;
+      vista = "codigo";
+      pintar("Activando tu acceso…", "ok");
+      verificar(pendiente, function (r) {
+        var prev = guardado();
+        var pv = prev && prev.code ? valida(prev.code) : null;
+        var sigue = pv && pv.ok && prev.srv;
+        if (r.ok && !(sigue && (!pv.vence || (r.vence && r.vence <= pv.vence)))) { guardar({ code: r.code, at: Date.now(), srv: 1 }); sigue = true; }
+        if (!sigue) { pintar(r.error || "Ese código no es válido."); return; }
+        var nom = "";
+        try { nom = localStorage.getItem("rutina-cliente-nombre") || ""; } catch (e) {}
+        if (!nom) { vista = "nombre"; pintar(); } else abrir(true);
+      });
+    }
+  }
+
+  /* Accesos activados antes del 04/11 (sin "srv"): se revisan una vez con el servidor, sin cortar
+     al que está sin internet. Si el servidor dice que el código no sirve, se cierra el acceso. */
+  function revisarViejo(gv) {
+    if (!gv || gv.admin || gv.srv || !gv.code) return;
+    servidor({ codigo: gv.code }, function (d) {
+      if (!d) return; /* sin internet: se prueba la próxima vez */
+      if (d.ok) { gv.srv = 1; guardar(gv); return; }
+      try { localStorage.removeItem(KEY); } catch (e) {}
+      document.body.classList.add("bloqueado");
+      if (gate) gate.hidden = false;
+      vista = "codigo";
+      pintar(d.error || "Ese código no es válido.");
+    });
+  }
+
   var g = guardado();
-  if (!LIBRE && pidePanel()) {
+  if (activando) {
+    /* lo resuelve verificar() de arriba */
+  } else if (!LIBRE && pidePanel()) {
     /* el link con ?panel siempre lleva a la clave, aun con acceso guardado */
     document.body.classList.add("bloqueado");
     gate.hidden = false;
@@ -6876,9 +6910,12 @@ react-dom/cjs/react-dom.production.min.js:
     return;
   }
   if (g && g.admin) { document.body.classList.add("soy-admin"); botonPanel(); }
-  if (LIBRE) {
+  if (activando) {
+    /* nada: la activación con el servidor decide qué mostrar */
+  } else if (LIBRE) {
     abrir(false);
   } else if (g && (g.admin || valida(g.code).ok)) {
+    revisarViejo(g);
     var tieneNombre = "";
     try { tieneNombre = localStorage.getItem("rutina-cliente-nombre") || ""; } catch (e) {}
     if (codigoNuevo && !tieneNombre) {

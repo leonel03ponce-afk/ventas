@@ -22,7 +22,19 @@ export function origenDe(req) {
   return process.env.URL && !/localhost/.test(u.host) ? process.env.URL.replace(/\/$/, "") : u.origin;
 }
 
-function firma(txt) {
+/* Secretos de los códigos: viven SOLO en Netlify (Environment variables), nunca en config.js.
+   SECRETO_CODIGOS firma los códigos nuevos. SECRETO_VIEJO (el que estaba en config.js) solo sirve
+   para reconocer los códigos que ya se dieron; se borra de Netlify cuando todos migraron. */
+export function secretos() {
+  return [process.env.SECRETO_CODIGOS, process.env.SECRETO_VIEJO].filter(Boolean);
+}
+export function secretoNuevo() {
+  const s = process.env.SECRETO_CODIGOS || process.env.SECRETO_VIEJO;
+  if (!s) throw new Error("Falta configurar SECRETO_CODIGOS en Netlify");
+  return s;
+}
+
+export function firma(txt) {
   let h = 2166136261;
   for (let i = 0; i < txt.length; i++) { h ^= txt.charCodeAt(i); h = Math.imul(h, 16777619); }
   h ^= h >>> 13; h = Math.imul(h, 1274126177); h ^= h >>> 16;
@@ -60,7 +72,7 @@ export async function registrarVenta(origen, v) {
   if (previa) return previa;
 
   const cfg = await leerConfig(origen);
-  const secreto = (cfg.acceso || {}).secreto || "cambiame";
+  const secreto = secretoNuevo();
   const rec = cfg.recomendados || {};
 
   /* ¿Ya compró antes con ese mail? Entonces es renovación y la comisión

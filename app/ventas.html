@@ -23,8 +23,9 @@ if (!window.CONFIG || !window.CONFIG.planes) window.CONFIG = /*CFG*/{
 
   acceso: {
     libre: false,                                   /* true = sin código, entra cualquiera */
-    secreto: "ponce-2026-xK7m",                     /* firma de los códigos: cambialo y los viejos dejan de servir */
-    admin: "PONCE-2026",                            /* escribilo en la pantalla de acceso para abrir el panel */
+    /* La firma de los códigos y la clave del panel ya NO van acá (este archivo es público):
+       viven en Netlify → Environment variables: SECRETO_CODIGOS (y SECRETO_VIEJO mientras migran
+       los códigos dados antes del 04/11). El panel de la app se abre con la clave de Mi negocio (CLAVE_VENTAS). */
     bloqueados: [],                                 /* seriales dados de baja, ej: ["AB", "AC"] */
     prueba: 0,                                      /* días de prueba gratis (0 = sin prueba) */
     pruebaPorWhatsApp: true,                        /* true = para activarla te escriben y les pasás la palabra */
