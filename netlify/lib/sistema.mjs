@@ -99,6 +99,7 @@ export async function registrarVenta(origen, v) {
     monto: v.monto, moneda: v.moneda, nombre: v.nombre || "", email, tel, medio: v.medio || "", nota: v.nota || "", ref, tipo, pct,
     comision: Math.round((v.monto || 0) * pct) / 100, codigo: c.code, vence: c.vence, estado: "aprobada", pagaHotmart: !!v.pagaHotmart
   };
+  if (v.incluido) venta.incluido = true; /* Sistema que vino con un programa (monto 0) */
   await st.setJSON(clave, venta);
   return venta;
 }

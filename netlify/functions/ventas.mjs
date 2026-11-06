@@ -3,7 +3,8 @@
    GET  /api/ventas → { ventas, bloqueados, pagos, vendedores }
    POST /api/ventas { accion, ... }:
      "bloquear" | "desbloquear"  { codigo }
-     "manual"     { nombre, email, tel, plan, internacional, monto, moneda, ref, medio, nota } → venta con código
+     "manual"     { nombre, email, tel, plan, internacional, monto, moneda, ref, medio, nota, incluido } → venta con código
+                  incluido: true = Sistema viene con un programa (lo pide Ritmo): se guarda con monto 0
      "pagar"      { ref, moneda, monto, nota }  → registra que le pagaste la comisión
      "vendedor"   { ref, nombre, pais, cobro, tel } → datos del vendedor */
 import { tienda, json, origenDe, leerConfig, planPorId, registrarVenta, limpiarRef } from "../lib/sistema.mjs";
@@ -35,12 +36,16 @@ export default async (req) => {
       const plan = planPorId(cfg, String(b.plan || ""), !!b.internacional);
       if (!plan) return json({ error: "Elegí un plan" }, 400);
       if (!texto(b.nombre)) return json({ error: "Falta el nombre del cliente" }, 400);
-      const monto = Number(b.monto) > 0 ? Number(b.monto) : plan.precio;
+      /* Si Sistema viene incluido en un programa (Closer en 30/90, pase), no es una venta
+         de Sistema: monto 0 para no inflar lo cobrado ni las comisiones. */
+      const incluido = b.incluido === true;
+      const monto = incluido ? 0 : Number(b.monto) > 0 ? Number(b.monto) : plan.precio;
       const venta = await registrarVenta(origen, {
         origen: "manual", id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
         plan: plan.nombre, meses: plan.meses, monto, moneda: b.internacional ? "USD" : "ARS",
         nombre: texto(b.nombre), email: texto(b.email), tel: texto(b.tel, 30),
-        ref: limpiarRef(b.ref), medio: texto(b.medio, 40), nota: texto(b.nota, 200)
+        ref: limpiarRef(b.ref), medio: texto(b.medio, 40) || (incluido ? "Incluido en programa" : ""), nota: texto(b.nota, 200),
+        incluido
       });
       return json({ ok: true, venta });
     }

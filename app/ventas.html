@@ -381,7 +381,7 @@ td.n { text-align: right; font-variant-numeric: tabular-nums; }
       var bloq = D.bloqueados.indexOf(v.codigo) > -1;
       return "<tr><td>" + fechaCorta(v.fecha) + "</td><td>" + esc(v.nombre || "—") + "<br><small>" + esc(v.email || v.tel || "") + "</small></td>" +
         "<td>" + esc(v.plan) + "<br><small>" + (v.tipo === "renovacion" ? "renovación" : "primera compra") + "</small></td>" +
-        '<td class="n">' + plata(v.monto, v.moneda) + "</td><td>" + esc(v.medio || (v.origen === "mp" ? "Mercado Pago" : v.origen === "hotmart" ? "Hotmart" : "a mano")) + "</td>" +
+        '<td class="n">' + (v.incluido ? "incluido" : plata(v.monto, v.moneda)) + "</td><td>" + esc(v.medio || (v.origen === "mp" ? "Mercado Pago" : v.origen === "hotmart" ? "Hotmart" : "a mano")) + "</td>" +
         "<td>" + esc(v.ref || "—") + (v.comision ? "<br><small style=\"color:var(--jade)\">" + v.pct + "% · " + plata(v.comision, v.moneda) + (v.pagaHotmart ? " (Hotmart)" : "") + "</small>" : "") + "</td>" +
         '<td class="cod">' + esc(lindo(v.codigo)) + "</td>" +
         "<td>" + (v.estado === "aprobada" && !bloq ? '<span class="tag ok">Activa</span>' : '<span class="tag mal">' + (v.estado === "aprobada" ? "Dada de baja" : esc(v.estado)) + "</span>") + "</td>" +
