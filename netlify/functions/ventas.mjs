@@ -40,11 +40,14 @@ export default async (req) => {
          de Sistema: monto 0 para no inflar lo cobrado ni las comisiones. */
       const incluido = b.incluido === true;
       const monto = incluido ? 0 : Number(b.monto) > 0 ? Number(b.monto) : plan.precio;
+      /* Ritmo manda medio "Otro" cuando no se cobró Sistema: si viene incluido, eso no dice nada */
+      const medio = texto(b.medio, 40);
+      const medioFinal = incluido && (!medio || medio.toLowerCase() === "otro") ? "Incluido en programa" : medio;
       const venta = await registrarVenta(origen, {
         origen: "manual", id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
         plan: plan.nombre, meses: plan.meses, monto, moneda: b.internacional ? "USD" : "ARS",
         nombre: texto(b.nombre), email: texto(b.email), tel: texto(b.tel, 30),
-        ref: limpiarRef(b.ref), medio: texto(b.medio, 40) || (incluido ? "Incluido en programa" : ""), nota: texto(b.nota, 200),
+        ref: limpiarRef(b.ref), medio: medioFinal, nota: texto(b.nota, 200),
         incluido
       });
       return json({ ok: true, venta });
