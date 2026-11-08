@@ -6962,8 +6962,8 @@ react-dom/cjs/react-dom.production.min.js:
       var dias = Math.ceil((v.vence - Date.now()) / DIA);
       if (dias > 7) return "";
       return '<section class="card acc-av"><p class="card-k">Tu acceso</p><p class="card-t">Vence ' + (dias <= 1 ? "mañana" : "en " + dias + " días") + '</p>' +
-        '<p class="card-s">Renovalo antes del ' + fecha(v.vence) + ' y no perdés la racha ni tu historial.</p>' +
-        '<button type="button" class="btn pri" data-acc="planes">Renovar</button></section>';
+        '<p class="card-s">Pasate al pago único antes del ' + fecha(v.vence) + ': es tuyo para siempre y no perdés la racha ni tu historial.</p>' +
+        '<button type="button" class="btn pri" data-acc="planes">Quedártelo para siempre</button></section>';
     }
     var q = pruebaQuedan();
     if (q > 0) {

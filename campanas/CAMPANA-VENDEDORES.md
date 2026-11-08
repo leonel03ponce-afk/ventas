@@ -1,3 +1,5 @@
+> **Desactualizado desde el 08/11/2026.** Sistema ahora es **pago único: $70.000 (afuera US$49)** y el vendedor cobra **43% de cada venta = $30.100 (US$21,07)**, sin renovaciones. Los precios y el "15% de cada renovación" de abajo son de los planes viejos: no los mandes así. Los textos al día están en `app/guia-vendedores.html` y `app/vendedores.html`.
+
 # Campaña de vendedores · SISTEMA
 
 Cada vendedor gana el **43% del primer pago** de cada cliente que trae y el **15% de cada renovación**.
