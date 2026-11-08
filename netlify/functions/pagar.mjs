@@ -12,7 +12,8 @@ export default async (req) => {
   try { body = await req.json(); } catch (e) {}
   const origen = origenDe(req);
   const cfg = await leerConfig(origen);
-  const plan = planPorId(cfg, String(body.plan || ""), false);
+  /* solo planes a la venta: los accesos por tiempo (incluidos en programas) no se cobran sueltos */
+  const plan = planPorId(cfg, String(body.plan || ""), false, true);
   if (!plan) return json({ error: "Plan desconocido" }, 400);
 
   const ref = limpiarRef(body.ref);
@@ -29,6 +30,8 @@ export default async (req) => {
     auto_return: "approved",
     notification_url: origen + "/api/mp-aviso",
     statement_descriptor: String(cfg.producto || "SISTEMA").slice(0, 13)
+    /* Cuotas: igual que Ritmo (Servidor.gs → crearCobro_), sin payment_methods: el checkout
+       ofrece las mismas cuotas que la cuenta de Mercado Pago le da a Ritmo. */
   };
   const res = await fetch("https://api.mercadopago.com/checkout/preferences", {
     method: "POST",

@@ -32,15 +32,23 @@ if (!window.CONFIG || !window.CONFIG.planes) window.CONFIG = /*CFG*/{
     palabraPrueba: "ARRANCO"                        /* la palabra que mandás por WhatsApp para activar la prueba */
   },
 
-  /* Precios en pesos. Tienen que coincidir con lo que cobra cada link de
-     Mercado Pago. "incluye" es la lista que se ve en la tarjeta del plan. */
+  /* Precio en pesos. Desde el 08/11: un solo plan, PAGO ÚNICO, igual que Ritmo
+     (ARS 70.000, con las mismas cuotas: las que ofrece Mercado Pago en el checkout).
+     El cobro lo arma /api/pagar con este precio. "pago" es un link fijo de Mercado Pago
+     de respaldo (si el cobro automático falla); vacío = el botón abre WhatsApp.
+     "incluye" es la lista que se ve en la tarjeta del plan. */
   planes: [
-    { id: "trimestral", nombre: "3 meses",      precio: 26700,  meses: 3,  detalle: "sale $8.900 por mes · 3 meses de acceso", pago: "https://mpago.la/2SDK5Ty",
-      incluye: ["Rutina personalizada armada por Brian", "Tu día en una lista: entreno, comida, hábitos y plata", "Resumen semanal con puntaje y rango", "Récords, rangos y rachas para compartir", "Finanzas: cuentas a pagar, gastos y ahorro", "Plan de calorías y proteína", "Consultas por WhatsApp"] },
-    { id: "anual",      nombre: "Anual",        precio: 69900,  meses: 12, detalle: "sale $5.825 por mes · ahorrás 30%",              pago: "https://mpago.la/2cdoPet", destacado: "Más elegido",
-      incluye: ["Todo lo del plan de 3 meses", "Rutina nueva cada 3 meses", "Revisión de tu progreso cada mes", "Prioridad en WhatsApp"] },
-    { id: "vida",       nombre: "Para siempre", precio: 119900, meses: 0,  detalle: "un solo pago · acceso de por vida",              pago: "https://mpago.la/28ED6Ht",
-      incluye: ["Todo lo del plan anual", "Sin cuotas, nunca más", "Todas las funciones nuevas que salgan"] }
+    { id: "vida", nombre: "Para siempre", precio: 70000, meses: 0, detalle: "pago único · es tuyo para siempre · en cuotas con tarjeta", pago: "", destacado: "Pago único",
+      incluye: ["Rutina personalizada armada por Brian", "Tu día en una lista: entreno, comida, hábitos y plata", "Resumen semanal con puntaje y rango", "Récords, rangos y rachas para compartir", "Finanzas: cuentas a pagar, gastos y ahorro", "Plan de calorías y proteína", "Consultas por WhatsApp", "Todas las funciones nuevas que salgan"] }
+  ],
+
+  /* Accesos por tiempo: ya NO se venden sueltos ni se muestran en la venta.
+     Quedan para el Sistema que viene incluido en un programa (Ritmo / la Caja piden
+     "trimestral" para Closer en 30 y "anual" para el pase) y para reconocer pagos viejos.
+     Los códigos que ya se dieron siguen valiendo hasta su vencimiento (la fecha va adentro del código). */
+  planesIncluidos: [
+    { id: "trimestral", nombre: "3 meses", precio: 0, meses: 3 },
+    { id: "anual",      nombre: "Anual",   precio: 0, meses: 12 }
   ],
 
   /* Clientes de afuera de Argentina: ven estos precios en dólares.
@@ -51,23 +59,21 @@ if (!window.CONFIG || !window.CONFIG.planes) window.CONFIG = /*CFG*/{
     moneda: "US$",
     metodos: "PayPal, USDT (Binance) o Zinli",
     /* Hotmart (cobro automático afuera): código de cada oferta → plan.
-       Ej: { "a1b2c3d4": "trimestral", "e5f6g7h8": "anual", "i9j0k1l2": "vida" }.
+       Ej: { "a1b2c3d4": "vida" }.
        Vacío = se reconoce el plan por el precio. Los links de pago van en "pago". */
     hotmart: { ofertas: {} },
+    /* Pago único, como en Argentina: US$49 ≈ ARS 70.000 al dólar que usan los links de Mercado Pago de los programas. */
     planes: [
-      { id: "trimestral", nombre: "3 meses",      precio: 19, meses: 3,  detalle: "sale US$6,33 por mes", pago: "" },
-      { id: "anual",      nombre: "Anual",        precio: 49, meses: 12, detalle: "sale US$4,08 por mes · ahorrás 35%", pago: "", destacado: "Más elegido" },
-      { id: "vida",       nombre: "Para siempre", precio: 89, meses: 0,  detalle: "un solo pago · acceso de por vida", pago: "" }
+      { id: "vida", nombre: "Para siempre", precio: 49, meses: 0, detalle: "un solo pago · es tuyo para siempre", pago: "", destacado: "Pago único" }
     ]
   },
 
-  /* Vendedores: se llevan "comision" % del primer pago de cada cliente
-     que traen, y "renovacion" % de cada renovación de ese cliente
-     (0 = las renovaciones no pagan comisión). */
+  /* Vendedores: se llevan "comision" % de cada venta que traen (pago único).
+     Ya no hay renovaciones: si un cliente con un plan viejo (3 meses o anual) compra
+     el acceso para siempre, el vendedor que lo trajo primero cobra el mismo "comision" %. */
   recomendados: {
     activo: true,
     comision: 43,
-    renovacion: 15,
     cuandoPago: "a fin de cada mes",
     premio: "",                                                        /* premio del mes para el n.º 1 del ranking, ej: "$50.000 extra". Vacío = no se muestra */                                   /* se lo muestra a los vendedores */
     comoPago: "En Argentina por Mercado Pago o transferencia. Afuera, por USDT (Binance), PayPal o Zinli."
@@ -157,7 +163,7 @@ td.n { text-align: right; font-variant-numeric: tabular-nums; }
       <div class="fila"><select id="mes"></select><button type="button" class="btn alt" data-recargar>Actualizar</button></div>
       <div class="tarjetas" id="r-tarj"></div>
       <h2>Vencen en los próximos 15 días</h2>
-      <p class="sub" style="margin:-4px 0 10px">Escribiles antes de que venzan: es la venta más fácil (y al vendedor le toca solo el 15%).</p>
+      <p class="sub" style="margin:-4px 0 10px">Son planes viejos (3 meses o anual, o Sistema incluido en un programa). Escribiles antes de que venzan y ofreceles el acceso para siempre (pago único): es la venta más fácil.</p>
       <div class="lista" id="r-vencen"></div>
       <h2>Comisiones que debés</h2>
       <div class="lista" id="r-debe"></div>
@@ -313,14 +319,14 @@ td.n { text-align: right; font-variant-numeric: tabular-nums; }
   var ESTADOS = { activo: ['ok', 'Activo'], pronto: ['warn', 'Vence pronto'], vencido: ['mal', 'Vencido'], baja: ['mal', 'Dado de baja'] };
   function itemCliente(c) {
     var e = ESTADOS[c.estado];
-    var renovar = waLink(c.tel, "¡Hola " + String(c.nombre).split(" ")[0] + "! ¿Cómo venís con el entrenamiento? 💪 Tu plan de " + (C.producto || "SISTEMA") + (c.estado === "vencido" ? " venció" : " vence") + " el " + venceLindo(c.vence) + ". Si querés seguir, renovás acá: " + sitio + "planes.html");
+    var renovar = waLink(c.tel, "¡Hola " + String(c.nombre).split(" ")[0] + "! ¿Cómo venís con el entrenamiento? 💪 Tu plan de " + (C.producto || "SISTEMA") + (c.estado === "vencido" ? " venció" : " vence") + " el " + venceLindo(c.vence) + ". Si querés seguir, ahora es un pago único y te queda para siempre: " + sitio + "planes.html");
     var hola = waLink(c.tel, "¡Hola " + String(c.nombre).split(" ")[0] + "! ");
     return '<div class="item"><div class="top"><span class="nom">' + esc(c.nombre || "Sin nombre") + '</span><span class="tag ' + e[0] + '">' + e[1] + "</span></div>" +
       '<p class="dato">Plan ' + esc(c.ultima.plan) + " · " + (c.vence ? (c.dias < 0 ? "venció el " : "vence el ") + venceLindo(c.vence) + (c.dias >= 0 && c.dias <= 60 ? " (en " + c.dias + " días)" : "") : (c.estado === "baja" ? "sin acceso" : "acceso para siempre")) + "</p>" +
       '<p class="dato">' + [c.tel, c.email].filter(Boolean).map(esc).join(" · ") + "</p>" +
       '<p class="dato">Pagó ' + dosMonedas(c.pagado) + " en " + c.compras.length + (c.compras.length > 1 ? " compras" : " compra") + (c.ref ? " · lo trajo <b style=\"color:var(--bone)\">" + esc(c.ref) + "</b>" : " · vino directo") + ' · código <span class="cod">' + esc(lindo(c.ultima.codigo)) + "</span></p>" +
       '<div class="acc">' + (hola ? '<a class="btn wa mini" target="_blank" rel="noopener" href="' + hola + '">WhatsApp</a>' : "") +
-      (renovar && (c.estado === "pronto" || c.estado === "vencido") ? '<a class="btn mini" target="_blank" rel="noopener" href="' + renovar + '">Mandar aviso de renovación</a>' : "") +
+      (renovar && (c.estado === "pronto" || c.estado === "vencido") ? '<a class="btn mini" target="_blank" rel="noopener" href="' + renovar + '">Mandar aviso de vencimiento</a>' : "") +
       '<button type="button" class="btn alt mini" data-rutina="' + esc(c.id) + '">Mandar rutina</button>' +
       '<button type="button" class="btn alt mini" data-copiar="' + esc(lindo(c.ultima.codigo)) + '">Copiar código</button></div></div>';
   }
@@ -345,7 +351,7 @@ td.n { text-align: right; font-variant-numeric: tabular-nums; }
     var cs = clientes();
     var debe = {}; vendedores().forEach(function (x) { Object.keys(x.debe).forEach(function (mon) { if (x.debe[mon] > 0) debe[mon] = (debe[mon] || 0) + x.debe[mon]; }); });
     $("r-tarj").innerHTML =
-      "<div><b>" + ok.length + "</b><span>ventas en " + MESES[+m.slice(5) - 1] + (function (n) { return n ? " (" + n + (n === 1 ? " renovación)" : " renovaciones)") : ""; })(ok.filter(function (v) { return v.tipo === "renovacion"; }).length) + "</span></div>" +
+      "<div><b>" + ok.length + "</b><span>ventas en " + MESES[+m.slice(5) - 1] + (function (n) { return n ? " (" + n + (n === 1 ? " ya era cliente)" : " ya eran clientes)") : ""; })(ok.filter(function (v) { return v.tipo === "renovacion"; }).length) + "</span></div>" +
       "<div><b>" + dosMonedas(cob) + "</b><span>cobrado en el mes</span></div>" +
       "<div><b>" + dosMonedas(com) + "</b><span>comisiones del mes</span></div>" +
       "<div><b>" + cs.filter(function (c) { return c.estado === "activo" || c.estado === "pronto"; }).length + "</b><span>clientes activos</span></div>" +
@@ -380,7 +386,7 @@ td.n { text-align: right; font-variant-numeric: tabular-nums; }
     $("s-lista").innerHTML = vs.length ? vs.map(function (v) {
       var bloq = D.bloqueados.indexOf(v.codigo) > -1;
       return "<tr><td>" + fechaCorta(v.fecha) + "</td><td>" + esc(v.nombre || "—") + "<br><small>" + esc(v.email || v.tel || "") + "</small></td>" +
-        "<td>" + esc(v.plan) + "<br><small>" + (v.tipo === "renovacion" ? "renovación" : "primera compra") + "</small></td>" +
+        "<td>" + esc(v.plan) + "<br><small>" + (v.tipo === "renovacion" ? "ya era cliente" : "primera compra") + "</small></td>" +
         '<td class="n">' + (v.incluido ? "incluido" : plata(v.monto, v.moneda)) + "</td><td>" + esc(v.medio || (v.origen === "mp" ? "Mercado Pago" : v.origen === "hotmart" ? "Hotmart" : "a mano")) + "</td>" +
         "<td>" + esc(v.ref || "—") + (v.comision ? "<br><small style=\"color:var(--jade)\">" + v.pct + "% · " + plata(v.comision, v.moneda) + (v.pagaHotmart ? " (Hotmart)" : "") + "</small>" : "") + "</td>" +
         '<td class="cod">' + esc(lindo(v.codigo)) + "</td>" +
@@ -490,14 +496,19 @@ td.n { text-align: right; font-variant-numeric: tabular-nums; }
 
   /* ───── cargar venta a mano ───── */
   var f = $("f-nueva");
+  /* Desde el 08/11 se vende solo el pago único. Los accesos por tiempo (planesIncluidos) quedan
+     para dar Sistema incluido en un programa: se registran con monto 0 y sin comisión. */
+  var incluidos = function () { return f.pais.value === "int" ? [] : (C.planesIncluidos || []); };
+  var esIncluido = function (id) { return incluidos().some(function (x) { return x.id === id; }); };
   function planesForm() {
     var intl = f.pais.value === "int";
     var ps = intl ? (I.planes || []) : (C.planes || []);
-    f.plan.innerHTML = ps.map(function (p) { return '<option value="' + esc(p.id) + '"' + (p.destacado ? " selected" : "") + ">" + esc(p.nombre) + " · " + plata(p.precio, intl ? "USD" : "ARS") + "</option>"; }).join("");
+    f.plan.innerHTML = ps.map(function (p) { return '<option value="' + esc(p.id) + '"' + (p.destacado ? " selected" : "") + ">" + esc(p.nombre) + " · " + plata(p.precio, intl ? "USD" : "ARS") + "</option>"; }).join("") +
+      incluidos().map(function (p) { return '<option value="' + esc(p.id) + '">' + esc(p.nombre) + " · incluido en un programa (sin cobro)</option>"; }).join("");
     precioForm();
   }
   function precioForm() {
-    var ps = f.pais.value === "int" ? (I.planes || []) : (C.planes || []);
+    var ps = (f.pais.value === "int" ? (I.planes || []) : (C.planes || [])).concat(incluidos());
     var p = ps.filter(function (x) { return x.id === f.plan.value; })[0];
     if (p) f.monto.value = p.precio;
   }
@@ -507,12 +518,13 @@ td.n { text-align: right; font-variant-numeric: tabular-nums; }
     $("n-msg").textContent = "Registrando…"; $("n-listo").hidden = true;
     var datos = { accion: "manual", nombre: f.nombre.value, tel: f.tel.value, email: f.email.value, internacional: f.pais.value === "int", plan: f.plan.value,
       monto: Number(String(f.monto.value).replace(",", ".")), medio: f.medio.value, ref: f.ref.value, nota: f.nota.value };
+    if (esIncluido(datos.plan) && !(datos.monto > 0)) datos.incluido = true;
     api({ method: "POST", body: JSON.stringify(datos) }).then(function (r) {
       var v = r.venta;
       $("n-msg").textContent = "";
       $("n-nom").textContent = v.nombre;
       $("n-cod").textContent = lindo(v.codigo);
-      $("n-vence").textContent = "Plan " + v.plan + " · " + (v.vence ? "válido hasta el " + venceLindo(v.vence) : "para siempre") + (v.ref ? " · " + v.pct + "% para " + v.ref + " (" + plata(v.comision, v.moneda) + ")" : "") + (v.tipo === "renovacion" ? " · renovación" : "");
+      $("n-vence").textContent = "Plan " + v.plan + " · " + (v.vence ? "válido hasta el " + venceLindo(v.vence) : "para siempre") + (v.ref ? " · " + v.pct + "% para " + v.ref + " (" + plata(v.comision, v.moneda) + ")" : "") + (v.tipo === "renovacion" ? " · ya era cliente" : "");
       var msg = "¡Hola " + String(v.nombre).split(" ")[0] + "! Ya tenés tu acceso a " + (C.producto || "SISTEMA") + " 💪\nTu código: " + lindo(v.codigo) + "\nEntrá desde acá y se activa solo: " + sitio + "?codigo=" + v.codigo + "\nAl entrar respondés 8 preguntas y la app te arma la rutina. Cualquier duda, escribime.";
       var wl = waLink(v.tel, msg);
       $("n-wa").hidden = !wl; if (wl) $("n-wa").href = wl;

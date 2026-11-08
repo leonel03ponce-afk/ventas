@@ -15,8 +15,8 @@
 - Tablero privado de vendedores y comisiones: https://claude.ai/artifact/Lq4khHvoPukjcEGxbhPzah
 
 ## Datos clave
-- Planes AR: 3 meses $26.700 (https://mpago.la/2SDK5Ty) · Anual $69.900 (https://mpago.la/2cdoPet) · Para siempre $119.900 (https://mpago.la/28ED6Ht). Afuera: US$19 / 49 / 89.
-- Comisión vendedores: 43% primer pago, 15% renovaciones. Pago a fin de mes. No se dan leads.
+- Precio (desde el 08/11): **pago único $70.000** como Ritmo, mismas cuotas (cobro automático con Mercado Pago). Afuera: US$49. Los planes de 3 meses y anual quedan solo como acceso incluido en programas (`planesIncluidos`).
+- Comisión vendedores: 43% de cada venta (no hay renovaciones). Pago a fin de mes. No se dan leads.
 - Clave del panel de códigos: PONCE-2026 (entrar en brian-ponce.netlify.app/panel). Sin prueba gratis.
 - MP en dólares: alias solida.comun.amplias (solo recibe desde cuentas argentinas).
 - Nunca poner tokens ni claves privadas en el repo: van como variables de entorno en Netlify (`MP_ACCESS_TOKEN`, `CLAVE_VENTAS`, `HOTMART_HOTTOK`).

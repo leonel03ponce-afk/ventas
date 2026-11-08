@@ -22,18 +22,19 @@ Este archivo es el traspaso completo de una conversación larga con Claude (octu
 **Precios (los manda `app/config.js`):**
 | Plan | Argentina | Link de pago | Afuera |
 |---|---|---|---|
-| 3 meses | $26.700 (sale $8.900/mes) | https://mpago.la/2SDK5Ty | US$19 |
-| Anual (el más elegido) | $69.900 | https://mpago.la/2cdoPet | US$49 |
-| Para siempre | $119.900 | https://mpago.la/28ED6Ht | US$89 |
+| Para siempre (**pago único**, desde el 08/11) | $70.000, mismas cuotas que Ritmo | automático (`/api/pagar`); sin link fijo de respaldo | US$49 |
+
+- **Decisión de Brian (08/11):** Sistema es pago único, al mismo precio que Ritmo y con las mismas cuotas (la preferencia de MP va sin `payment_methods`, igual que `crearCobro_` del servidor de Ritmo). Los planes de 3 meses / anual / de por vida se sacaron de la venta; los links `mpago.la` viejos cobraban esos montos y se sacaron de `config.js`.
+- `planesIncluidos` (trimestral y anual, precio 0) NO se venden: quedan para el Sistema incluido en un programa (la Caja / Ritmo piden `trimestral` para Closer en 30 y `anual` para el pase) y para reconocer pagos viejos. Los códigos ya dados siguen valiendo hasta su vencimiento (la fecha va adentro del código).
 
 - Afuera de Argentina: PayPal, USDT (Binance) o Zinli coordinando por WhatsApp (Hotmart pendiente). MP en dólares: alias `solida.comun.amplias` (solo desde cuentas argentinas).
 - **Sin prueba gratis.** Precio de lanzamiento activado (`lanzamiento: true`).
 - WhatsApp de Brian: 11 7115-8427 (`https://wa.me/5491171158427`).
 
 **Quién compra:** gente de 20 a 40 años que arrancó el gym varias veces y lo dejó. Llega por las redes de Brian o por un vendedor.
-**Recorrido del cliente:** video o mensaje → `planes.html` (si viene de un vendedor, `?ref=nombre`) → paga con Mercado Pago → vuelve a `gracias.html` y ve su **código de acceso** (cobro automático) → abre la app, pone el código → **arranque** de 4 preguntas → Brian le manda la rutina (Mi negocio → Clientes → Mandar rutina) → usa la app todos los días → renueva.
+**Recorrido del cliente:** video o mensaje → `planes.html` (si viene de un vendedor, `?ref=nombre`) → paga con Mercado Pago → vuelve a `gracias.html` y ve su **código de acceso** (cobro automático) → abre la app, pone el código → **arranque** de 4 preguntas → Brian le manda la rutina (Mi negocio → Clientes → Mandar rutina) → usa la app todos los días (pago único: no renueva).
 
-**Quién vende:** vendedores (closers de la comunidad de Tino Mossu, gente de Venezuela y LatAm, alumnos). Sacan su link en `vendedores.html`, aprenden con `guia-vendedores.html`, compiten en `ranking.html`. **Comisión: 43% del primer pago y 15% de cada renovación, a fin de mes. No se dan leads.**
+**Quién vende:** vendedores (closers de la comunidad de Tino Mossu, gente de Venezuela y LatAm, alumnos). Sacan su link en `vendedores.html`, aprenden con `guia-vendedores.html`, compiten en `ranking.html`. **Comisión: 43% de cada venta (pago único; si ya era cliente con un plan viejo, igual 43% para quien lo trajo), a fin de mes. No se dan leads.**
 
 **Páginas y paneles:**
 - Públicas: `/` (app), `/planes.html` (venta), `/gracias.html`, `/vendedores.html`, `/guia-vendedores.html`, `/ranking.html`.
@@ -117,7 +118,7 @@ Tiene varios `<script>`. Los importantes:
 
 ## 6. Pendientes
 
-1. **Link de Mercado Pago del plan de 3 meses:** el precio pasó a $26.700 en `config.js`, pero el link `mpago.la/2SDK5Ty` quedó igual. Si ese link cobra otro monto, hay que cambiar el precio en Mercado Pago (o crear un link nuevo y pegarlo en `config.js`).
+1. **Link fijo de respaldo de $70.000 (opcional):** si el cobro automático falla, el botón cae a WhatsApp. Si Brian crea en Mercado Pago un link de pago de $70.000, va en `config.js` → `planes[0].pago` (y después `sincronizar-config.py` + subir `CACHE`).
 2. **Avisos automáticos a la hora de cada hábito:** el aviso de prueba (botón Probar) llega, pero los automáticos no se confirmaron. Brian lo dejó así por ahora. Si vuelve a salir el tema: en la app, Hoy → **Probar** → **Probar aviso automático** (llega en menos de 15 min si la función programada corre). Si no llega: Netlify → Logs → Functions → `push-habitos` tiene que correr cada 15 min; si no aparece, revisar que la **Production branch** sea `claude/upbeat-archimedes-pab9s2` (las funciones programadas solo corren en producción). Si necesitás ver Netlify, pedile a Brian capturas.
 3. Confirmar una compra real de punta a punta (pagar, ver el código en `gracias.html`, activar la app).
 4. Armar SISTEMA en Hotmart para vender afuera (producto, 3 ofertas, webhook a `/api/hotmart-aviso` y variable `HOTMART_HOTTOK`, afiliados al 43%; pasos en `COBRO-AUTOMATICO.md`).
@@ -139,3 +140,4 @@ Tiene varios `<script>`. Los importantes:
 11. **Modo entrenamiento guiado** y lista de ejercicios más limpia.
 12. Página de venta con la app por dentro (capturas reales), "Por qué esta vez sí", lo que incluye con referencia de apps sueltas, precio por día y "Cómo arrancás".
 13. (Brian) Plan de 3 meses a $26.700.
+14. (Brian, 08/11) Pago único de $70.000 como Ritmo (US$49 afuera), comisión 43% de cada venta, sin renovaciones.

@@ -9,15 +9,17 @@ function planDe(cfg, d) {
   const lista = I.planes || [];
   const oferta = ((d.purchase || {}).offer || {}).code || "";
   const porOferta = ((I.hotmart || {}).ofertas || {})[oferta];
-  if (porOferta) return lista.find((p) => p.id === porOferta);
+  /* desde el 08/11 hay un solo plan (pago único): si no se reconoce, va ese y nunca queda una compra sin código */
+  const unico = lista.find((p) => p.meses === 0) || lista[0];
+  if (porOferta) return lista.find((p) => p.id === porOferta) || unico;
   const nom = String((d.product || {}).name || "").toLowerCase();
-  if (/siempre|vida|lifetime/.test(nom)) return lista.find((p) => p.meses === 0);
-  if (/anual|año|12/.test(nom)) return lista.find((p) => p.meses === 12);
+  if (/siempre|vida|lifetime/.test(nom)) return unico;
+  if (/anual|año|12/.test(nom)) return lista.find((p) => p.meses === 12) || unico;
   const precio = ((d.purchase || {}).full_price || (d.purchase || {}).price || {});
   if (precio.currency_value === "USD" && lista.length) {
     return lista.slice().sort((a, b) => Math.abs(a.precio - precio.value) - Math.abs(b.precio - precio.value))[0];
   }
-  return lista.find((p) => p.meses === 3) || lista[0];
+  return lista.find((p) => p.meses === 3) || unico;
 }
 
 export default async (req) => {

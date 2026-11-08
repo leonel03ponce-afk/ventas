@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Vendé SISTEMA · Ganá el 43% de cada venta</title>
-<meta name="description" content="Recomendá SISTEMA con tu link: cobrás el 43% de cada venta y el 15% cada vez que tu cliente renueva.">
+<meta name="description" content="Recomendá SISTEMA con tu link: cobrás el 43% de cada venta. Pago único, sin vueltas.">
 <meta property="og:title" content="Vendé SISTEMA y ganá el 43% de cada venta">
 <meta property="og:description" content="Subí el video a tu perfil, compartí tu link y cobrá a fin de mes.">
 <meta property="og:image" content="https://brian-ponce.netlify.app/img/compartir.jpg">
@@ -35,15 +35,23 @@ if (!window.CONFIG || !window.CONFIG.planes) window.CONFIG = /*CFG*/{
     palabraPrueba: "ARRANCO"                        /* la palabra que mandás por WhatsApp para activar la prueba */
   },
 
-  /* Precios en pesos. Tienen que coincidir con lo que cobra cada link de
-     Mercado Pago. "incluye" es la lista que se ve en la tarjeta del plan. */
+  /* Precio en pesos. Desde el 08/11: un solo plan, PAGO ÚNICO, igual que Ritmo
+     (ARS 70.000, con las mismas cuotas: las que ofrece Mercado Pago en el checkout).
+     El cobro lo arma /api/pagar con este precio. "pago" es un link fijo de Mercado Pago
+     de respaldo (si el cobro automático falla); vacío = el botón abre WhatsApp.
+     "incluye" es la lista que se ve en la tarjeta del plan. */
   planes: [
-    { id: "trimestral", nombre: "3 meses",      precio: 26700,  meses: 3,  detalle: "sale $8.900 por mes · 3 meses de acceso", pago: "https://mpago.la/2SDK5Ty",
-      incluye: ["Rutina personalizada armada por Brian", "Tu día en una lista: entreno, comida, hábitos y plata", "Resumen semanal con puntaje y rango", "Récords, rangos y rachas para compartir", "Finanzas: cuentas a pagar, gastos y ahorro", "Plan de calorías y proteína", "Consultas por WhatsApp"] },
-    { id: "anual",      nombre: "Anual",        precio: 69900,  meses: 12, detalle: "sale $5.825 por mes · ahorrás 30%",              pago: "https://mpago.la/2cdoPet", destacado: "Más elegido",
-      incluye: ["Todo lo del plan de 3 meses", "Rutina nueva cada 3 meses", "Revisión de tu progreso cada mes", "Prioridad en WhatsApp"] },
-    { id: "vida",       nombre: "Para siempre", precio: 119900, meses: 0,  detalle: "un solo pago · acceso de por vida",              pago: "https://mpago.la/28ED6Ht",
-      incluye: ["Todo lo del plan anual", "Sin cuotas, nunca más", "Todas las funciones nuevas que salgan"] }
+    { id: "vida", nombre: "Para siempre", precio: 70000, meses: 0, detalle: "pago único · es tuyo para siempre · en cuotas con tarjeta", pago: "", destacado: "Pago único",
+      incluye: ["Rutina personalizada armada por Brian", "Tu día en una lista: entreno, comida, hábitos y plata", "Resumen semanal con puntaje y rango", "Récords, rangos y rachas para compartir", "Finanzas: cuentas a pagar, gastos y ahorro", "Plan de calorías y proteína", "Consultas por WhatsApp", "Todas las funciones nuevas que salgan"] }
+  ],
+
+  /* Accesos por tiempo: ya NO se venden sueltos ni se muestran en la venta.
+     Quedan para el Sistema que viene incluido en un programa (Ritmo / la Caja piden
+     "trimestral" para Closer en 30 y "anual" para el pase) y para reconocer pagos viejos.
+     Los códigos que ya se dieron siguen valiendo hasta su vencimiento (la fecha va adentro del código). */
+  planesIncluidos: [
+    { id: "trimestral", nombre: "3 meses", precio: 0, meses: 3 },
+    { id: "anual",      nombre: "Anual",   precio: 0, meses: 12 }
   ],
 
   /* Clientes de afuera de Argentina: ven estos precios en dólares.
@@ -54,23 +62,21 @@ if (!window.CONFIG || !window.CONFIG.planes) window.CONFIG = /*CFG*/{
     moneda: "US$",
     metodos: "PayPal, USDT (Binance) o Zinli",
     /* Hotmart (cobro automático afuera): código de cada oferta → plan.
-       Ej: { "a1b2c3d4": "trimestral", "e5f6g7h8": "anual", "i9j0k1l2": "vida" }.
+       Ej: { "a1b2c3d4": "vida" }.
        Vacío = se reconoce el plan por el precio. Los links de pago van en "pago". */
     hotmart: { ofertas: {} },
+    /* Pago único, como en Argentina: US$49 ≈ ARS 70.000 al dólar que usan los links de Mercado Pago de los programas. */
     planes: [
-      { id: "trimestral", nombre: "3 meses",      precio: 19, meses: 3,  detalle: "sale US$6,33 por mes", pago: "" },
-      { id: "anual",      nombre: "Anual",        precio: 49, meses: 12, detalle: "sale US$4,08 por mes · ahorrás 35%", pago: "", destacado: "Más elegido" },
-      { id: "vida",       nombre: "Para siempre", precio: 89, meses: 0,  detalle: "un solo pago · acceso de por vida", pago: "" }
+      { id: "vida", nombre: "Para siempre", precio: 49, meses: 0, detalle: "un solo pago · es tuyo para siempre", pago: "", destacado: "Pago único" }
     ]
   },
 
-  /* Vendedores: se llevan "comision" % del primer pago de cada cliente
-     que traen, y "renovacion" % de cada renovación de ese cliente
-     (0 = las renovaciones no pagan comisión). */
+  /* Vendedores: se llevan "comision" % de cada venta que traen (pago único).
+     Ya no hay renovaciones: si un cliente con un plan viejo (3 meses o anual) compra
+     el acceso para siempre, el vendedor que lo trajo primero cobra el mismo "comision" %. */
   recomendados: {
     activo: true,
     comision: 43,
-    renovacion: 15,
     cuandoPago: "a fin de cada mes",
     premio: "",                                                        /* premio del mes para el n.º 1 del ranking, ej: "$50.000 extra". Vacío = no se muestra */                                   /* se lo muestra a los vendedores */
     comoPago: "En Argentina por Mercado Pago o transferencia. Afuera, por USDT (Binance), PayPal o Zinli."
@@ -152,14 +158,14 @@ details.calc-d summary::-webkit-details-marker { display: none; }
   <div class="wrap">
     <p class="k">Programa de vendedores</p>
     <h1>Vendé <span data-c="producto">SISTEMA</span>. Ganá el <span data-c="pct">43</span>%.</h1>
-    <p class="sub">Y el <b data-c="ren">15</b>% cada vez que tu cliente renueva. Sin invertir nada. Seguí estos 5 pasos.</p>
+    <p class="sub">De cada venta, a fin de mes. Sin invertir nada. Seguí estos 5 pasos.</p>
     <div class="gana" id="gana"></div>
     <nav class="ruta">
       <a href="#p1"><span>Sacá tu link<small>30 segundos</small></span></a>
       <a href="#p2"><span>Subí un video a tu perfil<small>con un título que enganche</small></span></a>
       <a href="#p3"><span>Buscá gente que ya lo quiere<small>la estrategia de los comentarios</small></span></a>
       <a href="#p4"><span>Escribiles y mandá tu link<small>mensajes listos para copiar</small></span></a>
-      <a href="#p5"><span>Cobrá a fin de mes<small>43% + 15% de renovaciones</small></span></a>
+      <a href="#p5"><span>Cobrá a fin de mes<small><span data-c="pct">43</span>% de cada venta</small></span></a>
     </nav>
   </div>
 </header>
@@ -265,7 +271,7 @@ details.calc-d summary::-webkit-details-marker { display: none; }
     <ol>
       <li>Tu cliente compra desde <b>tu link</b>: la venta queda a tu nombre sola.</li>
       <li>Si pagó por otro medio, que mande el comprobante con el <b>botón verde</b> de la página (el mensaje dice "Me recomendó: tu nombre").</li>
-      <li>Cobrás el <span data-c="pct">43</span>% del primer pago y el <span data-c="ren">15</span>% de cada renovación, <b data-c="cuando">a fin de cada mes</b>.</li>
+      <li>Cobrás el <span data-c="pct">43</span>% de cada venta (es un pago único), <b data-c="cuando">a fin de cada mes</b>.</li>
     </ol>
     <a class="btn" id="alta" target="_blank" rel="noopener">Avisarle a <span data-c="corto">Brian</span> que arranco</a>
     <p class="sub" id="como-pago" style="font-size:14px;margin-top:10px">Mandame tu alias o CVU de Mercado Pago para pagarte.</p>
@@ -274,8 +280,8 @@ details.calc-d summary::-webkit-details-marker { display: none; }
       <summary>¿Cuánto podés ganar? Calculalo →</summary>
       <div class="card" style="margin-top:0">
         <div class="calc">
-          <label>Clientes que traés<input id="cn" type="number" min="1" max="500" value="10" inputmode="numeric"></label>
-          <label>Plan que eligen<select id="cp"></select></label>
+          <label>Ventas que hacés<input id="cn" type="number" min="1" max="500" value="10" inputmode="numeric"></label>
+          <label id="cp-l">Plan que eligen<select id="cp"></select></label>
         </div>
         <div class="res"><b id="cr">$0</b><span id="cs"></span></div>
       </div>
@@ -302,11 +308,13 @@ details.calc-d summary::-webkit-details-marker { display: none; }
   document.querySelectorAll("[data-c]").forEach(function (el) { var v = vals[el.getAttribute("data-c")]; if (v != null) el.textContent = v; });
   if (!enAR) document.getElementById("como-pago").textContent = "Mandame por dónde te pago: " + (I.metodos || "USDT, PayPal o Zinli") + ". Vendés en cualquier país: tus clientes de afuera ven los precios en dólares.";
   var anual = planes.filter(function (p) { return p.meses === 12; })[0] || planes[0] || { precio: 0, meses: 12 };
+  /* desde el 08/11 es pago único: "anual" puede ser el plan para siempre (meses 0) */
+  var unico = !anual.meses;
   var lanz = C.lanzamiento ? " (precio de lanzamiento)" : "";
 
   var cada = function (p) { return p.meses === 3 ? "cada 3 meses" : p.meses === 12 ? "cada año" : p.meses ? "cada " + p.meses + " meses" : "una vez"; };
   document.getElementById("gana").innerHTML = planes.map(function (p) {
-    return "<div><b>" + plata(p.precio * pct) + "</b><span>por plan " + p.nombre.toLowerCase() + (ren && p.meses ? "<br>+ " + plata(p.precio * ren) + " " + cada(p) : "") + "</span></div>";
+    return "<div><b>" + plata(p.precio * pct) + "</b><span>" + (p.meses ? "por plan " + p.nombre.toLowerCase() : "por cada venta (pago único de " + plata(p.precio) + ")") + (ren && p.meses ? "<br>+ " + plata(p.precio * ren) + " " + cada(p) : "") + "</span></div>";
   }).join("");
 
   /* calculadora */
@@ -317,15 +325,16 @@ details.calc-d summary::-webkit-details-marker { display: none; }
     var p = planes[+cp.value] || planes[0];
     var renuevas = p.meses ? Math.max(0, 12 / p.meses - 1) : 0;
     document.getElementById("cr").textContent = plata(n * p.precio * (pct + ren * renuevas));
-    document.getElementById("cs").textContent = "en el primer año, con " + n + " clientes en el plan " + p.nombre.toLowerCase() + (renuevas ? " que renuevan" : "");
+    document.getElementById("cs").textContent = p.meses ? "en el primer año, con " + n + " clientes en el plan " + p.nombre.toLowerCase() + (renuevas ? " que renuevan" : "") : "con " + n + " ventas (" + plata(p.precio * pct) + " cada una)";
   }
+  if (planes.length < 2) document.getElementById("cp-l").hidden = true; /* un solo plan: no hay nada que elegir */
   document.getElementById("cn").addEventListener("input", calc); cp.addEventListener("change", calc); calc();
 
   /* competencia (precios anuales en dólares de las tiendas de apps) */
   var COMP = [["Fitbod", "solo rutinas de gym", 95.99], ["Fabulous", "solo hábitos", 39.99], ["YNAB", "solo finanzas", 109]];
   document.getElementById("comp").innerHTML = COMP.map(function (c) {
     return "<tr><td>" + c[0] + "<small>" + c[1] + "</small></td><td>US$" + c[2].toLocaleString("es-AR") + " / año</td></tr>";
-  }).join("") + '<tr class="yo"><td>' + vals.producto + "<small>rutina + hábitos con avisos + nutrición + finanzas + entrenador por WhatsApp</small></td><td>" + plata(anual.precio) + " / año</td></tr>";
+  }).join("") + '<tr class="yo"><td>' + vals.producto + "<small>rutina + hábitos con avisos + nutrición + finanzas + entrenador por WhatsApp</small></td><td>" + plata(anual.precio) + (unico ? " una vez, para siempre" : " / año") + "</td></tr>";
 
   var TITULOS = enAR ? [
     "Si dejaste el gym 3 veces este año, mirá esto",
@@ -364,14 +373,14 @@ details.calc-d summary::-webkit-details-marker { display: none; }
       ? "Dejá de empezar el lunes 🔥\nRutina a tu medida + una app que te ordena el día.\nEntreno · Hábitos · Comida · Plata\nComentá RUTINA y te paso cómo funciona 👇\n(link en mi perfil)"
       : "Deja de empezar el lunes 🔥\nRutina a tu medida + una app que te ordena el día.\nEntreno · Hábitos · Comida · Dinero\nComenta RUTINA y te paso cómo funciona 👇\n(link en mi perfil)";
     var t3 = enAR
-      ? "¡Genial! Entrá acá: " + L + "\nElegí tu plan y pagá. Al terminar te aparece tu código para entrar a la app (si no te aparece, tocá el botón verde \"Ya pagué · mandar comprobante\") 💪"
-      : "¡Genial! Entra aquí: " + L + "\nElige tu plan y toca \"Quiero este plan\": te abre WhatsApp con " + corto + " y te dice cómo pagar (" + (I.metodos || "PayPal o USDT") + "). Ese mensaje ya dice que vas de mi parte 💪";
+      ? "¡Genial! Entrá acá: " + L + "\nTocá el botón y pagá. Al terminar te aparece tu código para entrar a la app (si no te aparece, tocá el botón verde \"Ya pagué · mandar comprobante\") 💪"
+      : "¡Genial! Entra aquí: " + L + "\nToca \"Quiero mi acceso\": te abre WhatsApp con " + corto + " y te dice cómo pagar (" + (I.metodos || "PayPal o USDT") + "). Ese mensaje ya dice que vas de mi parte 💪";
     var t4 = enAR
-      ? "¡Hola! Vi tu comentario en el video del habit tracker 🙌 ¿Seguís buscando una app así?\nYo uso " + vals.producto + ": además de los hábitos te arma la rutina del gym, te avisa a la hora de cada hábito y te ordena hasta la plata del mes (rachas, rangos y récords).\nSi querés te paso cómo funciona, sale menos que una salida por mes."
-      : "¡Hola! Vi tu comentario en el video del habit tracker 🙌 ¿Sigues buscando una app así?\nYo uso " + vals.producto + ": además de los hábitos te arma la rutina del gym, te avisa a la hora de cada hábito y te ordena hasta el dinero del mes (rachas, rangos y récords).\nSi quieres te paso cómo funciona, sale menos que una salida al mes.";
+      ? "¡Hola! Vi tu comentario en el video del habit tracker 🙌 ¿Seguís buscando una app así?\nYo uso " + vals.producto + ": además de los hábitos te arma la rutina del gym, te avisa a la hora de cada hábito y te ordena hasta la plata del mes (rachas, rangos y récords).\nSi querés te paso cómo funciona" + (unico ? ": es un pago único y queda tuya para siempre." : ", sale menos que una salida por mes.")
+      : "¡Hola! Vi tu comentario en el video del habit tracker 🙌 ¿Sigues buscando una app así?\nYo uso " + vals.producto + ": además de los hábitos te arma la rutina del gym, te avisa a la hora de cada hábito y te ordena hasta el dinero del mes (rachas, rangos y récords).\nSi quieres te paso cómo funciona" + (unico ? ": es un pago único y queda tuya para siempre." : ", sale menos que una salida al mes.");
     var t5 = enAR
-      ? "Te entiendo. Mirá: Fitbod (solo rutinas) sale casi US$96 al año y Fabulous (solo hábitos) otros US$40 o más. " + vals.producto + " trae las dos cosas, más nutrición, tus finanzas y un entrenador real por WhatsApp, y sale " + plata(anual.precio) + " el año" + lanz + ": " + plata(anual.precio / 12) + " por mes.\nAcá lo ves 👉 " + L
-      : "Te entiendo. Mira: Fitbod (solo rutinas) cuesta casi US$96 al año y Fabulous (solo hábitos) otros US$40 o más. " + vals.producto + " trae las dos cosas, más nutrición, tus finanzas y un entrenador real por WhatsApp, y cuesta " + plata(anual.precio) + " el año" + lanz + ": " + plata(anual.precio / 12) + " al mes.\nAquí lo ves 👉 " + L;
+      ? "Te entiendo. Mirá: Fitbod (solo rutinas) sale casi US$96 al año y Fabulous (solo hábitos) otros US$40 o más. " + vals.producto + " trae las dos cosas, más nutrición, tus finanzas y un entrenador real por WhatsApp, y sale " + (unico ? plata(anual.precio) + " una sola vez" + lanz + " y queda para siempre (con tarjeta, en cuotas si querés)." : plata(anual.precio) + " el año" + lanz + ": " + plata(anual.precio / 12) + " por mes.") + "\nAcá lo ves 👉 " + L
+      : "Te entiendo. Mira: Fitbod (solo rutinas) cuesta casi US$96 al año y Fabulous (solo hábitos) otros US$40 o más. " + vals.producto + " trae las dos cosas, más nutrición, tus finanzas y un entrenador real por WhatsApp, y cuesta " + (unico ? plata(anual.precio) + " una sola vez" + lanz + " y queda para siempre." : plata(anual.precio) + " el año" + lanz + ": " + plata(anual.precio / 12) + " al mes.") + "\nAquí lo ves 👉 " + L;
     document.getElementById("t1").value = t1;
     document.getElementById("t2").value = t2;
     document.getElementById("t3").value = t3;

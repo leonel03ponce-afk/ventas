@@ -86,7 +86,10 @@ export async function registrarVenta(origen, v) {
     if (cli) { tipo = "renovacion"; ref = cli.ref || ref; }
     else await st.setJSON("cliente:" + idCliente, { ref, desde: new Date().toISOString() });
   }
-  const pct = ref ? (tipo === "primera" ? rec.comision || 0 : rec.renovacion || 0) : 0;
+  /* Pago único desde el 08/11: sin "renovacion" en config, quien ya era cliente (plan viejo
+     de 3 meses o anual) y compra el acceso para siempre deja el mismo % que una primera venta. */
+  const pctRen = rec.renovacion != null ? rec.renovacion : rec.comision;
+  const pct = ref ? (tipo === "primera" ? rec.comision || 0 : pctRen || 0) : 0;
 
   const hoy = new Date();
   const cont = (await st.get("serie:" + hoy.getFullYear() + "-" + hoy.getMonth() + ":" + v.meses, { type: "json" })) || { n: 0 };
@@ -116,8 +119,12 @@ export async function darDeBaja(origenPago, id, motivo) {
   return v;
 }
 
-export function planPorId(cfg, id, internacional) {
-  const lista = internacional ? ((cfg.internacional || {}).planes || []) : (cfg.planes || []);
+/* soloVenta = true: solo lo que se vende en planes.html (lo usa /api/pagar).
+   Si no, también los accesos por tiempo de "planesIncluidos" (Sistema incluido en un
+   programa, ventas a mano y pagos viejos de cuando había planes de 3 meses y anual). */
+export function planPorId(cfg, id, internacional, soloVenta = false) {
+  const base = internacional ? (cfg.internacional || {}) : cfg;
+  const lista = (base.planes || []).concat(soloVenta ? [] : base.planesIncluidos || []);
   return lista.find((p) => p.id === id) || null;
 }
 

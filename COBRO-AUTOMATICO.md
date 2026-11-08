@@ -55,7 +55,7 @@ Después: *Deploys* → **Trigger deploy** → *Deploy site*.
 | Paga | Mercado Pago lo devuelve a `gracias.html`, que muestra su **código**, un botón para activar la app y otro para escribirte por la rutina |
 | Mercado Pago avisa | Aunque el cliente cierre la página, el aviso registra la venta igual. Si vuelve a abrir el link de gracias, ve su código |
 | Pago en efectivo | Queda "en camino". Cuando se acredita, el mismo link muestra el código |
-| Compra de nuevo con el mismo mail | Se marca como **renovación** (15%) y la comisión va al vendedor que lo trajo la primera vez |
+| Compra de nuevo con el mismo mail | Se marca como **ya era cliente** y la comisión (43%, pago único) va al vendedor que lo trajo la primera vez |
 | Reembolso o contracargo | El código se da de baja: la app lo bloquea la próxima vez que se abre con internet |
 
 **Qué cambia para el cliente:** los planes se cobran en un solo pago y **no se renuevan solos**. Cuando vence, vuelve a comprar (la app ya le avisa). Es más claro para el cliente y no hay débitos que después te reclamen.

@@ -42,9 +42,7 @@ Los links de Mercado Pago ya están cargados en `config.js`:
 
 | Plan | Precio en la app | Link |
 |---|---|---|
-| 3 meses | $24.900 | https://mpago.la/2SDK5Ty |
-| Anual | $69.900 | https://mpago.la/2cdoPet |
-| Para siempre | $119.900 | https://mpago.la/28ED6Ht |
+| Para siempre (pago único, desde el 08/11) | $70.000 | cobro automático (`/api/pagar`) |
 
 Los precios coinciden con lo que cobra cada link. Si cambiás un precio en Mercado Pago, cambialo también en `config.js`.
 
@@ -55,7 +53,7 @@ Cuando alguien paga, te escribe por WhatsApp. Generás el código en el panel y 
 1. El vendedor entra a `vendedores.html`, pone su nombre y saca su link (`planes.html?ref=su-nombre`), con textos listos para WhatsApp e Instagram y el video para bajar.
 2. Su cliente entra por ese link, paga con Mercado Pago y te manda el comprobante con el botón de la página. El mensaje ya dice **"Me recomendó: su-nombre"**.
 3. Vos generás el código en el panel, con ese nombre en **Lo trajo**, y se lo mandás al cliente.
-4. Comisión: **43% del primer pago y 15% de cada renovación** (`recomendados.comision` y `recomendados.renovacion`).
+4. Comisión: **43% de cada venta** (`recomendados.comision`). Sin `recomendados.renovacion`, quien ya era cliente también deja el 43%.
 5. Para controlar todo (ventas, comprobantes, códigos, a quién pagar y cuánto) usá el tablero privado **Vendedores SISTEMA**: https://claude.ai/artifact/Lq4khHvoPukjcEGxbhPzah. Genera los mismos códigos que el panel de la app.
 
 ## Panel de códigos
@@ -64,7 +62,7 @@ Entrá a **https://brian-ponce.netlify.app/panel**, escribí `PONCE-2026` donde 
 También sirve escribir la clave en la pantalla "Tu acceso" de la app. Si ya estás adentro como admin: Entreno → Respaldo y ajustes → **Generar código de cliente**.
 
 - **Acceso**: 3 meses, 1 año o para siempre (también 1 y 6 meses).
-- **Lo trajo**: quién recomendó al cliente. Primer pago: 43%. Si renueva, poné el mismo nombre de cliente: el panel ya sabe quién lo trajo y le suma el 15%.
+- **Lo trajo**: quién recomendó al cliente. 43% de cada venta. Si ya era cliente (plan viejo), el panel sabe quién lo trajo y la comisión es para esa persona.
 - **Comisiones a pagar**: cuánto le debés a cada recomendador. "Ya las pagué" las pone en cero.
 
 Los códigos y los recomendadores quedan guardados en el teléfono donde los generás. Usá siempre el mismo.
@@ -82,7 +80,7 @@ Hay 6 rutinas listas (principiante, ganar músculo, bajar grasa, en casa, glúte
 ## Prueba gratis y recomendados
 
 - `acceso.prueba`: **hoy está en 0 (sin prueba gratis)**. Si algún día la querés, poné los días; con `pruebaPorWhatsApp: true` la activan con la palabra `palabraPrueba` que les pasás por WhatsApp.
-- `recomendados.comision` (primer pago) y `recomendados.renovacion` (cada renovación, 0 = nada).
+- `recomendados.comision` (cada venta). `recomendados.renovacion` es opcional: si no está, quien ya era cliente deja el mismo %.
 - Cada cliente tiene su link en Hoy → *Recomendá y ganá* (`?ref=nombre`). Quien entra por ese link y compra te escribe con "Me recomendó: nombre" en el mensaje.
 
 ## Qué tiene la app
