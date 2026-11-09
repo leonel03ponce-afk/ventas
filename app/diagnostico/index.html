@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diagnóstico gratis · Brian Ponce</title>
+<meta name="description" content="Tres preguntas para saber qué te frena para pasar de la formación a tu primera llamada real de cierre.">
+<meta property="og:title" content="Diagnóstico gratis de closer · Brian Ponce">
+<meta property="og:description" content="Tres preguntas. Te respondo yo por WhatsApp con lo que te conviene hacer.">
+<meta property="og:image" content="https://brian-ponce.netlify.app/diagnostico/img/brian.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{--verde:#00E07C;--negro:#0C0C0D;--blanco:#FFFFFF;--gris:#9A968E;--panel:#161618;--borde:#2A2A2E}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--negro);color:var(--blanco);font-family:Inter,system-ui,sans-serif;font-weight:500;line-height:1.5}
+  .wrap{max-width:560px;margin:0 auto;padding:28px 16px 48px}
+  header{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+  header img.marca{height:28px}
+  header span{color:var(--gris);font-size:14px}
+  .yo{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+  .yo img{width:64px;height:64px;border-radius:50%;border:2px solid var(--verde)}
+  .yo p{margin:0;font-size:14px;color:var(--gris)}
+  .yo b{color:var(--blanco);display:block;font-size:16px}
+  h1{font-weight:900;font-size:32px;line-height:1.1;margin:0 0 12px;letter-spacing:-.02em}
+  h1 em{font-style:normal;color:var(--verde)}
+  .bajada{color:#d8d6d0;margin:0 0 24px}
+  ul.que{list-style:none;padding:0;margin:0 0 28px}
+  ul.que li{padding:8px 0 8px 28px;position:relative;border-bottom:1px solid var(--borde)}
+  ul.que li:before{content:"";position:absolute;left:0;top:15px;width:12px;height:12px;background:var(--verde)}
+  form{background:var(--panel);border:1px solid var(--borde);border-radius:14px;padding:20px}
+  label{display:block;font-weight:700;margin:16px 0 6px}
+  label:first-of-type{margin-top:0}
+  .ayuda{display:block;font-weight:500;color:var(--gris);font-size:13px}
+  input,select,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid var(--borde);background:var(--negro);color:var(--blanco);font:inherit;font-size:16px}
+  textarea{min-height:84px;resize:vertical}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--verde);border-color:transparent}
+  .ok{display:flex;gap:10px;align-items:flex-start;margin-top:16px;font-size:14px;color:#d8d6d0}
+  .ok input{width:auto;margin-top:4px}
+  button{margin-top:20px;width:100%;padding:16px;border:0;border-radius:12px;background:var(--verde);color:var(--negro);font:inherit;font-weight:900;font-size:17px;cursor:pointer}
+  button:disabled{opacity:.6;cursor:wait}
+  .chico{color:var(--gris);font-size:13px;margin-top:14px;text-align:center}
+  .oculto{display:none}
+  .error{color:#FF7A6B;font-size:14px;margin:10px 0 0;text-align:center;min-height:0}
+  .error:empty{display:none}
+  footer{margin-top:32px;color:var(--gris);font-size:13px;text-align:center}
+  footer a{color:var(--gris)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><img class="marca" src="/diagnostico/img/marca.png" alt=""><span>El Que Cierra Gana</span></header>
+
+  <div class="yo">
+    <img src="/diagnostico/img/brian.jpg" alt="Brian Ponce">
+    <p><b>Brian Ponce</b>Closer de ventas high ticket</p>
+  </div>
+
+  <h1>Hiciste la formación. <em>¿Qué te falta</em> para tu primera llamada real?</h1>
+  <p class="bajada">Responde 3 preguntas. Las leo yo y te escribo por WhatsApp con lo que te conviene hacer ahora, aunque no sea trabajar conmigo.</p>
+
+  <ul class="que">
+    <li>Te toma 2 minutos.</li>
+    <li>Sin llamada obligatoria: si prefieres, lo hablamos por chat.</li>
+    <li>Si no es para ti, te lo digo y te dejo algo útil igual.</li>
+  </ul>
+
+  <form name="diagnostico" method="POST" action="/api/diagnostico" id="f">
+    <input type="hidden" name="origen" id="origen" value="directo">
+    <p class="oculto" aria-hidden="true"><label>No llenar <input name="no-llenar" tabindex="-1" autocomplete="off"></label></p>
+
+    <label for="nombre">Tu nombre</label>
+    <input id="nombre" name="nombre" autocomplete="given-name" required maxlength="60">
+
+    <label for="whatsapp">Tu WhatsApp <span class="ayuda">Con código de país. Ej.: +54 9 11 1234 5678</span></label>
+    <input id="whatsapp" name="whatsapp" type="tel" autocomplete="tel" required maxlength="25" inputmode="tel">
+
+    <label for="horas">1 · ¿Cuántas horas por semana puedes dedicarle?</label>
+    <select id="horas" name="horas" required>
+      <option value="">Elige una</option>
+      <option>Menos de 5</option>
+      <option>Entre 5 y 10</option>
+      <option>Entre 10 y 20</option>
+      <option>Más de 20</option>
+    </select>
+
+    <label for="hasta">2 · ¿Qué hiciste hasta ahora? <span class="ayuda">Cursos, práctica, llamadas, lo que sea</span></label>
+    <textarea id="hasta" name="hasta_ahora" required maxlength="600"></textarea>
+
+    <label for="meta">3 · ¿Qué quieres lograr en los próximos 30 días?</label>
+    <textarea id="meta" name="meta_30_dias" required maxlength="600"></textarea>
+
+    <div class="ok">
+      <input type="checkbox" id="acepto" name="acepta_whatsapp" value="si" required>
+      <label for="acepto" style="margin:0;font-weight:500">Acepto que Brian me escriba por WhatsApp para responder este diagnóstico.</label>
+    </div>
+
+    <button type="submit" id="enviar">Enviar y seguir por WhatsApp</button>
+    <p class="error" id="error" role="alert"></p>
+    <p class="chico">Tus respuestas solo las ve Brian. No se comparten con nadie.</p>
+  </form>
+
+  <footer>
+    Mientras tanto: <a href="https://www.skool.com/el-que-cierra-gana-5774/about">comunidad gratis en Skool</a> · <a href="https://www.instagram.com/brianponce.closer/">@brianponce.closer</a>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var WA = "5491154589256"; // WhatsApp Business de la academia (11 5458-9256)
+  // origen: ?o=ig | fb | tt | yt | grupo-fb | grupo-wa | skool | ads ...
+  try{
+    var o = new URLSearchParams(location.search).get("o");
+    if(o){ document.getElementById("origen").value = o.replace(/[^a-z0-9-]/gi,"").slice(0,30) || "directo"; }
+  }catch(e){}
+
+  var f = document.getElementById("f");
+  var b = document.getElementById("enviar");
+  var err = document.getElementById("error");
+  f.addEventListener("submit", function(ev){
+    ev.preventDefault();
+    err.textContent = "";
+    b.disabled = true; b.textContent = "Enviando…";
+    var datos = new FormData(f);
+    var cuerpo = {};
+    datos.forEach(function(v, k){ cuerpo[k] = String(v); });
+    var txt = "Hola Brian, soy " + cuerpo.nombre + ". Te mandé el diagnóstico desde la página.\n" +
+      "1) Horas por semana: " + cuerpo.horas + "\n" +
+      "2) Hasta ahora: " + cuerpo.hasta_ahora + "\n" +
+      "3) En 30 días quiero: " + cuerpo.meta_30_dias;
+    var fue = false;
+    var ir = function(){ if(fue) return; fue = true; location.href = "https://wa.me/" + WA + "?text=" + encodeURIComponent(txt); };
+    var corte = setTimeout(ir, 5000); // si el servidor tarda, igual sigue a WhatsApp
+    fetch("/api/diagnostico", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(cuerpo)})
+      .then(function(r){
+        if(r.status === 400){
+          // dato mal cargado: se avisa y no se sale de la página
+          return r.json().catch(function(){ return {}; }).then(function(d){
+            clearTimeout(corte);
+            if(fue) return;
+            err.textContent = d.error || "Revisa los datos.";
+            b.disabled = false; b.textContent = "Enviar y seguir por WhatsApp";
+          });
+        }
+        ir(); // guardado (o falla del servidor): sigue a WhatsApp con sus respuestas igual
+      }, ir);
+  });
+})();
+</script>
+</body>
+</html>

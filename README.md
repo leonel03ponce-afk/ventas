@@ -145,3 +145,7 @@ Cada ejercicio muestra en la lista lo que conviene hacer hoy según la última v
 ## Primera vez: el arranque
 
 Alguien nuevo no ve la app llena de tarjetas: entra a un arranque de pantalla completa, una pregunta por pantalla (nombre → cómo se usa en 3 líneas → objetivo, sexo, edad, altura y peso → elegir hábitos con su horario → instalar la app y activar los avisos). Al terminar, Tu día ya tiene proteína y agua calculadas y la pestaña Hábitos ya tiene sus hábitos. En Hoy, las tarjetas de progreso (semana, peso, medidas, logros, historial, plata) aparecen recién cuando tienen algo para mostrar.
+
+## Página de diagnóstico de closer (El Que Cierra Gana, no es de SISTEMA)
+
+`/diagnostico` (carpeta `app/diagnostico/`): 3 preguntas + nombre y WhatsApp. Cada envío se guarda con `netlify/functions/diagnostico.mjs` (`/api/diagnostico`, Blobs store `diagnosticos`) y la persona sigue al WhatsApp de la academia (11 5458-9256) con sus respuestas escritas. Origen con `?o=` (ig, grupo-fb, grupo-wa, skool...). Se leen en Mi negocio → **Diagnósticos** (misma clave `CLAVE_VENTAS`, solo al abrir la pestaña). El service worker de la app no cachea nada de `/diagnostico`.

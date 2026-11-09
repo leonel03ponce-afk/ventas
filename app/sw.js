@@ -1,4 +1,4 @@
-var CACHE = "sistema-v11";
+var CACHE = "sistema-v12";
 var ASSETS = ["./", "./index.html", "./config.js", "./manifest.webmanifest", "./icono-192.png", "./icono-512.png", "./icono-maskable.png", "./apple-touch-icon.png"];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(ASSETS); }).then(function () { return self.skipWaiting(); }));
@@ -22,6 +22,7 @@ self.addEventListener("fetch", function (e) {
   var url = new URL(req.url);
   if (url.origin !== location.origin) return;
   if (/^\/(api|\.netlify)\//.test(url.pathname)) return; /* funciones del servidor: siempre a la red */
+  if (/^\/diagnostico(\/|$)/.test(url.pathname)) return; /* página de diagnóstico (no es de la app): nada en caché */
   if (req.mode === "navigate") { e.respondWith(redPrimero(req, /\/(index\.html)?$/.test(url.pathname) ? "./index.html" : url.pathname)); return; }
   if (/\/config\.js$/.test(url.pathname)) { e.respondWith(redPrimero(req, "./config.js")); return; }
   e.respondWith(caches.match(req).then(function (hit) {

@@ -155,6 +155,7 @@ td.n { text-align: right; font-variant-numeric: tabular-nums; }
       <button type="button" data-t="vendedores">Vendedores</button>
       <button type="button" data-t="ventas">Ventas</button>
       <button type="button" data-t="rutinas">Rutinas</button>
+      <button type="button" data-t="diag">Diagnósticos</button>
       <button type="button" data-t="nueva">+ Cargar venta</button>
     </nav>
 
@@ -198,6 +199,14 @@ td.n { text-align: right; font-variant-numeric: tabular-nums; }
       <p class="sub" style="margin-top:14px">Rutinas base listas para mandar. El cliente abre el link y toca <b>Cargar mi rutina</b>. Para mandársela a alguien en particular, andá a <b>Clientes → Mandar rutina</b>.</p>
       <p class="nota">Para ajustarla a una persona: abrí el link en tu celu, cargala en tu app, cambiá lo que quieras y mandala desde Entreno → Respaldo y ajustes.</p>
       <div class="lista" id="rut-lista" style="margin-top:12px"></div>
+    </section>
+
+    <!-- DIAGNÓSTICOS (página brian-ponce.netlify.app/diagnostico, de El Que Cierra Gana) -->
+    <section data-v="diag" hidden>
+      <p class="sub" style="margin-top:14px">Lo que mandaron en la página de diagnóstico de closer (<a href="/diagnostico" target="_blank" rel="noopener" style="color:var(--gold)">brian-ponce.netlify.app/diagnostico</a>). Más nuevos arriba. El origen sale del link: <b>?o=ig</b>, <b>?o=grupo-fb</b>, <b>?o=grupo-wa</b>…</p>
+      <div class="fila"><button type="button" class="btn alt" id="d-recargar">Actualizar</button></div>
+      <p class="nota" id="d-cuenta"></p>
+      <div class="lista" id="d-lista" style="margin-top:10px"></div>
     </section>
 
     <!-- NUEVA VENTA -->
@@ -267,6 +276,7 @@ td.n { text-align: right; font-variant-numeric: tabular-nums; }
       try { localStorage.setItem("ventas:clave", clave); } catch (e) {}
       $("login").hidden = true; $("app").hidden = false;
       armarMeses(); pintarTodo();
+      var on = document.querySelector("#tabs button.on"); if (on && on.getAttribute("data-t") === "diag") cargarDiag();
     }).catch(function (e) { $("login").hidden = false; $("app").hidden = true; $("lmsg").textContent = e.message; });
   }
 
@@ -419,13 +429,35 @@ td.n { text-align: right; font-variant-numeric: tabular-nums; }
     });
   }
 
+  /* ───── diagnósticos: se leen solo al abrir la pestaña (no gasta en cada entrada) ───── */
+  function cargarDiag() {
+    if (!clave) return;
+    $("d-cuenta").textContent = "Cargando…";
+    fetch("/api/diagnostico", { headers: { "x-clave": clave } }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (d) { if (!r.ok) throw new Error(d.error || "Error " + r.status); return d; });
+    }).then(function (d) {
+      var l = d.diagnosticos || [];
+      $("d-cuenta").textContent = l.length ? (d.total > l.length ? "Últimos " + l.length + " de " + d.total : l.length + (l.length === 1 ? " diagnóstico" : " diagnósticos")) : "";
+      $("d-lista").innerHTML = l.length ? l.map(function (x) {
+        var wa = waLink(x.whatsapp, "Hola " + String(x.nombre || "").split(" ")[0] + ", soy Brian. Recibí tu diagnóstico.");
+        return '<div class="item"><div class="top"><span class="nom">' + esc(x.nombre) + '</span><span class="dato">' + esc(fechaCorta(x.fecha)) + " " + esc(new Date(x.fecha).toTimeString().slice(0, 5)) + ' · <span class="tag ren">' + esc(x.origen || "directo") + "</span></span></div>" +
+          '<p class="dato">WhatsApp: ' + esc(x.whatsapp) + " · Horas por semana: " + esc(x.horas) + "</p>" +
+          '<p class="dato" style="white-space:pre-wrap"><b>Hasta ahora:</b> ' + esc(x.hasta_ahora) + "</p>" +
+          '<p class="dato" style="white-space:pre-wrap"><b>En 30 días quiere:</b> ' + esc(x.meta_30_dias) + "</p>" +
+          (wa ? '<div class="acc"><a class="btn wa mini" target="_blank" rel="noopener" href="' + esc(wa) + '">Abrir su WhatsApp</a></div>' : "") + "</div>";
+      }).join("") : '<p class="vacio">Todavía no llegó ningún diagnóstico.</p>';
+    }).catch(function (e) { $("d-cuenta").textContent = e.message; });
+  }
+
   /* ───── pestañas y acciones ───── */
   $("tabs").addEventListener("click", function (ev) {
     var b = ev.target.closest("[data-t]"); if (!b) return;
     document.querySelectorAll("#tabs button").forEach(function (x) { x.classList.toggle("on", x === b); });
     document.querySelectorAll("[data-v]").forEach(function (s) { s.hidden = s.getAttribute("data-v") !== b.getAttribute("data-t"); });
     try { localStorage.setItem("ventas:tab", b.getAttribute("data-t")); } catch (e) {}
+    if (b.getAttribute("data-t") === "diag") cargarDiag();
   });
+  $("d-recargar").onclick = cargarDiag;
   try { var t = localStorage.getItem("ventas:tab"); if (t && t !== "nueva") { var tb = document.querySelector('[data-t="' + t + '"]'); if (tb) tb.click(); } } catch (e) {}
   $("entrar").onclick = function () { clave = $("clave").value.trim(); if (clave) cargar(); };
   $("clave").onkeydown = function (e) { if (e.key === "Enter") $("entrar").click(); };
