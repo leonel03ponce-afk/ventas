@@ -22,7 +22,7 @@ self.addEventListener("fetch", function (e) {
   var url = new URL(req.url);
   if (url.origin !== location.origin) return;
   if (/^\/(api|\.netlify)\//.test(url.pathname)) return; /* funciones del servidor: siempre a la red */
-  if (/^\/diagnostico(\/|$)/.test(url.pathname)) return; /* página de diagnóstico (no es de la app): nada en caché */
+  if (/^\/(diagnostico|regalos|calculadora)(\/|$)/.test(url.pathname)) return; /* páginas sueltas (diagnóstico, regalos, calculadora; no son de la app): nada en caché */
   if (req.mode === "navigate") { e.respondWith(redPrimero(req, /\/(index\.html)?$/.test(url.pathname) ? "./index.html" : url.pathname)); return; }
   if (/\/config\.js$/.test(url.pathname)) { e.respondWith(redPrimero(req, "./config.js")); return; }
   e.respondWith(caches.match(req).then(function (hit) {

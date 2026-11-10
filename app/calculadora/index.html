@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tus 3 números · Brian Ponce</title>
+<meta name="description" content="Tu piso, tu margen y tu avance: ordena tus números para decidir con datos, no con ganas.">
+<meta property="og:title" content="Tus 3 números · El Que Cierra Gana">
+<meta property="og:description" content="Tu piso, tu margen y tu avance. Nada se guarda: todo queda en tu pantalla.">
+<meta property="og:image" content="https://brian-ponce.netlify.app/diagnostico/img/brian.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  /* Misma marca que /diagnostico. Formulario arriba, los 3 números como resultado abajo.
+     No guarda nada (ni localStorage ni servidor): todo se calcula en la pantalla. */
+  :root{--verde:#00E07C;--negro:#0C0C0D;--blanco:#FFFFFF;--gris:#9A968E;--texto:#d8d6d0;--panel:#161618;--borde:#2A2A2E;--warn:#F2B250;--bad:#FF7A6B;color-scheme:dark}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--negro);color:var(--blanco);font-family:Inter,system-ui,sans-serif;font-weight:500;line-height:1.5;font-size:16px}
+  .wrap{max-width:640px;margin:0 auto;padding:28px max(16px,env(safe-area-inset-right)) 48px max(16px,env(safe-area-inset-left))}
+  header{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+  header img{height:28px}
+  header span{color:var(--gris);font-size:14px}
+  h1{font-weight:900;font-size:30px;line-height:1.1;margin:0 0 10px;letter-spacing:-.02em}
+  h1 em{font-style:normal;color:var(--verde)}
+  h2{font-weight:700;font-size:17px;margin:0 0 12px}
+  .bajada{color:var(--texto);margin:0 0 20px}
+  .card{background:var(--panel);border:1px solid var(--borde);border-radius:14px;padding:18px;margin-bottom:14px}
+  .g{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+  label{display:flex;flex-direction:column;gap:5px;font-size:14px;color:var(--gris)}
+  input,select{font:inherit;font-size:16px;color:var(--blanco);background:var(--negro);border:1px solid var(--borde);border-radius:10px;padding:11px 12px;width:100%}
+  input:focus,select:focus{outline:2px solid var(--verde);border-color:transparent}
+  .n{display:grid;grid-template-columns:auto 1fr;gap:2px 14px;align-items:baseline;padding:12px 0;border-top:1px solid var(--borde)}
+  .n:first-of-type{border-top:0}
+  .k{font-weight:900;font-size:26px;color:var(--verde);font-variant-numeric:tabular-nums;grid-row:span 2;min-width:0;overflow-wrap:anywhere}
+  .t{font-weight:700}
+  .d{color:var(--gris);font-size:14px}
+  .msg{border-left:4px solid var(--verde);padding:10px 14px;background:var(--negro);border-radius:8px;color:var(--texto);margin:12px 0 0}
+  .msg.warn{border-color:var(--warn)}
+  .msg.bad{border-color:var(--bad)}
+  .foot{font-size:14px;color:var(--gris)}
+  a.btn{display:block;text-align:center;margin:18px 0 10px;padding:15px 18px;border-radius:12px;background:var(--verde);color:var(--negro);font-weight:900;font-size:16px;text-decoration:none}
+  footer{margin-top:24px;color:var(--gris);font-size:14px;text-align:center}
+  footer a{color:var(--gris)}
+  @media (max-width:420px){.n{grid-template-columns:1fr}.k{grid-row:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><img src="/diagnostico/img/marca.png" alt=""><span>El Que Cierra Gana · Brian Ponce</span></header>
+
+  <h1>Tus <em>3 números</em>: decide con datos, no con ganas</h1>
+  <p class="bajada">No te digo que dejes tu trabajo. Te muestro tus números para que decidas con datos. Nada se guarda: todo queda en tu pantalla.</p>
+
+  <div class="card">
+    <h2>1 · Lo que gastas por mes</h2>
+    <div class="g">
+      <label>Moneda<select id="mon"><option>ARS</option><option>USD</option><option>MXN</option><option>COP</option><option>CLP</option><option>PEN</option><option>UYU</option></select></label>
+      <label>Alquiler o cuota de la casa<input id="g1" type="number" min="0" inputmode="decimal" value="350000"></label>
+      <label>Comida<input id="g2" type="number" min="0" inputmode="decimal" value="300000"></label>
+      <label>Servicios (luz, gas, internet, celular)<input id="g3" type="number" min="0" inputmode="decimal" value="90000"></label>
+      <label>Transporte<input id="g4" type="number" min="0" inputmode="decimal" value="60000"></label>
+      <label>Otros (hijos, salud, deudas)<input id="g5" type="number" min="0" inputmode="decimal" value="150000"></label>
+    </div>
+  </div>
+  <div class="card">
+    <h2>2 · Lo que tienes ahorrado</h2>
+    <div class="g"><label>Ahorros disponibles<input id="ah" type="number" min="0" inputmode="decimal" value="1200000"></label></div>
+  </div>
+  <div class="card">
+    <h2>3 · Lo que ya ganas vendiendo</h2>
+    <div class="g"><label>Lo que te entra por mes de ventas o comisiones (aparte de tu sueldo)<input id="vt" type="number" min="0" inputmode="decimal" value="0"></label></div>
+  </div>
+
+  <div class="card" aria-live="polite">
+    <h2>Tus números</h2>
+    <div class="n"><div class="k" id="r1">—</div><div class="t">Tu piso</div><div class="d">Lo mínimo que necesitas por mes para vivir.</div></div>
+    <div class="n"><div class="k" id="r2">—</div><div class="t">Tu margen</div><div class="d">Meses que podrías cubrir con tus ahorros mientras aprendes.</div></div>
+    <div class="n"><div class="k" id="r3">—</div><div class="t">Tu avance</div><div class="d">Cuánto de tu piso cubren hoy tus ventas.</div></div>
+    <p class="msg" id="msg"></p>
+  </div>
+
+  <p class="foot">Los valores de ejemplo están cargados para que veas cómo funciona: cámbialos por los tuyos. Esto no es asesoramiento financiero ni una promesa de resultados; es una forma de ordenar tus números.</p>
+  <a class="btn" href="/diagnostico/?o=calculadora">Armar mi plan: diagnóstico gratis</a>
+  <p class="foot" style="text-align:center">Responde 3 preguntas y te escribo por WhatsApp con lo que te conviene hacer.</p>
+
+  <footer>
+    Mientras tanto: <a href="https://www.skool.com/el-que-cierra-gana-5774/about">comunidad gratis en Skool</a> · <a href="https://www.instagram.com/brianponce.closer/">@brianponce.closer</a>
+  </footer>
+</div>
+<script>
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  var v = function(id){ return Math.max(0, Number($(id).value) || 0); };
+  function fmt(n){ return $("mon").value + " " + Math.round(n).toLocaleString("es-AR"); }
+  function calc(){
+    var piso = v("g1") + v("g2") + v("g3") + v("g4") + v("g5"), ah = v("ah"), vt = v("vt");
+    var margen = piso ? ah / piso : 0, av = piso ? Math.min(999, vt * 100 / piso) : 0;
+    $("r1").textContent = piso ? fmt(piso) : "—";
+    $("r2").textContent = piso ? margen.toFixed(1).replace(".", ",") + " meses" : "—";
+    $("r3").textContent = piso ? Math.round(av) + " %" : "—";
+    var m = $("msg"), t, c = "";
+    if(!piso){ t = "Carga tus gastos para ver tus números."; }
+    else if(av >= 100){ t = "Tus ventas ya cubren tu piso. Ahora el paso es sostenerlo varios meses seguidos antes de decidir nada."; }
+    else if(margen < 3){ t = "Tu margen es corto. Hoy conviene aprender y vender sin dejar tu sueldo, y sumar ahorro mientras tanto."; c = "bad"; }
+    else if(av < 30){ t = "Tienes margen, pero tus ventas todavía cubren poco de tu piso. El foco: practicar y cerrar tus primeras ventas sin soltar tu trabajo."; c = "warn"; }
+    else { t = "Vas bien: tienes margen y tus ventas ya cubren una parte real de tu piso. Sigue subiendo ese porcentaje antes de decidir."; }
+    m.textContent = t; m.className = "msg " + c;
+  }
+  var campos = document.querySelectorAll("input,select");
+  for(var i = 0; i < campos.length; i++){ campos[i].addEventListener("input", calc); campos[i].addEventListener("change", calc); }
+  calc();
+})();
+</script>
+</body>
+</html>
