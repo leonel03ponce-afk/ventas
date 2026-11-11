@@ -156,6 +156,7 @@ td.n { text-align: right; font-variant-numeric: tabular-nums; }
       <button type="button" data-t="ventas">Ventas</button>
       <button type="button" data-t="rutinas">Rutinas</button>
       <button type="button" data-t="diag">Diagnósticos</button>
+      <button type="button" data-t="arr">Arrepentimientos</button>
       <button type="button" data-t="nueva">+ Cargar venta</button>
     </nav>
 
@@ -207,6 +208,14 @@ td.n { text-align: right; font-variant-numeric: tabular-nums; }
       <div class="fila"><button type="button" class="btn alt" id="d-recargar">Actualizar</button></div>
       <p class="nota" id="d-cuenta"></p>
       <div class="lista" id="d-lista" style="margin-top:10px"></div>
+    </section>
+
+    <!-- ARREPENTIMIENTOS (botón de arrepentimiento, Disp. 954/2025) -->
+    <section data-v="arr" hidden>
+      <p class="sub" style="margin-top:14px">Pedidos del botón de arrepentimiento. Dentro de los 10 días corridos del pago: devolución TOTAL desde Mercado Pago, cortar accesos y avisarle con su código.</p>
+      <div class="fila"><button type="button" class="btn alt" id="a-recargar">Actualizar</button></div>
+      <p class="nota" id="a-cuenta"></p>
+      <div class="lista" id="a-lista" style="margin-top:10px"></div>
     </section>
 
     <!-- NUEVA VENTA -->
@@ -449,6 +458,24 @@ td.n { text-align: right; font-variant-numeric: tabular-nums; }
     }).catch(function (e) { $("d-cuenta").textContent = e.message; });
   }
 
+  function cargarArr() {
+    if (!clave) return;
+    $("a-cuenta").textContent = "Cargando…";
+    fetch("/api/arrepentimiento", { headers: { "x-clave": clave } }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (d) { if (!r.ok) throw new Error(d.error || "Error " + r.status); return d; });
+    }).then(function (d) {
+      var l = d.pedidos || [];
+      $("a-cuenta").textContent = l.length ? l.length + (l.length === 1 ? " pedido" : " pedidos") : "";
+      $("a-lista").innerHTML = l.length ? l.map(function (x) {
+        var wa = /@/.test(x.contacto) ? "" : waLink(x.contacto, "Hola " + String(x.nombre || "").split(" ")[0] + ", soy Brian. Recibí tu pedido de arrepentimiento (código " + x.codigo + ").");
+        return '<div class="item"><div class="top"><span class="nom">' + esc(x.nombre) + ' · ' + esc(x.producto) + '</span><span class="dato">' + esc(fechaCorta(x.fecha)) + ' · <b>' + esc(x.codigo) + '</b></span></div>' +
+          '<p class="dato">Contacto: ' + esc(x.contacto) + (x.fecha_compra ? ' · Compra: ' + esc(x.fecha_compra) : '') + (x.operacion ? ' · Operación MP: ' + esc(x.operacion) : '') + '</p>' +
+          (x.motivo ? '<p class="dato" style="white-space:pre-wrap">' + esc(x.motivo) + '</p>' : '') +
+          (wa ? '<div class="acc"><a class="btn wa mini" target="_blank" rel="noopener" href="' + esc(wa) + '">Abrir su WhatsApp</a></div>' : '') + '</div>';
+      }).join("") : '<p class="vacio">No hay pedidos de arrepentimiento.</p>';
+    }).catch(function (e) { $("a-cuenta").textContent = e.message; });
+  }
+
   /* ───── pestañas y acciones ───── */
   $("tabs").addEventListener("click", function (ev) {
     var b = ev.target.closest("[data-t]"); if (!b) return;
@@ -456,8 +483,10 @@ td.n { text-align: right; font-variant-numeric: tabular-nums; }
     document.querySelectorAll("[data-v]").forEach(function (s) { s.hidden = s.getAttribute("data-v") !== b.getAttribute("data-t"); });
     try { localStorage.setItem("ventas:tab", b.getAttribute("data-t")); } catch (e) {}
     if (b.getAttribute("data-t") === "diag") cargarDiag();
+    if (b.getAttribute("data-t") === "arr") cargarArr();
   });
   $("d-recargar").onclick = cargarDiag;
+  $("a-recargar").onclick = cargarArr;
   try { var t = localStorage.getItem("ventas:tab"); if (t && t !== "nueva") { var tb = document.querySelector('[data-t="' + t + '"]'); if (tb) tb.click(); } } catch (e) {}
   $("entrar").onclick = function () { clave = $("clave").value.trim(); if (clave) cargar(); };
   $("clave").onkeydown = function (e) { if (e.key === "Enter") $("entrar").click(); };
