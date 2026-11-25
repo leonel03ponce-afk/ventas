@@ -64,7 +64,7 @@ Este archivo es el traspaso completo de una conversación larga con Claude (octu
 - `app/rutinas-base.js`: las 6 rutinas base con sus links (lo genera `rutinas/generar.py`; no editar a mano).
 - `app/img/`: imágenes; `app-*.jpg` son capturas reales de la app que usa `planes.html` ("Así se ve por dentro").
 - `netlify/functions/`: `pagar.mjs`, `mp-aviso.mjs` (webhook Mercado Pago), `hotmart-aviso.mjs`, `codigo.mjs`, `bloqueados.mjs`, `ventas.mjs`, `ranking.mjs`, **`push.mjs`** (`/api/push`: alta/baja/estado/prueba/prueba-auto/info de avisos) y **`push-habitos.mjs`** (programada cada 15 min). `netlify/lib/sistema.mjs` (config, códigos, ventas; Blobs store `ventas`) y `netlify/lib/push.mjs` (VAPID, envío, índice por horario; Blobs store `push`).
-- `netlify.toml`: publica `app/`, funciones en `netlify/functions`, y una regla `ignore` para **no publicar si no cambió nada de app/netlify/config** (ahorra créditos).
+- `netlify.toml`: publica `app/` y las funciones de `netlify/functions`. Ya no tiene regla `ignore`: cada push publica (ver 4.6).
 - `campanas/`: textos para conseguir vendedores, campaña y kit del vendedor, estrategia de marketing, plan para escalar.
 - `video/`: videos promocionales (dark, phonk, v1, v2), plantilla para meter clips y fuentes (música).
 - `COBRO-AUTOMATICO.md`: cómo está conectado el cobro (MP Checkout Pro, Hotmart, variables).
@@ -99,7 +99,10 @@ Tiene varios `<script>`. Los importantes:
 - La app tiene que andar bien en 320 px de ancho.
 
 ### 4.6 Créditos de Netlify
-- La regla `ignore` de `netlify.toml` evita publicar si no cambió el sitio.
+- **Plan (desde 13/11):** USD 9 por mes fijos, 1.000 créditos por mes (ciclo del 13 al 12), cuenta closerponce@gmail.com, se paga con ARQ. No se compran créditos extra.
+- **Uso real (13/10–12/11):** ≈ 768. Publicaciones 25 × 15 = 375 · Agent Runner (agente de IA de Netlify) 384 · funciones y avisos push 5 · tráfico 3. Los avisos cuestan casi nada.
+- **Presupuesto del mes:** publicaciones ≤ 30 (450 créditos) y un margen de 150 sin tocar. **Lo que sobre antes del 12 se puede usar** (Agent Runner u otras cosas) **sin pasar los 850** (decisión de Brian: los créditos no se tiran).
+- Cada push a la rama publica (la regla `ignore` se sacó el 04/11 porque cancelaba todo). Juntá los cambios: un solo push por tanda, nunca documentos sueltos.
 - La función programada corre 96 veces por día siempre igual; cada corrida lee solo lo necesario.
 - No agregues funciones que corran seguido ni lecturas masivas.
 

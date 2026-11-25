@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0C0C0D">
 <title>Diagnóstico gratis · Brian Ponce</title>
 <meta name="description" content="Tres preguntas para saber qué te frena para pasar de la formación a tu primera llamada real de cierre.">
 <meta property="og:title" content="Diagnóstico gratis de closer · Brian Ponce">
@@ -14,94 +15,140 @@
   :root{--verde:#00E07C;--negro:#0C0C0D;--blanco:#FFFFFF;--gris:#9A968E;--panel:#161618;--borde:#2A2A2E}
   *{box-sizing:border-box}
   body{margin:0;background:var(--negro);color:var(--blanco);font-family:Inter,system-ui,sans-serif;font-weight:500;line-height:1.5}
-  .wrap{max-width:560px;margin:0 auto;padding:28px 16px 48px}
-  header{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+  .wrap{max-width:560px;margin:0 auto;padding:22px 16px 48px}
+  header{display:flex;align-items:center;gap:12px;margin-bottom:22px}
   header img.marca{height:28px}
   header span{color:var(--gris);font-size:14px}
-  .yo{display:flex;align-items:center;gap:14px;margin-bottom:20px}
-  .yo img{width:64px;height:64px;border-radius:50%;border:2px solid var(--verde)}
+  .yo{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+  .yo img{width:48px;height:48px;border-radius:50%;border:2px solid var(--verde)}
   .yo p{margin:0;font-size:14px;color:var(--gris)}
   .yo b{color:var(--blanco);display:block;font-size:16px}
-  h1{font-weight:900;font-size:32px;line-height:1.1;margin:0 0 12px;letter-spacing:-.02em}
-  h1 em{font-style:normal;color:var(--verde)}
-  .bajada{color:#d8d6d0;margin:0 0 24px}
-  ul.que{list-style:none;padding:0;margin:0 0 28px}
-  ul.que li{padding:8px 0 8px 28px;position:relative;border-bottom:1px solid var(--borde)}
-  ul.que li:before{content:"";position:absolute;left:0;top:15px;width:12px;height:12px;background:var(--verde)}
+  h1{font-weight:900;font-size:32px;line-height:1.1;margin:0 0 12px;letter-spacing:-.02em;text-wrap:balance}
+  h1 em,h2 em{font-style:normal;color:var(--verde)}
+  .bajada{color:#d8d6d0;margin:0 0 20px}
   form{background:var(--panel);border:1px solid var(--borde);border-radius:14px;padding:20px}
-  label{display:block;font-weight:700;margin:16px 0 6px}
-  label:first-of-type{margin-top:0}
-  .ayuda{display:block;font-weight:500;color:var(--gris);font-size:13px}
-  input,select,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid var(--borde);background:var(--negro);color:var(--blanco);font:inherit;font-size:16px}
+  fieldset{border:0;margin:0 0 26px;padding:0;min-width:0}
+  legend,label.t{display:block;font-weight:700;font-size:18px;line-height:1.3;margin:0 0 12px;padding:0}
+  .ayuda{display:block;font-weight:500;color:var(--gris);font-size:13px;margin-top:2px}
+  .op{display:block;margin:0 0 8px;cursor:pointer}
+  .op input{position:absolute;opacity:0;width:1px;height:1px}
+  .op span{display:flex;align-items:center;min-height:52px;padding:12px 16px;border:1px solid var(--borde);border-radius:12px;background:var(--negro);line-height:1.3}
+  .op input:checked + span{border-color:var(--verde);box-shadow:inset 0 0 0 1px var(--verde);font-weight:700}
+  .op input:focus-visible + span{outline:2px solid var(--verde);outline-offset:2px}
+  input.c,textarea{width:100%;padding:13px;border-radius:12px;border:1px solid var(--borde);background:var(--negro);color:var(--blanco);font:inherit;font-size:16px}
   textarea{min-height:84px;resize:vertical}
-  input:focus,select:focus,textarea:focus{outline:2px solid var(--verde);border-color:transparent}
+  input.c:focus,textarea:focus{outline:2px solid var(--verde);border-color:transparent}
+  input.c + label.t,.sep{margin-top:16px}
+  details{margin-top:14px}
+  summary{cursor:pointer;color:#d8d6d0;font-size:15px;padding:8px 0}
+  summary span{color:var(--gris)}
+  details .ayuda{margin:2px 0 8px}
   .ok{display:flex;gap:10px;align-items:flex-start;margin-top:16px;font-size:14px;color:#d8d6d0}
-  .ok input{width:auto;margin-top:4px}
-  button{margin-top:20px;width:100%;padding:16px;border:0;border-radius:12px;background:var(--verde);color:var(--negro);font:inherit;font-weight:900;font-size:17px;cursor:pointer}
+  .ok input{width:20px;height:20px;margin:2px 0 0;flex:none;accent-color:var(--verde)}
+  button,.btn{display:block;margin-top:18px;width:100%;padding:16px;border:0;border-radius:12px;background:var(--verde);color:var(--negro);font:inherit;font-weight:900;font-size:17px;cursor:pointer;text-align:center;text-decoration:none}
   button:disabled{opacity:.6;cursor:wait}
-  .chico{color:var(--gris);font-size:13px;margin-top:14px;text-align:center}
+  button:focus-visible,.btn:focus-visible{outline:2px solid var(--blanco);outline-offset:2px}
+  .atras{background:none;color:var(--gris);font-weight:500;font-size:15px;margin-top:6px;padding:10px}
+  .chico{color:var(--gris);font-size:13px;margin:14px 0 0;text-align:center}
   .oculto{display:none}
-  .error{color:#FF7A6B;font-size:14px;margin:10px 0 0;text-align:center;min-height:0}
+  .error{color:#FF7A6B;font-size:14px;margin:12px 0 0;text-align:center}
   .error:empty{display:none}
+  .prog{display:none;gap:6px;margin:0 0 18px}
+  .prog i{flex:1;height:4px;border-radius:2px;background:var(--borde)}
+  .prog i.si{background:var(--verde)}
+  .sinjs .solo-js,.sinjs summary{display:none}
+  /* paso a paso (solo con JavaScript; sin él se ve todo junto, con los textos en vez de las opciones) */
+  .pasos .prog{display:flex}
+  .pasos fieldset{margin-bottom:0}
+  .pasos fieldset:not(.hoy){display:none}
+  h2{font-weight:900;font-size:26px;line-height:1.15;margin:0 0 12px;letter-spacing:-.02em;text-wrap:balance}
+  #fin{outline:0;background:var(--panel);border:1px solid var(--borde);border-radius:14px;padding:22px 20px}
+  #fin p{margin:0 0 12px;color:#d8d6d0}
+  #fin .chico{margin:14px 0 0;color:var(--gris)}
+  #fin .accion{border-left:3px solid var(--verde);padding:2px 0 2px 14px;color:var(--blanco);font-weight:700}
+  #fin .accion small{display:block;color:var(--gris);font-weight:500;font-size:13px}
   footer{margin-top:32px;color:var(--gris);font-size:13px;text-align:center}
-  footer a{color:var(--gris)}
+  footer a,.chico a{color:var(--gris)}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header><img class="marca" src="/diagnostico/img/marca.png" alt=""><span>El Que Cierra Gana</span></header>
 
-  <div class="yo">
-    <img src="/diagnostico/img/brian.jpg" alt="Brian Ponce">
-    <p><b>Brian Ponce</b>Closer de ventas high ticket</p>
+  <div id="intro">
+    <div class="yo">
+      <img src="/diagnostico/img/brian.jpg" alt="Brian Ponce" width="48" height="48">
+      <p><b>Brian Ponce</b>Closer de ventas high ticket</p>
+    </div>
+    <h1 id="titulo">Hiciste la formación. <em>¿Qué te falta</em> para tu primera llamada real?</h1>
+    <p class="bajada">3 preguntas, 2 minutos. Las leo yo y te escribo por WhatsApp con lo que te conviene hacer, aunque no sea trabajar conmigo.</p>
   </div>
 
-  <h1>Hiciste la formación. <em>¿Qué te falta</em> para tu primera llamada real?</h1>
-  <p class="bajada">Responde 3 preguntas. Las leo yo y te escribo por WhatsApp con lo que te conviene hacer ahora, aunque no sea trabajar conmigo.</p>
-
-  <ul class="que">
-    <li>Te toma 2 minutos.</li>
-    <li>Sin llamada obligatoria: si prefieres, lo hablamos por chat.</li>
-    <li>Si no es para ti, te lo digo y te dejo algo útil igual.</li>
-  </ul>
-
-  <form name="diagnostico" method="POST" action="/api/diagnostico" id="f">
+  <form class="sinjs" name="diagnostico" method="POST" action="/api/diagnostico" id="f">
     <input type="hidden" name="origen" id="origen" value="directo">
     <p class="oculto" aria-hidden="true"><label>No llenar <input name="no-llenar" tabindex="-1" autocomplete="off"></label></p>
+    <div class="prog" id="prog" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 
-    <label for="nombre">Tu nombre</label>
-    <input id="nombre" name="nombre" autocomplete="given-name" required maxlength="60">
+    <fieldset data-paso="punto">
+      <legend>1 · ¿Dónde estás hoy?</legend>
+      <label class="op solo-js"><input type="radio" name="punto" value="Terminé una formación y todavía no llamo"><span>Terminé una formación y todavía no llamo</span></label>
+      <label class="op solo-js"><input type="radio" name="punto" value="Ya hago llamadas y quiero cerrar más"><span>Ya hago llamadas y quiero cerrar más</span></label>
+      <label class="op solo-js"><input type="radio" name="punto" value="Estoy formándome ahora"><span>Estoy formándome ahora</span></label>
+      <label class="op solo-js"><input type="radio" name="punto" value="Recién empiezo, no hice ninguna formación"><span>Recién empiezo, no hice ninguna formación</span></label>
+      <details open><summary>Cuéntame algo más <span>(opcional)</span></summary>
+      <label class="ayuda" for="hasta">Qué curso y cuánta práctica hiciste</label>
+      <textarea id="hasta" name="hasta_ahora" required maxlength="450"></textarea></details>
+    </fieldset>
 
-    <label for="whatsapp">Tu WhatsApp <span class="ayuda">Con código de país. Ej.: +54 9 11 1234 5678</span></label>
-    <input id="whatsapp" name="whatsapp" type="tel" autocomplete="tel" required maxlength="25" inputmode="tel">
+    <fieldset data-paso="horas">
+      <legend>2 · ¿Cuántas horas por semana puedes dedicarle?</legend>
+      <label class="op"><input type="radio" name="horas" value="Menos de 5" required><span>Menos de 5</span></label>
+      <label class="op"><input type="radio" name="horas" value="Entre 5 y 10"><span>Entre 5 y 10</span></label>
+      <label class="op"><input type="radio" name="horas" value="Entre 10 y 20"><span>Entre 10 y 20</span></label>
+      <label class="op"><input type="radio" name="horas" value="Más de 20"><span>Más de 20</span></label>
+    </fieldset>
 
-    <label for="horas">1 · ¿Cuántas horas por semana puedes dedicarle?</label>
-    <select id="horas" name="horas" required>
-      <option value="">Elige una</option>
-      <option>Menos de 5</option>
-      <option>Entre 5 y 10</option>
-      <option>Entre 10 y 20</option>
-      <option>Más de 20</option>
-    </select>
+    <fieldset data-paso="meta">
+      <legend>3 · ¿Qué quieres lograr en los próximos 30 días?</legend>
+      <label class="op solo-js"><input type="radio" name="objetivo" value="Perder el miedo y hacer mi primera llamada real"><span>Perder el miedo y hacer mi primera llamada real</span></label>
+      <label class="op solo-js"><input type="radio" name="objetivo" value="Practicar con alguien que me corrija"><span>Practicar con alguien que me corrija</span></label>
+      <label class="op solo-js"><input type="radio" name="objetivo" value="Responder mejor las objeciones"><span>Responder mejor las objeciones</span></label>
+      <label class="op solo-js"><input type="radio" name="objetivo" value="Saber si esto es para mí"><span>Saber si esto es para mí</span></label>
+      <details open><summary>Decirlo con mis palabras <span>(opcional)</span></summary>
+      <label class="ayuda" for="meta">Tu meta para estos 30 días</label>
+      <textarea id="meta" name="meta_30_dias" required maxlength="450"></textarea></details>
+    </fieldset>
 
-    <label for="hasta">2 · ¿Qué hiciste hasta ahora? <span class="ayuda">Cursos, práctica, llamadas, lo que sea</span></label>
-    <textarea id="hasta" name="hasta_ahora" required maxlength="600"></textarea>
+    <fieldset data-paso="datos">
+      <legend>Último paso: ¿a quién le respondo?</legend>
+      <label class="t" for="nombre">Tu nombre</label>
+      <input class="c" id="nombre" name="nombre" autocomplete="given-name" required maxlength="60">
+      <div class="sep"><label class="t" for="whatsapp">Tu WhatsApp <span class="ayuda">Con código de país. Ej.: +54 9 11 1234 5678</span></label>
+      <input class="c" id="whatsapp" name="whatsapp" type="tel" autocomplete="tel" required maxlength="25" inputmode="tel"></div>
+      <div class="ok">
+        <input type="checkbox" id="acepto" name="acepta_whatsapp" value="si" required>
+        <label for="acepto">Acepto que Brian Ponce use estos datos para responderme por WhatsApp sobre este diagnóstico, según la <a href="/privacidad.html" target="_blank" rel="noopener" style="color:inherit">Política de privacidad</a>. Puedo pedir que los borre cuando quiera.</label>
+      </div>
+      <button type="submit" id="enviar">Enviar y seguir por WhatsApp</button>
+      <p class="chico">Sin llamada obligatoria: si prefieres, lo hablamos por chat.<br>Tus respuestas solo las ve Brian. No se comparten con nadie.</p>
+    </fieldset>
 
-    <label for="meta">3 · ¿Qué quieres lograr en los próximos 30 días?</label>
-    <textarea id="meta" name="meta_30_dias" required maxlength="600"></textarea>
-
-    <div class="ok">
-      <input type="checkbox" id="acepto" name="acepta_whatsapp" value="si" required>
-      <label for="acepto" style="margin:0;font-weight:500">Acepto que Brian Ponce use estos datos para responderme por WhatsApp sobre este diagnóstico, según la <a href="/privacidad.html" style="color:inherit">Política de privacidad</a>. Puedo pedir que los borre cuando quiera.</label>
-    </div>
-
-    <button type="submit" id="enviar">Enviar y seguir por WhatsApp</button>
     <p class="error" id="error" role="alert"></p>
-    <p class="chico">Tus respuestas solo las ve Brian. No se comparten con nadie.</p>
+    <button type="button" id="sig" class="oculto">Seguir</button>
+    <button type="button" id="atras" class="atras oculto">← Volver</button>
   </form>
 
+  <section id="fin" class="oculto" tabindex="-1" aria-live="polite">
+    <h2 id="finT"></h2>
+    <p id="lectura"></p>
+    <p class="accion"><small>Lo primero, gratis y hoy</small><span id="hoyhaz"></span></p>
+    <a class="btn" id="wa" href="#">Abrir WhatsApp y enviar</a>
+    <p class="chico">Tus respuestas ya están escritas: solo tocas enviar y te respondo ahí.<br>¿No se abre? Escríbeme al +54 9 11 5458-9256.</p>
+    <p class="chico"><a href="https://www.skool.com/el-que-cierra-gana-5774/about">Mientras tanto, entra a la comunidad gratis</a> · <a href="#" id="otra">Responder de nuevo</a></p>
+  </section>
+
   <footer>
-    Mientras tanto: <a href="https://www.skool.com/el-que-cierra-gana-5774/about">comunidad gratis en Skool</a> · <a href="https://www.instagram.com/brianponce.closer/">@brianponce.closer</a>
+    <a href="https://www.skool.com/el-que-cierra-gana-5774/about">Comunidad gratis en Skool</a> · <a href="https://www.instagram.com/brianponce.closer/">@brianponce.closer</a>
     <br><br>Resultados no garantizados: lo que logres depende de tu práctica y tu mercado. Los casos que muestro son reales y no son típicos.
     <br><a href="/privacidad.html">Privacidad</a> · <a href="/terminos.html">Términos</a> · <a href="/arrepentimiento.html">Botón de arrepentimiento</a>
   </footer>
@@ -110,42 +157,152 @@
 <script>
 (function(){
   var WA = "5491154589256"; // WhatsApp Business de la academia (11 5458-9256)
-  // origen: ?o=ig | fb | tt | yt | grupo-fb | grupo-wa | skool | ads ...
+  var $ = function(id){ return document.getElementById(id); };
+  var limpio = function(s){ return String(s || "").toLowerCase().replace(/[^a-z0-9-]/g, ""); };
+
+  // ?o= de dónde viene (ig, fb, tt, yt, skool, grupo-wa, ads…) · ?p= la palabra que comentó (foco, pensar, practica, salida…).
+  // Queda guardado junto ("ig-foco"): Mi negocio muestra qué puerta y qué palabra traen gente.
+  var TITULOS = {
+    pensar: "¿Te dicen “lo tengo que pensar”? <em>Veamos qué te falta</em> para responderlo.",
+    practica: "Practicar solo no alcanza. <em>¿Qué te falta</em> para tu primera llamada real?",
+    salida: "¿Quieres pasarte a ventas? <em>Veamos por dónde</em> te conviene empezar."
+  };
   try{
-    var o = new URLSearchParams(location.search).get("o");
-    if(o){ document.getElementById("origen").value = o.replace(/[^a-z0-9-]/gi,"").slice(0,30) || "directo"; }
+    var q = new URLSearchParams(location.search), p = limpio(q.get("p")).slice(0, 10), o = limpio(q.get("o")).slice(0, p ? 18 : 30);
+    $("origen").value = ((o || "directo") + (p ? "-" + p : "")).slice(0, 30);
+    if(TITULOS.hasOwnProperty(p)) $("titulo").innerHTML = TITULOS[p];
   }catch(e){}
 
-  var f = document.getElementById("f");
-  var b = document.getElementById("enviar");
-  var err = document.getElementById("error");
+  var f = $("f"), b = $("enviar"), err = $("error"), sig = $("sig"), atras = $("atras");
+  var pasos = [].slice.call(f.querySelectorAll("fieldset")), i = 0;
+  var elegido = function(n){ var x = f.querySelector('input[name="' + n + '"]:checked'); return x ? x.value : ""; };
+  var val = function(id){ return $(id).value.trim(); };
+  var junta = function(a, c){ return a && c ? a + " · " + c : a || c; };
+
+  // Con JavaScript el texto es opcional (alcanza con tocar una opción); sin él, los campos comunes son obligatorios.
+  $("hasta").required = false; $("meta").required = false;
+  f.noValidate = true;
+  f.classList.remove("sinjs");
+  f.classList.add("pasos");
+
+  // Lo que va respondiendo no se pierde si cambia de app o recarga (solo en su teléfono; se borra al enviar)
+  var GUARDA = "diag:borrador", HECHO = "diag:enviado";
+  var guardar = function(){ try{ sessionStorage.setItem(GUARDA, JSON.stringify({punto: elegido("punto"), horas: elegido("horas"), objetivo: elegido("objetivo"), hasta: val("hasta"), meta: val("meta"), nombre: val("nombre"), whatsapp: val("whatsapp"), paso: i})); }catch(e){} };
+  try{
+    var g = JSON.parse(sessionStorage.getItem(GUARDA) || "{}");
+    ["punto","horas","objetivo"].forEach(function(n){ [].forEach.call(f.querySelectorAll('input[name="' + n + '"]'), function(x){ if(x.value === g[n]) x.checked = true; }); });
+    ["hasta","meta","nombre","whatsapp"].forEach(function(n){ if(g[n]) $(n).value = g[n]; });
+    var desde = Number(g.paso) || 0;
+  }catch(e){ var desde = 0; }
+  f.addEventListener("input", guardar);
+  [].forEach.call(f.querySelectorAll("details"), function(d){ d.open = !!d.querySelector("textarea").value; });
+
+  function ver(n, foco, delAtras){
+    if(foco && !delAtras && n > i){ try{ history.pushState({n: n}, ""); }catch(e){} }
+    i = n; err.textContent = "";
+    pasos.forEach(function(p, k){ p.classList.toggle("hoy", k === i); });
+    [].forEach.call($("prog").children, function(x, k){ x.classList.toggle("si", k <= i); });
+    sig.classList.toggle("oculto", i === pasos.length - 1);
+    atras.classList.toggle("oculto", i === 0);
+    if(foco){ var t = pasos[i].querySelector("legend"); t.tabIndex = -1; t.focus({preventScroll: true}); f.scrollIntoView({block: "start"}); guardar(); }
+  }
+  window.addEventListener("popstate", function(ev){ if(f.classList.contains("oculto")) return; ver(Math.min(ev.state && ev.state.n || 0, pasos.length - 1), true, true); });
+  function falta(n){
+    var k = pasos[n].getAttribute("data-paso");
+    if(k === "punto" && !elegido("punto") && !val("hasta")) return "Elige dónde estás hoy, o cuéntamelo.";
+    if(k === "horas" && !elegido("horas")) return "Elige cuántas horas por semana.";
+    if(k === "meta" && !elegido("objetivo") && !val("meta")) return "Elige una opción, o dilo con tus palabras.";
+    if(k === "datos"){
+      if(!val("nombre")) return "Falta tu nombre.";
+      var d = val("whatsapp").replace(/\D/g, "");
+      if(d.length < 8 || d.length > 15) return "Revisa tu WhatsApp (con código de país).";
+      if(!$("acepto").checked) return "Falta aceptar que te escriba por WhatsApp.";
+    }
+    return "";
+  }
+  function avanzar(){
+    var e = falta(i);
+    if(e){ err.textContent = e; return; }
+    if(i < pasos.length - 1) ver(i + 1, true);
+  }
+  sig.addEventListener("click", avanzar);
+  // las horas avanzan solas al tocar (con el teclado, no: ahí se elige con las flechas)
+  [].forEach.call(f.querySelectorAll('input[name="horas"]'), function(x){ x.addEventListener("click", function(ev){ if(ev.detail || ev.screenX) setTimeout(function(){ if(pasos[i].getAttribute("data-paso") === "horas") avanzar(); }, 260); }); });
+  // al elegir en 1 y 3 no avanza solo (se puede agregar texto), pero el botón queda a la vista
+  [].forEach.call(f.querySelectorAll('input[name="punto"],input[name="objetivo"]'), function(x){ x.addEventListener("click", function(ev){ if(ev.detail || ev.screenX) sig.scrollIntoView({block: "nearest", behavior: "smooth"}); }); });
+  atras.addEventListener("click", function(){ if(i){ if(history.state && history.state.n === i) history.back(); else ver(i - 1, true, true); } });
+  try{ history.replaceState({n: 0}, ""); }catch(e){}
+  var ini = 0; while(ini < Math.min(desde, pasos.length - 1) && !falta(ini)) ini++;
+  ver(ini, false);
+
+  // Lectura corta según lo que tocó. Solo orienta: sin promesas de ingresos, cierres ni trabajo.
+  var LEE = {
+    "Terminé una formación y todavía no llamo": ["Por lo que cuentas, te falta práctica con alguien que te corrija, no más teoría.", "Graba una llamada simulada de 10 minutos y cuenta cuántas preguntas hiciste antes de explicar algo."],
+    "Ya hago llamadas y quiero cerrar más": ["Lo más difícil ya lo haces: llamar. Lo que falta suele estar en las preguntas de antes de presentar.", "Escucha tu última llamada y anota en qué minuto empezaste a presentar."],
+    "Estoy formándome ahora": ["Buen momento: lo que no practicas mientras estudias se olvida.", "Elige un tema de tu curso y dilo en voz alta, grabándote, hasta que salga sin leer."],
+    "Recién empiezo, no hice ninguna formación": ["Lo primero es ver si te gusta hablar con gente y preguntar; eso se prueba practicando.", "Pídele a un amigo que te “venda” algo y tú haz solo preguntas durante 10 minutos."]
+  };
+  function titulo(nombre, guardado){
+    $("finT").textContent = "";
+    $("finT").appendChild(document.createTextNode((guardado ? "Recibido, " : "") + nombre + ". "));
+    var em = document.createElement("em"); em.textContent = guardado ? "Falta un toque." : "Falta un paso: envíamelo por WhatsApp."; $("finT").appendChild(em);
+  }
+  function final(d){ // d = {nombre, punto, horas, url, guardado}
+    var x = LEE.hasOwnProperty(d.punto) ? LEE[d.punto] : ["Leo lo que me contaste y te digo por dónde empezar.", "Escribe en una hoja qué te frenó hasta hoy. Eso es lo primero que vamos a mirar."];
+    titulo(d.nombre, d.guardado);
+    $("lectura").textContent = x[0] + (d.horas === "Menos de 5" ? " Con menos de 5 horas por semana el ritmo cambia: te digo con sinceridad si te conviene ahora o más adelante." : "");
+    $("hoyhaz").textContent = x[1];
+    $("wa").href = d.url;
+    $("intro").classList.add("oculto"); f.classList.add("oculto"); $("fin").classList.remove("oculto");
+    $("fin").focus({preventScroll: true}); window.scrollTo(0, 0);
+    try{ sessionStorage.setItem(HECHO, JSON.stringify(d)); if(d.guardado) sessionStorage.removeItem(GUARDA); }catch(e){}
+  }
+  $("otra").addEventListener("click", function(ev){ ev.preventDefault(); try{ sessionStorage.removeItem(HECHO); sessionStorage.removeItem(GUARDA); }catch(e){} location.reload(); });
+  // si vuelve de WhatsApp y el navegador recargó, ve su lectura y el botón (no el formulario vacío)
+  try{ var ya = JSON.parse(sessionStorage.getItem(HECHO) || "null"); if(ya && /^https:\/\/wa\.me\//.test(ya.url)) final(ya); }catch(e){}
+
   f.addEventListener("submit", function(ev){
     ev.preventDefault();
+    if(i < pasos.length - 1){ avanzar(); return; } // Enter en un paso = seguir
+    for(var k = 0; k < pasos.length; k++){
+      var e = falta(k);
+      if(!e) continue;
+      if(k !== i) ver(k, true, true);
+      err.textContent = e;
+      if(k === pasos.length - 1) (!val("nombre") ? $("nombre") : e.indexOf("WhatsApp (") > -1 ? $("whatsapp") : $("acepto")).focus();
+      err.scrollIntoView({block: "nearest"});
+      return;
+    }
     err.textContent = "";
     b.disabled = true; b.textContent = "Enviando…";
-    var datos = new FormData(f);
-    var cuerpo = {};
-    datos.forEach(function(v, k){ cuerpo[k] = String(v); });
-    var txt = "Hola Brian, soy " + cuerpo.nombre + ". Te mandé el diagnóstico desde la página.\n" +
-      "1) Horas por semana: " + cuerpo.horas + "\n" +
-      "2) Hasta ahora: " + cuerpo.hasta_ahora + "\n" +
-      "3) En 30 días quiero: " + cuerpo.meta_30_dias;
-    var fue = false;
-    var ir = function(){ if(fue) return; fue = true; location.href = "https://wa.me/" + WA + "?text=" + encodeURIComponent(txt); };
-    var corte = setTimeout(ir, 5000); // si el servidor tarda, igual sigue a WhatsApp
-    fetch("/api/diagnostico", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(cuerpo)})
-      .then(function(r){
-        if(r.status === 400){
-          // dato mal cargado: se avisa y no se sale de la página
-          return r.json().catch(function(){ return {}; }).then(function(d){
-            clearTimeout(corte);
-            if(fue) return;
-            err.textContent = d.error || "Revisa los datos.";
-            b.disabled = false; b.textContent = "Enviar y seguir por WhatsApp";
-          });
-        }
-        ir(); // guardado (o falla del servidor): sigue a WhatsApp con sus respuestas igual
-      }, ir);
+    var c = {
+      origen: $("origen").value, "no-llenar": f.elements["no-llenar"].value, nombre: val("nombre"), whatsapp: val("whatsapp"),
+      horas: elegido("horas"), hasta_ahora: junta(elegido("punto"), val("hasta")).slice(0, 600),
+      meta_30_dias: junta(elegido("objetivo"), val("meta")).slice(0, 600), acepta_whatsapp: "si"
+    };
+    var url = "https://wa.me/" + WA + "?text=" + encodeURIComponent("Hola Brian, soy " + c.nombre + ". Te mandé el diagnóstico desde la página.\n" +
+      "1) Hoy: " + c.hasta_ahora + "\n2) Horas por semana: " + c.horas + "\n3) En 30 días quiero: " + c.meta_30_dias);
+    var d = {nombre: c.nombre, punto: elegido("punto"), horas: c.horas, url: url, guardado: false}, fue = false;
+    var ir = function(ok){
+      clearTimeout(corte);
+      if(fue){ if(ok && !d.guardado){ d.guardado = true; final(d); } return; } // llegó tarde, pero se guardó
+      fue = true; d.guardado = !!ok; final(d);
+    };
+    var corte = setTimeout(function(){ ir(false); }, 5000); // si el servidor tarda, igual sigue a WhatsApp
+    var mandar = function(){ return fetch("/api/diagnostico", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(c), keepalive: true}); };
+    var llego = function(r){
+      if(r.status === 400){ // dato mal cargado: se avisa y no se sale de la página
+        return r.json().catch(function(){ return {}; }).then(function(x){
+          clearTimeout(corte);
+          if(fue) return;
+          err.textContent = x.error || "Revisa los datos.";
+          b.disabled = false; b.textContent = "Enviar y seguir por WhatsApp";
+        });
+      }
+      if(r.status >= 500 && !fue) return mandar().then(function(r2){ ir(r2.ok); }, function(){ ir(false); }); // un reintento
+      ir(r.ok);
+    };
+    mandar().then(llego, function(){ ir(false); });
   });
 })();
 </script>
